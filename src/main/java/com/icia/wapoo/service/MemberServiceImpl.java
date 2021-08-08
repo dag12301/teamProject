@@ -1,11 +1,13 @@
 package com.icia.wapoo.service;
 
 import com.icia.wapoo.dao.MemberDao;
-import com.icia.wapoo.model.MemberVO;
+import com.icia.wapoo.model.Member;
+import com.icia.wapoo.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service("memberService")
 public class MemberServiceImpl implements MemberService{
@@ -14,7 +16,27 @@ public class MemberServiceImpl implements MemberService{
     public MemberDao memberDao;
 
     @Override
-    public List<MemberVO> getMembers() {
+    public List<Member> getMembers() {
         return memberDao.selectAllMember();
+    }
+
+    @Override
+    public Member getMemberByLoginId(String loginId) {
+        return memberDao.selectMemberByLoginId(loginId);
+    }
+
+    @Override
+    public Result joinMember(Map<String, Object> memberData) {
+        int result = memberDao.insertMember(memberData);
+        Integer id = (Integer) memberData.get("id"); // 오류처리 해줄것
+        if(id == 0 || result == 0) {
+            return new Result(500, "데이터 삽입에 실패했습니다", memberData);
+        }
+        return new Result(0, "멤버 데이터 삽입 성공", memberData);
+    }
+
+    @Override
+    public Member getMember(String loginId, String loginPwd) {
+        return memberDao.selectMember(loginId, loginPwd);
     }
 }

@@ -3,14 +3,38 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.icia.wapoo.dao.MemberDao">
-    <select id="selectAllMember" resultType="MemberVO">
+    <select id="selectAllMember" resultType="Member">
         SELECt *
         FROM `memberT`;
     </select>
 
-    <select id="selectMemberByLoginId" resultType="MemberVO">
+    <select id="selectMemberByLoginId" resultType="Member">
         SELECT *
         FROM `memberT`
         WHERE loginId = #{loginId}
     </select>
+
+    <select id="selectMember" resultType="Member">
+        SELECT *
+        FROM `memberT`
+        WHERE loginId = #{loginId}
+        AND loginPwd = #{loginPwd}
+    </select>
+
+    <insert id="insertMember" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `memberT`
+        SET regDate = NOW(),
+        updateDate = NOW(),
+        status = "Y",
+        name = #{name},
+        phone = #{phone},
+        email = #{email},
+        address = #{address},
+        addressDetail = #{addressDetail},
+        loginId = #{loginId},
+        loginPwd = #{loginPwd},
+        nickname = #{nickname},
+        userType = #{userType},
+        userLevel = 'NORMAL'
+    </insert>
 </mapper>
