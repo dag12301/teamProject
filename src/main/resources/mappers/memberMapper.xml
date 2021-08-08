@@ -4,6 +4,13 @@
 
 <mapper namespace="com.icia.wapoo.dao.MemberDao">
     <select id="selectAllMember" resultType="MemberVO">
-        select * from memberT;
+        SELECt *
+        FROM `memberT`;
+    </select>
+
+    <select id="selectMemberByLoginId" resultType="MemberVO">
+        SELECT *
+        FROM `memberT`
+        WHERE loginId = #{loginId}
     </select>
 </mapper>
