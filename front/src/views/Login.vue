@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="formSubmit" method="Post">
+    <form @submit.prevent="formSubmit" method="POST">
       <label for="loginId">loginId</label>
       <input type="text" id="loginId" v-model="loginId" />
       <label for="loginPwd">loginPwd</label>
@@ -9,6 +9,7 @@
     </form>
   </div>
 </template>
+
 <script>
 export default {
   name: "Register",
@@ -20,6 +21,7 @@ export default {
   },
   methods: {
     formSubmit() {
+      console.log(this.loginId);
       this.$store
         .dispatch("login", {
           loginId: this.loginId,

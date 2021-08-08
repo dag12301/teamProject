@@ -25,10 +25,10 @@ public class MemberController {
     private JwtService jwtService;
     @Autowired
     private MemberService memberService;
-
+    // 로그인 ( http://localhost:8083/api/member/login )
     @PostMapping("/member/login")
     public Result<Map<String, Object>> login(
-            @RequestBody Map<String, Object> logindata,
+            @RequestBody Map<String, Object> loginData,
             HttpServletResponse res) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
@@ -36,8 +36,8 @@ public class MemberController {
         try {
             // 로그인시도
             Member member = memberService.getMember(
-                    (String) logindata.get("loginId"),
-                    (String) logindata.get("loginPwd")
+                    (String) loginData.get("loginId"),
+                    (String) loginData.get("loginPwd")
             );
             System.out.println("[아이디찾음] "+member);
 
@@ -45,7 +45,7 @@ public class MemberController {
             String token = jwtService.create(member);
             res.setHeader("Authorization", token);
             System.out.println("[생성된토큰] "+token);
-            // 토큰 쐈음
+
             resultMap.put("token", token);
             status = HttpStatus.ACCEPTED;
             result.setCode(0);
@@ -63,23 +63,12 @@ public class MemberController {
             return result;
         }
     }
-    //테스트코드
-    @PostMapping("/test")
-    public Result<Map<String, Object>> getInfo(HttpServletRequest req) {
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-        try {
-            Member member = memberService.getMemberByLoginId("test");
-            resultMap.putAll(jwtService.get(req.getHeader("Authorization")));
 
-            resultMap.put("status", true);
-            resultMap.put("member", member);
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            log.error("정보 조회 실패 테스트코드");
-            resultMap.put("message", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new Result<>(123,"dd?",resultMap);
+    @PostMapping("/member/join")
+    public Result<Map<String, Object>> join(
+            @RequestBody Map<String, Object> memberData,
+            HttpServletResponse res) {
+        Result result = memberService.joinMember(memberData);
+        return result;
     }
 }

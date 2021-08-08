@@ -6,6 +6,7 @@ import com.icia.wapoo.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -28,11 +29,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Result joinMember(Map<String, Object> memberData) {
         int result = memberDao.insertMember(memberData);
-        Integer id = (Integer) memberData.get("id"); // 오류처리 해줄것
-        if(id == 0 || result == 0) {
+        BigInteger id = (BigInteger) memberData.get("id"); // 오류처리 해줄것
+        if(id == null || result == 0) {
             return new Result(500, "데이터 삽입에 실패했습니다", memberData);
         }
-        return new Result(0, "멤버 데이터 삽입 성공", memberData);
+        return new Result(0, "Success", memberData);
     }
 
     @Override

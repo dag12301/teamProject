@@ -30,7 +30,6 @@ public class JwtService {
      */
     public String create(final Member member){
         log.trace("time: {}", expMin);
-        System.out.println("dd");
         final JwtBuilder builder = Jwts.builder();
         builder.setHeaderParam("typ", "JWT")
                 //.setHeaderParam("regDate", System.currentTimeMillis())
@@ -41,7 +40,6 @@ public class JwtService {
                 .claim("email", member.getEmail())
                 .signWith(SignatureAlgorithm.HS512, this.generateKey());
         final String jwt = builder.compact();
-        System.out.println("ddd");
         log.debug("토큰 발행 : {}", jwt);
         return jwt;
     }
