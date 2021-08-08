@@ -5,6 +5,8 @@ import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 
 import java.io.Serializable;
 
@@ -28,4 +30,6 @@ public class Result<T> implements Serializable {
     private String msg; // 메시지
     @Expose
     private T data; // 데이터
+    @Expose
+    private HttpStatus status; // 상태
 }

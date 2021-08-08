@@ -21,44 +21,46 @@ import java.util.Map;
 @RequestMapping("/api")
 @Slf4j
 public class MemberController {
+
     @Autowired
     private JwtService jwtService;
     @Autowired
     private MemberService memberService;
+
     // 로그인 ( http://localhost:8083/api/member/login )
     @PostMapping("/member/login")
     public Result<Map<String, Object>> login(
             @RequestBody Map<String, Object> loginData,
-            HttpServletResponse res) {
+            HttpServletResponse response) {
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
         Result result = new Result();
         try {
-            // 로그인시도
+            // 로그인시도 -- 로직을 서비스로 옮겨야하나
             Member member = memberService.getMember(
                     (String) loginData.get("loginId"),
                     (String) loginData.get("loginPwd")
             );
-            System.out.println("[아이디찾음] "+member);
-
             // id, name, email 으로 JWT 토큰 생성 진행
             String token = jwtService.create(member);
-            res.setHeader("Authorization", token);
+            response.setHeader("Authorization", token);
+
             System.out.println("[생성된토큰] "+token);
 
             resultMap.put("token", token);
-            status = HttpStatus.ACCEPTED;
+
             result.setCode(0);
             result.setMsg("토큰 생성 성공");
+            result.setStatus(HttpStatus.ACCEPTED);
 
         } catch (Exception e){
             log.error("로그인 실패");
             resultMap.put("error", e);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
+
             result.setCode(500);
             result.setMsg("내부 서버 오류");
-        } finally {
-            resultMap.put("status",status);
+            result.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {;
             result.setData(resultMap);
             return result;
         }

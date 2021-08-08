@@ -80,7 +80,7 @@ export default createStore({
           context.commit("login", {
             accessToken: data.data.token,
           });
-
+          console.log(JSON.stringify(response));
           Promise.resolve(response);
         })
         .catch((error) => {

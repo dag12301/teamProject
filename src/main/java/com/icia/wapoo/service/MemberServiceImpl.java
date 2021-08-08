@@ -4,6 +4,7 @@ import com.icia.wapoo.dao.MemberDao;
 import com.icia.wapoo.model.Member;
 import com.icia.wapoo.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -31,9 +32,9 @@ public class MemberServiceImpl implements MemberService{
         int result = memberDao.insertMember(memberData);
         BigInteger id = (BigInteger) memberData.get("id"); // 오류처리 해줄것
         if(id == null || result == 0) {
-            return new Result(500, "데이터 삽입에 실패했습니다", memberData);
+            return new Result(500, "데이터 삽입에 실패했습니다", memberData, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new Result(0, "Success", memberData);
+        return new Result(0, "Success", memberData, HttpStatus.ACCEPTED);
     }
 
     @Override
