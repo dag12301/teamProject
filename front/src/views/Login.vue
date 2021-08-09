@@ -27,14 +27,12 @@ export default {
           loginId: this.loginId,
           loginPwd: this.loginPwd,
         })
-        .then((response) => {
-          if (response.status == 200) {
-            this.$route.push({
-              name: "Home",
-            });
-          }
+        .then(() => {
+          this.$router.push({
+            name: "Home",
+          });
         })
-        .catch(({ message }) => alert(message));
+        .catch(({ message }) => console.log(message));
 
       return true;
     },

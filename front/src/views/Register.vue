@@ -12,6 +12,7 @@
       <input type="text" id="phone" v-model="phone" />
       <label for="email">email</label>
       <input type="text" id="email" v-model="email" />
+
       <!-- // address adressDetail userType -->
       <button type="submit">회원가입</button>
     </form>
