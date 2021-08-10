@@ -1,12 +1,15 @@
 <template>
-  <div class="sideBar">
+  <div id="sideBar">
     <!--사이드 바-->
+    
     <div id="layoutSidenav">
       <div id="layoutSidenav_nav">
         <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
           <div class="sb-sidenav-menu">
             <div class="nav">
+              
               <!-- 사이드 바 메뉴 -->
+              
               <div class="sb-sidenav-menu-heading">WhatFoo</div>
           
             
@@ -39,6 +42,7 @@
         </nav>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -50,26 +54,33 @@
 <style>
 @import "../../css/styles.css";
 
-.sideBar{
+#sideBar{
   
-  width: 20%;
+  width: 17vw;
   height: 95vh;
+  float: left;
+  top: 6vh;
 }
 
-.sideBar #layoutSidenav{
-  height: 95vh;
+#sideBar #layoutSidenav{
+  
+
 }
 
-.sideBar #layoutSidenav #layoutSidenav_nav{
-
+#sideBar #layoutSidenav #layoutSidenav_nav{
+  position: fixed;
+  top: 6vh;
+  left: 0;
+  height: 95vh;
+  
 }
 
 .sideBar #layoutSidenav #layoutSidenav_nav #sidenavAccordion{
-  
+
 }
 
 .sideBar #layoutSidenav #layoutSidenav_nav #sidenavAccordion .sb-sidenav-menu{
-
+  
 }
 .sideBar #layoutSidenav #layoutSidenav_nav #sidenavAccordion .sb-sidenav-menu .nav{
 

@@ -27,7 +27,7 @@
             </ul>
         </nav>
     </div>
-    <Sidebar ></Sidebar>
+    
     
         
     
@@ -39,16 +39,15 @@
         
 
 <script>
-import Sidebar from  './Sidebar.vue';
+
 
 
 
 export default ({
-  components: {
-    Sidebar
-  }
+  
 })
 
+var i = 0;
 
 window.addEventListener('DOMContentLoaded', () => {
     // Toggle the side navigation
@@ -59,9 +58,22 @@ window.addEventListener('DOMContentLoaded', () => {
         //     document.body.classList.toggle('sb-sidenav-toggled');
         // }
         sidebarToggle.addEventListener('click', () => {
+            i++;
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
             localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+            
+            if(i == 1)
+            {
+                document.getElementById("sideBar").style.display = 'none';
+            }
+            else
+            {
+                document.getElementById("sideBar").style.display = 'inline';
+                i = 0;
+            }
+            
+            
         });
     }
 });
@@ -69,14 +81,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
 <style>
 .upper{
-    position: fixed;
     height: 5vh;
-    z-index: 10;
+    
     left: 0;
     top: 0;
     width: 100%;
-    
+    margin-bottom: 5vh;
 }
+.upper .nav-bar{
+    height: 6vh;
+    width: 98vw;
+    z-index: 10;
+}
+
+.upper .nav-bar .navbar{
+    height: 6vh;
+    width: 100vw;
+    position: fixed;
+    z-index: 10;
+}
+
 .input-group{
     border-radius: 20px;
 }
