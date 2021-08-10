@@ -5,6 +5,7 @@
     <router-link to="/register">Register</router-link> |
     <router-link to="/logout">Logout</router-link> |
     <router-link to="/mypage">MyPage</router-link> |
+    <router-link to="/test">Test</router-link> |
   </div>
   <router-view />
 </template>

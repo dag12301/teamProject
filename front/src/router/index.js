@@ -28,6 +28,11 @@ const routes = [
     component: () => import("../views/MyPage.vue"),
     meta: { authRequired: true }, // 인증이 필요한 페이지
   },
+  {
+    path: "/test",
+    name: "Test",
+    component: () => import("../views/Test.vue"),
+  },
 ];
 
 const router = createRouter({

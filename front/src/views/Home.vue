@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import HelloWorld from "@/components/Home.vue";
 
 export default {
@@ -13,6 +14,8 @@ export default {
   components: {
     HelloWorld,
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["isAuthenticated"]),
+  },
 };
 </script>
