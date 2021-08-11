@@ -120,7 +120,7 @@ export default {
 
 
 
-<style>
+<style scoped>
     .box {width:450px; margin: 0px auto;}
     .form-table {margin-left: 20px;}
     .form-control{width:250px;}

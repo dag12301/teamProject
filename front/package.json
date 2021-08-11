@@ -33,6 +33,11 @@
     "prettier": "^2.2.1"
   },
   "eslintConfig": {
+    "globals": {
+      "kakao": false
+    },
+
+    
     "root": true,
     "env": {
       "node": true
