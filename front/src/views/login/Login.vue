@@ -12,7 +12,7 @@
                 <label for="pw">PASSWORD</label>
             </div>
             <div class="btn-area">
-                <button type="submit">LOGIN</button>
+                <button @click.prevent="submit">LOGIN</button>
             </div>
         </form>
         <div class="caption">
@@ -21,6 +21,7 @@
             <router-link to="{name: 'Join'}">회원가입</router-link></span>
         </div>
     </section>
+    
     </div>
 </template>
 
@@ -29,7 +30,12 @@
 <script>
 export default {
 
-
+    methods: {
+        submit () {
+            
+            this.$store.dispatch('tes')
+        }
+    }
 }
 </script>
 

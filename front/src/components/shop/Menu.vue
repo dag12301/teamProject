@@ -1,30 +1,26 @@
 <template>
-  
-    <div class="listAction list-num2">
+    <!-- 메뉴 -->
+    <div class="listAction list-num2" v-for="(menu, index) in $store.state.menu.menuList" :key="index">
+      <!-- 메뉴 리스트 시작-->
       <a href="#" class="list-group-item list-group-item-action">
-        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMDJfMjY4/MDAxNTY5OTc1Njg1MzA3.rRfHuw5dm4Lw-nbgvTlW92K9JHTMbdy6lbkfEGJT6Fsg.au6b5GbdbOaykDXH2mXC6JnKhF8XE5RcXdlbySPq97sg.JPEG.wlsgkthd18/1569975685162.jpg?type=w800">
+        <img src="{{menu.pht}}">
         <div class="f-right">
           <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">하하횟집</h5>                <!--가게이름-->
-            <small>3 days ago</small>                 
+            <!--가게종류-->
+            <h5 class="col-mb-1">{{menu.shopType}}</h5>      
+            <!--오픈시간-->          
+            <small>{{menu.regDate}}</small>                 
           </div>
-          <p class="mb-1">Some placeholder content in a paragraph.</p>        <!--소개-->
-          <small class="Address">인천 미추홀구 소성로 236-1</small><br/>                               <!--주소-->
-          <small class="phoneNum">032-874-6090</small>&nbsp;&nbsp;<small><span class="details">상세보기</span></small>
+          <!--가게이름-->
+          <p class="col-mb-1">{{menu.shopName}}</p>      
+          <!--주소-->  
+          <small class="Address">{{menu.address}}</small><br/>                               
+                     <!--전화번호-->                                                   <!--자세히보기-->
+          <small class="phoneNum">{{menu.number}}</small>&nbsp;&nbsp;<small><span class="details">상세보기</span></small>
         </div>
       </a>
-      <a href="#" class="list-group-item list-group-item-action">
-        <img src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMDJfMjY4/MDAxNTY5OTc1Njg1MzA3.rRfHuw5dm4Lw-nbgvTlW92K9JHTMbdy6lbkfEGJT6Fsg.au6b5GbdbOaykDXH2mXC6JnKhF8XE5RcXdlbySPq97sg.JPEG.wlsgkthd18/1569975685162.jpg?type=w800">
-        <div class="f-right">
-          <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">하하횟집</h5>                <!--가게이름-->
-            <small>3 days ago</small>                 
-          </div>
-          <p class="mb-1">Some placeholder content in a paragraph.</p>        <!--소개-->
-          <small class="Address">인천 미추홀구 소성로 236-1</small><br/>                               <!--주소-->
-          <small class="phoneNum">032-874-6090</small>&nbsp;&nbsp;<small><span class="details">상세보기</span></small>
-        </div>
-      </a>
+      <!-- 끝-->
+      
     </div> 
   
 </template>
@@ -41,16 +37,19 @@ export default {
   margin-top: 10px;
 }
 
-.list-group-item{
-  width: 100%; float: right;
+.listAction .list-group-item{
+  width: 100%; 
+  float: right;
 }
 
-.img{
+.listAction .list-group-item img{
     float: left; width: 20%;
 }
 
-.f-right{
-  float: right; width: 75%;
+.listAction .list-group-item .f-right{
+  float: right; 
+  width: 75%;
+  height: 22vh;
 }
 
 .detail{
