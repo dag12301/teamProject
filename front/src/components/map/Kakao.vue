@@ -1,4 +1,5 @@
 <template>
+
   <div id="map" style="width:100%;height:300px;">
     
   </div>
@@ -7,19 +8,17 @@
 <script>
 export default {
   mounted() {
-    window.kakao && window.kakao.maps
-      ? this.initMap()
-      : this.addKakaoMapScript();
+    if (window.kakao && window.kakao.maps) {
+      this.initMap()
+    } else {
+      const script = document.createElement('script')
+      script.onload = () => kakao.maps.load(this.initMap);
+      script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0feaa40f6d94ad4428a4f4f8a6cab340'
+      document.head.appendChild(script)
+    }
   },
   methods: {
-    addKakaoMapScript() {
-      const script = document.createElement("script");
-      /* global kakao */
-      script.onload = () => kakao.maps.load(this.initMap);
-      script.src =
-        "http://dapi.kakao.com/v2/maps/0feaa40f6d94ad4428a4f4f8a6cab340";
-      document.head.appendChild(script);
-    },
+    
     initMap() {
       var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       var options = {
