@@ -36,11 +36,14 @@ export default {
 }
 #nav {
   position: relative;
-  width: 98.5vw;
+  width: 97.5vw;
   height: 100vh;
 }
 #nav .middle {
   min-height: 90vh;
-  padding-bottom: 3vh;
+  margin-bottom: 3vh;
+  left: 2vw;
+  right: 2vw;
+  margin: 0 auto;
 }
 </style>

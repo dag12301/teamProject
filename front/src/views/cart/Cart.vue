@@ -34,7 +34,7 @@
         </li>
         <!-- 끝 -->
         <li class="chart-item">
-          <div class="container">
+          <div class="container"  >
             <div class="row">
               <div class="col-6 col-sm-4">피자</div>
               <div class="col-6 col-sm-6"></div>
@@ -131,11 +131,12 @@ export default {
 <style>
 .cart{
  
-  height: 700px;
-  width: 800px;
+  
+  width: 70vw;
   left: 300px;
   position: relative;
 }
+
 .address{
   text-align: center;
   margin: 30px 0;

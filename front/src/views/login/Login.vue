@@ -12,9 +12,24 @@
           <label for="pw">PASSWORD</label>
         </div>
         <div class="btn-area">
-          <button type="submit">LOGIN</button>
+          <button @click.prevent="submit">LOGIN</button>
         </div>
       </form>
+      <div class="caption">
+        <span
+          ><router-link to="/join">아이디 찾기</router-link> |
+          <router-link to="/join">비밀번호 찾기</router-link> |
+          <router-link to="{name: 'Join'}">회원가입</router-link></span
+        >
+      </div>
+      <div class="int-area">
+        <input type="password" name="pw" id="pw" />
+        <label for="pw">PASSWORD</label>
+      </div>
+      <div class="btn-area">
+        <button type="submit">LOGIN</button>
+      </div>
+
       <div class="caption">
         <span
           ><router-link to="/join">아이디 찾기</router-link> |
@@ -27,7 +42,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    submit() {
+      this.$store.dispatch("tes");
+    },
+  },
+};
 </script>
 
 <style>
