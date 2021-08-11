@@ -1,92 +1,119 @@
 <template>
-  <div>
-    <header class="py-3 mb-3 border-bottom">
-      <div
-        class="container-fluid d-grid gap-3 align-items-center"
-        style="grid-template-columns: 1fr 2fr"
-      >
-        <!-- 네이게이션 바 앞부분 -->
-        <div
-          href="#"
-          class="
-            d-flex
-            align-items-center
-            col-lg-4
-            mb-2 mb-lg-0
-            link-dark
-            text-decoration-none
-          "
-          aria-expanded="false"
+  <div class="upper">
+    <div class="nav-bar">
+      <!-- 네비게이션 -->
+      <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="/">WHAT POO</a>
+        <!-- Sidebar Toggle 햄버거바-->
+        <button
+          class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
+          id="sidebarToggle"
+          href="#!"
         >
-          <!-- 로고 -->
-          <img
-            src="../../assets/logo.png"
-            width="50"
-            height="50"
-            @click="toggleSideBar()"
-          />
-          <a class="navbar-brand ps-3" href="/">WHAT POO</a>
-        </div>
-        <!-- 검색창 -->
-        <div class="d-flex align-items-center">
-          <form class="w-100 me-3">
-            <input
-              type="search"
-              class="form-control"
-              placeholder="수원시 팔달구"
-              aria-label="Search"
-              readonly
+          aa<i class="fas fa-bars"></i>
+        </button>
+        <!-- Navbar Search-->
+        <form
+          class="
+            d-none d-md-inline-block
+            form-inline
+            ms-auto
+            me-0 me-md-3
+            my-2 my-md-0
+          "
+        >
+          <div class="input-group">
+            <img
+              class="profile-img"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtDH8-Dn4rgOsfQT3s7qTkjH_-JlayacHGZQ&usqp=CAU"
+              alt="p"
             />
-          </form>
-
-          <div class="flex-shrink-0 dropdown">
+          </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+          <li class="nav-item dropdown">
             <a
+              class="nav-link dropdown-toggle"
+              id="navbarDropdown"
               href="#"
-              class="d-block link-dark text-decoration-none dropdown-toggle"
-              id="dropdownUser2"
+              role="button"
               data-bs-toggle="dropdown"
               aria-expanded="false"
-            >
-              <img
-                src="https://github.com/mdo.png"
-                alt="mdo"
-                width="32"
-                height="32"
-                class="rounded-circle"
-              />
-            </a>
+              ><i class="fas fa-user fa-fw"></i
+            ></a>
             <ul
-              class="dropdown-menu text-small shadow"
-              aria-labelledby="dropdownUser2"
+              class="dropdown-menu dropdown-menu-end"
+              aria-labelledby="navbarDropdown"
             >
-              <li><a class="dropdown-item" href="#">New project...</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#!">설정</a></li>
               <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Sign out</a></li>
+              <li><a class="dropdown-item" href="#!">로그아웃</a></li>
             </ul>
-          </div>
-        </div>
-      </div>
-    </header>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+export default {};
 
-export default {
-  data() {
-    return {
-      logoURL: require("../../assets/logo.png"),
-    };
-  },
-  methods: {
-    ...mapMutations({
-      toggleSideBar: "main/toggleSideBar",
-    }),
-  },
-};
+var i = 0;
+
+window.addEventListener("DOMContentLoaded", () => {
+  const sidebarToggle = document.body.querySelector("#sidebarToggle");
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener("click", () => {
+      i++;
+      event.preventDefault();
+      document.body.classList.toggle("sb-sidenav-toggled");
+      localStorage.setItem(
+        "sb|sidebar-toggle",
+        document.body.classList.contains("sb-sidenav-toggled")
+      );
+
+      if (i == 1) {
+        document.getElementById("sideBar").style.display = "none";
+      } else {
+        document.getElementById("sideBar").style.display = "inline";
+        i = 0;
+      }
+    });
+  }
+});
 </script>
 
-<style></style>
+<style scoped>
+.upper {
+  height: 5vh;
+
+  left: 0;
+  top: 0;
+  width: 100%;
+  margin-bottom: 5vh;
+}
+.upper .nav-bar {
+  height: 6vh;
+  width: 98vw;
+  z-index: 10;
+}
+
+.upper .nav-bar .navbar {
+  height: 6vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 10;
+}
+
+.input-group {
+  border-radius: 20px;
+}
+.profile-img {
+  width: 30px;
+  height: 15px;
+  object-fit: contain;
+}
+</style>

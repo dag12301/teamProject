@@ -1,5 +1,5 @@
 <template>
-  <footer class="py-4 bg-light mt-auto ">
+  <footer class="py-4 bg-light mt-auto">
     <div class="container-fluid px-4">
       <div class="d-flex align-items-center justify-content-between small">
         <div class="text-muted">Copyright &copy; Your Website 2021</div>
@@ -14,11 +14,7 @@
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -1,42 +1,33 @@
 <template>
   <div>
     <!--사이드 바-->
-
-    <nav class="sidebar" role="navigation">
+    <body>
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
       <div class="container-fluid">
-        <div class="navbar-header bkgnd">
-          <h4>Records</h4>
-        </div>
-        <div class="colsm12" id="">
-          <ul class="sideNav nav navbar">
-            <li>
-              <a href="#"
-                >Home<span
-                  style="font-size: 16px"
-                  class="pull-right showopacity glyphicon glyphicon-home"
-                ></span
-              ></a>
-            </li>
-            <li>
-              <a href="#"
-                >Libros<span
-                  style="font-size: 16px"
-                  class="pull-right showopacity glyphicon glyphicon-th-list"
-                ></span
-              ></a>
-            </li>
-            <li>
-              <a href="#"
-                >Tags<span
-                  style="font-size: 16px"
-                  class="pull-right showopacity glyphicon glyphicon-tags"
-                ></span
-              ></a>
-            </li>
-          </ul>
+        <div class="row">
+          <div class="col-lg-12">
+            <a href="#" class="btn" id="menu-toggle"><span class="glyphicon glyphicon-menu-hamburger"></span></a>
+            <h1 class="text-center">Bootstrap Sidebar</h1>
+            <h2 class="small text-center">Second Header</h2>
+            <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium perferendis maiores velit ad id delectus nisi eligendi doloremque officia necessitatibus, repellendus alias omnis, natus nam voluptates dolor vel minus ab?</p>
+          </div>
         </div>
       </div>
-    </nav>
+    </div>
+  </div>
+	
+    
   </div>
 </template>
 
@@ -52,112 +43,5 @@ export default {
 </script>
 
 <style scoped>
-nav.sidebar {
-  -webkit-transition: margin 200ms ease-out;
-  -moz-transition: margin 200ms ease-out;
-  -o-transition: margin 200ms ease-out;
-  transition: margin 200ms ease-out;
-}
 
-.bkgnd {
-  background-color: #d9edf7;
-  color: #428bca;
-}
-
-.colsm12 {
-  position: relative;
-  min-height: 1px;
-  width: 100%;
-  float: left;
-}
-
-@media (min-width: 320px) {
-  nav.sidebar:hover + .main {
-    margin-left: 200px;
-  }
-
-  nav.sidebar .navbar-brand,
-  nav.sidebar .navbar-header {
-    text-align: center;
-    width: 100%;
-    margin-left: 0px;
-  }
-
-  nav.sidebar a {
-    padding-right: 13px;
-  }
-
-  .sideNav > li:first-child {
-    border-top: 1px #e5e5e5 solid;
-  }
-
-  nav.sidebar .sideNav > li {
-    border-bottom: 1px #e5e5e5 solid;
-  }
-
-  nav.sidebar .sideNav .open .dropdown-menu {
-    position: static;
-    float: none;
-    width: auto;
-    margin-top: 0;
-    background-color: transparent;
-    border: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-
-  nav.sidebar,
-  nav.sidebar .container-fluid {
-    padding: 0 0px 0 0px;
-  }
-
-  .navbar-inverse .sideNav .open .dropdown-menu > li > a {
-    color: #777;
-  }
-
-  nav.sidebar {
-    width: 200px;
-    height: 100%;
-    margin-left: -160px;
-    float: left;
-    margin-bottom: 0px;
-  }
-
-  nav.sidebar li {
-    width: 100%;
-  }
-
-  nav.sidebar:hover {
-    margin-left: 0px;
-  }
-
-  .forAnimate {
-    opacity: 0;
-  }
-}
-
-@media (min-width: 1330px) {
-  nav.sidebar {
-    margin-left: 0px;
-    float: left;
-  }
-
-  nav.sidebar .forAnimate {
-    opacity: 1;
-  }
-}
-
-nav.sidebar .sideNav .open .dropdown-menu > li > a:hover,
-nav.sidebar .sideNav .open .dropdown-menu > li > a:focus {
-  color: #ccc;
-  background-color: transparent;
-}
-
-.sideNav > li:first-child {
-  border-top: 1px #e5e5e5 solid;
-}
-
-nav:hover .forAnimate {
-  opacity: 1;
-}
 </style>
