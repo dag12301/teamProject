@@ -44,10 +44,11 @@ public class MemberController {
 
             System.out.println("[생성된토큰] "+token);
 
-            HttpHeaders header = new HttpHeaders();
-            header.add("Authorization", token);
+            response.setHeader("Authorization", token);
+            response.setStatus(200);
 
-            return new ResponseEntity(header, HttpStatus.OK);
+
+            return new ResponseEntity("성공적으로 발행", HttpStatus.OK);
 
         } catch (Exception e){
             log.error("로그인 실패");

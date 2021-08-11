@@ -25,7 +25,7 @@ export default {
       this.$store
         .dispatch("login", {
           loginId: this.loginId,
-          loginPwd: this.loginPwd,
+          password: this.loginPwd,
         })
         .then(() => {
           this.$router.push({

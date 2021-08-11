@@ -1,14 +1,24 @@
 <template>
-  <div id="app">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/login">Login</router-link> |
-    <router-link to="/register">Register</router-link> |
-    <router-link to="/logout">Logout</router-link> |
-    <router-link to="/mypage">MyPage</router-link> |
-    <router-link to="/test">Test</router-link> |
+  <div id="nav">
+    <Nav></Nav>
+
+    <router-view />
+
+    <Footer></Footer>
   </div>
-  <router-view />
 </template>
+
+<script>
+import Nav from "./components/common/Nav.vue";
+import Footer from "./components/common/Footer.vue";
+
+export default {
+  components: {
+    Nav,
+    Footer,
+  },
+};
+</script>
 
 <style>
 #app {
@@ -19,13 +29,6 @@
   color: #2c3e50;
 }
 #nav {
-  padding: 30px;
-}
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-#nav a.router-link-exact-active {
-  color: #42b983;
+  position: relative;
 }
 </style>
