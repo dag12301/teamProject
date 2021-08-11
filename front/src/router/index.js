@@ -1,23 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 
-const View = () =>
-  import(/* webpackChunkName: "about" */ "../views/viewBoard/View.vue");
+const View = () => import("../views/viewBoard/View.vue");
 
-const Login = () =>
-  import(/* webpackChunkName: "about" */ "../views/login/Login.vue");
+const Login = () => import("../views/login/Login.vue");
 
-const Join = () =>
-  import(/* webpackChunkName: "about" */ "../views/login/Join.vue");
+const Join = () => import("../views/login/Join.vue");
 
-const Cart = () =>
-  import(/* webpackChunkName: "about" */ "../views/cart/Cart.vue");
+const Cart = () => import("../views/cart/Cart.vue");
 
-const Food = () =>
-  import(/* webpackChunkName: "about" */ "../views/food/Food.vue");
+const Food = () => import("../views/food/Food.vue");
 
-const AkinatorPage = () =>
-  import(/* webpackChunkName: "about" */ "../views/akinator/AkinatorPage.vue");
+const AkinatorPage = () => import("../views/akinator/AkinatorPage.vue");
 
 const routes = [
   {
@@ -28,11 +22,8 @@ const routes = [
   {
     path: "/about",
     name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+
+    component: () => import("../views/About.vue"),
   },
   {
     path: "/view",

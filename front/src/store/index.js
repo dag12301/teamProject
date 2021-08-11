@@ -4,10 +4,6 @@ import auth from "@/store/auth";
 import error from "@/store/error";
 
 export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
   modules: {
     auth,
     error,

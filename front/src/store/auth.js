@@ -71,7 +71,7 @@ export default {
         role: "buyer",
       };
 
-      // 회원가입하는 로직.
+      // 회원가입하는 로직 추가해야함. + auth.api에
       http.post("/api/member/join", userdata);
     },
   },
