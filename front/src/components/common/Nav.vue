@@ -14,13 +14,26 @@
           aa<i class="fas fa-bars"></i>
         </button>
         <!-- Navbar Search-->
-        <div class="input-group input-group-sm">
-          <span class="input-group-text" id="inputGroup-sizing-sm">위치</span>
+        <div class="col-1-md"></div>
+        <div class="input-group input-group-sm w-50 m-5 col-3">
+          <span class="input-group-text" id="inputGroup-sizing-sm"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-compass-fill"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M15.5 8.516a7.5 7.5 0 1 1-9.462-7.24A1 1 0 0 1 7 0h2a1 1 0 0 1 .962 1.276 7.503 7.503 0 0 1 5.538 7.24zm-3.61-3.905L6.94 7.439 4.11 12.39l4.95-2.828 2.828-4.95z"
+              /></svg
+          ></span>
           <input
             type="text"
             class="form-control"
-            aria-label="Sizing example input"
             aria-describedby="inputGroup-sizing-sm"
+            value="     중구 을왕동 을왕리해수욕장"
           />
         </div>
         <form
