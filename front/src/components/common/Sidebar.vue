@@ -1,60 +1,163 @@
 <template>
-  <div id="sideBar">
+  <div>
     <!--사이드 바-->
 
-    <div id="layoutSidenav">
-      <div id="layoutSidenav_nav">
-        <nav
-          class="sb-sidenav accordion sb-sidenav-light"
-          id="sidenavAccordion"
-        >
-          <div class="sb-sidenav-menu">
-            <div class="nav">
-              <!-- 사이드 바 메뉴 -->
-
-              <div class="sb-sidenav-menu-heading">WhatFoo</div>
-
-              <router-link class="nav-link" :to="{ name: 'AkinatorPage' }" exact
-                >아키네이처</router-link
-              >
-
-              <router-link class="nav-link" :to="{ name: 'Cart' }" exact
-                >장바구니/결제하기</router-link
-              >
-
-              <router-link class="nav-link" :to="{ name: 'Food' }" exact
-                >가게 찾기</router-link
-              >
-
-              <router-link class="nav-link" :to="{ name: 'View' }" exact
-                >View</router-link
-              >
-
-              <router-link class="nav-link" :to="{ name: 'Home' }" exact
-                >이벤트</router-link
-              >
-
-              <router-link class="nav-link" :to="{ name: 'Login' }" exact
-                >로그인</router-link
-              >
-
-              <router-link class="nav-link" :to="{ name: 'Join' }" exact
-                >회원가입</router-link
-              >
-
-              <a class="nav-link" href="/"> 고객센터 </a>
-            </div>
-          </div>
-          <div class="sb-sidenav-footer">
-            <div class="small">Logged in as:</div>
-            Start Bootstrap
-          </div>
-        </nav>
+    <nav class="sidebar" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header bkgnd">
+          <h4>Records</h4>
+        </div>
+        <div class="colsm12" id="">
+          <ul class="sideNav nav navbar">
+            <li>
+              <a href="#"
+                >Home<span
+                  style="font-size: 16px"
+                  class="pull-right showopacity glyphicon glyphicon-home"
+                ></span
+              ></a>
+            </li>
+            <li>
+              <a href="#"
+                >Libros<span
+                  style="font-size: 16px"
+                  class="pull-right showopacity glyphicon glyphicon-th-list"
+                ></span
+              ></a>
+            </li>
+            <li>
+              <a href="#"
+                >Tags<span
+                  style="font-size: 16px"
+                  class="pull-right showopacity glyphicon glyphicon-tags"
+                ></span
+              ></a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   </div>
 </template>
 
-<script></script>
+<script>
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters({
+      isOn: "main/pop",
+    }),
+  },
+};
+</script>
 
-<style scoped></style>
+<style scoped>
+nav.sidebar {
+  -webkit-transition: margin 200ms ease-out;
+  -moz-transition: margin 200ms ease-out;
+  -o-transition: margin 200ms ease-out;
+  transition: margin 200ms ease-out;
+}
+
+.bkgnd {
+  background-color: #d9edf7;
+  color: #428bca;
+}
+
+.colsm12 {
+  position: relative;
+  min-height: 1px;
+  width: 100%;
+  float: left;
+}
+
+@media (min-width: 320px) {
+  nav.sidebar:hover + .main {
+    margin-left: 200px;
+  }
+
+  nav.sidebar .navbar-brand,
+  nav.sidebar .navbar-header {
+    text-align: center;
+    width: 100%;
+    margin-left: 0px;
+  }
+
+  nav.sidebar a {
+    padding-right: 13px;
+  }
+
+  .sideNav > li:first-child {
+    border-top: 1px #e5e5e5 solid;
+  }
+
+  nav.sidebar .sideNav > li {
+    border-bottom: 1px #e5e5e5 solid;
+  }
+
+  nav.sidebar .sideNav .open .dropdown-menu {
+    position: static;
+    float: none;
+    width: auto;
+    margin-top: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  nav.sidebar,
+  nav.sidebar .container-fluid {
+    padding: 0 0px 0 0px;
+  }
+
+  .navbar-inverse .sideNav .open .dropdown-menu > li > a {
+    color: #777;
+  }
+
+  nav.sidebar {
+    width: 200px;
+    height: 100%;
+    margin-left: -160px;
+    float: left;
+    margin-bottom: 0px;
+  }
+
+  nav.sidebar li {
+    width: 100%;
+  }
+
+  nav.sidebar:hover {
+    margin-left: 0px;
+  }
+
+  .forAnimate {
+    opacity: 0;
+  }
+}
+
+@media (min-width: 1330px) {
+  nav.sidebar {
+    margin-left: 0px;
+    float: left;
+  }
+
+  nav.sidebar .forAnimate {
+    opacity: 1;
+  }
+}
+
+nav.sidebar .sideNav .open .dropdown-menu > li > a:hover,
+nav.sidebar .sideNav .open .dropdown-menu > li > a:focus {
+  color: #ccc;
+  background-color: transparent;
+}
+
+.sideNav > li:first-child {
+  border-top: 1px #e5e5e5 solid;
+}
+
+nav:hover .forAnimate {
+  opacity: 1;
+}
+</style>
