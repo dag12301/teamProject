@@ -1,23 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/Home.vue";
-
-const View = () => import("../views/viewBoard/View.vue");
-
-const Login = () => import("../views/login/Login.vue");
-
-const Join = () => import("../views/login/Join.vue");
-
-const Cart = () => import("../views/cart/Cart.vue");
-
-const Food = () => import("../views/food/Food.vue");
-
-const AkinatorPage = () => import("../views/akinator/AkinatorPage.vue");
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: Home,
+    component: () => import("../views/Home.vue"),
   },
   {
     path: "/about",
@@ -28,32 +15,27 @@ const routes = [
   {
     path: "/view",
     name: "View",
-    component: View,
+    component: () => import("../views/viewBoard/View.vue"),
   },
   {
     path: "/login",
     name: "Login",
-    component: Login,
+    component: () => import("../views/login/Login.vue"),
   },
   {
     path: "/join",
     name: "Join",
-    component: Join,
+    component: () => import("../views/login/Join.vue"),
   },
   {
     path: "/cart",
     name: "Cart",
-    component: Cart,
+    component: () => import("../views/cart/Cart.vue"),
   },
   {
     path: "/food",
     name: "Food",
-    component: Food,
-  },
-  {
-    path: "/akinator",
-    name: "AkinatorPage",
-    component: AkinatorPage,
+    component: () => import("../views/food/Food.vue"),
   },
 ];
 

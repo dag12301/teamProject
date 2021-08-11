@@ -1,17 +1,24 @@
 <template>
+  <!-- 아키네이터 띄우기 -->
   <div class="home">
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <Arkinator v-if="akion" />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
-
+// @ 는 /src 의 축약입니다.
+import Arkinator from "@/components/akinator/Akinator";
+import { mapGetters } from "vuex";
 export default {
   name: "Home",
   components: {
-    HelloWorld,
+    Arkinator,
+  },
+  computed: {
+    ...mapGetters({
+      akion: "toggle/aki",
+    }),
   },
 };
 </script>
+<style scoped></style>

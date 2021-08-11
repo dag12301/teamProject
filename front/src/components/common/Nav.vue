@@ -8,12 +8,21 @@
         <!-- Sidebar Toggle 햄버거바-->
         <button
           class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
-          id="sidebarToggle"
+          @click="toggleSideBar"
           href="#!"
         >
           aa<i class="fas fa-bars"></i>
         </button>
         <!-- Navbar Search-->
+        <div class="input-group input-group-sm">
+          <span class="input-group-text" id="inputGroup-sizing-sm">위치</span>
+          <input
+            type="text"
+            class="form-control"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-sm"
+          />
+        </div>
         <form
           class="
             d-none d-md-inline-block
@@ -59,31 +68,14 @@
 </template>
 
 <script>
-export default {};
-
-var i = 0;
-
-window.addEventListener("DOMContentLoaded", () => {
-  const sidebarToggle = document.body.querySelector("#sidebarToggle");
-  if (sidebarToggle) {
-    sidebarToggle.addEventListener("click", () => {
-      i++;
-      event.preventDefault();
-      document.body.classList.toggle("sb-sidenav-toggled");
-      localStorage.setItem(
-        "sb|sidebar-toggle",
-        document.body.classList.contains("sb-sidenav-toggled")
-      );
-
-      if (i == 1) {
-        document.getElementById("sideBar").style.display = "none";
-      } else {
-        document.getElementById("sideBar").style.display = "inline";
-        i = 0;
-      }
-    });
-  }
-});
+import { mapMutations } from "vuex";
+export default {
+  methods: {
+    ...mapMutations({
+      toggleSideBar: "toggle/toggleSideBar",
+    }),
+  },
+};
 </script>
 
 <style scoped>

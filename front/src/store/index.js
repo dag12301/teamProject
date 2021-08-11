@@ -2,12 +2,12 @@ import { createStore } from "vuex";
 
 import auth from "@/store/auth";
 import error from "@/store/error";
-import main from "@/store/main";
+import toggle from "@/store/toggle";
 
 export default createStore({
   modules: {
     auth,
     error,
-    main,
+    toggle,
   },
 });

@@ -1,5 +1,9 @@
 <template>
-  <div>dd</div>
+  <div class="p">dd</div>
 </template>
 
-<script></script>
+<script>
+export default {};
+</script>
+
+<style scoped></style>
