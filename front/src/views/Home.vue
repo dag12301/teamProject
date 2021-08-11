@@ -19,6 +19,9 @@ export default {
       akion: "toggle/aki",
     }),
   },
+  created() {
+    console.log("아키네이터 생성됨");
+  },
 };
 </script>
 <style scoped></style>

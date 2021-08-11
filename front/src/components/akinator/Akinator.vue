@@ -5,23 +5,18 @@
         <div class="item">
           <span class="item_name">WHAT POO</span>
           <div class="box">
-            <p class="msg">매운게 좋아? 안매운게 좋아?</p>
+            <p class="msg">{{ stats[questionNum].query }}</p>
           </div>
         </div>
         <div class="button1">
           <input
             type="button"
-            value="매운 음식"
-            @click="hideAki()"
+            :value="answer"
+            @click="addTochoosen(stats[questionNum].answers.indexOf(answer))"
             class="btn1"
-            id="btn1-1"
-          />
-          <input
-            type="button"
-            value="안매운 음식"
-            @click="hideAki()"
-            class="btn1"
-            id="btn2-1"
+            v-for="answer in stats[questionNum].answers"
+            :key="answer.id"
+            :id="answer.id"
           />
         </div>
       </div>
@@ -29,12 +24,40 @@
   </div>
 </template>
 <script>
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 export default {
+  data() {
+    return {
+      choosen: [],
+      questionNum: 0,
+    };
+  },
+  computed: {
+    ...mapGetters({
+      stats: "akinator/getQuestion",
+    }),
+  },
   methods: {
     ...mapMutations({
       hideAki: "toggle/toggleAki",
-    }),
+    }), //만들어지면 데이터받아서 바인딩
+    addTochoosen(data) {
+      this.choosen.push(this.stats[this.questionNum].id + "-" + data);
+      console.log(this.choosen);
+      this.questionNum++;
+      // 답장 받은대로 css그리기
+
+      // 임시로 숨기기.
+      if (this.questionNum == 3) {
+        this.hideAki();
+        let str = "";
+        this.choosen.forEach((ans) => {
+          str +=
+            ans.split("-")[0] + "번째 문제의 답은, " + ans.split("-")[1] + "\n";
+        });
+        alert(str);
+      }
+    },
   },
 };
 </script>
