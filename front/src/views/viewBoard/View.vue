@@ -58,6 +58,7 @@
 import Kakao from "../../components/map/Kakao.vue";
 import ShopList from "../../components/shop/ShopList.vue";
 import Menu from "../../components/shop/Menu.vue";
+
 export default {
   components: {
     Kakao,

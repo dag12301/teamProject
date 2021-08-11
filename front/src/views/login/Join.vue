@@ -168,7 +168,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .box {
   width: 450px;
   margin: 0px auto;

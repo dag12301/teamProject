@@ -49,18 +49,22 @@ export default {};
 .listAction {
   margin-top: 10px;
 }
+
 .list-group-item {
   width: 100%;
   float: right;
 }
+
 .img {
   float: left;
   width: 20%;
 }
+
 .f-right {
   float: right;
   width: 75%;
 }
+
 .detail {
   float: left;
 }

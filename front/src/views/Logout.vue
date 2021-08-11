@@ -22,7 +22,7 @@ export default {
     },
     logout() {
       this.$store
-        .dispatch("logout", {})
+        .dispatch("logout")
         .then(() => this.redirect())
         .catch(({ message }) => alert(message));
     },

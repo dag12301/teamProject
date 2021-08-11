@@ -1,8 +1,12 @@
 <template>
-  <div id="app">
+  <div id="nav">
     <Nav></Nav>
 
-    <router-view />
+    <Sidebar></Sidebar>
+
+    <div class="middle">
+      <router-view />
+    </div>
 
     <Footer></Footer>
   </div>
@@ -11,10 +15,13 @@
 <script>
 import Nav from "./components/common/Nav.vue";
 import Footer from "./components/common/Footer.vue";
+import Sidebar from "./components/common/Sidebar.vue";
+
 export default {
   components: {
     Nav,
     Footer,
+    Sidebar,
   },
 };
 </script>
@@ -29,12 +36,11 @@ export default {
 }
 #nav {
   position: relative;
+  width: 98.5vw;
+  height: 100vh;
 }
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-#nav a.router-link-exact-active {
-  color: #42b983;
+#nav .middle {
+  min-height: 90vh;
+  padding-bottom: 3vh;
 }
 </style>

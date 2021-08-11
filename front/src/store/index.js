@@ -33,10 +33,10 @@ export default createStore({
     },
   },
   actions: {
-    logout: function (context, payload) {
+    logout: function (context) {
       return new Promise((resolve) => {
         setTimeout(function () {
-          context.commit("logout", payload);
+          context.commit("logout");
           resolve({});
         }, 1000);
       });
@@ -56,9 +56,8 @@ export default createStore({
       axios
         .post("api/member/join", params)
         .then((response) => {
-          const data = response.data;
           context.commit("login", {
-            accessToken: data.data.token,
+            accessToken: response.headers.authorization,
           });
           Promise.resolve(response);
         })
@@ -75,12 +74,10 @@ export default createStore({
       axios
         .post("/api/member/login", params)
         .then((response) => {
-          const data = response.data;
-
+          console.log("나의상태는? =" + response.status);
           context.commit("login", {
-            accessToken: data.data.token,
+            accessToken: response.headers.authorization,
           });
-
           Promise.resolve(response);
         })
         .catch((error) => {

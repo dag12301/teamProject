@@ -45,6 +45,7 @@ export default {};
   text-align: center;
   margin-bottom: 60px;
 }
+
 .int-area {
   width: 350px;
   position: relative;
@@ -68,6 +69,7 @@ export default {};
   top: 0px;
   font-size: 12px;
 }
+
 .btn-area {
   margin-top: 30px;
 }
@@ -78,6 +80,7 @@ export default {};
   border: none;
   border-radius: 25px;
 }
+
 .caption {
   margin-top: 20px;
   text-align: center;

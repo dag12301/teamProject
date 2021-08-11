@@ -1,69 +1,72 @@
-import { createRouter, createWebHashHistory } from "vue-router";
-import store from "@/store";
+
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from "../views/Home.vue";
+
+const View = () => import(/* webpackChunkName: "about" */ "../views/viewBoard/View.vue")
+
+const Login = () => import(/* webpackChunkName: "about" */ "../views/login/Login.vue")
+
+const Join = () => import(/* webpackChunkName: "about" */ "../views/login/Join.vue")
+
+const Cart = () => import(/* webpackChunkName: "about" */ "../views/cart/Cart.vue")
+
+const Food = () => import(/* webpackChunkName: "about" */ "../views/food/Food.vue")
+
+const AkinatorPage = () => import(/* webpackChunkName: "about" */ "../views/akinator/AkinatorPage.vue")
+
+
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../views/Home.vue"),
+    component: Home,
+  },
+  {
+    path: "/about",
+    name: "About",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+  },
+  {
+    path: "/view",
+    name: "View",
+    component: View
   },
   {
     path: "/login",
     name: "Login",
-    component: () => import("../views/Login.vue"),
+    component: Login
   },
   {
-    path: "/register",
-    name: "Register",
-    component: () => import("../views/Register.vue"),
+    path: "/join",
+    name: "Join",
+    component: Join
   },
   {
-    path: "/logout",
-    name: "Logout",
-    component: () => import("../views/Logout.vue"),
-    meta: { authRequired: true }, // 인증이 필요한 페이지
+    path: "/cart",
+    name: "Cart",
+    component: Cart
   },
   {
-    path: "/mypage",
-    name: "MyPage",
-    component: () => import("../views/MyPage.vue"),
-    meta: { authRequired: true }, // 인증이 필요한 페이지
+    path: "/food",
+    name: "Food",
+    component: Food
   },
+  {
+    path: "/akinator",
+    name: "AkinatorPage",
+    component: AkinatorPage
+  }
+  
+  
 ];
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
-  base: process.env.BASE_URL,
-});
-
-router.beforeEach((to, from, next) => {
-  // const publicPages = ["Login", "Register"];
-  // const authRequired = !publicPages.includes(to.name);
-  // const loggedIn = localStorage.getItem("user");
-
-  // if (authRequired && !loggedIn) {
-  //   router.push({ name: "Login", query: { to: to.path } });
-  // } else {
-  //   next();
-  // }
-  const isAuthenticated = store.getters["isAuthenticated"];
-  if (
-    to.matched.some(function (routeInfo) {
-      return routeInfo.meta.authRequired;
-    })
-  ) {
-    // 인증이 필요한 페이지라면 = meta '옵션'의 authRequired 가 true 라면
-    if (isAuthenticated) {
-      // 인증 상태라면
-      next();
-    } else {
-      alert("로그인이 필요한 페이지입니다.");
-      router.push({ name: "Login", query: { to: to.path } });
-      // 로그인 화면으로 보낸다.
-    }
-  } else {
-    next(); // 로그인이 필요하지 않은 페이지로 가고자 한다면 가게한다.
-  }
 });
 
 export default router;
