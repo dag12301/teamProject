@@ -36,18 +36,6 @@
             >이벤트</router-link
           >
         </li>
-
-        <li>
-          <router-link class="nav-link" :to="{ name: 'Login' }" exact
-            >로그인</router-link
-          >
-        </li>
-
-        <li>
-          <router-link class="nav-link" :to="{ name: 'Join' }" exact
-            >회원가입</router-link
-          >
-        </li>
       </ul>
     </div>
   </div>

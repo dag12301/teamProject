@@ -20,6 +20,10 @@ export default {
     }),
   },
   created() {
+    const doAki = window.localStorage.getItem("doAki");
+    if (doAki == null || !!doAki == false) {
+      console.log("아키네이터 안할거라고 쿠키에 저장해둠");
+    }
     console.log("아키네이터 생성됨");
   },
 };
