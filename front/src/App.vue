@@ -4,7 +4,7 @@
 
     <Sidebar></Sidebar>
 
-    <div class="middle">
+    <div class="middle col-10">
       <router-view />
     </div>
 

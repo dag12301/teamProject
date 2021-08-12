@@ -46,8 +46,8 @@
             d-none d-md-inline-block
             form-inline
             ms-auto
-            me-0 me-md-3
-            my-2 my-md-0
+            me-5 me-md-3
+            my-0 my-md-0
           "
         >
           <div class="input-group">
@@ -58,6 +58,12 @@
             />
           </div>
         </form>
+        <a
+          href="#!"
+          v-if="!this.$store.state.isAuthenticated"
+          @click="SET_MODAL_LOGIN(true)"
+          >로그인</a
+        >
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
           <li class="nav-item dropdown">
@@ -160,5 +166,12 @@ export default {
   width: 30px;
   height: 15px;
   object-fit: contain;
+}
+/* input  */
+.input-group {
+}
+input::placeholder {
+  font-style: italic;
+  font-weight: 700;
 }
 </style>
