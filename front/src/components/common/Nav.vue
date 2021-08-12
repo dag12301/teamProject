@@ -5,15 +5,15 @@
       <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <div class="col-md-3">
           <!-- Navbar Brand-->
-          <a class="navbar-brand ps-3" href="/">WHAT POO</a>
+          <div class="navbar-brand ps-3">
+            <button
+              class="btn btn-link order-1 order-lg-0 me-4 me-lg-0"
+              @click="toggleSidebar()"
+            >
+              ☰</button
+            ><a>WA POO</a>
+          </div>
           <!-- Sidebar Toggle 햄버거바-->
-          <button
-            class="btn btn-link order-1 order-lg-0 me-4 me-lg-0"
-            @click="toggleSideBar"
-            href="#!"
-          >
-            ☰
-          </button>
         </div>
 
         <!-- Navbar Search-->
@@ -111,6 +111,8 @@
       <!-- 모달 -->
       <LoginModal v-if="loginModal" />
       <RegisterModal v-if="registerModal" />
+      <!-- 아키네이터 -->
+      <Akinator v-if="akinator"></Akinator>
     </div>
   </div>
 </template>
@@ -118,21 +120,23 @@
 <script>
 import LoginModal from "@/components/modal/Login";
 import RegisterModal from "@/components/modal/Register";
+import Akinator from "@/components/akinator/Akinator";
+
 import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     LoginModal,
     RegisterModal,
+    Akinator,
   },
   computed: {
-    ...mapState(["loginModal", "registerModal"]),
+    ...mapState(["loginModal", "registerModal", "sidebar", "akinator"]),
   },
   methods: {
-    ...mapMutations({
-      toggleSideBar: "toggle/toggleSideBar",
-      SET_MODAL_LOGIN: "SET_MODAL_LOGIN",
-      SET_MODAL_REGISTER: "SET_MODAL_REGISTER",
-    }),
+    ...mapMutations(["SET_SIDEBAR", "SET_MODAL_LOGIN", "SET_MODAL_REGISTER"]),
+    toggleSidebar() {
+      this.sidebar ? this.SET_SIDEBAR(false) : this.SET_SIDEBAR(true);
+    },
   },
 };
 </script>

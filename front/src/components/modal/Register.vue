@@ -1,12 +1,12 @@
 <template>
   <Modal>
     <template v-slot:header>
-      <div @click="SET_MODAL_REGISTER(false)" class="register-header">
+      <div class="register-header">
         <span v-if="selectRegister === 'user'">회원가입(일반 회원)</span>
         <span v-else>회원가입(판매자)</span>
-        <div class="close-button">
-          <img src="@/assets/close.png" />
-        </div>
+      </div>
+      <div class="close-button" @click="backTologin">
+        <img src="@/assets/close.png" />
       </div>
     </template>
 
@@ -17,6 +17,7 @@
         position="right right"
         style="margin-right: 30vh"
       />
+
       <div class="register-information-container">
         <div class="register-information-wrapper">
           <div class="register-title">이메일(아이디)</div>
@@ -37,7 +38,12 @@
             </select>
           </div>
         </div>
-
+        <div class="register-information-wrapper">
+          <div class="register-title">로그인아이디</div>
+          <div class="register-input-wrapper">
+            <input v-model="loginId" class="register-input" type="password" />
+          </div>
+        </div>
         <div class="register-information-wrapper">
           <div class="register-title">비밀번호</div>
           <div class="register-input-wrapper">
@@ -67,7 +73,7 @@
         </div>
 
         <div class="register-information-wrapper">
-          <div class="register-title">나이</div>
+          <div class="register-title">닉네임</div>
           <div class="register-input-wrapper">
             <input v-model="age" class="register-input" maxlength="3" />
             <span v-if="age" class="space-age">만 {{ age - 1 }}세</span>
@@ -76,24 +82,12 @@
         <div class="register-information-wrapper">
           <div class="register-title">휴대폰 번호</div>
           <div class="register-input-wrapper">
-            <!-- <input
+            <input
+              type="text"
               v-model="phone1"
               class="register-input register-input-phone"
-              value="010"
               maxlength="3"
             />
-            <span class="space">-</span>
-            <input
-              v-model="phone2"
-              class="register-input register-input-phone"
-              maxlength="4"
-            />
-            <span class="space">-</span>
-            <input
-              v-model="phone3"
-              class="register-input register-input-phone"
-              maxlength="4"
-            /> -->
           </div>
         </div>
 
@@ -132,15 +126,14 @@ export default {
   },
   data() {
     return {
-      id: "",
-      userPassword: "",
-      userPasswordCheck: "",
+      // loginId, pwd, name, phone, email, nickname
+      loginId: "",
+      password: "",
+      passwordCheck: "",
       name: "",
-      age: 0,
+      nickname: "",
       selectedDomain: "",
-      phone1: "010",
-      phone2: "",
-      phone3: "",
+      phone: "010",
       emailDomain: {
         naver: "naver.com",
         google: "gmail.com",
@@ -173,7 +166,11 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["SET_MODAL_REGISTER"]),
+    ...mapMutations(["SET_MODAL_REGISTER", "SET_MODAL_LOGIN"]),
+    backTologin() {
+      this.SET_MODAL_REGISTER(false);
+      this.SET_MODAL_LOGIN(true);
+    },
     registerUser() {
       //최소 1개의 숫자혹은 특수문자를 포함해야 함
 
@@ -304,6 +301,10 @@ export default {
 <style scoped>
 * {
   color: black;
+}
+
+.close-button {
+  padding-bottom: 30px;
 }
 
 .close-button > img {

@@ -11,24 +11,22 @@
           <div
             @click="loginSelect"
             class="login-selector-user"
-            :class="{ selectedLogin: loginSelector }"
+            :class="{ selectedLogin: loginType }"
           >
             일반 회원
           </div>
           <div
-            @click="brokerlLoginSelect"
-            class="login-selector-broker"
-            :class="{ selectedLogin: !loginSelector }"
+            @click="sellerlLoginSelect"
+            class="login-selector-seller"
+            :class="{ selectedLogin: !loginType }"
           >
             판매자
           </div>
         </div>
-        <div class="close-button">
-          <img src="@/assets/close.png" />
-        </div>
       </div>
-      <div v-if="loginSelector" class="login-title">로그인(일반 회원)</div>
-      <div v-else class="login-title">로그인(판매자)</div>
+      <div @click="SET_MODAL_REGISTER(false)" class="close-button">
+        <img src="@/assets/close.png" />
+      </div>
     </template>
 
     <template v-slot:body>
@@ -50,11 +48,11 @@
       </div>
       <div class="login-button-wrapper">
         <div>
-          <button v-if="loginSelector" @click="login" class="login-button">
-            로그인(일반회원)
+          <button v-if="loginType" @click="login" class="login-button">
+            일반회원으로 로그인
           </button>
           <button v-else @click="loginseller" class="login-button">
-            로그인(판매자)
+            판매자로 로그인
           </button>
         </div>
 
@@ -62,7 +60,7 @@
           아직 회원이 아니세요?
           <!-- OAUTH연동로직 -->
           <button @click="registerClick('user')" class="register-button">
-            이메일로 회원가입
+            회원가입하기
           </button>
         </div>
       </div></template
@@ -89,12 +87,12 @@ export default {
   components: {
     Modal,
   },
-  date() {
+  data() {
     return {
       loginSave: false,
+      loginType: false,
       userId: "",
       userPassword: "",
-      loginSelector: true,
     };
   },
   mounted() {
@@ -103,17 +101,18 @@ export default {
       ? (this.loginSave = false)
       : (this.loginSave = true);
   },
+  computed: {},
   methods: {
     ...mapMutations(["SET_MODAL_REGISTER", "SET_LOGIN", "SET_SELECT_REGISTER"]),
     loginSelect() {
-      this.loginSelector = true;
+      this.loginType = true;
     },
     sellerlLoginSelect() {
-      this.loginSelector = false;
+      this.loginType = false;
     },
     //로그인 아이디 localStorage 저장
     setLoginSave() {
-      if (this.loginSave === false) {
+      if (this.loginSave === !!false) {
         localStorage.setItem("loginId", this.userId);
       } else {
         localStorage.removeItem("loginId");
@@ -130,7 +129,7 @@ export default {
         return;
       }
     },
-    loginBroker() {
+    loginseller() {
       alert("사용할 수 없는 기능");
     },
     registerClick(user) {
@@ -152,6 +151,13 @@ export default {
   align-items: center;
   margin-bottom: 10px;
 }
+.login-selector-user:hover {
+  cursor: pointer;
+}
+.login-selector-seller:hover {
+  cursor: pointer;
+}
+
 .login-selector-seller {
   margin-left: 20px;
 }
@@ -245,6 +251,7 @@ export default {
 .move-seller {
   color: #888888;
   text-align: center;
+  margin-right: 20%;
   padding-bottom: 10px;
 }
 .move-seller-button {

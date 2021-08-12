@@ -26,7 +26,12 @@
 </template>
 
 <script>
-export default {};
+import { mapMutations } from "vuex";
+export default {
+  methods: {
+    ...mapMutations(["SET_MODAL_LOGIN"]),
+  },
+};
 </script>
 
 <style scoped>
@@ -51,7 +56,7 @@ export default {};
 }
 
 .modal-container {
-  width: 360px;
+  width: 420px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -73,6 +78,7 @@ export default {};
 .modal-default-button {
   float: right;
 }
+
 .modal-enter {
   opacity: 0;
 }

@@ -1,98 +1,95 @@
 <template>
-  <div id="sideBar" :class="{ menuDisplayed: isOn }">
-    <!--사이드 바-->
+  <transition>
+    <div id="sideBar" :class="{ menuDisplayed: isOn }" v-if="sidebar">
+      <!--사이드 바-->
 
-    <div id="layoutSidenav">
-      <div id="layoutSidenav_nav">
-        <nav
-          class="sb-sidenav accordion sb-sidenav-light"
-          id="sidenavAccordion"
-        >
-          <div class="sb-sidenav-menu">
-            <div class="nav">
-              <!-- 사이드 바 메뉴 -->
+      <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+          <nav
+            class="sb-sidenav accordion sb-sidenav-light"
+            id="sidenavAccordion"
+          >
+            <div class="sb-sidenav-menu">
+              <div class="nav">
+                <!-- 사이드 바 메뉴 -->
 
-              <div class="sidenav-heading">WhatFoo</div>
+                <div class="sidenav-heading">WAPOO</div>
 
-              <a class="nav-link" href="/view" @click="SET_AKINATOR(true)"
-                >아키네이터
-              </a>
+                <a class="nav-link" href="/view" @click="SET_AKINATOR(true)"
+                  >아키네이터
+                </a>
 
-              <router-link class="nav-link" :to="{ name: 'Cart' }" exact
-                >장바구니/결제하기</router-link
-              >
+                <router-link class="nav-link" :to="{ name: 'Cart' }" exact
+                  >장바구니/결제하기</router-link
+                >
 
-              <router-link class="nav-link" :to="{ name: 'Food' }" exact
-                >가게 찾기</router-link
-              >
+                <router-link class="nav-link" :to="{ name: 'Food' }" exact
+                  >가게 찾기</router-link
+                >
 
-              <router-link class="nav-link" :to="{ name: 'View' }" exact
-                >View</router-link
-              >
+                <router-link class="nav-link" :to="{ name: 'View' }" exact
+                  >View</router-link
+                >
 
-              <router-link class="nav-link" :to="{ name: 'Home' }" exact
-                >이벤트</router-link
-              >
+                <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                  >이벤트</router-link
+                >
 
-              <a
-                class="nav-link collapsed"
-                href="#"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseLayouts"
-                aria-expanded="false"
-                aria-controls="collapseLayouts"
-              >
-                고객센터
-              </a>
-              <div
-                class="collapse"
-                id="collapseLayouts"
-                aria-labelledby="headingOne"
-                data-bs-parent="#sidenavAccordion"
-              >
-                <nav class="sb-sidenav-menu-nested nav">
-                  <router-link class="nav-link" :to="{ name: 'Home' }" exact
-                    >공지사항</router-link
-                  >
-                </nav>
-                <nav class="sb-sidenav-menu-nested nav">
-                  <router-link class="nav-link" :to="{ name: 'Home' }" exact
-                    >FAQ</router-link
-                  >
-                </nav>
-                <nav class="sb-sidenav-menu-nested nav">
-                  <router-link class="nav-link" :to="{ name: 'Home' }" exact
-                    >Q&A</router-link
-                  >
-                </nav>
+                <a
+                  class="nav-link collapsed"
+                  href="#"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseLayouts"
+                  aria-expanded="false"
+                  aria-controls="collapseLayouts"
+                >
+                  고객센터
+                </a>
+                <div
+                  class="collapse"
+                  id="collapseLayouts"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#sidenavAccordion"
+                >
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                      >공지사항</router-link
+                    >
+                  </nav>
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                      >FAQ</router-link
+                    >
+                  </nav>
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                      >Q&A</router-link
+                    >
+                  </nav>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="footPoint">
-            <div class="small">Logged in as:</div>
-            Start Bootstrap
-          </div>
-        </nav>
+            <div class="footPoint">
+              <div class="small">Logged in as:</div>
+              Start Bootstrap
+            </div>
+          </nav>
+        </div>
       </div>
-      <!-- 아키네이터 -->
-      <Akinator v-if="akinator"></Akinator>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import Akinator from "@/components/akinator/Akinator.vue";
 export default {
   computed: {
-    ...mapState(["akinator"]),
+    ...mapState(["akinator", "sidebar"]),
   },
   methods: {
     ...mapMutations(["SET_AKINATOR"]),
   },
-  components: {
-    Akinator,
-  },
+  components: {},
 };
 </script>
 
