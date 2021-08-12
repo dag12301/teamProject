@@ -3,8 +3,8 @@
     <div class="chat_wrap">
       <div class="inner">
         <div class="item">
-          <!-- 아킨이처 취소 -->
-          <button @click="cancelAki">취소</button>
+          <!-- 아키네이터 취소 -->
+          <button @click="SET_AKINATOR(false)">취소</button>
 
           <span class="item_name">WHAT POO</span>
           <div class="box">
@@ -48,9 +48,7 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations({
-      hideAki: "toggle/toggleAki",
-    }), //만들어지면 데이터받아서 바인딩
+    ...mapMutations(["SET_AKINATOR"]), //만들어지면 데이터받아서 바인딩
     addTochoosen(data) {
       this.choosen.push(this.stats[this.questionNum].id + "-" + data);
       console.log(this.choosen);

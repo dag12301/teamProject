@@ -14,13 +14,9 @@
 
               <div class="sidenav-heading">WhatFoo</div>
 
-              <router-link
-                class="nav-link"
-                :to="{ name: 'Home' }"
-                @click="toggleAki"
-                exact
+              <a class="nav-link" href="/view" @click="SET_AKINATOR(true)"
                 >아키네이터
-              </router-link>
+              </a>
 
               <router-link class="nav-link" :to="{ name: 'Cart' }" exact
                 >장바구니/결제하기</router-link
@@ -78,22 +74,24 @@
           </div>
         </nav>
       </div>
+      <!-- 아키네이터 -->
+      <Akinator v-if="akinator"></Akinator>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
+import Akinator from "@/components/akinator/Akinator.vue";
 export default {
   computed: {
-    ...mapGetters({
-      isOn: "toggle/pop",
-    }),
+    ...mapState(["akinator"]),
   },
   methods: {
-    ...mapMutations({
-      toggleAki: "toggle/toggleSideBar",
-    }),
+    ...mapMutations(["SET_AKINATOR"]),
+  },
+  components: {
+    Akinator,
   },
 };
 </script>

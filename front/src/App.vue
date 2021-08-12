@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import Nav from "./components/common/Nav.vue";
-import Footer from "./components/common/Footer.vue";
-import Sidebar from "./components/common/Sidebar.vue";
+import Nav from "./components/common/Nav";
+import Footer from "./components/common/Footer";
+import Sidebar from "./components/common/Sidebar";
 
 export default {
   components: {

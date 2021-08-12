@@ -2,7 +2,7 @@
  * 작성자 : 노철희
  */
 import * as authApi from "@/api/auth";
-import error from "@/store/index";
+
 import http from "@/api/http";
 import jwt from "@/api/jwt";
 
@@ -40,22 +40,22 @@ export default {
   action: {
     async login(context, { userId, password }) {
       try {
+        // authAPI 를 이용해서 로그인시도
         const response = await authApi.login(userId, password);
-
+        // 200 응답일때 토큰설정
         if (response.status === 200) {
           context.commit("setToken", response.data.token);
         }
         Promise.resolve(response);
       } catch (e) {
-        error.setValidationErrors(e); // error.js state 에 error 값 들어있음.
         alert("아이디와 암호를 확인하세요");
-        console.log(error.state.validations);
       }
     },
     logout(context) {
+      // 로그아웃시 토큰삭제
       return new Promise((resolve) => {
         setTimeout(function () {
-          context.commit("logout");
+          context.commit("delToken");
           resolve();
         }, 1000); // 1초 후 로그아웃됨
       });
@@ -75,7 +75,5 @@ export default {
       http.post("/api/member/join", userdata);
     },
   },
-  module: {
-    error,
-  },
+  module: {},
 };
