@@ -3,6 +3,9 @@
     <div class="chat_wrap">
       <div class="inner">
         <div class="item">
+          <!-- 아킨이처 취소 -->
+          <button @click="cancelAki" >취소</button>
+
           <span class="item_name">WHAT POO</span>
           <div class="box">
             <p class="msg">{{ stats[questionNum].query }}</p>
@@ -34,8 +37,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      stats: "akinator/getQuestion",
+      stats: "akinator/getQuestion"
+      
     }),
+    
   },
   methods: {
     ...mapMutations({
@@ -56,8 +61,25 @@ export default {
             ans.split("-")[0] + "번째 문제의 답은, " + ans.split("-")[1] + "\n";
         });
         alert(str);
+
+        location="/view"; // 아키네이처 끝나고 이동 페이지 건우
       }
     },
+    
+    /** axios 아키네이션 취소 메서드
+     * 작성자 : 김건우
+     * 사용법 : toggle.js
+     *  isAkiOn을 false 한다
+     *  ...
+     *  
+     *  
+     */
+    //취소 메소드
+    cancelAki () {
+      this.hideAki();
+      location="/food"; // 아키네이처 끝나고 이동 페이지 건우
+    }
+  
   },
 };
 </script>

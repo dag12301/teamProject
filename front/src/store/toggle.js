@@ -1,7 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    isSideOn: false, // 사이드바 상태
+    isSideOn: false, // 사이드바 상태 관리 버튼 
     isAkiOn: true,
   },
   getters: {
@@ -16,6 +16,7 @@ export default {
     toggleSideBar(state) {
       state.isSideOn = !state.isSideOn;
       console.log("사이드바 현재 상태 : " + state.isSideOn);
+      
     },
     toggleAki(state) {
       state.isAkiOn = !state.isAkiOn;

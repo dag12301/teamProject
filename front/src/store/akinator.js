@@ -28,6 +28,12 @@ export default {
         query: "아무거나누르면 나가요",
         answers: ["넹", "시러욧", "졸려요"],
       },
+      {
+        id: "4",
+        query: "아무거나누르면 나가요",
+        answers: ["넹", "시러욧", "졸려요"],
+      }
+      
     ],
     answers: [],
     config: {
