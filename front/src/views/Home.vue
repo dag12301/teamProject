@@ -2,6 +2,7 @@
   <!-- 아키네이터 띄우기 -->
   <div class="home">
     <Arkinator v-if="akion" />
+    
   </div>
 </template>
 
@@ -11,13 +12,15 @@ import Arkinator from "@/components/akinator/Akinator";
 import { mapGetters } from "vuex";
 export default {
   name: "Home",
+  akiBoolean: true,
   components: {
     Arkinator,
   },
   computed: {
     ...mapGetters({
       akion: "toggle/aki",
-    }),
+      
+    })
   },
   created() {
     console.log("아키네이터 생성됨");

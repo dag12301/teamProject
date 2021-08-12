@@ -9,13 +9,13 @@
         <button
           class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
           @click="toggleSideBar"
-          href="#!"
-        >
-          aa<i class="fas fa-bars"></i>
+          href="#!">
+          aa
+        <i class="fas fa-bars"></i>
         </button>
         <!-- Navbar Search-->
         <div class="col-1-md"></div>
-        <div class="input-group input-group-sm w-50 m-5 col-3">
+        <div class="input-group input-group-sm w-50 ms-auto col-3">
           <span class="input-group-text" id="inputGroup-sizing-sm"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,8 @@
             type="text"
             class="form-control"
             aria-describedby="inputGroup-sizing-sm"
-            value="     중구 을왕동 을왕리해수욕장"
+            placeholder="음식점 검색"
+            value=""
           />
         </div>
         <form
@@ -41,8 +42,8 @@
             d-none d-md-inline-block
             form-inline
             ms-auto
-            me-0 me-md-3
-            my-2 my-md-0
+            me-5 me-md-3
+            my-0 my-md-0
           "
         >
           <div class="input-group">
@@ -53,6 +54,7 @@
             />
           </div>
         </form>
+        <router-link class="nav-link" :to="{name: 'Login'}" exact style="color:white;">로그인</router-link>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
           <li class="nav-item dropdown">
@@ -121,4 +123,17 @@ export default {
   height: 15px;
   object-fit: contain;
 }
+/* input  */
+.input-group{
+  
+}
+input::placeholder {
+  
+  font-style: italic;
+  font-weight: 700;
+  
+}
+
+
+
 </style>
