@@ -27,7 +27,7 @@
                   >가게 찾기</router-link
                 >
 
-                <router-link class="nav-link" :to="{ name: 'View' }" exact
+                <router-link class="nav-link" :to="{ name: 'Home' }" exact
                   >View</router-link
                 >
 
@@ -112,7 +112,7 @@ export default {
   height: 95vh;
   flex-basis: 225px;
   flex-shrink: 0;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.3s ease-in-out;
   z-index: 10;
 }
 
