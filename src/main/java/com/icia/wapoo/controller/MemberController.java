@@ -40,7 +40,6 @@ public class MemberController {
             );
             // id, name, email 으로 JWT 토큰 생성 진행
             String token = jwtService.create(member);
-//            response.setHeader("Authorization", token);
 
             System.out.println("[생성된토큰] "+token);
 
