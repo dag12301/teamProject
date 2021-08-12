@@ -37,9 +37,4 @@ instance.interceptors.response.use(
     }
   }
 );
-// computed: {
-// 	...mapState('error', {
-// 		validationErrors: state => state.validations
-// 	})
-// }
 export default instance;

@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div id="sideBar" :class="{ menuDisplayed: isOn }" v-if="sidebar">
+    <div id="sideBar" :class="{ menuDisplayed: sidebar }">
       <!--사이드 바-->
 
       <div id="layoutSidenav">
@@ -165,15 +165,5 @@ export default {
   background-color: #e9ecef;
   padding: 0.75rem;
   flex-shrink: 0;
-}
-.slide-enter-active,
-.slide-leave-active {
-  transition: transform 0.2s ease;
-}
-
-.slide-enter,
-.slide-leave-to {
-  transform: translateX(-100%);
-  transition: all 150ms ease-in 0s;
 }
 </style>

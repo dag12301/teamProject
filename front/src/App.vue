@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
     <Nav></Nav>
-    <Burger></Burger>
+
     <Sidebar></Sidebar>
 
     <div class="middle col-10">
@@ -16,14 +16,12 @@
 import Nav from "./components/common/Nav";
 import Footer from "./components/common/Footer";
 import Sidebar from "./components/common/Sidebar";
-import Burger from "./components/common/Burger";
 
 export default {
   components: {
     Nav,
     Footer,
     Sidebar,
-    Burger,
   },
 };
 </script>

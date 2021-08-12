@@ -6,12 +6,11 @@
         <div class="col-md-3">
           <!-- Navbar Brand-->
           <div class="navbar-brand ps-3">
-            <button
-              class="btn btn-link order-1 order-lg-0 me-4 me-lg-0"
-              @click="toggleSidebar()"
-            >
-              ☰</button
-            ><a>WA POO</a>
+            <button class="btn btn-link order-1 order-lg-0 me-4 me-lg-0">
+              <Burger @click="toggleSidebar()"></Burger>
+            </button>
+
+            <a>WA POO</a>
           </div>
           <!-- Sidebar Toggle 햄버거바-->
         </div>
@@ -121,13 +120,14 @@
 import LoginModal from "@/components/modal/Login";
 import RegisterModal from "@/components/modal/Register";
 import Akinator from "@/components/akinator/Akinator";
-
+import Burger from "@/components/common/Burger";
 import { mapState, mapMutations } from "vuex";
 export default {
   components: {
     LoginModal,
     RegisterModal,
     Akinator,
+    Burger,
   },
   computed: {
     ...mapState(["loginModal", "registerModal", "sidebar", "akinator"]),
