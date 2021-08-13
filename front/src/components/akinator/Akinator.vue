@@ -81,7 +81,7 @@ export default {
     //취소 메소드
     cancelAki() {
       this.hideAki();
-      location = "/food"; // 아키네이처 끝나고 이동 페이지 건우
+      location = "/view"; // 아키네이처 끝나고 이동 페이지 건우
     },
   },
 };

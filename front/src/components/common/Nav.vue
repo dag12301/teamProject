@@ -7,7 +7,7 @@
           <!-- Navbar Brand-->
           <div class="navbar-brand ps-3">
             <button class="btn btn-link order-1 order-lg-0 me-4 me-lg-0">
-              <Burger @click="toggleSidebar()"></Burger>
+              <Burger class="m-5" @click="toggleSidebar()"></Burger>
             </button>
 
             <a>WA POO</a>

@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div id="sideBar" :class="{ menuDisplayed: sidebar }">
+    <div id="sideBar" v-if="sidebar">
       <!--사이드 바-->
 
       <div id="layoutSidenav">
@@ -94,10 +94,6 @@ export default {
 </script>
 
 <style scoped>
-.menuDisplayed {
-  display: none;
-}
-
 #sideBar {
   width: 17vw;
   height: 95vh;
@@ -165,5 +161,9 @@ export default {
   background-color: #e9ecef;
   padding: 0.75rem;
   flex-shrink: 0;
+}
+.slide-enter-active {
+}
+.slide-leave-active {
 }
 </style>
