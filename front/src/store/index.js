@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 
 import auth from "@/store/auth";
-import akinator from "@/store/akinator";
+import Akinator from "@/store/akinator";
 
 import shopList from "./shopList/shopList.js";
 import menu from "./menu/menu.js";
@@ -37,7 +37,7 @@ export default createStore({
   },
   modules: {
     auth,
-    akinator,
+    Akinator,
 
     shopList,
     menu,

@@ -1,10 +1,10 @@
 <template>
   <transition name="slide">
-    <div id="sideBar" v-if="sidebar">
+    <div id="sideBar">
       <!--사이드 바-->
 
       <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
+        <div id="layoutSidenav_nav" v-if="sidebar">
           <nav
             class="sb-sidenav accordion sb-sidenav-light"
             id="sidenavAccordion"
@@ -108,7 +108,7 @@ export default {
   height: 95vh;
   flex-basis: 225px;
   flex-shrink: 0;
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   z-index: 10;
 }
 

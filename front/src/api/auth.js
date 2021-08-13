@@ -5,11 +5,11 @@
  */
 import http from "@/api/http";
 
-export async function login(userId, password) {
+export async function login(loginId, password) {
   // 로그인 요청을 보낸다
   return http.post("/api/member/login", {
     // MemberController 의 url주소 참고.
-    userId,
+    loginId,
     password,
   });
 }

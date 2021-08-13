@@ -57,10 +57,7 @@
             />
           </div>
         </form>
-        <a
-          href="#!"
-          v-if="!this.$store.state.isAuthenticated"
-          @click="SET_MODAL_LOGIN(true)"
+        <a href="#!" v-if="!isAuthenticated" @click="SET_MODAL_LOGIN(true)"
           >로그인</a
         >
         <!-- Navbar-->
@@ -83,23 +80,17 @@
                 <a
                   class="dropdown-item"
                   href="#!"
-                  v-if="!this.$store.state.isAuthenticated"
+                  v-if="!isAuthenticated"
                   @click="SET_MODAL_LOGIN(true)"
                   >로그인</a
                 >
               </li>
               <li><a class="dropdown-item" href="#!">설정</a></li>
               <li>
-                <hr
-                  class="dropdown-divider"
-                  v-if="this.$store.state.isAuthenticated"
-                />
+                <hr class="dropdown-divider" v-if="isAuthenticated" />
               </li>
               <li>
-                <a
-                  class="dropdown-item"
-                  href="#!"
-                  v-if="this.$store.state.isAuthenticated"
+                <a class="dropdown-item" href="#!" v-if="isAuthenticated"
                   >로그아웃</a
                 >
               </li>
@@ -130,7 +121,13 @@ export default {
     Burger,
   },
   computed: {
-    ...mapState(["loginModal", "registerModal", "sidebar", "akinator"]),
+    ...mapState([
+      "loginModal",
+      "registerModal",
+      "sidebar",
+      "akinator",
+      "isAuthenticated",
+    ]),
   },
   methods: {
     ...mapMutations(["SET_SIDEBAR", "SET_MODAL_LOGIN", "SET_MODAL_REGISTER"]),
