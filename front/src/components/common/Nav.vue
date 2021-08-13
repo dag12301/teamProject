@@ -124,9 +124,7 @@ export default {
   object-fit: contain;
 }
 /* input  */
-.input-group{
-  
-}
+
 input::placeholder {
   
   font-style: italic;

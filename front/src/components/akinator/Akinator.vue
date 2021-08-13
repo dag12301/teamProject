@@ -3,7 +3,7 @@
     <div class="chat_wrap">
       <div class="inner">
         <div class="item">
-          <!-- 아킨이처 취소 -->
+          <!-- 아킨네이터 취소 -->
           <button @click="cancelAki" >취소</button>
 
           <span class="item_name">WHAT POO</span>

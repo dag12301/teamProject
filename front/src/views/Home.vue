@@ -12,7 +12,6 @@ import Arkinator from "@/components/akinator/Akinator";
 import { mapGetters } from "vuex";
 export default {
   name: "Home",
-  akiBoolean: true,
   components: {
     Arkinator,
   },
