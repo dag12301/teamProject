@@ -15,8 +15,8 @@
 
                 <div class="sidenav-heading">WAPOO</div>
 
-                <a class="nav-link" href="/view" @click="SET_AKINATOR(true)"
-                  >아키네이터
+                <a href="/" class="nav-link" @click="SET_AKINATOR(true)">
+                  아키네이터
                 </a>
 
                 <router-link class="nav-link" :to="{ name: 'Cart' }" exact

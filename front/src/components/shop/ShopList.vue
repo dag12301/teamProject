@@ -1,7 +1,5 @@
 <template>
-  <div class="shopList">
-    <!-- shopList 시작-->
-    <!-- v-for -->
+  <div class="shopList" style="width: 100%; height: 450px">
     <a
       href="#"
       class="
@@ -9,16 +7,57 @@
         flex-column
         align-items-start
       "
-      v-for="(shop, index) in $store.state.shopList.shops"
-      :key="index"
     >
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ shop.shopName }}</h5>
-        <small class="text-muted">{{ shop.regDate }}</small>
+        <h5 class="mb-1">롯데리아 인천학익점</h5>
+        <small class="text-muted">영업시간 : 10:00 ~ 22:00</small>
       </div>
-      <p class="mb-1">{{ shop.content }}</p>
+      <small class="text-muted d-flex">인천 미추홀구 매소홀로 446</small>
     </a>
-    <!-- 끝 -->
+    <a
+      href="#"
+      class="
+        list-group-item list-group-item-action
+        flex-column
+        align-items-start
+      "
+    >
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">본죽 인천학익점</h5>
+        <small class="text-muted">영업시간 : 09:30 ~ 22:00</small>
+      </div>
+      <small class="text-muted d-flex"
+        >인천 미추홀구 매소홀로 468 목향빌딩 내 1층</small
+      >
+    </a>
+    <a
+      href="#"
+      class="
+        list-group-item list-group-item-action
+        flex-column
+        align-items-start
+      "
+    >
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">BHC치킨 학익점</h5>
+        <small class="text-muted">영업시간 : 12:00 ~ 24:00</small>
+      </div>
+      <small class="text-muted d-flex">인천 미추홀구 소성로 236</small>
+    </a>
+    <a
+      href="#"
+      class="
+        list-group-item list-group-item-action
+        flex-column
+        align-items-start
+      "
+    >
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">하하횟집</h5>
+        <small class="text-muted"></small>
+      </div>
+      <small class="text-muted d-flex">인천 미추홀구 소성로 236-1</small>
+    </a>
   </div>
 </template>
 

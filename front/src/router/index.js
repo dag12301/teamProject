@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import store from "@/store/index";
+
 const routes = [
   {
     path: "/",
@@ -21,6 +23,14 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.afterEach(() => {
+  // ${//these hooks do not get a next function and cannot affect the navigation}
+  setTimeout(() => {
+    store.commit("SET_SIDEBAR", false);
+  }, 0);
+  console.log("hello");
 });
 
 export default router;
