@@ -49,7 +49,7 @@ export default {
           return Promise.resolve(response);
         },
         (error) => {
-          console.log("에러가 발생했습니다. 아이디와 암호를 확인하세요.");
+          console.log("에러가 발생했습니다. 아이디와 암호를 확인하세요..");
 
           return Promise.reject(error);
         }

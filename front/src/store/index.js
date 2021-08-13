@@ -9,6 +9,7 @@ import menu from "./menu/menu.js";
 export default createStore({
   state: {
     loading: false, //로딩 컴포넌트를 위함
+    isLogined: false,
 
     loginModal: false, // 로그인 모달
     registerModal: false, // 레지스터 모달
