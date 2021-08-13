@@ -22,7 +22,7 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getMethod().equals("OPTIONS")) { // 예외
             return true;
-        } else {
+        } else { // 값에 "Bearer " 달고오니까 오류나면 여기확인
             final String token = request.getHeader(HEADER_AUTH);
             System.out.println("받은토큰" + token);
             if (token != null && token.length() > 0){
@@ -31,7 +31,7 @@ public class JwtInterceptor implements HandlerInterceptor {
                 log.trace("token : {}", token);
                 return true;
             } else {
-                throw new RuntimeException("token이 없습니다"); // 커스텀 오류 만들어야겠음*
+                throw new RuntimeException("인증되지 않은 사용자입니다."); // 커스텀 오류 만들어야겠음*
             }
         }
     }

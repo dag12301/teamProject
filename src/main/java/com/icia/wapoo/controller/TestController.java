@@ -23,21 +23,6 @@ public class TestController {
     public TestController(MemberService memberService) {
         this.memberService = memberService;
     }
-
-    @GetMapping("/test")
-    public Map<String, Object> testMVC() {
-        Map<String, Object> map = new HashMap<>();
-
-        List<Member> list = memberService.getMembers();
-        if(list.size() == 0){
-            map.put("연결실패", list);
-            return map;
-        }
-
-        map.put(list.get(0).getName(), list);
-
-        return map;
-    }
     
     @PostMapping(value="api/test/join")
     public String test(HttpServletRequest request,HttpServletResponse response)

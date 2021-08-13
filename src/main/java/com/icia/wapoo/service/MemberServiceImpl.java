@@ -1,6 +1,8 @@
 package com.icia.wapoo.service;
 
+import com.icia.wapoo.dao.LoginInfoDao;
 import com.icia.wapoo.dao.MemberDao;
+import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.model.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,26 +18,20 @@ public class MemberServiceImpl implements MemberService{
     @Autowired
     public MemberDao memberDao;
 
-    @Override
-    public List<Member> getMembers() {
-        return memberDao.selectAllMember();
-    }
+    @Autowired
+    public LoginInfoDao loginInfoDao;
+
 
     @Override
-    public Member getMemberByLoginId(String loginId) {
-        return memberDao.selectMemberByLoginId(loginId);
-    }
-
-    @Override
-    public int joinMember(Map<String, Object> memberData) {
-        int result = memberDao.insertMember(memberData);
-        BigInteger id = (BigInteger) memberData.get("id"); // 오류처리 해줄것
-        System.out.println(result + " 건의 데이터 삽입 성공 : id = "+ id);
-        return result;
-    }
-
-    @Override
-    public Member getMember(String loginId, String loginPwd) {
-        return memberDao.selectMember(loginId, loginPwd);
+    public Member getMemberByLoginInfo(String loginId, String password) {
+        System.out.println(loginId +" : "+ password);
+        LoginInfo loginInfo = loginInfoDao.selectloginInfo(loginId, password);
+        System.out.println("loginInfoDao -> "+loginInfo);
+        if(loginInfo == null) {
+            System.out.println("아이디, 비밀번호로 로그인 가능한 정보가 없습니다." + loginInfo);
+            // 아이디, 비밀번호로 조회한 로그인가능한 정보가 없음.
+            return null;
+        }
+        return memberDao.selectMemberById(loginInfo.getMember_id());
     }
 }
