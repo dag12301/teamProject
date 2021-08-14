@@ -14,12 +14,14 @@ const instance = axios.create({
   baseURL: "http://localhost:8083", // 스프링 BackEnd 의 주소,
 });
 
-instance.interceptors.request.use(async function (config) {
+instance.interceptors.request.use(function (config) {
   try {
     let access_token = JWT.getToken();
     if (access_token != null) {
+      console.log("보낼토큰===");
+      console.log(store.state.auth.token);
       config["headers"] = {
-        Authrization: `Bearer ${store.state.auth.token}`,
+        accesstoken: `Bearer ${store.state.auth.token}`,
       };
     } else {
       JWT.destroyToken();

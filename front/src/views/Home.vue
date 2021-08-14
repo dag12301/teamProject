@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import Kakao from "../../components/map/Kakao.vue";
-import ShopList from "../../components/shop/ShopList.vue";
+import Kakao from "@/components/map/Kakao.vue";
+import ShopList from "@/components/shop/ShopList.vue";
 
 export default {
   components: {

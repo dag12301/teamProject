@@ -1,17 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-
-import store from "@/store/index";
-
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../views/viewBoard/TestPage"),
-  },
-  {
-    path: "/view",
-    name: "View",
-    component: () => import("../views/viewBoard/View.vue"),
+    component: () => import("../views/Home.vue"),
   },
   {
     path: "/cart",
@@ -23,6 +15,11 @@ const routes = [
     name: "Food",
     component: () => import("../views/food/Food.vue"),
   },
+  {
+    path: "/test",
+    name: "Test",
+    component: () => import("../views/Test.vue"),
+  },
 ];
 
 const router = createRouter({
@@ -33,7 +30,7 @@ const router = createRouter({
 router.afterEach(() => {
   // ${//these hooks do not get a next function and cannot affect the navigation}
   setTimeout(() => {
-    store.commit("SET_SIDEBAR", false);
+    //
   }, 0);
   console.log("hello");
 });

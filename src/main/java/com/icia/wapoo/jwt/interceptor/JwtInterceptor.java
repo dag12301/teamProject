@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
 
-    private static final String HEADER_AUTH = "Authorization";
+    private static final String HEADER_AUTH = "accessToken";
 
     @Autowired
     private JwtService jwtService;
@@ -22,9 +22,10 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getMethod().equals("OPTIONS")) { // 예외
             return true;
-        } else { // 값에 "Bearer " 달고오니까 오류나면 여기확인
+        } else {
             final String token = request.getHeader(HEADER_AUTH);
             System.out.println("받은토큰" + token);
+
             if (token != null && token.length() > 0){
                 jwtService.checkValid(token);
                 System.out.println("토큰 인증");

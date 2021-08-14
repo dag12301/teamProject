@@ -1,13 +1,10 @@
 package com.icia.wapoo.controller;
 
-import com.google.gson.Gson;
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.Member;
 import com.icia.wapoo.service.MemberService;
-import jdk.nashorn.internal.parser.JSONParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -33,7 +31,6 @@ public class MemberController {
     @PostMapping("/member/login")
     public ResponseEntity login(
             @RequestBody Map<String, Object> loginData,
-            HttpServletRequest request,
             HttpServletResponse response) {
 
         try {
@@ -56,11 +53,16 @@ public class MemberController {
             response.setStatus(200);
 
 
-            return new ResponseEntity("성공적으로 발행", HttpStatus.OK);
+            return new ResponseEntity(member, HttpStatus.OK);
 
         } catch (Exception e){
             log.error("토큰 생성중에 오류가 발생했습니다.");
             return new ResponseEntity("토큰 생성중에 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    // Member 객체 정보 얻어오기.
+    @PostMapping("/member/info")
+    public ResponseEntity getInfo() {
+        return new ResponseEntity("성공?", HttpStatus.OK);
     }
 }

@@ -66,8 +66,9 @@ public class JwtService {
      */
     public boolean checkValid(final String jwt) {
         log.trace("토큰 점검 : {}", jwt);
+        System.out.println(get(jwt));
         try {
-            Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
+            Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt).getBody();
             return true;
         } catch (Exception e) {
             throw new RuntimeException("유효하지 않은 토큰");
@@ -81,11 +82,12 @@ public class JwtService {
     * @return
      */
     public Map<String, Object> get (final String jwt) {
+        System.out.println("필요한 정보를 가져옵니다.");
         Jws<Claims> claims = null;
         try {
             claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
         } catch (final Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException("토큰 분석에 실패했습니다");
         }
         log.trace("claims: {}", claims);
         // claims 는 Map 이다
