@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 
 import auth from "@/store/auth";
-import akinator from "@/store/akinator";
+import Akinator from "@/store/akinator";
 
 import shopList from "./shopList/shopList.js";
 import menu from "./menu/menu.js";
@@ -10,6 +10,7 @@ import foodDiv from "../store/foodDiv";
 export default createStore({
   state: {
     loading: false, //로딩 컴포넌트를 위함
+    isLogined: false,
 
     loginModal: false, // 로그인 모달
     registerModal: false, // 레지스터 모달
@@ -38,7 +39,8 @@ export default createStore({
   },
   modules: {
     auth,
-    akinator,
+    Akinator,
+
     shopList,
     menu,
     foodDiv

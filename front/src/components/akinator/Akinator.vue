@@ -58,15 +58,14 @@ export default {
       // 임시로 숨기기.
       // 작업시 데이터 비동기로 보내고, 모달로 로딩화면, 데이터오면 로딩종료, view보여주기
       if (this.questionNum == 3) {
-        this.hideAki();
+        this.SET_AKINATOR(false);
         let str = "";
         this.choosen.forEach((ans) => {
           str +=
             ans.split("-")[0] + "번째 문제의 답은, " + ans.split("-")[1] + "\n";
         });
         alert(str);
-
-        location = "/view"; // 아키네이처 끝나고 이동 페이지 건우
+        this.$router.push("/");
       }
     },
 
@@ -80,8 +79,8 @@ export default {
      */
     //취소 메소드
     cancelAki() {
-      this.hideAki();
-      location = "/food"; // 아키네이처 끝나고 이동 페이지 건우
+      this.SET_AKINATOR(false);
+      this.$router.push("/"); // 아키네이처 끝나고 이동 페이지 건우
     },
   },
 };

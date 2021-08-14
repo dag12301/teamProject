@@ -48,7 +48,7 @@
       </div>
       <div class="login-button-wrapper">
         <div>
-          <button v-if="loginType" @click="login" class="login-button">
+          <button v-if="loginType" @click="doLogin" class="login-button">
             일반회원으로 로그인
           </button>
           <button v-else @click="loginseller" class="login-button">
@@ -82,7 +82,7 @@
 <script>
 import Modal from "@/components/modal/Modal_login";
 import { error } from "@/api/notification";
-import { mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   components: {
     Modal,
@@ -90,7 +90,7 @@ export default {
   data() {
     return {
       loginSave: false,
-      loginType: false,
+      loginType: true,
       userId: "",
       userPassword: "",
     };
@@ -101,33 +101,46 @@ export default {
       ? (this.loginSave = false)
       : (this.loginSave = true);
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["auth/getAccessToken"]),
+    ...mapState(["isAuthenticated"]),
+  },
   methods: {
     ...mapMutations(["SET_MODAL_REGISTER", "SET_LOGIN", "SET_SELECT_REGISTER"]),
+    ...mapActions({
+      login: "auth/login",
+    }),
     loginSelect() {
       this.loginType = true;
     },
     sellerlLoginSelect() {
       this.loginType = false;
     },
-    //로그인 아이디 localStorage 저장
-    setLoginSave() {
-      if (this.loginSave === !!false) {
-        localStorage.setItem("loginId", this.userId);
-      } else {
-        localStorage.removeItem("loginId");
-      }
-    },
-    login() {
+    doLogin() {
       if (this.userId === "") {
         error("아이디를 입력해주세요", this);
-
         return;
       } else if (this.userPassword === "") {
         error("비밀번호를 입력해주세요", this);
-
         return;
       }
+      // auth.js 에서 가져온 로그인 시도
+      const response = this.login({
+        userId: this.userId,
+        password: this.userPassword,
+      });
+      // 받은 정보의 처리
+      response
+        .then((res) => {
+          if (res.status === 200) {
+            alert("로그인에 성공하였습니다.");
+            this.SET_MODAL_REGISTER(false);
+            return;
+          }
+        })
+        .catch((err) => {
+          console.log("에러?" + err);
+        });
     },
     loginseller() {
       alert("사용할 수 없는 기능");

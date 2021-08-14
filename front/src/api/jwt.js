@@ -1,18 +1,19 @@
 const ID_TOKEN_KEY = "Authorization";
 
 export const getToken = () => {
-  console.log("JWT acquired");
-  return window.sessionStorage.getItem(ID_TOKEN_KEY);
+  const token = window.sessionStorage.getItem(ID_TOKEN_KEY);
+  console.log("JWT load : " + token);
+  return token;
 };
 
 export const saveToken = (token) => {
-  console.log("JWT maden : " + token);
+  console.log("JWT save : " + token);
   window.sessionStorage.setItem(ID_TOKEN_KEY, token);
 };
 
 export const destroyToken = () => {
-  console.log("JWT destroyed");
-  window.sessionStorage.removeItem(ID_TOKEN_KEY);
+  const token = window.sessionStorage.removeItem(ID_TOKEN_KEY);
+  console.log("JWT destroyed : " + token);
 };
 
 export default {

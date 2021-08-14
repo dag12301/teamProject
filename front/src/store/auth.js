@@ -3,7 +3,6 @@
  */
 import * as authApi from "@/api/auth";
 
-import http from "@/api/http";
 import jwt from "@/api/jwt";
 
 export default {
@@ -24,12 +23,12 @@ export default {
       return state.isAuthenticated;
     },
   },
-  mutation: {
+  mutations: {
     setToken(state, payload) {
       // 토큰을 state에 저장하는 함수.
-      (state.token.accessToken = payload.accessToken),
+      (state.token.accessToken = payload),
         (state.isAuthenticated = true),
-        jwt.saveToken(payload.accessToken);
+        jwt.saveToken(payload);
     },
     delToken(state) {
       (state.token.accessToken = ""),
@@ -37,19 +36,24 @@ export default {
         jwt.destroyToken();
     },
   },
-  action: {
-    async login(context, { userId, password }) {
-      try {
-        // authAPI 를 이용해서 로그인시도
-        const response = await authApi.login(userId, password);
-        // 200 응답일때 토큰설정
-        if (response.status === 200) {
-          context.commit("setToken", response.data.token);
+  actions: {
+    login(context, { userId, password }) {
+      return authApi.login(userId, password).then(
+        (response) => {
+          //응답이 성공적이었을 시,
+          if (response.status === 200) {
+            // 응답이 200인지 확인
+            // 토큰을 저장한다.
+            context.commit("setToken", response.headers.authorization);
+          }
+          return Promise.resolve(response);
+        },
+        (error) => {
+          console.log("에러가 발생했습니다. 아이디와 암호를 확인하세요..");
+
+          return Promise.reject(error);
         }
-        Promise.resolve(response);
-      } catch (e) {
-        alert("아이디와 암호를 확인하세요");
-      }
+      );
     },
     logout(context) {
       // 로그아웃시 토큰삭제
@@ -60,20 +64,7 @@ export default {
         }, 1000); // 1초 후 로그아웃됨
       });
     },
-    async register(context, payload) {
-      const userdata = {
-        loginId: payload.loginId,
-        loginPwd: payload.loginPwd,
-        name: payload.name,
-        phone: payload.phone,
-        email: payload.email,
-        nickname: payload.nickname,
-        role: "buyer",
-      };
-
-      // 회원가입하는 로직 추가해야함. + auth.api에
-      http.post("/api/member/join", userdata);
-    },
+    register() {},
   },
-  module: {},
+  modules: {},
 };

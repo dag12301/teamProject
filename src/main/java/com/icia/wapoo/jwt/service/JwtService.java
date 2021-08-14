@@ -30,15 +30,17 @@ public class JwtService {
      */
     public String create(final Member member){
         log.trace("time: {}", expMin);
+        System.out.println("토큰생성시작");
         final JwtBuilder builder = Jwts.builder();
         builder.setHeaderParam("typ", "JWT")
                 //.setHeaderParam("regDate", System.currentTimeMillis())
                 .setSubject("LoginToken") // 서브젝트 수정*
                 .setExpiration(new Date(System.currentTimeMillis() + (1000*60*expMin)))
-                .claim("id", member.getId())
+                .claim("id", member.getMemberId())
                 .claim("name", member.getName())
                 .claim("email", member.getEmail())
                 .signWith(SignatureAlgorithm.HS512, this.generateKey());
+        System.out.println("토큰생성시작");
         final String jwt = builder.compact();
         log.debug("토큰 발행 : {}", jwt);
         return jwt;

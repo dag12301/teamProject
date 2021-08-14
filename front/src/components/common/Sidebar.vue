@@ -1,10 +1,14 @@
 <template>
   <transition name="slide">
+<<<<<<< HEAD
     <div id="sideBar" v-if="sidebar">
+=======
+    <div id="sideBar">
+>>>>>>> af007e60332d44f458aa07c98965a83f2247b8bc
       <!--사이드 바-->
     
       <div id="layoutSidenav">
-        <div id="layoutSidenav_nav">
+        <div id="layoutSidenav_nav" v-if="sidebar">
           <nav
             class="sb-sidenav accordion sb-sidenav-light"
             id="sidenavAccordion"
@@ -15,8 +19,8 @@
 
                 <div class="sidenav-heading">WAPOO</div>
 
-                <a class="nav-link" href="/view" @click="SET_AKINATOR(true)"
-                  >아키네이터
+                <a href="/" class="nav-link" @click="SET_AKINATOR(true)">
+                  아키네이터
                 </a>
 
                 <router-link class="nav-link" :to="{ name: 'Cart' }" exact
@@ -101,6 +105,7 @@ export default {
 </script>
 
 <style scoped>
+<<<<<<< HEAD
 .slide-enter{
   /* transform: translateX(10px); */
    opacity: 0;
@@ -127,6 +132,8 @@ export default {
 
 
 
+=======
+>>>>>>> af007e60332d44f458aa07c98965a83f2247b8bc
 #sideBar {
   width: 17vw;
   height: 95vh;
@@ -141,7 +148,7 @@ export default {
   height: 95vh;
   flex-basis: 225px;
   flex-shrink: 0;
-  transition: transform 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
   z-index: 10;
 }
 
@@ -194,5 +201,9 @@ export default {
   background-color: #e9ecef;
   padding: 0.75rem;
   flex-shrink: 0;
+}
+.slide-enter-active {
+}
+.slide-leave-active {
 }
 </style>

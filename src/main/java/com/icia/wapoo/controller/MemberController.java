@@ -1,8 +1,10 @@
 package com.icia.wapoo.controller;
 
+import com.google.gson.Gson;
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.Member;
 import com.icia.wapoo.service.MemberService;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
@@ -31,17 +34,23 @@ public class MemberController {
     @PostMapping("/member/login")
     public ResponseEntity login(
             @RequestBody Map<String, Object> loginData,
+            HttpServletRequest request,
             HttpServletResponse response) {
 
         try {
             // 로그인시도 -- 로직을 서비스로 옮겨야하나
-            Member member = memberService.getMember(
+            System.out.println("로그인 정보 조회");
+            System.out.println(loginData);
+            Member member = memberService.getMemberByLoginInfo(
                     (String) loginData.get("loginId"),
-                    (String) loginData.get("loginPwd")
+                    (String) loginData.get("password")
             );
-            // id, name, email 으로 JWT 토큰 생성 진행
-            String token = jwtService.create(member);
+            if(member == null){
+                return new ResponseEntity("회원정보를 찾지 못했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            System.out.println(member);
 
+            String token = jwtService.create(member);
             System.out.println("[생성된토큰] "+token);
 
             response.setHeader("Authorization", token);
@@ -51,22 +60,10 @@ public class MemberController {
             return new ResponseEntity("성공적으로 발행", HttpStatus.OK);
 
         } catch (Exception e){
-            log.error("로그인 실패");
-            return new ResponseEntity("토큰 생성중에 오류가 발생", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    	
-    	
-    }
 
-    @PostMapping("/member/join")
-    public ResponseEntity join(
-            @RequestBody Map<String, Object> memberData,
-            HttpServletResponse res) {
-        int result = memberService.joinMember(memberData);
-        if( result > 0) {
-           return new ResponseEntity("데이터가 성공적으로 삽입됨", HttpStatus.OK);
-        } else {
-            return new ResponseEntity("내부 서버 오류", HttpStatus.INTERNAL_SERVER_ERROR);
+            log.error("토큰 생성중에 오류가 발생했습니다.");
+            return new ResponseEntity("토큰 생성중에 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
     }
     

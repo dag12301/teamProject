@@ -8,19 +8,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member {
-    private long id;
-    private String regDate;
-    private String updateDate;
+    private int memberId;
     private String status;
     private String name;
     private String phone;
     private String email;
-    private String address;
-    private String addressDetail;
-    private String LoginId;
-    private String LoginPwd;
     private String nickname;
-    private String userType;
-    private String userLevel;
-    private Long fileGroup;
+    private String role;
 }
