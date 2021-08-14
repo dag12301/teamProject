@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +41,6 @@ public class MemberController {
             );
             // id, name, email 으로 JWT 토큰 생성 진행
             String token = jwtService.create(member);
-//            response.setHeader("Authorization", token);
 
             System.out.println("[생성된토큰] "+token);
 
@@ -54,6 +54,8 @@ public class MemberController {
             log.error("로그인 실패");
             return new ResponseEntity("토큰 생성중에 오류가 발생", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    	
+    	
     }
 
     @PostMapping("/member/join")
@@ -67,4 +69,26 @@ public class MemberController {
             return new ResponseEntity("내부 서버 오류", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

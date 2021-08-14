@@ -4,28 +4,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import("../views/Home.vue"),
-  },
-  {
-    path: "/about",
-    name: "About",
-
-    component: () => import("../views/About.vue"),
-  },
-  {
-    path: "/view",
-    name: "View",
     component: () => import("../views/viewBoard/View.vue"),
-  },
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("../views/login/Login.vue"),
-  },
-  {
-    path: "/join",
-    name: "Join",
-    component: () => import("../views/login/Join.vue"),
   },
   {
     path: "/cart",
@@ -37,6 +16,32 @@ const routes = [
     name: "Food",
     component: () => import("../views/food/Food.vue"),
   },
+  {
+      path: "/serviceCenter",
+      name: "ServiceCenter",
+      component: () => import("../views/serviceCenter/ServiceCenter.vue"),
+      children: [
+          {
+            path: "notice",
+            name: "Notice",
+            component: () => import("../components/service/Notice.vue"),
+
+          },
+          {
+            path: "qna",
+            name: "Q&A",
+            component: () => import("../components/service/Q&A.vue"),
+
+          },
+          {
+            path: "fqa",
+            name: "FQA",
+            component: () => import("../components/service/FQA.vue"),
+
+          }
+        ] 
+      
+  }
 ];
 
 const router = createRouter({

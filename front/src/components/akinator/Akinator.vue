@@ -3,19 +3,26 @@
     <div class="chat_wrap">
       <div class="inner">
         <div class="item">
-          <!-- 아킨네이터 취소 -->
-          <button @click="cancelAki" >취소</button>
+          <!-- 아키네이터 취소 -->
+          <button @click="SET_AKINATOR(false)">취소</button>
 
           <span class="item_name">WHAT POO</span>
           <div class="box">
             <p class="msg">{{ stats[questionNum].query }}</p>
           </div>
+          <div class="item mymsg">
+            <!-- 이거 답장임 -->
+            <div class="box" v-for="(choose, i) of choosen" :key="i">
+              <p class="msg">{{ choose.split("-")[1] }}</p>
+            </div>
+          </div>
         </div>
+        <!-- 이거 화면픽스좀? -->
         <div class="button1">
           <input
             type="button"
             :value="answer"
-            @click="addTochoosen(stats[questionNum].answers.indexOf(answer))"
+            @click="addTochoosen(answer)"
             class="btn1"
             v-for="answer in stats[questionNum].answers"
             :key="answer.id"
@@ -37,15 +44,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      stats: "akinator/getQuestion"
-      
+      stats: "akinator/getQuestion",
     }),
-    
   },
   methods: {
-    ...mapMutations({
-      hideAki: "toggle/toggleAki",
-    }), //만들어지면 데이터받아서 바인딩
+    ...mapMutations(["SET_AKINATOR"]), //만들어지면 데이터받아서 바인딩
     addTochoosen(data) {
       this.choosen.push(this.stats[this.questionNum].id + "-" + data);
       console.log(this.choosen);
@@ -53,6 +56,7 @@ export default {
       // 답장 받은대로 css그리기
 
       // 임시로 숨기기.
+      // 작업시 데이터 비동기로 보내고, 모달로 로딩화면, 데이터오면 로딩종료, view보여주기
       if (this.questionNum == 3) {
         this.hideAki();
         let str = "";
@@ -62,24 +66,23 @@ export default {
         });
         alert(str);
 
-        location="/view"; // 아키네이처 끝나고 이동 페이지 건우
+        location = "/view"; // 아키네이처 끝나고 이동 페이지 건우
       }
     },
-    
+
     /** axios 아키네이션 취소 메서드
      * 작성자 : 김건우
      * 사용법 : toggle.js
      *  isAkiOn을 false 한다
      *  ...
-     *  
-     *  
+     *
+     *
      */
     //취소 메소드
-    cancelAki () {
+    cancelAki() {
       this.hideAki();
-      location="/food"; // 아키네이처 끝나고 이동 페이지 건우
-    }
-  
+      location = "/food"; // 아키네이처 끝나고 이동 페이지 건우
+    },
   },
 };
 </script>

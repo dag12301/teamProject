@@ -5,6 +5,7 @@ import com.icia.wapoo.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -61,7 +62,14 @@ public class TestController {
     }
 
    
-    
+    @GetMapping("api/member/test")
+    public String testing(@RequestBody Map<String, Object> loginData,
+            HttpServletResponse response)
+    {
+    	System.out.println("2222222222222222");
+    	
+    	return "/Home";
+    }
     
     
     

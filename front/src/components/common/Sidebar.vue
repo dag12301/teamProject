@@ -1,110 +1,151 @@
 <template>
-  <div id="sideBar"  :class="{ menuDisplayed: isOn }">
-    <!--사이드 바-->
+  <transition name="slide">
+    <div id="sideBar" v-if="sidebar">
+      <!--사이드 바-->
     
-    <div id="layoutSidenav">
-      <div id="layoutSidenav_nav">
-        <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
-          <div class="sb-sidenav-menu">
-            <div class="nav">
-              
-              <!-- 사이드 바 메뉴 -->
-              
-              <div class="sidenav-heading">WhatFoo</div>
-          
-              <router-link
-                class="nav-link"
-                :to="{ name: 'Home' }"
-                @click="toggleAki"
-                exact
-                >아키네이터
-              </router-link>
-              
+      <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+          <nav
+            class="sb-sidenav accordion sb-sidenav-light"
+            id="sidenavAccordion"
+          >
+            <div class="sb-sidenav-menu">
+              <div class="nav">
+                <!-- 사이드 바 메뉴 -->
 
-              <router-link class="nav-link" :to="{name: 'Cart'}" exact>장바구니/결제하기</router-link>
+                <div class="sidenav-heading">WAPOO</div>
 
-              <router-link class="nav-link" :to="{name: 'Food'}" exact>가게 찾기</router-link>
+                <a class="nav-link" href="/view" @click="SET_AKINATOR(true)"
+                  >아키네이터
+                </a>
 
-              <router-link class="nav-link" :to="{name: 'View'}" exact>View</router-link>
+                <router-link class="nav-link" :to="{ name: 'Cart' }" exact
+                  >장바구니/결제하기</router-link
+                >
 
-              <router-link class="nav-link" :to="{name: 'Home'}" exact>이벤트</router-link>
+                <router-link class="nav-link" :to="{ name: 'Food' }" exact
+                  >가게 찾기</router-link
+                >
 
+                <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                  >View</router-link
+                >
 
-              <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                고객센터
-              </a>
-              <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                  <router-link class="nav-link" :to="{name: 'Join'}" exact>공지사항</router-link>
-                </nav>
-                <nav class="sb-sidenav-menu-nested nav">
-                  <router-link class="nav-link" :to="{name: 'Join'}" exact>FAQ</router-link>
-                </nav>
-                <nav class="sb-sidenav-menu-nested nav">
-                  <router-link class="nav-link" :to="{name: 'Join'}" exact>Q&A</router-link>
-                </nav>
+                <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                  >이벤트</router-link
+                >
+
+                <router-link class="nav-link" :to="{ name: 'ServiceCenter' }" exact
+                  >고객센터</router-link
+                >
+<!--
+                <a
+                  class="nav-link collapsed"
+                  href="#"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseLayouts"
+                  aria-expanded="false"
+                  aria-controls="collapseLayouts"
+                >
+                  고객센터
+                </a>
+                <div
+                  class="collapse"
+                  id="collapseLayouts"
+                  aria-labelledby="headingOne"
+                  data-bs-parent="#sidenavAccordion"
+                >
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                      >공지사항</router-link
+                    >
+                  </nav>
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                      >FAQ</router-link
+                    >
+                  </nav>
+                  <nav class="sb-sidenav-menu-nested nav">
+                    <router-link class="nav-link" :to="{ name: 'Home' }" exact
+                      >Q&A</router-link
+                    >
+                    
+                  </nav>
+    
+                </div>-->
               </div>
-
-              
-
             </div>
-              </div>
-              <div class="footPoint">
-                <div class="small">Logged in as:</div>
-                Start Bootstrap
-          </div>
-        </nav>
+            <div class="footPoint">
+              <div class="small">Logged in as:</div>
+              Start Bootstrap
+            </div>
+          </nav>
+        </div>
       </div>
-    </div>
     
-  </div>
+    </div>
+  </transition>
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapState, mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapGetters({
-      isOn: "toggle/pop",
-    }),
+    ...mapState(["akinator", "sidebar"]),
   },
   methods: {
-    ...mapMutations({
-      toggleAki: "toggle/toggleSideBar",
-      
-    }),
+    ...mapMutations(["SET_AKINATOR"]),
   },
+  components: {},
 };
 </script>
 
 <style scoped>
-.menuDisplayed{
-  display: none;
+.slide-enter{
+  /* transform: translateX(10px); */
+   opacity: 0;
+}
+ .slide-enter-active, .slide-leave-active {
+  transition: all .3s ease;
+   opacity: .5
+}  
+
+ .slide-enter-to, .slide-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  
+  opacity: .9;
+ 
+}
+.slide-leave{
+  opacity: .9;
+}
+.slide-leave-to{
+  opacity: 0;
 }
 
-#sideBar{
 
+
+
+
+#sideBar {
   width: 17vw;
   height: 95vh;
   float: left;
   top: 6vh;
 }
 
-
-
-#sideBar #layoutSidenav #layoutSidenav_nav{
+#sideBar #layoutSidenav #layoutSidenav_nav {
   position: fixed;
   top: 6vh;
   left: 0;
   height: 95vh;
   flex-basis: 225px;
   flex-shrink: 0;
-  transition: transform 0.15s ease-in-out;
+  transition: transform 0.3s ease-in-out;
   z-index: 10;
-
 }
 
-#sideBar #layoutSidenav #layoutSidenav_nav #sidenavAccordion{
+#sideBar #layoutSidenav #layoutSidenav_nav #sidenavAccordion {
   background-color: #f8f9fa;
   color: #212529;
   display: flex;
@@ -113,34 +154,35 @@ export default {
   flex-wrap: nowrap;
   flex-grow: 1;
   box-sizing: border-box;
-
 }
 
-#sideBar #layoutSidenav #layoutSidenav_nav #sidenavAccordion .sb-sidenav-menu{
- flex-grow: 1;
+#sideBar #layoutSidenav #layoutSidenav_nav #sidenavAccordion .sb-sidenav-menu {
+  flex-grow: 1;
 }
-#layoutSidenav #layoutSidenav_nav #sidenavAccordion .sb-sidenav-menu .nav{
+#layoutSidenav #layoutSidenav_nav #sidenavAccordion .sb-sidenav-menu .nav {
   display: flex;
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
   flex-direction: column;
   flex-wrap: nowrap;
-  
 }
 
-
-#layoutSidenav #layoutSidenav_nav #sidenavAccordion .sb-sidenav-menu .nav .nav-link{
+#layoutSidenav
+  #layoutSidenav_nav
+  #sidenavAccordion
+  .sb-sidenav-menu
+  .nav
+  .nav-link {
   display: flex;
   align-items: center;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   position: relative;
-color: #0d6efd;
-  
+  color: #0d6efd;
 }
 
-.sidenav-heading{
+.sidenav-heading {
   padding: 1.75rem 1rem 0.75rem;
   font-size: 0.75rem;
   font-weight: bold;
@@ -148,10 +190,9 @@ color: #0d6efd;
   color: #adb5bd;
 }
 
-.footPoint{
+.footPoint {
   background-color: #e9ecef;
-padding: 0.75rem;
-    flex-shrink: 0;
+  padding: 0.75rem;
+  flex-shrink: 0;
 }
-
 </style>

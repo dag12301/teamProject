@@ -4,18 +4,20 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <slot name="header"> default header </slot>
+            <slot name="header">default header</slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body"> default body </slot>
+            <slot name="body">default body</slot>
           </div>
 
           <div class="modal-footer">
-            <slot name="footer"> default footer </slot>
-            <button class="modal-default-button" @click="$emit('close')">
-              미미미
-            </button>
+            <slot name="footer">
+              default footer
+              <button class="modal-default-button" @click="$emit('close')">
+                OK
+              </button>
+            </slot>
           </div>
         </div>
       </div>
@@ -24,15 +26,16 @@
 </template>
 
 <script>
-export default {
-  name: "modal",
-};
+export default {};
 </script>
 
-<style>
+<style scoped>
+* {
+  box-sizing: border-box;
+}
 .modal-mask {
   position: fixed;
-  z-index: 9998;
+  z-index: 100;
   top: 0;
   left: 0;
   width: 100%;
@@ -48,14 +51,17 @@ export default {
 }
 
 .modal-container {
-  width: 300px;
+  width: 550px;
   margin: 0px auto;
-  padding: 20px 30px;
+  padding: 0 0;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
+}
+.modal-header {
+  padding: 20px 30px 0 20px;
 }
 
 .modal-header h3 {
@@ -64,7 +70,8 @@ export default {
 }
 
 .modal-body {
-  margin: 20px 0;
+  padding: 0 30px;
+  margin: 20px auto;
 }
 
 .modal-default-button {
