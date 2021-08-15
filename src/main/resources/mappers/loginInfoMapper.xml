@@ -10,7 +10,7 @@
         AND password = #{password}
     </select>
 
-    <insert id="insertLoginInfo">
+    <insert id="insertLoginInfo" parameterType="LoginInfo">
         INSERT INTO loginInfo
         SET loginId = #{loginId},
         `password`= #{password},

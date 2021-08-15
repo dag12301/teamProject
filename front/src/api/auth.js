@@ -12,3 +12,9 @@ export async function getInfo(token) {
     token,
   });
 }
+
+export async function register(params) {
+  return http.post("/api/member/register", {
+    params,
+  });
+}

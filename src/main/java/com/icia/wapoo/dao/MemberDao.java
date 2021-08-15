@@ -12,4 +12,8 @@ public interface MemberDao {
     // id 를 통해서 Member객체를 반환합니다.
     Member selectMemberById(@Param("id") int id);
     int insertMember(Member member);
+
+    int checkEmail(@Param("email") String email);
+    int checkNickname(@Param("nickname") String nickname);
+    int checkPhone(@Param("phone") String phone);
 }

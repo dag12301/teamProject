@@ -12,6 +12,6 @@ import java.util.Map;
 public interface LoginInfoDao {
     LoginInfo selectloginInfo(@Param("loginId") String loginId,
                               @Param("password") String password);
-    int insertLoginInfo(Map<String, Object> params);
+    int insertLoginInfo(LoginInfo loginInfo);
     int checkLoginId(@Param("loginId") String loginId);
 }

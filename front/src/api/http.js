@@ -46,7 +46,6 @@ instance.interceptors.response.use(
     if (errorStatus === 401) console.log("인증에 실패했습니다.");
     if (errorStatus === 403) console.log("권한이 없습니다.");
     if (errorStatus === 500) console.log("서버에서 오류가 발생했습니다.");
-    alert("아이디와 암호를 확인해주세요!");
     return error.response;
   }
 );
