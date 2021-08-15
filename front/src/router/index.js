@@ -16,12 +16,12 @@ const routes = [
     component: () => import("../views/food/FoodList.vue"),
   },
   {
-    path: "/articles",
+    path: "/articles/:id",
     name: "Articles",
     component: () => import("../views/article/ServiceCenter.vue"),
     children: [
       {
-        path: "/notice",
+        path: "",
         name: "Notice",
         component: () => import("../views/article/Notice.vue"),
       },
