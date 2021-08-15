@@ -9,7 +9,7 @@
         >Q&A</router-link
       >
 
-      <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }"
+      <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FAQ' }"
         >FQA</router-link
       >
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="notice col-12 h-50">
-    <h2 class="mb-5 font-weight-bold">공지사항</h2>
+    <h2 class="mb-5 font-weight-bold">자주묻는질문</h2>
 
     <div class="p-1 bg-dark text-white"></div>
     <!-- 리스트 시작 -->

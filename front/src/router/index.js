@@ -16,27 +16,26 @@ const routes = [
     component: () => import("../views/food/FoodList.vue"),
   },
   {
-    path: "/articles/:id",
+    path: "/articles",
     name: "Articles",
     component: () => import("../views/article/ServiceCenter.vue"),
-    children: [
-      {
-        path: "",
-        name: "Notice",
-        component: () => import("../views/article/Notice.vue"),
-      },
-      {
-        path: "/faq",
-        name: "FAQ",
-        component: () => import("../views/article/FAQ.vue"),
-      },
-      {
-        path: "/qna",
-        name: "QNA",
-        component: () => import("../views/article/QNA.vue"),
-      },
-    ],
   },
+  {
+    path: "/notice",
+    name: "Notice",
+    component: () => import("../views/article/Notice.vue"),
+  },
+  {
+    path: "/faq",
+    name: "FAQ",
+    component: () => import("../views/article/FAQ.vue"),
+  },
+  {
+    path: "/qna",
+    name: "QNA",
+    component: () => import("../views/article/QNA.vue"),
+  },
+
   {
     path: "/test",
     name: "Test",
