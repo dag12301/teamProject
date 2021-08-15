@@ -13,12 +13,29 @@ const routes = [
   {
     path: "/food",
     name: "Food",
-    component: () => import("../views/food/Food2.vue"),
+    component: () => import("../views/food/FoodList.vue"),
   },
   {
-    path: "/foodlist",
-    name: "FoodList",
-    component: () => import("../views/food/FoodList.vue"),
+    path: "/articles",
+    name: "Articles",
+    component: () => import("../views/article/ServiceCenter.vue"),
+    children: [
+      {
+        path: "/notice",
+        name: "Notice",
+        component: () => import("../views/article/Notice.vue"),
+      },
+      {
+        path: "/faq",
+        name: "FAQ",
+        component: () => import("../views/article/FAQ.vue"),
+      },
+      {
+        path: "/qna",
+        name: "QNA",
+        component: () => import("../views/article/QNA.vue"),
+      },
+    ],
   },
   {
     path: "/test",

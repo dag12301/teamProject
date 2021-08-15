@@ -36,8 +36,9 @@ public class JwtService {
 
 
     /**
-     * 토큰 생성
-     * @param member
+     * 토큰 생성 - 노철희
+     *
+     * @param member 멤버객체로 토큰을 생선한다. Id, nickname, role이 담긴다.
      * @return
      */
     public String create(final Member member){

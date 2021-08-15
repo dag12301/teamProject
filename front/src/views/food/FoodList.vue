@@ -31,12 +31,8 @@
 </template>
 
 <script>
-import foodlist from "../../components/food/foodlist.vue";
-
 export default {
-  components: {
-    foodlist,
-  },
+  components: {},
 };
 </script>
 
