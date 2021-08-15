@@ -19,6 +19,8 @@
     <SidebarLink to="/" icon="fas fa-home">Home</SidebarLink>
     <SidebarLink to="/faq" icon="fas fa-question-circle">[경태]FAQ</SidebarLink>
     <SidebarLink to="/qna" icon="fas fa-question">[경태]QNA</SidebarLink>
+    <SidebarLink to="/food" icon="fas fa-question">소희1</SidebarLink>
+    <SidebarLink to="/foodlist" icon="fas fa-question">소희2</SidebarLink>
     <SidebarLink to="/test" icon="fas fa-image">Test</SidebarLink>
 
     <span class="burger" @click="toggleSidebar">

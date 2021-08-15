@@ -59,7 +59,7 @@
         <div class="register-wrapper">
           아직 회원이 아니세요?
           <!-- OAUTH연동로직 -->
-          <button @click="registerClick('user')" class="register-button">
+          <button @click="registerClick('BUYER')" class="register-button">
             회원가입하기
           </button>
         </div>
@@ -70,7 +70,7 @@
       ><div class="move-seller">
         가게를 등록하고싶으세요?
         <div>
-          <button @click="registerClick('seller')" class="move-seller-button">
+          <button @click="registerClick('SELLER')" class="move-seller-button">
             판매자 회원가입
           </button>
         </div>
@@ -81,7 +81,7 @@
 
 <script>
 import Modal from "@/components/modal/Modal_login";
-import { error } from "@/api/notification";
+import { error, success } from "@/api/notification";
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   components: {
@@ -133,8 +133,13 @@ export default {
       response
         .then((res) => {
           if (res.status === 200) {
-            alert("로그인에 성공하였습니다.");
+            success("로그인에 성공했습니다.", this);
+            alert("로그인에 성공했습니다.");
+            this.$store.dispatch("auth/getInfo");
             this.SET_MODAL_REGISTER(false);
+            if (this.loginSave == true) {
+              localStorage.setItem("loginId", this.userId);
+            }
             return;
           }
         })
@@ -143,14 +148,16 @@ export default {
         });
     },
     loginseller() {
-      alert("사용할 수 없는 기능");
+      this.SET_MODAL_REGISTER(true);
     },
     registerClick(user) {
       //vuex내에 있는 MODAL(팝업창 열어주기)
       this.SET_SELECT_REGISTER(user);
       this.SET_MODAL_REGISTER(true);
       //유저 회원가입인지 판매자 회원가입인지 vuex에 저장
-      console.log(user);
+    },
+    setLoginSave() {
+      this.loginSave = !this.loginSave;
     },
   },
 };

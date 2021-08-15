@@ -3,6 +3,7 @@ package com.icia.wapoo.controller;
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.Member;
 import com.icia.wapoo.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,18 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
 @Slf4j
+@RequiredArgsConstructor
 public class MemberController {
 
     @Autowired
     private JwtService jwtService;
     @Autowired
     private MemberService memberService;
+
+
 
     // 로그인 ( http://localhost:8083/api/member/login )
     @PostMapping("/member/login")
@@ -34,7 +37,6 @@ public class MemberController {
             HttpServletResponse response) {
 
         try {
-            // 로그인시도 -- 로직을 서비스로 옮겨야하나
             System.out.println("로그인 정보 조회");
             System.out.println(loginData);
             Member member = memberService.getMemberByLoginInfo(
@@ -60,9 +62,27 @@ public class MemberController {
             return new ResponseEntity("토큰 생성중에 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    // Member 객체 정보 얻어오기.
-    @PostMapping("/member/info")
-    public ResponseEntity getInfo() {
-        return new ResponseEntity("성공?", HttpStatus.OK);
+    // 로그인 유지를 위한 Member 객체 정보 얻어오기.
+    @PostMapping("/member/getInfo")
+    public ResponseEntity getInfo(HttpServletRequest request) {
+        // 토큰으로 유저객체 구하기.
+        String token = jwtService.resolveToken(request);
+        System.out.println("test : 받은토큰 -> " + token);
+        if(token == null) {
+            return new ResponseEntity("토큰이 없습니다.", HttpStatus.BAD_REQUEST);
+        }
+        boolean isValid = jwtService.validateToken(token);
+        System.out.println("test : 유효한 토큰? -> "+isValid);
+        if(isValid == false) {
+            // 유효하지 않은 토큰
+            return new ResponseEntity("유효하지 않은 토큰", HttpStatus.BAD_REQUEST);
+        }
+        Map<String, Object> infos = jwtService.getUserInfo(token);
+        System.out.println("test : 토큰정보 -> " +infos);
+        int id = (int) infos.get("memberId");
+        Member member = memberService.getMemberBymemberId(id);
+
+
+        return new ResponseEntity(member, HttpStatus.OK);
     }
 }

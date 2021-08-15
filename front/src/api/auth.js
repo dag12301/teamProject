@@ -6,3 +6,9 @@ export async function login(loginId, password) {
     password,
   });
 }
+
+export async function getInfo(token) {
+  return http.post("/api/member/getInfo", {
+    token,
+  });
+}

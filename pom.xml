@@ -52,6 +52,7 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+
         <!-- GSON -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -64,8 +65,6 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.1</version>
         </dependency>
-        <!-- 스프링 시큐리티 -->
-        
 
 
 

@@ -2,7 +2,7 @@
   <Modal>
     <template v-slot:header>
       <div class="register-header">
-        <span v-if="selectRegister === 'user'">회원가입(일반 회원)</span>
+        <span v-if="selectRegister === 'BUYER'">회원가입(일반 회원)</span>
         <span v-else>회원가입(판매자)</span>
       </div>
       <div class="close-button" @click="backTologin">
@@ -20,45 +20,22 @@
 
       <div class="register-information-container">
         <div class="register-information-wrapper">
-          <div class="register-title">이메일(아이디)</div>
-          <div class="register-input-wrapper">
-            <input v-model="id" class="register-input register-email" />
-            <span class="space">@</span>
-            <input v-if="selectEtc" class="register-email-domain-input" />
-            <select
-              v-model="selectedDomain"
-              class="register-input register-email-domain"
-            >
-              <option value disabled selected>선택해주세요</option>
-              <option>{{ emailDomain.naver }}</option>
-              <option>{{ emailDomain.google }}</option>
-              <option>{{ emailDomain.daum }}</option>
-              <option>{{ emailDomain.hanmail }}</option>
-              <option>{{ emailDomain.etc }}</option>
-            </select>
-          </div>
-        </div>
-        <div class="register-information-wrapper">
           <div class="register-title">로그인아이디</div>
           <div class="register-input-wrapper">
-            <input v-model="loginId" class="register-input" type="password" />
+            <input v-model="loginId" class="register-input" />
           </div>
         </div>
         <div class="register-information-wrapper">
           <div class="register-title">비밀번호</div>
           <div class="register-input-wrapper">
-            <input
-              v-model="userPassword"
-              class="register-input"
-              type="password"
-            />
+            <input v-model="password" class="register-input" type="password" />
           </div>
         </div>
         <div class="register-information-wrapper">
           <div class="register-title">비밀번호확인</div>
           <div class="register-input-wrapper">
             <input
-              v-model="userPasswordCheck"
+              v-model="passwordCheck"
               class="register-input"
               type="password"
             />
@@ -75,8 +52,7 @@
         <div class="register-information-wrapper">
           <div class="register-title">닉네임</div>
           <div class="register-input-wrapper">
-            <input v-model="age" class="register-input" maxlength="3" />
-            <span v-if="age" class="space-age">만 {{ age - 1 }}세</span>
+            <input v-model="nickname" class="register-input" />
           </div>
         </div>
         <div class="register-information-wrapper">
@@ -84,32 +60,45 @@
           <div class="register-input-wrapper">
             <input
               type="text"
-              v-model="phone1"
+              v-model="phone"
               class="register-input register-input-phone"
-              maxlength="3"
+              maxlength="11"
             />
           </div>
         </div>
 
-        <!-- <div class="register-information-wrapper">
-          <div class="register-title">이메일</div>
+        <div class="register-information-wrapper">
+          <div class="register-title">이메일(아이디)</div>
           <div class="register-input-wrapper">
-            <input class="register-input" />
+            <input v-model="email" class="register-input register-email" />
+            <span class="space">@</span>
+            <input v-if="selectEtc" class="register-email-domain-input" />
+            <select
+              v-model="selectedDomain"
+              class="register-input register-email-domain"
+            >
+              <option value disabled selected>선택해주세요</option>
+              <option>{{ emailDomain.naver }}</option>
+              <option>{{ emailDomain.google }}</option>
+              <option>{{ emailDomain.daum }}</option>
+              <option>{{ emailDomain.hanmail }}</option>
+              <option>{{ emailDomain.etc }}</option>
+            </select>
           </div>
-        </div>-->
+        </div>
       </div>
     </template>
 
     <template v-slot:footer>
       <div
-        v-if="selectRegister === 'user'"
+        v-if="selectRegister === 'BUYER'"
         @click="registerUser"
         class="register-button"
       >
-        이메일 회원가입(일반 회원)
+        회원가입(일반 회원)
       </div>
-      <div v-else @click="registerBroker" class="register-button">
-        이메일 회원가입(판매자)
+      <div v-else @click="registerUser" class="register-button">
+        회원가입(판매자)
       </div>
     </template>
   </Modal>
@@ -120,6 +109,7 @@ import { mapMutations, mapState } from "vuex";
 
 import { error } from "@/api/notification";
 import Modal from "@/components/modal/Modal_Register";
+
 export default {
   components: {
     Modal,
@@ -133,6 +123,7 @@ export default {
       name: "",
       nickname: "",
       selectedDomain: "",
+      email: "",
       phone: "010",
       emailDomain: {
         naver: "naver.com",
@@ -151,18 +142,8 @@ export default {
   },
   //Observer패턴(감시), 숫자가 입력되지 않도록 한다
   watch: {
-    age() {
-      //정규식을 활용해서 나이에 숫자가 들어갈수 없도록 한다.
-      return (this.age = this.age.replace(/[^0-9]/g, ""));
-    },
-    phone1() {
-      return (this.phone1 = this.phone1.replace(/[^0-9]/g, ""));
-    },
-    phone2() {
-      return (this.phone2 = this.phone2.replace(/[^0-9]/g, ""));
-    },
-    phone3() {
-      return (this.phone3 = this.phone3.replace(/[^0-9]/g, ""));
+    phone() {
+      return (this.phone = this.phone.replace(/[^0-9]/g, ""));
     },
   },
   methods: {
@@ -175,20 +156,20 @@ export default {
       //최소 1개의 숫자혹은 특수문자를 포함해야 함
 
       const passwordCheckReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
-      let passwordValidation = passwordCheckReg.test(this.userPassword);
-      if (this.id === "" || this.selectedDomain === "") {
-        error("이메일이 공백입니다. 다시 입력해주세요", this);
+      let passwordValidation = passwordCheckReg.test(this.password);
+      if (this.loginId === "" || this.selectedDomain === "") {
+        error("아이디가 공백입니다. 다시 입력해주세요", this);
 
         return;
-      } else if (this.userPassword !== this.userPasswordCheck) {
+      } else if (this.password !== this.passwordCheck) {
         error("비밀번호가 일치하지 않습니다. 다시 입력해주세요", this);
         //비밀번호 초기화
-        this.userPassword = this.userPasswordCheck = "";
+        this.password = this.passwordCheck = "";
         return;
-      } else if (this.userPassword === "" || this.userPasswordCheck === "") {
+      } else if (this.password === "" || this.passwordCheck === "") {
         error("비밀번호를 입력해주세요", this);
         //비밀번호 초기화
-        this.userPassword = this.userPasswordCheck = "";
+        this.password = this.passwordCheck = "";
         return;
       } else if (this.name === "") {
         error("이름을 입력해주세요", this);
@@ -197,75 +178,10 @@ export default {
       } else if (this.age === 0) {
         error("나이를 입력해주세요", this);
         return;
-      } else if (this.age < 15) {
-        error("15세 미만은 가입할 수 없습니다", this);
+      } else if (this.nickname === "") {
+        error("닉네임을 입력해주세요", this);
         return;
-      } else if (
-        this.phone1 === "" ||
-        this.phone2 === "" ||
-        this.phone3 === ""
-      ) {
-        error("휴대폰 번호를 모두 입력해주세요", this);
-        return;
-      } else if (passwordValidation === false) {
-        error(
-          "비밀번호는 최소 1개의 숫자 및 문자 그리고 특수문자를 포함해야합니다."
-        );
-        return;
-      }
-      this.registerRequest();
-    },
-    registerRequest() {
-      //!axios 호출(util의 axios에 있음)
-      const userId = this.id + "@" + this.selectedDomain;
-      const phoneNumber = this.phone1 + "-" + this.phone2 + "-" + this.phone3;
-
-      // console.log(userId, phoneNumber);
-      let params = new URLSearchParams();
-      params.append("userId", userId);
-      params.append("userPassword", this.userPassword);
-      params.append("name", this.name);
-      params.append("age", this.age);
-      //email 파라미터와 아이디를 동일시화
-      params.append("email", userId);
-      params.append("phoneNumber", phoneNumber);
-      //등록 로직
-    },
-
-    registerBroker() {
-      //최소 1개의 숫자혹은 특수문자를 포함해야 함
-
-      const passwordCheckReg = /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W)).{6,20}$/;
-      let passwordValidation = passwordCheckReg.test(this.userPassword);
-      if (this.id === "" || this.selectedDomain === "") {
-        error("이메일 이 공백입니다. 다시 입력해주세요", this);
-        return;
-      } else if (this.userPassword !== this.userPasswordCheck) {
-        error("비밀번호가 일치하지 않습니다. 다시 입력해주세요", this);
-        //비밀번호 초기화
-        this.userPassword = this.userPasswordCheck = "";
-        return;
-      } else if (this.userPassword === "" || this.userPasswordCheck === "") {
-        error("비밀번호를 입력해주세요", this);
-        //비밀번호 초기화
-        this.userPassword = this.userPasswordCheck = "";
-        return;
-      } else if (this.name === "") {
-        error("이름을 입력해주세요", this);
-        return;
-        //휴대폰번호 비어있을때
-      } else if (this.age === 0) {
-        error("나이를 입력해주세요", this);
-        return;
-      } else if (this.age < 15) {
-        error("15세 미만은 가입할 수 없습니다", this);
-
-        return;
-      } else if (
-        this.phone1 === "" ||
-        this.phone2 === "" ||
-        this.phone3 === ""
-      ) {
+      } else if (this.phone === "") {
         error("휴대폰 번호를 모두 입력해주세요", this);
         return;
       } else if (passwordValidation === false) {
@@ -275,24 +191,20 @@ export default {
         );
         return;
       }
-      this.registerBrokerRequest();
+      this.registerRequest();
     },
-    registerBrokerRequest() {
-      //!axios 호출(util의 axios에 있음)
-      const userId = this.id + "@" + this.selectedDomain;
-      const phoneNumber = this.phone1 + "-" + this.phone2 + "-" + this.phone3;
-
-      // console.log(userId, phoneNumber);
-      let params = new URLSearchParams();
-      params.append("brokerId", userId);
-      params.append("brokerPassword", this.userPassword);
-      params.append("name", this.name);
-      params.append("age", this.age);
-      //email 파라미터와 아이디를 동일시화
-      params.append("email", userId);
-      params.append("phoneNumber", phoneNumber);
-
-      //판매자 등록로직
+    registerRequest() {
+      const emailAddress = this.email + "@" + this.selectedDomain;
+      let params = {
+        loginId: this.loginId,
+        password: this.password,
+        name: this.name,
+        phone: this.phone,
+        email: emailAddress,
+        nickname: this.nickname,
+      };
+      //등록 로직
+      console.log(params);
     },
   },
 };

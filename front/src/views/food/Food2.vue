@@ -1,48 +1,20 @@
 <template>
   <div class="food-list">
-    <div class="food-div">
-      <a class="food-a" href="#">
-        <div class="food-title">
-          <p class="food-p">
-            <router-link class="nav-link" :to="{ name: 'Foodnum2' }" exact
-              >전체보기</router-link
-            >
-          </p>
-        </div>
-      </a>
-    </div>
-    <div class="food-div">
-      <a class="food-a" href="#">
-        <div class="food-title">
-          <p class="food-p">1인분 주문</p>
-        </div>
-      </a>
-    </div>
+    <fooddiv></fooddiv>
   </div>
 </template>
 
 <script>
+import fooddiv from "../../components/food/fooddiv.vue";
+
 export default {
-  data() {
-    return {
-      list: [
-        "1인분 주문",
-        "프랜차이즈",
-        "치킨",
-        "피자/양식",
-        "중국집",
-        "한식",
-        "일식/돈까스",
-        "족발/보쌈",
-        "야식",
-        "분식",
-        "카페/디저트",
-      ],
-    };
+  components: {
+    fooddiv,
   },
 };
 </script>
-<style>
+
+<style scoped>
 .food-list {
   padding: 5px;
   max-width: 1020px;
@@ -78,7 +50,7 @@ export default {
   text-align: left;
   margin-left: 8px;
 }
-img {
+.food-img {
   position: absolute;
 }
 .food-div {

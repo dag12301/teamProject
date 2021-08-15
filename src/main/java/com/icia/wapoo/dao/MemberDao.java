@@ -5,12 +5,11 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Map;
 
 @Repository
 @Mapper
 public interface MemberDao {
+    // id 를 통해서 Member객체를 반환합니다.
     Member selectMemberById(@Param("id") int id);
-    // LoginId, password 를 통해서 회원테이블에서 Member 객체를 가져옵니다.
+    int insertMember(Member member);
 }

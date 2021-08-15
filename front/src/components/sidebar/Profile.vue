@@ -2,32 +2,39 @@
   <transition name="fade">
     <div class="card" v-if="!collapsed">
       <!-- 프로필 -->
-      <button
-        type="button"
-        class="btn btn-success"
-        @click="SET_MODAL_LOGIN(true)"
-      >
-        로그인
-      </button>
-      <button type="button" class="btn btn-success" @click="getInfo">
-        정보
-      </button>
-      <button
-        type="button"
-        class="btn btn-success"
-        @click="this.$store.dispatch('auth/logout')"
-      >
-        로그아웃
-      </button>
+      {{ userInfo[1] }} 님 안녕하세요. ㅇㅇ ㅇㅇ
+      <div v-if="userInfo[0]">
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="this.$store.dispatch('auth/logout')"
+        >
+          로그아웃
+        </button>
+      </div>
+      <div v-else>
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="SET_MODAL_LOGIN(true)"
+        >
+          로그인
+        </button>
+        <button class="btn btn-primary" @click="SET_MODAL_REGISTER(true)">
+          회원가입
+        </button>
+      </div>
     </div>
   </transition>
   <LoginModal v-if="this.$store.state.loginModal == true" />
+  <RegisterModal v-if="this.$store.state.registerModal == true" />
 </template>
 
 <script>
 import { collapsed } from "./state";
 import { mapGetters, mapMutations } from "vuex";
 import LoginModal from "@/components/modal/Login.vue";
+import RegisterModal from "@/components/modal/Register.vue";
 
 export default {
   props: {},
@@ -40,13 +47,11 @@ export default {
     }),
   },
   methods: {
-    ...mapMutations(["SET_MODAL_LOGIN"]),
-    getInfo() {
-      alert(this.userInfo);
-    },
+    ...mapMutations(["SET_MODAL_LOGIN", "SET_MODAL_REGISTER"]),
   },
   components: {
     LoginModal,
+    RegisterModal,
   },
 };
 </script>

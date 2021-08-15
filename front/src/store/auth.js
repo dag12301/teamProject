@@ -42,6 +42,20 @@ export default {
         (state.isAuthenticated = false),
         jwt.destroyToken();
     },
+    setUserInfo(state, userdata) {
+      state.isAuthenticated = true;
+      state.userRole = userdata.role;
+      state.userNickname = userdata.nickname;
+      state.userPhone = userdata.phone;
+      state.userEmail = userdata.email;
+    },
+    delUserInfo(state) {
+      state.isAuthenticated = false;
+      state.userRole = null;
+      state.userNickname = null;
+      state.userPhone = null;
+      state.userEmail = null;
+    },
   },
   actions: {
     login(context, { userId, password }) {
@@ -52,7 +66,7 @@ export default {
             // 응답이 200인지 확인
             // 토큰을 저장한다.
             context.commit("setToken", response.headers.authorization);
-            // 토큰을 이용해서 유저정보 불러오기, dispatch 가져오기
+            // 토큰을 이용해서 유저정보 불러오기
           }
           return Promise.resolve(response);
         },
@@ -63,24 +77,24 @@ export default {
         }
       );
     },
-    setUserInfo(userdata) {
-      alert("받은 데이타!" + userdata);
-      // state.isAuthenticated = true;
-      // state.userRole = userdata.role;
-      // state.userNickname = userdata.nickname;
-      // state.userPhone = userdata.phone;
-      // state.userEmail = userdata.email;
+    getInfo(context) {
+      const token = jwt.getToken();
+      console.log("로그인 유지를 위한 정보 요청을 보냅니다");
+      return authApi.getInfo(token).then((response) => {
+        console.log(response.data);
+        context.commit("setUserInfo", response.data);
+      });
     },
     logout(context) {
       // 로그아웃시 토큰삭제
       return new Promise((resolve) => {
         setTimeout(function () {
           context.commit("delToken");
-          alert("로그아웃하였습니다");
+          context.commit("delUserInfo");
+          console.log("로그아웃 했음.");
           resolve();
         }, 1000); // 1초 후 로그아웃됨
       });
     },
-    register() {},
   },
 };

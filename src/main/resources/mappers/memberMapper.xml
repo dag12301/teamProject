@@ -8,4 +8,14 @@
         FROM `member`
         WHERE memberId = #{id}
     </select>
+
+    <insert id="insertMember" useGeneratedKeys="true" keyProperty="id" parameterType="Member">
+        INSERT INTO `member`
+        SET `status` = 'Y',
+        `name` = #{name},
+        phone = #{phone},
+        email = #{email},
+        nickname = #{nickname},
+        `role`= #{role};
+    </insert>
 </mapper>
