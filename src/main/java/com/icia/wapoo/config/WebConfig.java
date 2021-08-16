@@ -2,7 +2,9 @@ package com.icia.wapoo.config;
 
 import com.icia.wapoo.jwt.interceptor.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -36,6 +38,10 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(EXCLUDE_PATHS);
     }
 
+    /**
+     * CORS 해제
+     * @param registry
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -43,5 +49,17 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization");
+    }
+
+    /**
+     * 파일 업로드 관련 리졸버 설정 - 작성자 노철희
+     * @return
+     */
+    @Bean
+    public CommonsMultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setDefaultEncoding("UTF-8");
+        multipartResolver.setMaxUploadSizePerFile(5*1024*1024); // 파일 최대크기 설정
+        return multipartResolver;
     }
 }

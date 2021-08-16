@@ -49,11 +49,9 @@
       <div class="login-button-wrapper">
         <div>
           <button v-if="loginType" @click="doLogin" class="login-button">
-            일반회원으로 로그인
+            로그인
           </button>
-          <button v-else @click="loginseller" class="login-button">
-            판매자로 로그인
-          </button>
+          <button v-else @click="doLogin" class="login-button">로그인</button>
         </div>
 
         <div class="register-wrapper">
