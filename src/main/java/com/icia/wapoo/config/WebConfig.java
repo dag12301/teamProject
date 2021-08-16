@@ -15,21 +15,22 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private JwtInterceptor jwtInterceptor;
     /**
-     * 여기에 등록된 위치는 토큰없이 진행 가능함.
+     * �뿬湲곗뿉 �벑濡앸맂 �쐞移섎뒗 �넗�겙�뾾�씠 吏꾪뻾 媛��뒫�븿.
      */
     private static final String[] EXCLUDE_PATHS = {
             "/api/member/register",
             "/api/member/login",
             "/test",
-            "/**", // 개발용이라 전부 열어둠
+            "/**", // 媛쒕컻�슜�씠�씪 �쟾遺� �뿴�뼱�몺
             "/api/validation/**",
             "/article/**",
-            "/article/board"
+            "/article/board",
+            "/serviceCenter/qna"
     };
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        System.out.println("제거된 경로: ");
+        System.out.println("�젣嫄곕맂 寃쎈줈: ");
         Arrays.stream(EXCLUDE_PATHS).forEach(System.out::println);
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**")

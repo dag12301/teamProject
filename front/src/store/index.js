@@ -37,8 +37,8 @@ export default createStore({
     Akinator,
     shopList,
     fooddiv,
-    menu,
-    foodDiv
+    menu
+    
   },
   plugins: [
     createPersistedState({

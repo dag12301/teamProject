@@ -1,23 +1,29 @@
 <template>
   <div>
-    <button @click="test"></button>
+    <button @click="test">wqe</button>
                 
 </div>
 </template>
 
 <script>
-/*
-import instance from "@/api/auth"
+
+import instance from "@/api/http"
 
 
 export default {
   methods: {
-    asyns test () {
-       instance.get("api/member/test")
+    test () {
+       instance.get("/board")
+       .then(res => {
+         console.lig(res)
+       })
+       .catch(err => {
+         console.log(err)
+       })
     }
   }
 }
-*/
+
 </script>
   
 <style scoped>

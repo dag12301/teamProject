@@ -31,28 +31,6 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-// @ 는 /src 의 축약입니다.
-import Arkinator from "@/components/akinator/Akinator";
-import { mapGetters } from "vuex";
-export default {
-  name: "Home",
-  components: {
-    Arkinator,
-  },
-  computed: {
-    ...mapGetters({
-      akion: "toggle/aki",
-      
-    })
-  },
-  created() {
-    console.log("아키네이터 생성됨");
-  },
-};
-</script>
-<style scoped></style>
-=======
 import Kakao from "@/components/map/Kakao.vue";
 import ShopList from "@/components/shop/ShopList.vue";
 
@@ -65,4 +43,3 @@ export default {
 </script>
 
 <style></style>
->>>>>>> e0f0338db4ada06b0aa9991639b474ccaabac6ab

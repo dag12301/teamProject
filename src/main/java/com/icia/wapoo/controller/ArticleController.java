@@ -26,7 +26,13 @@ public class ArticleController {
 	 */
 	@GetMapping("/board")
 	public List<Article> listAll(int boardId) {
+		
+		
 		return articleService.listAllByBoard(boardId);
+		
+		
+		
+		
 	}
     
 }

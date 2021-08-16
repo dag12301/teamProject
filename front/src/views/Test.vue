@@ -4,6 +4,8 @@
     <div class="btn btn-primary" @click="whattest">정보나와랏얍</div>
     <div class="btn btn-primary" @click="getBuyer">판매자</div>
   </div>
+
+  <div class="btn btn-primary" @click="test">test</div>
 </template>
 
 <script>
@@ -40,6 +42,19 @@ export default {
         .then((res) => console.log(res))
         .catch((e) => console.log(e));
     },
+
+    test () {
+       http.get("test", { params: {id: 123}})
+       .then(res => {
+         console.lig(res)
+       })
+       .catch(err => {
+         console.log(err)
+       })
+    }
+
+
+
   },
 };
 </script>

@@ -36,7 +36,8 @@ public class MemberController {
     @PostMapping("/member/login")
     public ResponseEntity login(
             @RequestBody Map<String, Object> loginData,
-            HttpServletResponse response) {
+            HttpServletResponse response) 
+    {
 
         try {
             System.out.println("로그인 정보 조회");
@@ -59,7 +60,7 @@ public class MemberController {
 
             return new ResponseEntity(member, HttpStatus.OK);
 
-        } catch (Exception e){
+        	} catch (Exception e){
 
             log.error("토큰 생성중에 오류가 발생했습니다.");
             return new ResponseEntity("토큰 생성중에 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
