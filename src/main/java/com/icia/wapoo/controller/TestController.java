@@ -1,54 +1,48 @@
 package com.icia.wapoo.controller;
 
+<<<<<<< HEAD
 import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.model.Member;
+=======
+import com.icia.wapoo.dao.LoginInfoDao;
+import com.icia.wapoo.dao.MemberDao;
+>>>>>>> e0f0338db4ada06b0aa9991639b474ccaabac6ab
 import com.icia.wapoo.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+<<<<<<< HEAD
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+=======
+>>>>>>> e0f0338db4ada06b0aa9991639b474ccaabac6ab
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class TestController {
 
     public MemberService memberService;
 
+    public LoginInfoDao loginInfoDao;
+
+    public MemberDao memberDao;
+
+
     @Autowired
     public TestController(MemberService memberService) {
         this.memberService = memberService;
     }
     
-    @PostMapping(value="api/test/join")
-    public String test(ModelMap model,HttpServletRequest request,HttpServletResponse response)
+    @GetMapping(value="/test")
+    public String testA(@RequestParam Map<String, Object> userData)
     {
-    	boolean log = false;
-    	
-    	String id = request.getParameter("id");
-    	String pwd = request.getParameter("pwd");
-    	
-    	System.out.println();
-    	System.out.println(id);
-    	System.out.println(pwd);
-    	System.out.println();
-    	
-    	if("test" == id && "1234" == pwd)
-    	{
-    		log = !log;
-    	}
-    	
-    	return "/about";
+        System.out.println();
+    	return "테스트요청";
     }
 
    

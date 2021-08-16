@@ -1,7 +1,6 @@
 package com.icia.wapoo.jwt.interceptor;
 
 import com.icia.wapoo.jwt.service.JwtService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -10,29 +9,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Component
-@Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
-
-    private static final String HEADER_AUTH = "Authorization";
+    private static final String HEADER_AUTH = "authorization";
 
     @Autowired
     private JwtService jwtService;
 
+    /**
+     * 작성자 노철희
+     * 토큰 확인을 위한 인터셉터 핸들러
+     * @param request header에 달린 토큰정보를 가져온다
+     * @param response 라이프사이클을 진행하기 위해서 필요하다
+     * @param handler 인터셉터의 prehandle 메서드를 정의하기위해 필요한 인자.
+     * @return 토큰의 유효기간, 로직을 분석하고 유효하면 다음으로 진행한다.
+     * @throws Exception 이상한 요청은 전부 걸린다.
+     */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if (request.getMethod().equals("OPTIONS")) { // 예외
+        final String token = request.getHeader(HEADER_AUTH);
+        System.out.println("인터셉터에서 받은 토큰 -> "+ token);
+        if(token != null && jwtService.validateToken(token)){
+            System.out.println("인터셉터 통과");
             return true;
-        } else { // 값에 "Bearer " 달고오니까 오류나면 여기확인
-            final String token = request.getHeader(HEADER_AUTH);
-            System.out.println("받은토큰" + token);
-            if (token != null && token.length() > 0){
-                jwtService.checkValid(token);
-                System.out.println("토큰 인증");
-                log.trace("token : {}", token);
-                return true;
-            } else {
-                throw new RuntimeException("인증되지 않은 사용자입니다."); // 커스텀 오류 만들어야겠음*
-            }
+        }else{
+            throw new RuntimeException("==인터셉터에서 걸렸습니다== WebConfig 참조해주세요..");
         }
     }
 }
+

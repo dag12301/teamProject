@@ -12,7 +12,7 @@
 <script>
 export default {
   data: () => ({
-    isBurgerActive: false,
+    isBurgerActive: true,
   }),
   methods: {
     toggle() {
@@ -49,7 +49,7 @@ button:focus {
 }
 
 .burger-bar {
-  background-color: #8f8f8f;
+  background-color: #ffffff;
   position: absolute;
   top: 50%;
   right: 6px;

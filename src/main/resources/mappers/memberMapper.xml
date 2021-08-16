@@ -8,4 +8,29 @@
         FROM `member`
         WHERE memberId = #{id}
     </select>
+
+    <insert id="insertMember" useGeneratedKeys="true" keyProperty="memberId" parameterType="Member">
+        INSERT INTO `member`
+        SET `status` = 'Y',
+        `name` = #{name},
+        phone = #{phone},
+        email = #{email},
+        nickname = #{nickname},
+        `role`= #{role};
+    </insert>
+    <select id="checkEmail" resultType="Integer">
+        SELECT COUNT(*) AS result
+        FROM `member`
+        WHERE email = #{email};
+    </select>
+    <select id="checkNickname" resultType="Integer">
+        SELECT COUNT(*) AS result
+        FROM `member`
+        WHERE nickname = #{nickname};
+    </select>
+    <select id="checkPhone" resultType="Integer">
+        SELECT COUNT(*) AS result
+        FROM `member`
+        WHERE phone = #{phone};
+    </select>
 </mapper>

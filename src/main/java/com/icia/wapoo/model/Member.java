@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Member{
     private int memberId;
     private String status;
     private String name;
@@ -15,4 +16,5 @@ public class Member {
     private String email;
     private String nickname;
     private String role;
+
 }

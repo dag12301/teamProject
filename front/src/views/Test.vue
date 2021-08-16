@@ -1,76 +1,47 @@
 <template>
   <div>
-    
-    
-      <button @click="test">notice</button>
-    <form  method="get">
-    아이디:<input type="text" v-model="userId" name="userId">
-    <button @click.prevent="test">ddd</button>
-    </form>
-    <button @click="test2">Q&A</button>
-    <button @click="test3">FQA</button>
-    {{userId}}
-                
-</div>
+    <div class="btn btn-primary" @click="getInfo">정보요청</div>
+    <div class="btn btn-primary" @click="whattest">정보나와랏얍</div>
+    <div class="btn btn-primary" @click="getBuyer">판매자</div>
+  </div>
 </template>
 
 <script>
-
-import instance from "@/api/http"
-
-
+import http from "@/api/http";
+import { mapActions, mapGetters } from "vuex";
 export default {
-  data () {
-    return {
-      userId: "123"
-    }
+  computed: {
+    ...mapGetters({
+      gettest: "auth/getUserInfo",
+    }),
   },
   methods: {
-    test () {
-       instance.get("notice")
-       .then(res => {
-         console.log(res, "성공")
-       })
-       .catch(err => {
-         console.log(err, "에러나옴")
-       })
-       .then(() => {
-         console.log("실행")
-       })
+    ...mapActions({
+      getInfo: "auth/getInfo",
+    }),
+    whattest() {
+      console.log(this.gettest);
     },
-    test2 () {
-      instance.get("/q&a")
-      .then(res => {
-        console.log(res, "성공")
-      })
-      .catch(err => {
-         console.log(err, "에러나옴")
-       })
-       .then(() => {
-         console.log("실행")
-       })
+    getUserInfo() {
+      http
+        .post("/test")
+        .then((res) => console.log(res))
+        .catch((e) => console.log(e));
     },
-    test3 () {
-      instance.get("/fqa")
-      .then(res => {
-        console.log(res, "성공")
-      })
-      .catch(err => {
-         console.log(err, "에러나옴")
-       })
-       .then(() => {
-         console.log("실행")
-       })
-    }
-
-  }
-
-}
-
+    getAdminTest() {
+      http
+        .post("/admin/test")
+        .then((res) => console.log(res))
+        .catch((e) => console.log(e));
+    },
+    getBuyer() {
+      http
+        .post("/buyer/test")
+        .then((res) => console.log(res))
+        .catch((e) => console.log(e));
+    },
+  },
+};
 </script>
-  
-<style scoped>
 
-
-
-</style>
+<style></style>

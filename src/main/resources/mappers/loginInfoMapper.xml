@@ -9,4 +9,18 @@
         WHERE loginId = #{loginId}
         AND password = #{password}
     </select>
+
+    <insert id="insertLoginInfo" parameterType="LoginInfo">
+        INSERT INTO loginInfo
+        SET loginId = #{loginId},
+        `password`= #{password},
+        lastPasswordChanged = NOW(),
+        member_id = #{member_id};
+    </insert>
+
+    <select id="checkLoginId" resultType="Integer">
+        SELECT COUNT(*) AS result
+        FROM loginInfo
+        WHERE loginId = #{loginId};
+    </select>
 </mapper>
