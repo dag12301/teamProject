@@ -4,7 +4,7 @@
     
     <div class="service-group mb-5 ">
         
-        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }">공지사항</router-link>
+        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" @click="test">공지사항</router-link>
         
         <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }">Q&A</router-link>
         
@@ -19,9 +19,25 @@
 </template>
 
 <script>
+import instance from "@/api/http"
+
 export default {
   components: {
     
+  },
+  methods: {
+    test () {
+       instance.get("/serviceCenter/notice")
+       .then(res => {
+         console.log(res, "성공")
+       })
+       .catch(err => {
+         console.log(err, "에러나옴")
+       })
+       .then(() => {
+         console.log("실행")
+       })
+    }
   }
 }
 </script>

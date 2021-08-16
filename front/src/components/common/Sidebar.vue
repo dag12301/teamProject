@@ -1,10 +1,6 @@
 <template>
   <transition name="slide">
-<<<<<<< HEAD
-    <div id="sideBar" v-if="sidebar">
-=======
     <div id="sideBar">
->>>>>>> af007e60332d44f458aa07c98965a83f2247b8bc
       <!--사이드 바-->
     
       <div id="layoutSidenav">
@@ -41,6 +37,9 @@
 
                 <router-link class="nav-link" :to="{ name: 'ServiceCenter' }" exact
                   >고객센터</router-link
+                >
+                <router-link class="nav-link" :to="{ name: 'Test' }" exact
+                  >Test</router-link
                 >
 <!--
                 <a
@@ -105,35 +104,6 @@ export default {
 </script>
 
 <style scoped>
-<<<<<<< HEAD
-.slide-enter{
-  /* transform: translateX(10px); */
-   opacity: 0;
-}
- .slide-enter-active, .slide-leave-active {
-  transition: all .3s ease;
-   opacity: .5
-}  
-
- .slide-enter-to, .slide-leave-to
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  
-  opacity: .9;
- 
-}
-.slide-leave{
-  opacity: .9;
-}
-.slide-leave-to{
-  opacity: 0;
-}
-
-
-
-
-
-=======
->>>>>>> af007e60332d44f458aa07c98965a83f2247b8bc
 #sideBar {
   width: 17vw;
   height: 95vh;
