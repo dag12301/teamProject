@@ -9,6 +9,9 @@ import Notifications from "@kyvg/vue3-notification";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
+//폰트 어썸
+import "@fortawesome/fontawesome-free/js/all";
+
 createApp(App)
   .use(store)
   .use(router)

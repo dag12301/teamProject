@@ -1,6 +1,3 @@
-/**
- * 작성자 : 노철희
- */
 import * as authApi from "@/api/auth";
 
 import jwt from "@/api/jwt";
@@ -10,17 +7,27 @@ export default {
   state: {
     token: {
       accessToken: jwt.getToken(),
-      // 토큰의 정보 가져오기
     },
     isAuthenticated: !!jwt.getToken(),
-    // `!!` 의 사용확실한 논리연산자를 위해서. [참고] https://hermeslog.tistory.com/279
+    userRole: "null",
+    userNickname: "null",
+    userEmail: "null",
+    userName: "null",
+    userPhone: "null",
   },
   getters: {
     getAccessToken: function (state) {
       return state.token.accessToken;
     },
-    isAuthenticated: function (state) {
-      return state.isAuthenticated;
+    getUserInfo: function (state) {
+      const info = [
+        state.isAuthenticated,
+        state.userRole,
+        state.userNickname,
+        state.userPhone,
+        state.userEmail,
+      ];
+      return info;
     },
   },
   mutations: {
@@ -35,6 +42,20 @@ export default {
         (state.isAuthenticated = false),
         jwt.destroyToken();
     },
+    setUserInfo(state, userdata) {
+      state.isAuthenticated = true;
+      state.userRole = userdata.role;
+      state.userNickname = userdata.nickname;
+      state.userPhone = userdata.phone;
+      state.userEmail = userdata.email;
+    },
+    delUserInfo(state) {
+      state.isAuthenticated = false;
+      state.userRole = null;
+      state.userNickname = null;
+      state.userPhone = null;
+      state.userEmail = null;
+    },
   },
   actions: {
     login(context, { userId, password }) {
@@ -45,6 +66,7 @@ export default {
             // 응답이 200인지 확인
             // 토큰을 저장한다.
             context.commit("setToken", response.headers.authorization);
+            // 토큰을 이용해서 유저정보 불러오기
           }
           return Promise.resolve(response);
         },
@@ -55,16 +77,24 @@ export default {
         }
       );
     },
+    getInfo(context) {
+      const token = jwt.getToken();
+      console.log("로그인 유지를 위한 정보 요청을 보냅니다");
+      return authApi.getInfo(token).then((response) => {
+        console.log(response.data);
+        context.commit("setUserInfo", response.data);
+      });
+    },
     logout(context) {
       // 로그아웃시 토큰삭제
       return new Promise((resolve) => {
         setTimeout(function () {
           context.commit("delToken");
+          context.commit("delUserInfo");
+          console.log("로그아웃 했음.");
           resolve();
         }, 1000); // 1초 후 로그아웃됨
       });
     },
-    register() {},
   },
-  modules: {},
 };

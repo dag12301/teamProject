@@ -1,27 +1,25 @@
 <template>
-  <div id="nav">
-    <Nav></Nav>
-
-    <Sidebar></Sidebar>
-
-    <div class="middle col-9">
-      <router-view />
-    </div>
-
+  <div>
+    <Sidebar />
+    <transition name="page">
+      <div class="col-md-9" :style="{ 'margin-left': sidebarWidth }">
+        <router-view />
+      </div>
+    </transition>
     <Footer></Footer>
   </div>
 </template>
 
 <script>
-import Nav from "./components/common/Nav";
-import Footer from "./components/common/Footer";
-import Sidebar from "./components/common/Sidebar";
+import Sidebar from "@/components/sidebar/Sidebar";
+import { sidebarWidth } from "@/components/sidebar/state";
 
 export default {
   components: {
-    Nav,
-    Footer,
     Sidebar,
+  },
+  setup() {
+    return { sidebarWidth };
   },
 };
 </script>
@@ -45,5 +43,18 @@ export default {
   left: 2vw;
   right: 2vw;
   margin: 0 auto;
+}
+
+#nav a.router-link-exact-active {
+  color: #42b983;
+}
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.1s;
+}
+
+.page-enter,
+.page-leave-to {
+  opacity: 0;
 }
 </style>

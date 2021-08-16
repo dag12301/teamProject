@@ -7,19 +7,21 @@
  *  > {페이로드} 는 넘길 객체를 의미합니다.
  */
 import axios from "axios";
-import store from "@/store";
 import JWT from "@/api/jwt";
 
 const instance = axios.create({
   baseURL: "http://localhost:8083", // 스프링 BackEnd 의 주소,
+  headers: { "content-type": "application/json" },
 });
 
-instance.interceptors.request.use(async function (config) {
+instance.interceptors.request.use(function (config) {
   try {
     let access_token = JWT.getToken();
     if (access_token != null) {
+      console.log("===보낼토큰===");
+      console.log(access_token);
       config["headers"] = {
-        Authrization: `Bearer ${store.state.auth.token}`,
+        accesstoken: access_token,
       };
     } else {
       JWT.destroyToken();

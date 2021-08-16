@@ -2,22 +2,20 @@ import { createStore } from "vuex";
 
 import auth from "@/store/auth";
 import Akinator from "@/store/akinator";
-
+import fooddiv from "./foodDiv/foodDiv.js";
 import shopList from "./shopList/shopList.js";
 import menu from "./menu/menu.js";
-import foodDiv from "../store/foodDiv";
+import createPersistedState from "vuex-persistedstate";
 
 export default createStore({
   state: {
-    loading: false, //로딩 컴포넌트를 위함
-    isLogined: false,
+    loading: false, // 로딩 컴포넌트를 위함
 
     loginModal: false, // 로그인 모달
     registerModal: false, // 레지스터 모달
-    sidebar: false,     //사이드바
-    akinator: false,
+    selectRegister: "BUYER",
 
-    selectRegister: "", // 가입하는 유저 종류
+    akinator: false, // 아키네이터 상태
   },
   mutations: {
     SET_MODAL_LOGIN(state, boolean) { // 로그인 모달 실행
@@ -27,22 +25,24 @@ export default createStore({
       state.loginModal = false;
       state.registerModal = boolean; //boolean true => 회원가입 열기
     },
-    SET_SELECT_REGISTER(state, boolean) {
-      state.selectRegister = boolean;
-    },
-    SET_SIDEBAR(state, boolean) {
-      state.sidebar = boolean;
-    },
     SET_AKINATOR(state, boolean) {
       state.akinator = boolean;
+    },
+    SET_SELECT_REGISTER(state, data) {
+      state.selectRegister = data;
     },
   },
   modules: {
     auth,
     Akinator,
-
     shopList,
+    fooddiv,
     menu,
     foodDiv
   },
+  plugins: [
+    createPersistedState({
+      paths: ["auth"],
+    }),
+  ],
 });

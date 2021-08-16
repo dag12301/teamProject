@@ -2,93 +2,92 @@ package com.icia.wapoo.jwt.service;
 
 import com.icia.wapoo.model.Member;
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
+
 @Slf4j
+@RequiredArgsConstructor
 @Service("jwtService")
 public class JwtService {
 
 //    @Value("${jwt.salt}")
 //    private static String SALT;
-    private static final String SALT = "testxxx";
+    private String secretKey = "testxxxtesttesttesttesttest";
 
 //    @Value("${jwt.expmin}")
 //    private Long expMin;
-    private static final long expMin = 10;
+    private static final long expMin = 60;
+
+    @PostConstruct
+    protected void init() {
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
+
+
+
 
     /**
-     * 토큰 생성
-     * @param member
+     * 토큰 생성 - 노철희
+     *
+     * @param member 멤버객체로 토큰을 생선한다. Id, nickname, role이 담긴다.
      * @return
      */
     public String create(final Member member){
         log.trace("time: {}", expMin);
-        System.out.println("토큰생성시작");
-        final JwtBuilder builder = Jwts.builder();
-        builder.setHeaderParam("typ", "JWT")
-                //.setHeaderParam("regDate", System.currentTimeMillis())
-                .setSubject("LoginToken") // 서브젝트 수정*
-                .setExpiration(new Date(System.currentTimeMillis() + (1000*60*expMin)))
-                .claim("id", member.getMemberId())
-                .claim("name", member.getName())
-                .claim("email", member.getEmail())
-                .signWith(SignatureAlgorithm.HS512, this.generateKey());
-        System.out.println("토큰생성시작");
-        final String jwt = builder.compact();
+
+        System.out.println("JwtService.create : 토큰 생성을 시작합니다.");
+        Date NOW = new Date();
+        Claims claims = Jwts.claims()
+                .setSubject("access_token")
+                .setIssuedAt(NOW)
+                .setExpiration(new Date(NOW.getTime() + (1000*60*10)));
+        //값을 세팅한다.
+        claims.put("memberId", member.getMemberId());
+        claims.put("nickname", member.getNickname());
+        claims.put("role", member.getRole());
+
+        final String jwt = Jwts.builder()
+                        .setHeaderParam("typ", "JWT")
+                        .setClaims(claims)
+                        .signWith(SignatureAlgorithm.HS256, secretKey)
+                        .compact();
+
+        System.out.println("JwtService.create : 토큰 생성이 완료되었습니다.");
         log.debug("토큰 발행 : {}", jwt);
         return jwt;
     }
 
-    private byte[] generateKey() {
-        byte[] key = null;
-        try {
-            key = SALT.getBytes(StandardCharsets.UTF_8);
-        } catch (Exception e ) {
-            if(log.isInfoEnabled()) {
-                e.printStackTrace();
-            } else {
-                log.error("JWT 키를 만드는 도중 에러발생 {}", e.getMessage());
-            }
-        }
-        return key;
+
+    // Request의 Header 에서 값 추출.
+    public String resolveToken(HttpServletRequest request) {
+        System.out.println("JwtService.resolveToken : 토큰을 추출합니다.");
+        return request.getHeader("accesstoken");
+    }
+    
+    // 토큰에서 정보 해독
+    public Map<String, Object> getUserInfo(String token) {
+        System.out.println("JwtService.getUserInfo : 토큰에서 정보를 추출합니다.");
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 
-    /**
-     * 토큰 검증
-     * @param jwt
-     */
-    public boolean checkValid(final String jwt) {
-        log.trace("토큰 점검 : {}", jwt);
+
+    // 토큰 유효 + 만료일자
+    public boolean validateToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
-            return true;
+            System.out.println("JwtService.validateToken : 유효한 토큰인지 확인합니다.");
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
-            throw new RuntimeException("유효하지 않은 토큰");
+            return false;
         }
-
-    }
-
-    /**
-     * 토큰을 분석해서 필요한 정보 반환
-     * @param jwt
-    * @return
-     */
-    public Map<String, Object> get (final String jwt) {
-        Jws<Claims> claims = null;
-        try {
-            claims = Jwts.parser().setSigningKey(this.generateKey()).parseClaimsJws(jwt);
-        } catch (final Exception e) {
-            throw new RuntimeException();
-        }
-        log.trace("claims: {}", claims);
-        // claims 는 Map 이다
-        return claims.getBody();
     }
 }
