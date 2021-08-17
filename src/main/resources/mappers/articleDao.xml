@@ -18,14 +18,91 @@
 </resultMap>
 	
 	<select id="NoticeListCount" parameterType="ArticleNotice" resultType="long">
-	SELECT
-	COUNT(articleId) AS cnt
-	FROM article
+	SELECT	
+	IFNULL(articleId, '') AS articleId,
+	IFNULL(regDate, '') AS regDate,
+	updateDate,
+	title,
+	BODY,
+	hit,
+	STATUS,
+	IFNULL(parant_id, 0) AS parant_id,
+	board_id,
+	writer_id
+FROM article
+WHERE articleId = #{value}
 	</select>
 	
-
+	<!-- 리스트 가져오기 -->
     <select id="NoticeList" parameterType="com.icia.wapoo.model.ArticleNotice" resultMap="ArticleResultMap">
     	SELECT *
 	FROM article
     </select>
+    <!-- 글 조회 -->
+    <select id="boardSelect" parameterType="long" resultMap="ArticleResultMap">
+    	SELECT	IFNULL(articleId, '') AS articleId,
+	IFNULL(regDate, '') AS regDate,
+	updateDate,
+	title,
+	BODY,
+	hit,
+	STATUS,
+	IFNULL(parant_id, 0) AS parant_id,
+	board_id,
+	writer_id
+FROM article
+WHERE articleId = 2
+    </select>
+    
+    <!-- 글 등록 -->
+    <insert id="boardInsert" parameterType="Article">
+    	<selectKey resultType="long" keyProperty="articleId" order="BEFORE">
+		   SELECT articleId.NEXTVAL FROM DUAL
+		</selectKey>
+INSERT	INTO article(	
+			articleId,
+			regDate,
+			updateDate,
+			title,
+			BODY,
+			hit,
+			STATUS,
+			
+			board_id,
+			writer_id)
+		VALUES
+			(#{Article.writerId},
+			NOW(),
+			NOW(),
+			#{Article.title},
+			#{Article.body},
+			#{Article.boardId},
+			#{Article.writerId},
+			
+			2,
+			3);
+    </insert>
+    
+    <!-- 글 삭제 -->
+    <delete id="boardDelete" parameterType="long">
+		DELETE FROM article
+			WHERE articleId =#{value}
+
+	</delete>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 </mapper>

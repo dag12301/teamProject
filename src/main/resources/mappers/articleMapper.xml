@@ -2,11 +2,97 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.icia.wapoo.dao.ArticleDao">
 
-	<select id="selectAllByBoardId" parameterType="int" resultType="Article">
+<mapper namespace="com.icia.wapoo.dao.ArticleDao">
+<resultMap id="ArticleResultMap" type="Article">
+   <id column="articleId" property="articleId" />
+   <result column="regDate" property="regDate" />
+   <result column="updateDate" property="updateDate" />
+   <result column="title" property="title" />
+   <result column="body" property="body" />
+   <result column="hit" property="hit" />
+   <result column="status" property="status" />
+   <result column="parant_id" property="parantId" />
+   <result column="board_id" property="boardId" />
+   <result column="writer_id" property="writerId" />
+</resultMap>
+
+
+<!-- 글 조회 -->
+<select id="boardSelect" parameterType="long" resultMap="ArticleResultMap">
+SELECT	IFNULL(articleId, '') AS articleId,
+	IFNULL(regDate, '') AS regDate,
+	IFNULL(updateDate, '') AS updateDate,
+	IFNULL(title, '') AS title,
+	IFNULL(BODY, '') AS BODY,
+	IFNULL(hit, 1) AS hit,
+	IFNULL(STATUS, '') AS STATUS,
+	IFNULL(parant_id, 0) AS parant_id,
+	IFNULL(board_id, 0) AS board_id,
+	IFNULL(writer_id, 0) AS writer_id
+FROM article
+  WHERE articleId = #{value}
+    </select>
+
+
+<!-- 글 삭제 -->
+<delete id="boardDelete" parameterType="long">
+DELETE FROM article
+	WHERE articleId =#{value}
+
+</delete>
+
+
+
+	<select id="selectAllByBoardId" parameterType="long" resultType="Article">
 		SELECT *
 		FROM `article`
 		WHERE board_id = #{boardId}
 	</select>
+	
+<select id="boardList" parameterType="long" resultType="Article">
+SELECT	IFNULL(articleId, '') AS articleId,
+	IFNULL(regDate, '') AS regDate,
+	IFNULL(updateDate, '') AS updateDate,
+	IFNULL(title, '') AS title,
+	IFNULL(BODY, '') AS BODY,
+	IFNULL(hit, 1) AS hit,
+	IFNULL(STATUS, '') AS STATUS,
+	IFNULL(parant_id, 0) AS parant_id,
+	IFNULL(board_id, 0) AS board_id,
+	IFNULL(writer_id, 0) AS writer_id
+FROM article
+  WHERE articleId = #{articleId}
+</select>
+	
+<insert id="boardInsert"  parameterType="Article">
+
+INSERT INTO article(
+	articleId,
+	regDate,
+	updateDate,
+	title,
+	BODY,
+	hit,
+	STATUS,
+	board_id,
+	writer_id)
+VALUES (
+	18,
+	NOW(),
+	NOW(),
+	#{title},
+	#{body},
+	0,
+	#{status},
+	#{boardId},
+	#{writerId}
+
+)
+</insert>
+	
+	
+	
+	
+	
 </mapper>

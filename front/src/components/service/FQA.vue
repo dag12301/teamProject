@@ -1,37 +1,25 @@
 <template>
   <div class="notice col-12 h-50">
-    <h2 class="mb-5 font-weight-bold">공지사항 </h2>
+    <h2 class="mb-5 font-weight-bold">FQA </h2>
     
     <div class="p-1  bg-dark text-white"></div>
     <!-- 리스트 시작 -->
     <ul class="list-group list-group-flush">
-      <li class="list-group-item " >
-          <span class="position-absolute" style="left: 1vw;">1</span>
-          <span class="position-absolute" style="left: 6vw;">마크</span>
-          <span class="position-absolute" style="left: 10vw;">내용</span>
-          <span class=" position-absolute" style="right: 12vw;">날짜</span>
-          <span class=" position-absolute" style="right: 7vw;">
-            조회수
+      <li class="list-group-item " 
+        v-for=" notice in this.$store.state.serviceCenter.FQA" :key="notice.id">
+          <span class="position-absolute" style="left: 1vw;">[{{notice.articleId}}]</span>
+          <span class="position-absolute" style="left: 6vw;">{{notice.title}}</span>
+          <span class=" position-absolute" style="right: 6vw;">{{notice.regDate}}</span>
+          <span class=" position-absolute" style="right: 4vw;">
+            <i class="fas fa-eye"></i>
           </span>
-          <span class=" position-absolute" style="right: 1vw;">답변유무</span>
+          <span class=" position-absolute" style="right: 1vw;">{{notice.hit}}</span>
         
       </li>
-
-      <li class="list-group-item " >
-          <span class="position-absolute" style="left: 1vw;">1</span>
-          <span class="position-absolute" style="left: 6vw;">마크</span>
-          <span class="position-absolute" style="left: 10vw;">내용</span>
-          <span class=" position-absolute" style="right: 12vw;">날짜</span>
-          <span class=" position-absolute" style="right: 7vw;">
-            조회수
-          </span>
-          <span class=" position-absolute" style="right: 1vw;">답변유무</span>
-        
-      </li>
-      <hr>
+      
     </ul>
      <!-- 끝 -->
-    
+    <div class="p-1  bg-dark text-white"></div>
     <!-- 순서 버튼 -->
     <nav aria-label="Page navigation example" class="mt-5 position-relative .center-block" >
       <ul class="pagination position-absolute" style="left: 30vw">
@@ -55,8 +43,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-
+computed: {
+  ...mapGetters(['getCenterList'])
+}
 }
 </script>
 

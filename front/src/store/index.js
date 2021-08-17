@@ -2,10 +2,11 @@ import { createStore } from "vuex";
 
 import auth from "@/store/auth";
 import Akinator from "@/store/akinator";
-import fooddiv from "./foodDiv/foodDiv.js";
+import foodDiv from "./foodDiv/foodDiv.js";
 import shopList from "./shopList/shopList.js";
 import menu from "./menu/menu.js";
 import createPersistedState from "vuex-persistedstate";
+import serviceCenter from "./serviceCenter";
 
 export default createStore({
   state: {
@@ -16,6 +17,10 @@ export default createStore({
     selectRegister: "BUYER",
 
     akinator: false, // 아키네이터 상태
+
+    countNotice: true, //notice 상태
+    countQueAn: true, //Q&A 상태
+    countFAQ: true, //FQA 상태
   },
   mutations: {
     SET_MODAL_LOGIN(state, boolean) { // 로그인 모달 실행
@@ -31,12 +36,24 @@ export default createStore({
     SET_SELECT_REGISTER(state, data) {
       state.selectRegister = data;
     },
+    SET_COUNT_NOTICE(state, boolean) {  //notice 상태 확인 변화
+      state.countNotice = boolean;
+      console.log(state.countNotice)
+    },
+    SET_COUNT_QUEAN(state, boolean) { //notice 상태 확인 변화
+      state.countQueAn = boolean;
+      console.log(state.countQueAn)
+    },
+    SET_COUNT_FQA(state, boolean) { //notice 상태 확인 변화
+      state.countFAQ = boolean;
+      console.log(state.countFAQ)
+    },
   },
   modules: {
     auth,
     Akinator,
     shopList,
-    fooddiv,
+    serviceCenter,
     menu,
     foodDiv
   },

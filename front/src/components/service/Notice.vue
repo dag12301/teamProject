@@ -5,15 +5,15 @@
     <div class="p-1  bg-dark text-white"></div>
     <!-- 리스트 시작 -->
     <ul class="list-group list-group-flush">
-      <li class="list-group-item " 
-        v-for=" notice in $store.state.shopList.notices" :key="notice.id">
-          <span class="position-absolute" style="left: 1vw;">[{{notice.status}}]</span>
-          <span class="position-absolute" style="left: 6vw;">{{notice.content}}</span>
+      <li class="list-group-item " @click="listPage(notice.articleId)"
+        v-for=" notice in this.$store.state.serviceCenter.notices" :key="notice.id">
+          <span class="position-absolute" style="left: 1vw;">[{{notice.articleId}}]</span>
+          <span class="position-absolute" style="left: 6vw;">{{notice.title}}</span>
           <span class=" position-absolute" style="right: 6vw;">{{notice.regDate}}</span>
           <span class=" position-absolute" style="right: 4vw;">
             <i class="fas fa-eye"></i>
           </span>
-          <span class=" position-absolute" style="right: 1vw;">{{notice.cnt}}</span>
+          <span class=" position-absolute" style="right: 1vw;">{{notice.hit}}</span>
         
       </li>
       
@@ -43,8 +43,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
-
+computed: {
+  ...mapGetters(['getCenterList'])
+},
+methods: {
+  listPage(articleId) {
+    console.log(articleId)
+    location.href="/boardList?articleId=" + articleId
+  }
+}
 }
 </script>
 
