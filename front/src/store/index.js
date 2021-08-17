@@ -3,6 +3,7 @@ import { createStore } from "vuex";
 import auth from "@/store/auth";
 import Akinator from "@/store/akinator";
 import fooddiv from "./foodDiv/foodDiv.js";
+import foodlist from "./foodDiv/foodList.js";
 import shopList from "./shopList/shopList.js";
 import menu from "./menu/menu.js";
 import createPersistedState from "vuex-persistedstate";
@@ -38,6 +39,7 @@ export default createStore({
     shopList,
     fooddiv,
     menu,
+    foodlist,
   },
   plugins: [
     createPersistedState({

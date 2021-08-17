@@ -13,4 +13,11 @@ import java.util.List;
 public interface ArticleDao {
 
 	List<Article> selectAllByBoardId(@Param("boardId") int boardId);
+	//게시글 등록
+	int boardInsert(Article article);
+	// 게시글 조회
+	Article boardSelect(long articleId);
+	//게시글 삭제
+	int boardDelete(long articleId);
+	
 }

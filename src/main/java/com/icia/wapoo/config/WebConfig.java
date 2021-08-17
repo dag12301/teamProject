@@ -40,6 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     /**
      * CORS 해제
+     *
      * @param registry
      */
     @Override
@@ -49,17 +50,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization");
-    }
-
-    /**
-     * 파일 업로드 관련 리졸버 설정 - 작성자 노철희
-     * @return
-     */
-    @Bean
-    public CommonsMultipartResolver multipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setDefaultEncoding("UTF-8");
-        multipartResolver.setMaxUploadSizePerFile(5*1024*1024); // 파일 최대크기 설정
-        return multipartResolver;
     }
 }
