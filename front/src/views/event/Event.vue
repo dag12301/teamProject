@@ -17,17 +17,11 @@
                 </router-view>
             </div>
         </div>
-        <div class="coupon-div">
-            <div class="coupon-box">
-                
-            </div>
-        </div>
     </div>
 </div>
 </template>
 
 <script>
-
 </script>
 
 <style scoped>
@@ -48,7 +42,6 @@
     .coupon-div {
         width: 100%;
         display: flex; justify-content: center; align-items: center;
-        margin-top: 50px;
     }
     .coupon-box {
         width: 840px;

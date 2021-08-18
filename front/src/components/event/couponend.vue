@@ -1,9 +1,12 @@
 <template>
+    <div>
+        <p class="title">지난 쿠폰</p>
+    </div>
     <div class="card"  v-for="(couponendlist, index) in $store.state.couponend.coupons" :key="index">
         <div class="main">
           <div class="content">
             <h2>{{couponendlist.title}}</h2>
-            <h1>10% <span>Coupon</span></h1>
+            <h1>{{couponendlist.discount}} <span>Coupon</span></h1>
             <p>~ {{couponendlist.date}}</p>
           </div>
           <div class="vertical"></div>
@@ -11,7 +14,7 @@
           <button onclick="copyIt()" class="copybtn">종료</button>
         </div>
         </div>
-      </div>
+    </div>
 </template>
 
 <style scoped>
@@ -103,5 +106,13 @@
     background-color: #dc143c;
     color: #fff;
     border: 1px solid transparent;
+}
+.title {
+    font-size: 23px;
+    font-weight: bold;
+    text-align: left;
+    margin-left: 90px;
+    height: 50px;
+    padding-top: 30px;
 }
 </style>

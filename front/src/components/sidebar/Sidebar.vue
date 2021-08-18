@@ -20,7 +20,7 @@
     <SidebarLink to="/cart" icon="fas fa-shopping-cart">장바구니</SidebarLink>
     <SidebarLink to="/serviceCenter" icon="far fa-comments">고객센터</SidebarLink>
     <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
-    <SidebarLink to="/event" icon="fas fa-utensils">이벤트</SidebarLink>
+    <SidebarLink to="/all" icon="fas fa-utensils">이벤트</SidebarLink>
     <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
 
     <span class="burger" @click="toggleSidebar">
