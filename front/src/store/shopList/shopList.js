@@ -24,9 +24,57 @@ export default {
         regDate: '0.5 days ago',
         content: '양손에 치킨이야'
       }
-      
-
+    ],
+    notices: [
+      {
+        id: '1',
+        status: '공지',
+        content: '정기 점검 안내',
+        regDate: '2021.08.11',
+        cnt: '15'
+      },
+      {
+        id: '2',
+        status: '공지',
+        content: '코롤라 이벤트 점검 안내',
+        regDate: '2021.08.14',
+        cnt: '1425'
+      },
+      {
+        id: '3',
+        status: '공지',
+        content: '정기 먹방  안내',
+        regDate: '2021.05.11',
+        cnt: '125'
+      }
+    ],
+    qns:[
+      {
+        status: '비밀',
+        content: '아하이',
+        regDate: '2021.08.14',
+        cnt: '145'
+      },
+      {
+        status: '공지',
+        content: '아하이2',
+        regDate: '2021.05.14',
+        cnt: '5'
+      },
+      {
+        status: '공지',
+        content: '아하이3',
+        regDate: '2021.04.14',
+        cnt: '1'
+      },
+      {
+        status: '비공개',
+        content: '아하이4',
+        regDate: '2021.01.14',
+        cnt: '15'
+      }
     ]
+
   },
   mutations: {
     

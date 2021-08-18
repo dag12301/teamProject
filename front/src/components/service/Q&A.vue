@@ -20,9 +20,12 @@
     <!-- 글쓰기 -->
     <div class="">
       <button type="button" class="btn btn-primary">내글조회</button>
-      <button type="button" class="btn btn-primary me-3">글쓰기</button>
+      <router-link class="btn btn-primary" :to="{ name: 'WriteForm' }"
+        >글쓰기</router-link
+      >
     </div>
 
+    <br />
     <!-- 리스트 -->
     <table class="table table-striped">
       <tbody>

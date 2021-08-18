@@ -65,12 +65,31 @@
         ></textarea>
       </div>
       <!--지도 -->
-      <div class="col-xl-7">
-        <div class="card mb-4">
-          <kakao></kakao>
-        </div>
+      <label for="address" class="form-label mt-4">주소를 입력해주세요.</label>
+      <input
+        class="form-control"
+        type="text"
+        id="address"
+        v-model="address.place_name"
+        aria-label="readonly input example"
+        readonly
+      />
+      <label for="addressDetail" class="form-label mt-2"
+        >상세주소를 입력해주세요.</label
+      >
+      <input
+        class="form-control"
+        type="text"
+        id="addressDetail"
+        v-model="addressDetail"
+      />
+      <div
+        class="btn btn-primary mt-4"
+        @click="SET_MODAL_MAP(true)"
+        @close="SET_MODAL_MAP(false)"
+      >
+        주소찾기
       </div>
-      <!-- 상세주소 -->
 
       <!-- 사진 -->
     </div>
@@ -159,6 +178,7 @@
     <div class="store-write-button-wrapper">
       <div class="store-write-button" @click="storeWrite">등록</div>
     </div>
+    <Map v-if="mapModal"></Map>
   </div>
 </template>
 
@@ -166,12 +186,10 @@
 import { requestFile } from "@/util/axios";
 // import { error } from "@/api/notification";
 // import { mapState } from "vuex";
-import Kakao from "@/components/map/Kakao.vue";
-import { mapGetters } from "vuex";
+import Map from "@/components/modal/Map.vue";
+import { mapGetters, mapState, mapMutations } from "vuex";
 export default {
-  components: {
-    Kakao,
-  },
+  components: { Map },
   data() {
     return {
       files: [],
@@ -181,8 +199,6 @@ export default {
       store_contact: "",
       store_type: "",
       store_desc: "",
-      address: "",
-      addressDetail: "",
       localx: "",
       localy: "",
     };
@@ -190,11 +206,17 @@ export default {
   watch: {},
   mounted() {},
   computed: {
+    ...mapState({
+      mapModal: "mapModal",
+      address: "selectedPlace",
+      addressDetail: "selectedAddressDetail",
+    }),
     ...mapGetters({
       userInfo: "auth/getUserInfo",
     }),
   },
   methods: {
+    ...mapMutations(["SET_MODAL_MAP"]),
     imageUpload() {
       console.log(this.$refs.files.files);
       // this.files = [...this.files, this.$refs.files.files];

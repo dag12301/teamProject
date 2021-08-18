@@ -1,87 +1,57 @@
 <template>
   <div class="container">
-    <div class="mb-3">
-      <label for="title" class="form-label">제목</label>
-      <input
-        type="text"
-        name="title"
-        v-model="data.board.title"
-        id="title"
-        placeholder="입력해주세요."
-      />
+    <input type="text" readonly v-model="result" /> 주소
+    <div
+      class="btn btn-primary"
+      @click="SET_MODAL_MAP(true)"
+      @close="SET_MODAL_MAP(false)"
+    >
+      지도검색
     </div>
-    <div class="mb-3">
-      <label for="title" class="form-label">내용</label>
-      <textarea
-        class="form-control"
-        name="contents"
-        v-model="data.board.contents"
-        id="contents"
-        placeholder="입력해주세요."
-      />
-    </div>
-    <div class="mb-3">
-      <label for="uploadFile" class="form-label">파일첨부</label>
-      <input
-        type="file"
-        name="uploadFile"
-        class="form-control"
-        id="uploadFile"
-        @change="changeFile"
-        multiple
-      />
-    </div>
-    <div class="d-gird gap-2 d-md-flex justify-content-md end">
-      <button class="btn btn-primary me-md-2" @click="save">저장</button>
-    </div>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Id perspiciatis
+    facilis quia consequuntur ullam, iure quaerat sequi quae nesciunt maxime
+    natus blanditiis atque deserunt! Adipisci earum est impedit facilis eos.
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus dignissimos
+    magni nulla quia! Ducimus expedita ratione, vitae adipisci, cum voluptas
+    architecto, eos accusantium maxime laborum optio recusandae maiores nemo
+    libero! Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maiores,
+    asperiores vel qui laborum suscipit cupiditate deleniti deserunt ea corrupti
+    molestiae sint hic, itaque illum magni quam sequi! Ipsam, illo minima. Lorem
+    ipsum dolor sit amet consectetur adipisicing elit. Adipisci porro ipsum
+    excepturi perferendis non ad rerum optio consequuntur, assumenda omnis nam
+    qui quas explicabo laborum voluptatem quaerat totam reprehenderit magnam!
+    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Velit, quos libero
+    explicabo perferendis illo aliquam at ipsam doloribus porro dolorum, odit
+    dolorem totam. Possimus est libero obcaecati accusantium! Cumque, itaque?
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam ad adipisci
+    voluptatum saepe eaque numquam quod magni exercitationem libero temporibus.
+    Dolores nisi earum soluta consectetur assumenda, amet architecto accusamus
+    id?
+    <Map v-if="mapModal"></Map>
   </div>
 </template>
 
 <script>
-import { onMounted, reactive } from "vue";
+import Map from "@/components/modal/Map.vue";
+import { mapState, mapMutations } from "vuex";
 
 export default {
-  name: "BoardForm",
-  components: {},
-  setup() {
-    // 기본 데이터셋 초기화
-    const data = reactive({
-      board: {
-        title: null,
-        contents: null,
-        uploadFiles: null,
-        boardList: null,
-      },
-    });
-    // 이벤트가 발생할때마다 타겟의 0번째 파일값을 uploadFile에 대입함.
-    const changeFile = (e) => {
-      console.log(e.target.files);
-      data.board.uploadFiles = e.target.files;
-    };
-    // 새로운 이벤트
-    const save = () => {
-      let formData = new FormData(); // 멀티파츠를 보낼려면 이걸써야함.
-      // valid 체크 해줘야하는 부분들, 지금은 file만 체크함.
-      formData.append("title", data.board.title);
-      formData.append("contents", data.board.contents);
-      for (let i = 0; i < data.board.uploadFiles.length; i++) {
-        formData.append("fileList", data.board.uploadFiles[i]);
-      }
-      fetch("http://localhost:8083/store/addstore", {
-        method: "Put",
-        body: formData,
-      }).then((response) => console.log(response));
-    };
-    // 초기화될때 이벤트
-    onMounted(() => {});
-    // 연결시켜주기
+  name: "Test",
+  components: {
+    Map,
+  },
+  data() {
     return {
-      data: data,
-      changeFile: changeFile,
-      save: save,
+      result: "결과",
     };
+  },
+  computed: {
+    ...mapState(["mapModal"]),
+  },
+  methods: {
+    ...mapMutations(["SET_MODAL_MAP"]),
   },
 };
 </script>
 
-<style></style>
+<style scoped></style>

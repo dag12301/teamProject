@@ -8,15 +8,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Article{
-	private int articleId;		// 게시물 PK
+	private long articleId;		// 게시물 PK
 	private String regDate;			// 날짜
 	private String updateDate;		// 수정 날짜
 	private String title;			// 제목
 	private String body;			// 내용
 	private int hit;				// 조회수
 	private String status;			// 상태
-	private int parant_id;			// 부모 게시글
-	private int board_id;			// 게시판 종류
-	private int writer_id;			// 작성자
+	private long parantId;			// 부모 게시글
+	private long boardId;			// 게시판 종류
+	private long writerId;			// 작성자
 
+	
 }

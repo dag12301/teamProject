@@ -64,7 +64,7 @@ export default {
   methods: {
     listPage(articleId) {
       console.log(articleId);
-      location.href = "/writeForm?articleId=" + articleId;
+      location.href = "/boardList?articleId=" + articleId;
     },
   },
 };

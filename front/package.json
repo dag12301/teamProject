@@ -19,6 +19,7 @@
     "file-loader": "^6.2.0",
     "vee-validate": "^4.4.9",
     "vue": "^3.0.0",
+    "vue-kakao-sdk": "^0.2.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",
     "vuex-persistedstate": "^4.0.0"
@@ -53,7 +54,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",

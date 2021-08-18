@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.icia.wapoo.service.MemberService;
 
@@ -42,8 +44,8 @@ public class ArticleController {
 	 * @return
 	 */
 	@GetMapping("/board")
-	public List<Article> listAll(int boardId) {
-		return articleService.listAllByBoard(boardId);
+	public List<Article> listAll(long boardId) {
+		return articleService.listAllByBoard((int)boardId);
 	}
 	
 	 @GetMapping(value="/test")
@@ -83,7 +85,7 @@ public class ArticleController {
 			article.setTitle(title);
 			article.setBody(body);
 			//article.setStatus(status);
-			article.setBoard_id(1);
+			article.setBoardId(1);
 			
 			int count = 0;
 			count = articleService.listInsert(article);

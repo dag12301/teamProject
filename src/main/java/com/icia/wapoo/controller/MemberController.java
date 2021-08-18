@@ -60,9 +60,13 @@ public class MemberController {
             return new ResponseEntity(member, HttpStatus.OK);
 
         } catch (Exception e){
+
             log.error("토큰 생성중에 오류가 발생했습니다.");
             return new ResponseEntity("토큰 생성중에 오류가 발생했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
+
         }
+        
+        
     }
 
     /**

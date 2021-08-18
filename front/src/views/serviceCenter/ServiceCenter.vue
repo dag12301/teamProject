@@ -24,9 +24,9 @@
 
       <router-link
         class="btn btn-success ms-5 col-2"
-        :to="{ name: 'WriteForm' }"
+        :to="{ name: 'BoardList' }"
         @click="getCountFQA(3)"
-        >WriteForm</router-link
+        >boardList</router-link
       >
     </div>
 

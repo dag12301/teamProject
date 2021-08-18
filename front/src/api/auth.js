@@ -12,13 +12,12 @@ export async function getInfo(token) {
     token,
   });
 }
-
+//화원가입
 export async function register(params) {
   return http.post("/api/member/register", {
     params,
   });
 }
-
 // notice, Q&A FAQ
 export async function allList(query) {
   return http.get("/article/board?boardId=" + query);
@@ -27,7 +26,13 @@ export async function allList(query) {
 export async function test() {
   return http.get("/article/test");
 }
-//게시글 죄회
+//게시글 조회
 export async function list(query) {
   return http.get("/article/board/list?articleId=" + query);
+}
+//게시글 등록
+export async function writeProc(params) {
+  return http.post("/article/board/writeProc", {
+    params,
+  });
 }

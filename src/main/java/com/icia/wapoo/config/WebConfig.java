@@ -26,7 +26,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/**", // 개발용이라 전부 열어둠
             "/api/validation/**",
             "/article/**",
-            "/article/board"
+            "/article/board",
+            "serviceCenter/qna"
     };
 
     @Override
