@@ -4,6 +4,8 @@
     <div class="btn btn-primary" @click="whattest">정보나와랏얍</div>
     <div class="btn btn-primary" @click="getBuyer">판매자</div>
   </div>
+
+  <div class="btn btn-primary" @click="test">test</div>
 </template>
 
 <script>

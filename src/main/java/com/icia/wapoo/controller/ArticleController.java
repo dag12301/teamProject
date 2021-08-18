@@ -1,6 +1,9 @@
 package com.icia.wapoo.controller;
 
+<<<<<<< HEAD
 import com.icia.wapoo.jwt.service.JwtService;
+=======
+>>>>>>> master
 import com.icia.wapoo.model.Article;
 import com.icia.wapoo.model.FileData;
 import com.icia.wapoo.paging.PagingA;
@@ -50,6 +53,10 @@ public class ArticleController {
 	@GetMapping("/board")
 	public List<Article> listAll(long boardId) {
 		return articleService.listAllByBoard(boardId);
+		
+		
+		
+		
 	}
 	
 	//테스트
