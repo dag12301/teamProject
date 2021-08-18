@@ -6,7 +6,7 @@
     <!-- 리스트 시작 -->
     <ul class="list-group list-group-flush">
       <li class="list-group-item " 
-        v-for=" notice in this.$store.state.serviceCenter.FQA" :key="notice.id">
+        v-for=" notice in this.$store.state.serviceCenter.FQA" :key="notice.id" @click="listPage(notice.articleId)">
           <span class="position-absolute" style="left: 1vw;">[{{notice.articleId}}]</span>
           <span class="position-absolute" style="left: 6vw;">{{notice.title}}</span>
           <span class=" position-absolute" style="right: 6vw;">{{notice.regDate}}</span>
@@ -46,7 +46,14 @@
 import { mapGetters } from 'vuex'
 export default {
 computed: {
+  
   ...mapGetters(['getCenterList'])
+},
+methods: {
+  listPage(articleId) {     //페이지 이동
+    console.log(articleId)
+    location.href="/boardList?board=fqa&articleId=" + articleId
+  }
 }
 }
 </script>

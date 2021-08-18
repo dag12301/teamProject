@@ -1,6 +1,8 @@
 package com.icia.wapoo.service;
 
 import com.icia.wapoo.model.Article;
+import com.icia.wapoo.paging.PagingA;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +26,46 @@ public class ArticleService {
 		return list;
 	}
 	
-	//게시글 죄회
-	public List<Article> boardList(long articleId) 
+	//게시글 조회
+	public Article boardList(long articleId) 
 	{
-		List<Article> list = articleDao.boardList(articleId);
-		list.stream().forEach(System.out::println);
-		return list;
+		Article article = null;
+		
+		try 
+		{
+			article = articleDao.boardList(articleId);
+		}
+		catch(Exception e)
+		{
+			System.out.println();
+			System.out.println(e);
+		}
+		
+		System.out.println(article);
+		
+		
+		return article;
+	}
+	
+	//조회수 증가
+	public int boardHit(long articleId)
+	{
+		int count = 0;
+		
+		try 
+		{
+			
+			count = articleDao.boardHit(articleId);	
+			
+		}
+		catch(Exception e)
+		{
+			
+			System.out.println();
+			System.out.println(e);
+		}
+		
+		return count;
 	}
 	
 	//게시글 등록
@@ -97,6 +133,34 @@ public class ArticleService {
 
 		return count;
 	}
+	
+	
+	//총게시글 수
+	public int getBoardListCnt(long boardId) throws Exception {
+		
+		int count = 0;
+		
+		count = articleDao.getBoardListCnt(boardId);
+		
+		return count;
+
+	}
+
+	//페이징 번호 맞게 출력
+	public List<Article> getBoardList(PagingA paging) throws Exception {
+
+		List<Article> list = articleDao.getBoardList(paging);
+		
+		
+		
+		return list;
+
+	}
+
+
+
+	
+	
 		
 }
 

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import http from "@/api/http";
+import http from "@/api/article.js";
 import { mapActions, mapGetters } from "vuex";
 export default {
   computed: {

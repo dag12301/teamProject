@@ -3,11 +3,13 @@ package com.icia.wapoo.controller;
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.Article;
 import com.icia.wapoo.model.FileData;
+import com.icia.wapoo.paging.PagingA;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,24 +52,26 @@ public class ArticleController {
 		return articleService.listAllByBoard(boardId);
 	}
 	
-	 @GetMapping(value="/test")
-	    public String testA(@RequestParam Map<String, Object> userData)
-	    {
-	        System.out.println();
-	    	return "테스트요청";
-	    }
+	//테스트
+	@GetMapping(value="/test")
+    public String testA(@RequestParam Map<String, Object> userData)
+    {
+        System.out.println();
+    	return "테스트요청";
+    }
 	
 	//글 업로드
 	@PostMapping("/board/writeProc")
-	public ResponseEntity write( @RequestBody Map<String, Object> writeForm)
+	public ResponseEntity write( @RequestBody Map<String, Object> writeForm,HttpServletRequest request)
 	{
-//		//JWT 토큰값
-//		String JWT = jwtService.resolveToken(request);
-//		Map<String, Object> token = jwtService.getUserInfo(JWT);
-//		// token에서 memberId 값 가져오기
-//		int writerId = (int) token.get("memberId");
+		//JWT 토큰값
+		String JWT = jwtService.resolveToken(request);
+		Map<String, Object> token = jwtService.getUserInfo(JWT);
+		// token에서 memberId 값 가져오기
+		long memberId = (long) token.get("memberId");
 		//test 멤버 값
-		long memberId = 1;
+		//long memberId = 1;
+		System.out.println(memberId);
 		
 		Map<String, Object> writeData = (Map<String, Object>) writeForm.get("params");
 		System.out.println(writeData);
@@ -93,22 +97,57 @@ public class ArticleController {
 	
 	//게시글 죄회
 	@GetMapping("/board/list")
-	public List<Article> boardList(long articleId)
+	public Article boardList(long articleId, HttpServletRequest request)
 	{
+		//조큰 값 없으면
+		long memberId = 0;
+		
+		try
+		{
+			//JWT 토큰값
+			String JWT = jwtService.resolveToken(request);
+			Map<String, Object> token = jwtService.getUserInfo(JWT);
+			// token에서 memberId 값 가져오기
+			 memberId = (long) token.get("memberId");
+		}
+		catch(Exception e)
+		{
+			System.out.println("memberId 없음");
+		}
+		
+		//articleId
 		System.out.println(articleId);
+		
+		Article article = null;
 		
 		if(articleId > 0)
 		{
 			
-			return articleService.boardList(articleId);
-		}
-		else
-		{
+			article = articleService.boardList(articleId);
 			
-			return articleService.boardList(articleId);
+			if(article != null && memberId != article.getWriterId())
+			{
+				//조회수 증가
+				int count = 0;
+				
+				count = articleService.boardHit(articleId);
+				
+				
+				if(count > 0)
+				{
+					System.out.println("조회수 증가");
+				}
+			}
+			else
+			{
+				System.out.println("게시를 없거나, 조회수 뻥튀기 안됌");
+			}
+			
+			
 		}
 		
 		
+		return article;
 	}
 	
 	
@@ -124,9 +163,14 @@ public class ArticleController {
 		//테스트 
 		long memberId = 1;
 		
+		Map<String, Object> params = (Map<String, Object>) ListData.get("params");
+		System.out.println(params);
+		String i = (String)params.get("writerId");
+		
+		
 	
-		long writerId = Integer.parseInt((String)ListData.get("writerId"));
-		long articleId = Integer.parseInt((String)ListData.get("articleId"));
+		long writerId = (long)Integer.parseInt((String)params.get("writerId"));
+		long articleId = (long) Integer.parseInt((String)params.get("articleId"));
 		
 		System.out.println("writerId : " +writerId);
 		System.out.println("articleId : " +articleId);
@@ -151,6 +195,41 @@ public class ArticleController {
 	}
 	
 	
+	//페이징처리 리스트
+	@GetMapping(value="/pagingBoard")
+	public List<Article> getBoardList(@RequestParam(required = false, defaultValue = "1") int page,
+									  @RequestParam(required = false, defaultValue = "1") int range,
+									  @RequestParam long boardId) throws Exception 
+	{
+		//전체 게시글 개수
+		int listCnt = articleService.getBoardListCnt(boardId);
+
+	    //Pagination 객체생성
+	
+			PagingA paging = new PagingA();
+	
+			paging.pageInfo(page, range, listCnt);
+	
+			List<Article>  list =  articleService.getBoardList(paging);
+	
+			return list;
+	}
+	
+	//페이징 필요값들
+	@GetMapping(value="/pagingBoard/paging")
+	public PagingA paging(@RequestParam(required = false, defaultValue = "1") int page,
+			  @RequestParam(required = false, defaultValue = "1") int range,
+			  @RequestParam long boardId) throws Exception 
+	{
+		//전체 게시글 개수
+		int listCnt = articleService.getBoardListCnt(boardId);
+				
+		PagingA paging = new PagingA();
+		
+		paging.pageInfo(page, range, listCnt);
+		
+		return paging;
+	}
 	
 	
 }

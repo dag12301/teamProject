@@ -4,34 +4,27 @@
     
     <div class="service-group mb-5 ">
         
-        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" @click="getCountNotice(1)">공지사항</router-link>
+        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" >공지사항</router-link>
         
-        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }" @click.prevent="getCountQueAn(2)">Q&A</router-link>
+        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }" >Q&A</router-link>
         
-        <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }" @click="getCountFQA(3)">FQA</router-link>
-    
-      <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'BoardList' }" @click="getCountFQA(3)">boardList</router-link>
+        <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }">FQA</router-link>
       
     </div>
 
 
-    <router-view></router-view>
+    <router-view ></router-view>
   </div>  
 </template>
 
 <script>
-import * as authAPI from "@/api/auth";
+import * as authAPI from "@/api/article.js";
 import { mapMutations } from 'vuex';
 
 export default {
   data () {
     return {
-      data : [
-        { boardId : 1},
-        { boardId : 2},
-        { boardId : 3}
-      ],
-      boardId: 1
+      articleId: null
     }
     
   },
@@ -107,6 +100,11 @@ export default {
       })
     }
     
+  },
+  mounted() {
+    this.getCountNotice(1),
+    this.getCountQueAn(2),
+    this.getCountFQA(3)
   }
 }
 </script>

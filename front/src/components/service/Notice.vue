@@ -51,7 +51,7 @@ computed: {
 methods: {
   listPage(articleId) {
     console.log(articleId)
-    location.href="/boardList?articleId=" + articleId
+    location.href="/boardList?board=notice&articleId=" + articleId
   }
 }
 }

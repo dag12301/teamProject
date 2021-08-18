@@ -16,14 +16,17 @@
       <!-- 리스트 -->
       <table class="table table-striped ">
         <tbody>
-          <tr v-for=" (qn,index) in this.$store.state.serviceCenter.queAn" :key="index">
+          <tr v-for=" (qn,index) in this.$store.state.serviceCenter.queAn" :key="index"  @click="listPage(qn.articleId, qn.status)">
             <td class="col-1">{{index}}</td>
             <td class="col-1">{{qn.title}}</td>
             <td class="col-5 text-left">{{qn.body}}</td>
             <td class="col-2">{{qn.regDate}}</td>
             <td class="col-1">{{qn.hit}}</td>
-            <td class="col-1">
-              icon
+            <td class="col-1" v-if="privateToggle(qn.status)">
+              <i class="fas fa-lock-open"></i>
+            </td>
+            <td class="col-1" v-else>
+              <i class="fas fa-lock"></i>
             </td>
           </tr>
 
@@ -55,7 +58,21 @@
 <script>
 
 export default {
-  
+  methods: {
+    listPage(articleId, status) {     //페이지 이동
+    if(this.privateToggle(status)){
+      console.log(articleId)
+      return location.href="/boardList?board=qna&articleId=" + articleId
+    }
+    return alert("비공개 입니다")
+    
+  },
+    privateToggle (status) {    //공개 비공개 검사
+      if(status === 'b'){
+        return true
+      }
+    }
+  }
 }
 </script>
   
