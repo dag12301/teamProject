@@ -2,7 +2,7 @@
   <transition name="slide">
     <div id="sideBar">
       <!--사이드 바-->
-    
+
       <div id="layoutSidenav">
         <div id="layoutSidenav_nav" v-if="sidebar">
           <nav
@@ -35,13 +35,16 @@
                   >이벤트</router-link
                 >
 
-                <router-link class="nav-link" :to="{ name: 'ServiceCenter' }" exact
+                <router-link
+                  class="nav-link"
+                  :to="{ name: 'ServiceCenter' }"
+                  exact
                   >고객센터</router-link
                 >
                 <router-link class="nav-link" :to="{ name: 'Test' }" exact
                   >Test</router-link
                 >
-<!--
+                <!--
                 <a
                   class="nav-link collapsed"
                   href="#"
@@ -85,7 +88,6 @@
           </nav>
         </div>
       </div>
-    
     </div>
   </transition>
 </template>

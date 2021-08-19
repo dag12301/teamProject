@@ -19,7 +19,7 @@ export default {
       const script = document.createElement("script");
       script.onload = () => kakao.maps.load(this.initMap);
       script.src =
-        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0feaa40f6d94ad4428a4f4f8a6cab340";
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=0feaa40f6d94ad4428a4f4f8a6cab340&libraries=services,clusterer,drawing";
       document.head.appendChild(script);
     }
   },
@@ -34,6 +34,15 @@ export default {
 
       var map = new kakao.maps.Map(container, options); // eslint-disable-line no-unused-vars
       //지도 생성 및 객체 리턴
+      const markerPosition = new kakao.maps.LatLng(
+        35.19656853772262,
+        129.0807270648317
+      );
+
+      const marker = new kakao.maps.Marker({
+        position: markerPosition,
+      });
+      marker.setMap(map);
     },
   },
 };

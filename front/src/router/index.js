@@ -18,32 +18,37 @@ const routes = [
   {
     path: "/food",
     name: "Food",
+    component: () => import("../views/food/Food.vue"),
+  },
+  {
+    path: "/foodlist",
+    name: "FoodList",
     component: () => import("../views/food/FoodList.vue"),
   },
-  
-
   {
-    path: "/test",
-    name: "Test",
-    component: () => import("../views/Test.vue"),
+    path: "/event",
+    name: "Event",
+    component: () => import("../views/event/Event.vue"),
+  },
+  {
+    path: "/fooddetail",
+    name: "FoodDetail",
+    component: () => import("../views/food/FoodDetail.vue"),
   },
   {
     path: "/serviceCenter",
     name: "ServiceCenter",
     component: () => import("../views/serviceCenter/ServiceCenter.vue"),
-    children: 
-    [
+    children: [
       {
         path: "/notice",
         name: "Notice",
         component: () => import("../components/service/Notice.vue"),
-
       },
       {
         path: "/qna",
         name: "Q&A",
         component: () => import("../components/service/Q&A.vue"),
-
       },
       {
         path: "/fqa",
@@ -51,18 +56,28 @@ const routes = [
         component: () => import("../components/service/FQA.vue"),
       },
       {
-        path: "/boardList",
-        name: "BoardList",
-        component: () => import("../components/service/BoardList.vue")
-      },
-      {
         path: "/writeForm",
         name: "WriteForm",
-        component: () => import("../components/service/WriteForm.vue")
-      }
-    ] 
-      
-  }
+        component: () => import("../components/service/WriteForm.vue"),
+      },
+      {
+        path: "/boardList",
+        name: "BoardList",
+        component: () => import("../components/service/BoardList.vue"),
+      },
+    ],
+  },
+
+  {
+    path: "/test",
+    name: "Test",
+    component: () => import("../views/Test.vue"),
+  },
+  {
+    path: "/storeregister",
+    name: "StoreRegister",
+    component: () => import("../views/store/StoreRegister.vue"),
+  },
 ];
 
 const router = createRouter({
@@ -75,7 +90,7 @@ router.afterEach(() => {
   setTimeout(() => {
     //
   }, 0);
-  console.log("hello");
+  console.log("페이지를 이동합니다");
 });
 
 export default router;

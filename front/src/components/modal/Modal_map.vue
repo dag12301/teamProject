@@ -10,14 +10,8 @@
           <div class="modal-body">
             <slot name="body">default body</slot>
           </div>
-
           <div class="modal-footer">
-            <slot name="footer">
-              default footer
-              <button class="modal-default-button" @click="$emit('close')">
-                OK
-              </button>
-            </slot>
+            <slot name="footer">default body</slot>
           </div>
         </div>
       </div>
@@ -29,7 +23,7 @@
 import { mapMutations } from "vuex";
 export default {
   methods: {
-    ...mapMutations(["SET_MODAL_LOGIN"]),
+    ...mapMutations(["SET_MODAL_MAP"]),
   },
 };
 </script>
@@ -37,7 +31,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  z-index: 999;
 }
 .modal-mask {
   position: fixed;
@@ -57,14 +50,14 @@ export default {
 }
 
 .modal-container {
-  width: 420px;
+  width: 800px;
+  height: 640px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
 }
 
 .modal-header h3 {
@@ -74,6 +67,7 @@ export default {
 
 .modal-body {
   margin: 20px auto;
+  width: 380px;
 }
 
 .modal-default-button {

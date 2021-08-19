@@ -20,6 +20,8 @@ instance.interceptors.request.use(function (config) {
     if (access_token != null) {
       console.log("===보낼토큰===");
       console.log(access_token);
+      console.log("====오리진====");
+      console.log(location.origin);
       config["headers"] = {
         accesstoken: access_token,
       };

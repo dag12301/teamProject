@@ -12,6 +12,20 @@
       
     </div>
 
+      <router-link
+        class="btn btn-success ms-5 col-2"
+        :to="{ name: 'FQA' }"
+        @click="getCountFQA(3)"
+        >FQA</router-link
+      >
+
+      <router-link
+        class="btn btn-success ms-5 col-2"
+        :to="{ name: 'BoardList' }"
+        @click="getCountFQA(3)"
+        >boardList</router-link
+      >
+    
 
     <router-view ></router-view>
   </div>  
@@ -22,18 +36,19 @@ import * as authAPI from "@/api/article.js";
 import { mapMutations } from 'vuex';
 
 export default {
-  data () {
+  data() {
     return {
       articleId: null
     }
     
   },
-  computed: {
-
-},
+  computed: {},
   methods: {
     ...mapMutations([
-      "serviceCenter/setCenterList","SET_COUNT_NOTICE", "SET_COUNT_QUEAN", "SET_COUNT_FQA"
+      "serviceCenter/setCenterList",
+      "SET_COUNT_NOTICE",
+      "SET_COUNT_QUEAN",
+      "SET_COUNT_FQA",
     ]),
     getCountNotice(boardId) {     // notice 통신 
       if(this.$store.state.countNotice){
@@ -109,9 +124,7 @@ export default {
 </script>
 
 <style scoped>
-
-
-  /* .service-group button{
+/* .service-group button{
     height: 4vh;
     width: 10vw;
   } */

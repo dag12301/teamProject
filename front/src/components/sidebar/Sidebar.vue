@@ -18,9 +18,19 @@
     <SidebarLink to="/#" icon="fas fa-robot">아키네이터</SidebarLink>
     <SidebarLink to="/" icon="fas fa-home">홈페이지</SidebarLink>
     <SidebarLink to="/cart" icon="fas fa-shopping-cart">장바구니</SidebarLink>
-    <SidebarLink to="/serviceCenter" icon="far fa-comments">고객센터</SidebarLink>
+    <SidebarLink to="/serviceCenter" icon="far fa-comments"
+      >고객센터</SidebarLink
+    >
     <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
+    <SidebarLink to="/event" icon="fas fa-utensils">이벤트</SidebarLink>
     <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
+    <SidebarLink
+      to="/storeregister"
+      icon="fas fa-store"
+      v-if="userInfo[1] == 'SELLER'"
+    >
+      가게등록</SidebarLink
+    >
 
     <span class="burger" @click="toggleSidebar">
       <BurgerButton />
@@ -33,12 +43,18 @@ import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import SidebarLink from "./SidebarLink.vue";
 import Profile from "./Profile.vue";
 import BurgerButton from "./Burger.vue";
+import { mapGetters } from "vuex";
 
 export default {
   props: {},
   components: { SidebarLink, BurgerButton, Profile },
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth };
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: "auth/getUserInfo",
+    }),
   },
 };
 </script>

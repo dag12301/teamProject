@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.icia.wapoo.dao.ArticleDao">
 
 <!-- 글 조회 -->
@@ -18,7 +16,7 @@ SELECT	IFNULL(articleId, '') AS articleId,
 	IFNULL(board_id, 0) AS board_id,
 	IFNULL(writer_id, 0) AS writer_id
 FROM article
-  WHERE articleId = #{value}
+  	WHERE articleId = #{value}
     </select>
 
 

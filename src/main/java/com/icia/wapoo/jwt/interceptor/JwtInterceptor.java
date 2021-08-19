@@ -7,10 +7,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 @Component
 public class JwtInterceptor implements HandlerInterceptor {
-    private static final String HEADER_AUTH = "authorization";
+    private static final String HEADER_AUTH = "Authorization";
 
     @Autowired
     private JwtService jwtService;
@@ -26,6 +27,15 @@ public class JwtInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        Enumeration headerNames = request.getHeaderNames();
+        while(headerNames.hasMoreElements()) {
+            String name = (String) headerNames.nextElement();
+            String value = request.getHeader(name);
+            System.out.println("name : " +name);
+            System.out.println("value : " + value);
+        }
+
         final String token = request.getHeader(HEADER_AUTH);
         System.out.println("인터셉터에서 받은 토큰 -> "+ token);
         if(token != null && jwtService.validateToken(token)){
