@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PagingA {
-	private int listSize = 10;                //초기값으로 목록개수를 10으로 셋팅
+	private int listSize = 2;                //리스트 목록개수
 
-	private int rangeSize = 5;            //초기값으로 페이지범위를 10으로 셋팅
+	private int rangeSize = 2;            //버튼 누루면 건너뛰는 페이지수
 
 	private int page;						// 현재 페이지
 
@@ -27,8 +27,6 @@ public class PagingA {
 	private int endPage;					// 각 페이지 범위 끝 번호
 
 	private int startList;					//DB게시판
-	
-	private int endList;					//DB게시판 끝번호
 
 	private boolean prev;					//이전 페이지
 
@@ -48,37 +46,38 @@ public class PagingA {
 
 		//전체 페이지수 
 
-		this.pageCnt = (int) (Math.ceil(total/listSize) + Math.ceil(total/listSize));
+		this.pageCnt = (int) Math.ceil(total/listSize) ;
 
 		
 
 		//시작 페이지
 
-		this.startPage = (range - 1) * rangeSize + 1 ;
+		this.startPage = (range - 1) * rangeSize - 1 ;
 
 		
 
 		//끝 페이지
 
-		this.endPage = range * rangeSize;
+		this.endPage = range * rangeSize + 1;
 
 				
 
 		//DB게시판 시작번호
 
 		this.startList = (page - 1) * listSize;
-		//DB게시판 끝번호
-		this.endList = page * listSize;
+		
 
 		//이전 버튼 상태
 
-		this.prev = range == 1 ? false : true;
+		this.prev = page == 1 ? false : true;
+		
+		
 
 		
 
 		//다음 버튼 상태
 
-		this.next = endPage > pageCnt ? false : true;
+		this.next = endPage  > pageCnt ? false : true;
 
 		if (this.endPage > this.pageCnt) {
 

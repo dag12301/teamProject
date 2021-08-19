@@ -101,7 +101,7 @@ FROM
 	article
 WHERE
 	board_id = #{boardId}
-LIMIT #{paging.startList}, #{paging.endList}
+LIMIT #{paging.startList}, #{paging.listSize}
 
 </select>
 <!-- 전체 페이지 수 -->

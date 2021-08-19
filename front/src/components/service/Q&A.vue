@@ -36,18 +36,20 @@
       <!-- 순서 버튼 -->
     <nav aria-label="Page navigation example" class="mt-5 position-relative .center-block" style="">
       <ul class="pagination position-absolute" style="left: 30vw" >
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Previous">
+        <!-- 이전 순서 버튼 -->
+        <li class="page-item" v-if="this.$store.state.serviceCenter.pagingQueAn.prev == true">
+          <a class="page-link" href="#" aria-label="Previous" @click="fn_prev(paging.range, paging.rangeSize)">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li class="page-item" v-for="num in pageCnt" :key="num">
-          <a class="page-link" href="#" >{{num}}</a>
+        <!-- 숫자 순서 버튼 -->
+        <li class="page-item" v-for="num in this.getnumSize" :key="num">        
+          <a class="page-link" href="#" @click="numPage(num, this.$store.state.serviceCenter.pagingQueAn.range)" >{{num}}</a>
         </li>
-        <li class="page-item"><a class="page-link" href="#">{{paging}}</a></li>
         
+        <!-- 다음 순서 버튼 -->
         <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next">
+          <a class="page-link" href="#" aria-label="Next" @click="fn_next(paging.range, paging.rangeSize)">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
@@ -59,30 +61,38 @@
 </template>
 
 <script>
-//import * as authAPI from "@/api/article.js";
+import * as authAPI from "@/api/article.js";
+import { mapMutations, mapGetters  } from 'vuex';
 
 export default {
-  data() {
+  data () {
     return {
-      paging: {
-      },
-      pageCnt:[]
+      paging:[]
     }
   },
+  ...mapMutations([
+      
+      
+    ]),
   computed: {
-    
+    ...mapGetters({
+      getnumSize: "serviceCenter/getnumSize",
+      getQueAnPaging: "serviceCenter/getQueAnPaging"
+      
+      
+    })
   },
+
+  
   methods: {
-    pageNumber (pageCnt) {
-      const list= []
-      for(var i = 1; i <= pageCnt; i++){
-        list.push(i)
-      }
-      return list
-    },
+    ...mapMutations({
+    setCenterQueAn: 'serviceCenter/setCenterQueAn', 
+    nullPagingpagingQueAn: "serviceCenter/nullPagingpagingQueAn",
+    nullCenterQueAn: "serviceCenter/nullCenterQueAn",
+    setPagingQueAn: "serviceCenter/setPagingQueAn"
+    }),
     listPage(articleId, status) {     //페이지 이동
       if(this.privateToggle(status)){
-        console.log(articleId)
         return location.href="/boardList?board=qna&articleId=" + articleId
       }
       return alert("비공개 입니다")
@@ -92,19 +102,49 @@ export default {
         return true
       }
     },
-    // numPage() {           //페이지 번호로 이동 /qna getBoardList
-    //   authAPI
-    //   .getBoardList(2, page, range)
-    //   .then(res => {
-    //     this.$store.commit('serviceCenter/pagingQueAn', null)
-    //   })
-      
-    // }
+    fn_prev( range1, rangeSize1) {       //이전버튼
+      let page = ((range1 - 2) * rangeSize1) + 1
+      let range = range1 - 1
+      if(range < this.$store.state.serviceCenter.originRange[2])
+      {
+        range = this.$store.state.serviceCenter.originRange[2]
+      }
+      console.log("prev---------------------------")
+      console.log(range1)
+      console.log("---------------------------")
+      this.numPage(page, range)
+    },
+    fn_next(range1, rangeSize1) {       ////다음버튼
+      console.log("next---------------------------")
+      console.log(range1)
+      console.log("---------------------------")
+      var page = parseInt((range1 * rangeSize1)) 
+      var range = parseInt(range1) + parseInt(1)//this.$store.state.serviceCenter.originRange[2]
+      console.log("---------------------------" + range)
+      this.numPage(page, range)
+    },
+    numPage(page, range) {           //페이지 번호로 이동 axios
+      authAPI
+      .getBoardList(2, page, range)
+      .then(res => {
+        this.nullCenterQueAn()         //테이터 삭제
+        this.nullPagingpagingQueAn()
+        console.log(res.data.paging)
+        this.setPagingQueAn(res.data.paging)
+        console.log("영기이"+ this.$store.state.serviceCenter.pagingQueAn.range)
+        res.data.list.forEach(element => {      //vuex에 데이터 넣기
+          this.setCenterQueAn(element)   
+        });
+        
+      })
+    }
   },
-  created () {
-    this.paging = this.$store.state.serviceCenter.pagingQueAn
-    this.pageCnt = this.pageNumber(this.paging.pageCnt)
+  mounted() {
+    console.log("---------------------------")
+      console.log(this.$store.state.serviceCenter.pagingQueAn.prev)
+      console.log("---------------------------")
     
+    this.paging = this.getQueAnPaging
   }
 }
 </script>

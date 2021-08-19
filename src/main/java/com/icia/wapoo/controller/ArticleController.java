@@ -226,12 +226,7 @@ public class ArticleController {
 	public Map<String, Object> getBoardList(@RequestParam(required = false, defaultValue = "1") int page,
 									  @RequestParam(required = false, defaultValue = "1") int range,
 									  @RequestParam long boardId) throws Exception 
-	{
-		System.out.println("page : " +page);
-		System.out.println("page : " +page);
-		System.out.println("boardId : " +boardId);
-		
-		//Map<String, Object> writeData = (Map<String, Object>) writeForm.get("params");
+	{	
 		Map<String, Object> map = new HashMap<>();
 		
 		//전체 게시글 개수
@@ -242,15 +237,18 @@ public class ArticleController {
 			PagingA paging = new PagingA();
 	
 			paging.pageInfo(page, range, total);
+			System.out.println("range : " + range);
+			System.out.println("total : " + total);
+			System.out.println("page : " + page );
+			System.out.println("StartList : " + paging.getStartList());
+		
+			System.out.println("pageCnt : " + paging.getPageCnt());
 			
 			System.out.println(paging.getStartList());
 			
-			System.out.println("page : " + page);
-			System.out.println("range: " + range);
-			System.out.println("endList: " + paging.getEndList());
+			System.out.println("startPage: " + paging.getStartPage());
+			System.out.println("endPage: " + paging.getEndPage());
 			
-			System.out.println(paging.getEndPage());
-			System.out.println(paging.getStartPage());
 	
 			List<Article>  list =  articleService.getBoardList(paging, boardId);
 			
