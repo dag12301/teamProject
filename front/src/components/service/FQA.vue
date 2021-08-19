@@ -9,6 +9,7 @@
         class="list-group-item"
         v-for="notice in this.$store.state.serviceCenter.FQA"
         :key="notice.id"
+        @click="listPage(notice.articleId)"
       >
         <span class="position-absolute" style="left: 1vw"
           >[{{ notice.articleId }}]</span
@@ -59,6 +60,13 @@ import { mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["getCenterList"]),
+  },
+  methods: {
+    listPage(articleId) {
+      //페이지 이동
+      console.log(articleId);
+      location.href = "/boardList?board=fqa&articleId=" + articleId;
+    },
   },
 };
 </script>

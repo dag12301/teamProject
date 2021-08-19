@@ -37,7 +37,6 @@ export default {
 <style scoped>
 * {
   box-sizing: border-box;
-  z-index: 999;
 }
 .modal-mask {
   position: fixed;

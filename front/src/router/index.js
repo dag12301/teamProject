@@ -60,6 +60,11 @@ const routes = [
         name: "WriteForm",
         component: () => import("../components/service/WriteForm.vue"),
       },
+      {
+        path: "/boardList",
+        name: "BoardList",
+        component: () => import("../components/service/BoardList.vue"),
+      },
     ],
   },
 
@@ -85,7 +90,7 @@ router.afterEach(() => {
   setTimeout(() => {
     //
   }, 0);
-  console.log("hello");
+  console.log("페이지를 이동합니다");
 });
 
 export default router;

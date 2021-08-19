@@ -19,13 +19,15 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private JwtInterceptor jwtInterceptor;
     /**
-     * 여기에 등록된 위치는 토큰없이 진행 가능함.
+     
      */
     private static final String[] EXCLUDE_PATHS = {
             "/api/member/register",
             "/api/member/login",
             "/test",
-            "/**",
+
+            "/**", // 
+
             "/api/validation/**",
             "/article/**",
             "/article/board",

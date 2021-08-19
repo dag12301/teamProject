@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.wapoo.dao.ArticleDao">
+
+<!-- 글 조회 -->
+<select id="boardSelect" parameterType="long" resultType="Article">
+SELECT	IFNULL(articleId, '') AS articleId,
+	IFNULL(regDate, '') AS regDate,
+	IFNULL(updateDate, '') AS updateDate,
+	IFNULL(title, '') AS title,
+	IFNULL(BODY, '') AS BODY,
+	IFNULL(hit, 1) AS hit,
+	IFNULL(STATUS, '') AS STATUS,
+	IFNULL(parant_id, 0) AS parant_id,
+	IFNULL(board_id, 0) AS board_id,
+	IFNULL(writer_id, 0) AS writer_id
+FROM article
+  	WHERE articleId = #{value}
+    </select>
+
+
+<!-- 글 삭제 -->
+<delete id="boardDelete" parameterType="long">
+DELETE FROM article
+	WHERE articleId =#{value}
+
+</delete>
+
+
+<!-- 모든 게시물 -->
+<select id="selectAllByBoardId" parameterType="long" resultType="Article">
+	SELECT *
+	FROM `article`
+	WHERE board_id = #{boardId}
+</select>
+
+<!-- 게시물 보기 -->
+<select id="boardList" parameterType="long" resultType="Article">
+SELECT	IFNULL(articleId, '') AS articleId,
+		IFNULL(regDate, '') AS regDate,
+		IFNULL(updateDate, '') AS updateDate,
+		IFNULL(title, '') AS title,
+		IFNULL(BODY, '') AS BODY,
+		IFNULL(hit, 1) AS hit,
+		IFNULL(STATUS, '') AS STATUS,
+		IFNULL(parant_id, 0) AS parantId,
+		IFNULL(board_id, 0) AS boardId,
+		IFNULL(writer_id, 0) AS writerId
+FROM article
+  	WHERE articleId = #{articleId}
+</select>
+
+<!-- 게시물 등록 -->
+<insert id="boardInsert" useGeneratedKeys="true" keyProperty="articleId" parameterType="Article">
+
+INSERT INTO article(
+	regDate,
+	updateDate,
+	title,
+	BODY,
+	hit,
+	STATUS,
+	board_id,
+	writer_id)
+VALUES (
+	NOW(),
+	NOW(),
+	#{title},
+	#{body},
+	0,
+	#{status},
+	#{boardId},
+	#{writerId}
+
+)
+</insert>
+	
+<!-- 게시물 조회수 증가 -->
+<update id="boardHit" parameterType="long">
+UPDATE article
+	SET hit = hit + 1
+WHERE articleId = #{articleId}
+</update>
+
+<!-- 페이징 처리 -->
+<select id="getBoardList" resultType="Article">
+SELECT
+	articleId,
+	regDate,
+	updateDate,
+	title,
+	BODY,
+	hit,
+	STATUS,
+	board_id AS boardId,
+	writer_id AS writerId
+FROM
+	article
+WHERE
+	board_id = #{boardId}
+LIMIT #{paging.startList}, #{paging.endList}
+
+</select>
+<!-- 전체 페이지 수 -->
+<select id="getBoardListCnt" resultType="int">
+SELECT
+
+	COUNT(*) AS listCnt
+
+FROM
+	article
+WHERE	
+	board_id = #{boardId}
+	</select>
+
+
+
+
+
+
+
+	
+	
+	
+</mapper>

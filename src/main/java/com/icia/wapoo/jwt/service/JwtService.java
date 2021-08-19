@@ -79,6 +79,7 @@ public class JwtService {
         Map<String, Object> claimMap = null;
         //return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody(); 원래코드
 
+
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(secretKey) // Set Key
@@ -90,6 +91,7 @@ public class JwtService {
             //Date expiration = claims.get("exp", Date.class);
             //String data = claims.get("data", String.class);
 
+
         } catch (ExpiredJwtException e) { // 토큰이 만료되었을 경우
             System.out.println(e);
 
@@ -98,8 +100,6 @@ public class JwtService {
 
         }
         return claimMap;
-
-
         //(DatatypeConverter.parseBase64Binary(secretKey))
     }
 

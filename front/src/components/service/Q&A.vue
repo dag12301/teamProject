@@ -32,13 +32,19 @@
         <tr
           v-for="(qn, index) in this.$store.state.serviceCenter.queAn"
           :key="index"
+          @click="listPage(qn.articleId, qn.status)"
         >
           <td class="col-1">{{ index }}</td>
           <td class="col-1">{{ qn.title }}</td>
           <td class="col-5 text-left">{{ qn.body }}</td>
           <td class="col-2">{{ qn.regDate }}</td>
           <td class="col-1">{{ qn.hit }}</td>
-          <td class="col-1">icon</td>
+          <td class="col-1" v-if="privateToggle(qn.status)">
+            <i class="fas fa-lock-open"></i>
+          </td>
+          <td class="col-1" v-else>
+            <i class="fas fa-lock"></i>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -55,9 +61,13 @@
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item" v-for="num in pageCnt" :key="num">
+          <a class="page-link" href="#" @click="numPage(num, 1)">{{ num }}</a>
+        </li>
+        <li class="page-item">
+          <a class="page-link" href="#">{{ paging }}</a>
+        </li>
+
         <li class="page-item">
           <a class="page-link" href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
@@ -70,7 +80,60 @@
 </template>
 
 <script>
-export default {};
+import * as authAPI from "@/api/article.js";
+import { mapMutations } from "vuex";
+
+export default {
+  ...mapMutations([
+    "serviceCenter/setCenterList",
+    "SET_COUNT_NOTICE",
+    "SET_COUNT_QUEAN",
+    "SET_COUNT_FQA",
+  ]),
+  data() {
+    return {
+      paging: {},
+      pageCnt: [],
+    };
+  },
+  computed: {},
+  methods: {
+    pageNumber(pageCnt) {
+      const list = [];
+      for (var i = 1; i <= pageCnt; i++) {
+        list.push(i);
+      }
+      return list;
+    },
+    listPage(articleId, status) {
+      //페이지 이동
+      if (this.privateToggle(status)) {
+        console.log(articleId);
+        return (location.href = "/boardList?board=qna&articleId=" + articleId);
+      }
+      return alert("비공개 입니다");
+    },
+    privateToggle(status) {
+      //공개 비공개 검사
+      if (status === "b") {
+        return true;
+      }
+    },
+    numPage(page, range) {
+      //페이지 번호로 이동 /qna getBoardList nullCenterQueAn
+      authAPI.getBoardList(2, page, range).then((res) => {
+        this.$store.commit("serviceCenter/nullCenterQueAn");
+        //this.$store.commit('serviceCenter/setCenterQueAn', res.data.list)
+        this.paging = res.data.paging;
+        console.log(res);
+      });
+    },
+  },
+  created() {
+    this.paging = this.$store.state.serviceCenter.pagingQueAn;
+    this.pageCnt = this.pageNumber(this.paging.pageCnt);
+  },
+};
 </script>
 
 <style scoped>

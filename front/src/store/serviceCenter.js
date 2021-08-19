@@ -1,6 +1,9 @@
 export default {
   namespaced: true,
   state: {
+    pagingNotices: [],
+    pagingQueAn: [],
+    pagingFQA: [],
     notices: [],
     queAn: [],
     FQA: [],
@@ -24,6 +27,22 @@ export default {
     },
     setCenterFQA(state, payload) {
       return state.FQA.push(payload);
+    },
+    setPagingNotices(state, payload) {
+      //Notices페이지 정보
+      return (state.pagingNotices = payload);
+    },
+    setPagingQueAn(state, payload) {
+      //QueAn페이지 정보
+      return (state.pagingQueAn = payload);
+    },
+    setPagingFQA(state, payload) {
+      //FQA페이지 정보
+      return (state.pagingFQA = payload);
+    },
+    nullCenterQueAn(state, payload) {
+      //QueAn페이지 삭제
+      return (state.pagingFQA = payload);
     },
   },
   actions: {},

@@ -163,6 +163,7 @@ export default {
 <style scoped>
 * {
   color: black;
+  z-index: 999;
 }
 .header-top-wrapper {
   display: flex;

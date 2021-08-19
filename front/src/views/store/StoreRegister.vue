@@ -3,7 +3,7 @@
     <h1>가게 등록 페이지</h1>
     <notifications
       group="notifyApp"
-      position="right right"
+      position="bottom right"
       style="margin-right: 30vh"
     />
     <div class="store-write-notification-wra">
@@ -27,7 +27,7 @@
       <!-- 번호 -->
       <div class="input-group-sm mb-3">
         <span class="input-group-text" id="store_contact"
-          >가게 연락처를 입력해주세요</span
+          >가게 연락처를 입력해주세요.</span
         >
         <input
           type="text"
@@ -123,7 +123,7 @@
           <div class="store-file-upload-example">
             <div class="store-file-image-example-wrapper">이미지</div>
             <div class="store-file-notice-item">
-              실사진 최소 3장 이상 등록하셔야 하며, 가로사진을 권장합니다.
+              실사진 최소 1장 이상 등록하셔야 하며, 가로사진을 권장합니다.
             </div>
             <div class="store-file-notice-item store-file-notice-item-red">
               사진 올릴떄 주의사항
@@ -192,6 +192,7 @@ import axios from "axios";
 // import { mapState } from "vuex";
 import JWT from "@/api/jwt";
 import Map from "@/components/modal/Map.vue";
+import { error, success } from "@/api/notification";
 import { mapGetters, mapState, mapMutations } from "vuex";
 export default {
   components: { Map },
@@ -279,15 +280,50 @@ export default {
     },
     async storeWrite() {
       let formData = new FormData();
+      if (!this.store_name) {
+        // 에러
+        error("가게 이름을 입력해주세요!", this);
+        return false;
+      }
       formData.append("name", this.store_name);
+      // 전화번호 valiation
+      const phoneCheckReg = /^\d{2,3}-\d{3,4}-\d{4}$/;
+      let phoneValidation = phoneCheckReg.test(this.store_contact);
+      if (!this.store_contact) {
+        error("가게 전화번호를 입력해주세요!", this);
+        return false;
+      } else if (phoneValidation === false) {
+        error("가게번호는 숫자와 -(하이픈)만 입력 가능합니다.");
+        return;
+      }
       formData.append("phone", this.store_contact);
+
+      if (!this.address.address_name) {
+        error("주소찾기를 눌러 주소를 입력해주세요", this);
+        return false;
+      }
       formData.append("address", this.address.address_name);
+      if (!this.addressDetail) {
+        error("상세주소를 입력해주세요!", this);
+        return false;
+      }
       formData.append("addressDetail", this.addressDetail);
       formData.append("localx", this.address.x);
       formData.append("localy", this.address.y);
+      if (!this.store_type) {
+        error("가게 종류를 입력해주세요!", this);
+        return false;
+      }
       formData.append("storeKind", this.store_type);
+      if (!this.store_desc) {
+        error("가게 상세정보를 입력해주세요!", this);
+        return false;
+      }
       formData.append("body", this.store_desc);
-      //오너 아이디 적용해주기
+      if (this.files.length < 1) {
+        error("최소 1장의 사진을 업로드 하세요", this);
+        return;
+      }
       // 파일 추가
       for (let i = 0; i < this.files.length; i++) {
         formData.append("fileList", this.files[i].file);
@@ -305,62 +341,18 @@ export default {
         })
         .then((response) => {
           if (response.status === 200) {
-            alert("가게 등록에 성공했습니다");
+            success("가게 등록에 성공했습니다.", this);
+            alert("가게 등록에 성공했습니다. 관리자의 승인을 기다립니다");
+            this.$$router.push({ path: "/" });
           }
         })
         .catch((error) => {
-          console.log(error);
+          if (error.response.status === 500) {
+            alert("오류가 발생했습니다. 다시 로그인해 주세요!");
+            this.$store.dispatch("auth/logout");
+            this.$router.push({ path: "/" });
+          }
         });
-
-      // let params = new URLSearchParams();
-
-      // params.append('latitude', this.latitude);
-      // params.append('longitude', this.longitude);
-      // 카카오 지도에서 받은 위도경도 붙이기
-
-      // params.append("regDate", this.date);
-
-      // if (this.files.length < 3) {
-      //   error("최소 3장의 사진을 업로드 하세요", this);
-      //   return;
-      // }
-      // let params = {
-      //   storeId: "1",
-      // };
-      // request("post", "store/addstore", params)
-      //   //성공시 파일업로드 실행
-      //   .then((res) => {
-      //     //res에는 storeid가 담겨있다
-      //     console.log(res);
-      //     for (let i = 0; i < this.files.length; i++) {
-      //       let images = new FormData();
-      //       images.append("storeId", res);
-      //       images.append("file", this.files[i].file);
-      //       console.log("===========전송하는 파라메타=========");
-      //       console.log(images.get);
-
-      //       requestFile("post", "store/uploadFile", images)
-      //         .then((response) => {
-      //           if (response !== "FAIL") {
-      //             // this.$toasted.show(`글 작성이 완료되었습니다`, {
-      //             //   type: "success",
-      //             //   position: "top-right",
-      //             //   duration: 2500,
-      //             //   singleton: true,
-      //             // });
-      //             alert("글 작성이 완료되었습니다");
-      //             if (this.$route.path !== "/") {
-      //               this.$router.push("/");
-      //             }
-      //           } else {
-      //             error("글 작성에 실패했습니다", this);
-      //           }
-      //         })
-      //         .catch((error) => {
-      //           console.log(error);
-      //         });
-      //     }
-      //   });
     },
   },
 };

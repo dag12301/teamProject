@@ -6,9 +6,8 @@
     <button
       class="btn btn-outline-secondary"
       type="button"
-      data-bs-toggle="dropdown"
       aria-expanded="false"
-      @click="PrivateStatus"
+      @click="privateStatus"
     >
       {{ statusMessage }}
     </button>
@@ -56,7 +55,7 @@
       id="btn"
       type="button"
       class="btn btn-success"
-      @click="writeRequest"
+      @click.prevent="writeRequest"
     >
       작성
     </button>
@@ -67,7 +66,7 @@
 </template>
 
 <script>
-import * as authAPI from "@/api/auth";
+import * as authAPI from "@/api/article.js";
 
 export default {
   data() {
@@ -79,12 +78,10 @@ export default {
     };
   },
   methods: {
-    PrivateStatus() {
+    privateStatus() {
       if (this.statusMessage === "공개") {
-        console.log(this.statusMessage);
         this.statusMessage = "비공개";
       } else {
-        console.log(this.statusMessage);
         this.statusMessage = "공개";
       }
     },
@@ -95,17 +92,27 @@ export default {
         this.status = "b";
       }
 
+      if (this.title === "" || this.title == null) {
+        return alert("제목을 입력하세요");
+      }
+      if (this.body === "" || this.body == null) {
+        return alert("내용을 입력하세요");
+      }
+
       let params = {
         title: this.title,
         body: this.body,
         status: this.status,
-        boardId: "2", //Q&A 개시판 2
+        boardId: "3", //Q&A 개시판 2
       };
       console.log(params);
 
       authAPI
-        .writeProc(params)
+        .writeProc(params) //axios 이동
         .then((res) => {
+          alert("등록되었습니다.");
+          location.href = "/qna"; //페이지 이동
+
           console.log(res);
         })
         .catch((err) => {
