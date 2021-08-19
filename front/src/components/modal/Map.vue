@@ -201,7 +201,7 @@ export default {
       this.infowindow.open(this.map, this.markers[index]);
     },
     confirm() {
-      this.SET_SELECTED_PLACE(this.selectedPlace, this.addressDetail);
+      this.SET_SELECTED_PLACE([this.selectedPlace, this.addressDetail]);
       this.SET_MODAL_MAP(false);
     },
   },

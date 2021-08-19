@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.icia.wapoo.dao.StoreDao">
-    <insert id="insertStore" useGeneratedKeys="true" keyProperty="storeId" parameterType="Store">
+    <insert id="insertStore" useGeneratedKeys="true" keyColumn="storeId" keyProperty="storeId" parameterType="Store">
         INSERT INTO `store`
         SET
         `regDate` = NOW(),
@@ -23,7 +23,7 @@
         INSERT INTO store_file
         SET
         storefileId = #{storefileId},
-        regDate = #{regDate},
+        regDate = NOW(),
         orgName = #{orgName},
         `name` = #{name},
         filetype = #{filetype},

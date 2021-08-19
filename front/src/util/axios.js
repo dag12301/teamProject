@@ -1,31 +1,26 @@
 import axios from "axios";
-const DOMAIN = "http://localhost:8083/";
-
-// 일반 URlParams 요청하기
-export const request = (method, url, data) => {
-  return axios({
-    method: method,
-    url: DOMAIN + url,
-    data: data,
-  })
-    .then((result) => result.data)
-    .catch((error) => {
-      console.log(error);
-    });
-};
+import JWT from "@/api/jwt";
 
 // 파일전송
-export const requestFile = (method, url, data) => {
-  return axios({
-    method: method,
-    url: DOMAIN + url,
-    data: data,
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  })
-    .then((result) => result.data)
-    .catch((error) => {
-      console.log(error);
-    });
-};
+const requestFile = axios.create({
+  baseURL: "http://localhost:8083", // 스프링 BackEnd 의 주소,
+  headers: { "Content-Type": "multipart/form-data" },
+});
+
+requestFile.interceptors.request.use(function (config) {
+  try {
+    let access_token = JWT.getToken();
+    if (access_token != null) {
+      config["headers"] = {
+        accesstoken: access_token,
+      };
+    } else {
+      JWT.destroyToken();
+    }
+    return config;
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+export default requestFile;

@@ -61,7 +61,7 @@ export default createStore({
     SET_MODAL_MAP(state, boolean) {
       state.mapModal = boolean;
     },
-    SET_SELECTED_PLACE(state, place, detail) {
+    SET_SELECTED_PLACE(state, [place, detail]) {
       state.selectedPlace = place;
       state.selectedAddressDetail = detail;
     },

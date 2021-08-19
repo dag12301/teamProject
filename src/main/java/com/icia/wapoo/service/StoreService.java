@@ -23,18 +23,20 @@ public class StoreService {
     @Transactional
     public int registerStore(Store store, List<MultipartFile> files){
         int result = storeDao.insertStore(store);
+        System.out.println("StoreService.registerStore : 적용된 게시물수 => " + result);
+        System.out.println("StoreService.registerStore : 새로생긴 가게 storeId => " + store.getStoreId());
         if ( result > 0) {
-            System.out.println("StoreService.registerStore : 생성된 StoreId => " + result);
+
             for( MultipartFile file : files) {
 
                 String fileURL = null;
                 try {
-                    fileURL = s3Service.upload(file, "store_"+result);
+                    fileURL = s3Service.upload(file, "store_"+store.getStoreId());
                 } catch (IOException e) {
                     throw new RuntimeException("S3 업로드중 오류발생!");
                 }
                 StoreFile storeFile = new StoreFile();
-                storeFile.setStore_id(result);
+                storeFile.setStore_id(store.getStoreId());
                 storeFile.setFilesize(file.getSize());
                 storeFile.setFiletype(file.getContentType());
                 storeFile.setName(fileURL);

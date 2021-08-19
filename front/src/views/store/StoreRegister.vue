@@ -65,7 +65,9 @@
         ></textarea>
       </div>
       <!--지도 -->
-      <label for="address" class="form-label mt-4">주소를 입력해주세요.</label>
+      <label for="address" class="form-label mt-4"
+        ><b>주소</b>를 입력해주세요.</label
+      >
       <input
         class="form-control"
         type="text"
@@ -73,15 +75,17 @@
         v-model="address.place_name"
         aria-label="readonly input example"
         readonly
+        style="text-align: center"
       />
       <label for="addressDetail" class="form-label mt-2"
-        >상세주소를 입력해주세요.</label
+        ><b>상세주소</b>를 입력해주세요.</label
       >
       <input
         class="form-control"
         type="text"
         id="addressDetail"
         v-model="addressDetail"
+        style="text-align: center"
       />
       <div
         class="btn btn-primary mt-4"
@@ -183,9 +187,10 @@
 </template>
 
 <script>
-import { requestFile } from "@/util/axios";
+import axios from "axios";
 // import { error } from "@/api/notification";
 // import { mapState } from "vuex";
+import JWT from "@/api/jwt";
 import Map from "@/components/modal/Map.vue";
 import { mapGetters, mapState, mapMutations } from "vuex";
 export default {
@@ -272,32 +277,41 @@ export default {
       this.files = this.files.filter((data) => data.number !== Number(name));
       // console.log(this.files);
     },
-    storeWrite() {
+    async storeWrite() {
       let formData = new FormData();
       formData.append("name", this.store_name);
       formData.append("phone", this.store_contact);
-      formData.append("address", this.address);
+      formData.append("address", this.address.address_name);
       formData.append("addressDetail", this.addressDetail);
-      formData.append("localx", 37.43884057982199);
-      formData.append("localy", 126.675102369038);
+      formData.append("localx", this.address.x);
+      formData.append("localy", this.address.y);
       formData.append("storeKind", this.store_type);
       formData.append("body", this.store_desc);
-      // 멤버 아이디는 토큰으로
+      //오너 아이디 적용해주기
       // 파일 추가
       for (let i = 0; i < this.files.length; i++) {
         formData.append("fileList", this.files[i].file);
       }
-      requestFile("Put", "store/addstore", formData)
+      const token = JWT.getToken();
+      const headers = {
+        "Content-type": "multipart/form-data",
+        accesstoken: token,
+      };
+      axios.defaults.headers.post = null;
+      console.log("보낼토큰입니다 : " + token);
+      axios
+        .post("http://localhost:8083/store/addstore", formData, {
+          headers,
+        })
         .then((response) => {
-          if (response.status == 200) {
-            console.log(response);
-            alert("가게등록이 성공적으로 완료되었습니다.");
+          if (response.status === 200) {
+            alert("가게 등록에 성공했습니다");
           }
         })
         .catch((error) => {
           console.log(error);
-          alert("에러가 발생했습니다.");
         });
+
       // let params = new URLSearchParams();
 
       // params.append('latitude', this.latitude);

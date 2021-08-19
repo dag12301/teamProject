@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -30,20 +31,17 @@ public class StoreController {
     private final StoreService storeService;
 
 
-    @PutMapping("/addstore")
+    @PostMapping("/addstore")
     public ResponseEntity addStore(Store store
             , @RequestPart(value = "fileList", required = false) List<MultipartFile> files, HttpServletRequest request){
-        // 스토어에 오너ID 세팅
-//        //JWT 토큰값
-//        String JWT = jwtService.resolveToken(request);
-//        Map<String, Object> token = jwtService.getUserInfo(JWT);
-//        // token에서 memberId 값 가져오기
-//        int ownerId = (int) token.get("memberId");
 
-
-        store.setOwner_id(1);
+        String token = jwtService.resolveToken(request);
+        System.out.println(token);
+        Map<String, Object> claims = jwtService.getUserInfo(token);
+        System.out.println("클레임있나여" +claims);
+        store.setOwner_id(((Integer) claims.get("memberId")).intValue());
         int result = storeService.registerStore(store, files);
-
-        return new ResponseEntity(result, HttpStatus.OK);
+        System.out.println("결과값은?" + result);
+        return new ResponseEntity("OK", HttpStatus.OK);
     }
 }
