@@ -76,7 +76,31 @@ public class JwtService {
     // 토큰에서 정보 해독
     public Map<String, Object> getUserInfo(String token) {
         System.out.println("JwtService.getUserInfo : 토큰에서 정보를 추출합니다.");
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+        Map<String, Object> claimMap = null;
+        //return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody(); 원래코드
+        
+          try {
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secretKey) // Set Key
+                    .parseClaimsJws(token) // 파싱 및 검증, 실패 시 에러
+                    .getBody();
+
+            claimMap = claims;
+
+            //Date expiration = claims.get("exp", Date.class);
+            //String data = claims.get("data", String.class);
+            
+        } catch (ExpiredJwtException e) { // 토큰이 만료되었을 경우
+            System.out.println(e);
+            
+        } catch (Exception e) { // 그외 에러났을 경우
+            System.out.println(e);
+            
+        }
+        return claimMap;
+        
+        
+        //(DatatypeConverter.parseBase64Binary(secretKey))
     }
 
 

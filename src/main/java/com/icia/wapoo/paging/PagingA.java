@@ -12,21 +12,23 @@ import lombok.NoArgsConstructor;
 public class PagingA {
 	private int listSize = 10;                //초기값으로 목록개수를 10으로 셋팅
 
-	private int rangeSize = 10;            //초기값으로 페이지범위를 10으로 셋팅
+	private int rangeSize = 5;            //초기값으로 페이지범위를 10으로 셋팅
 
 	private int page;						// 현재 페이지
 
 	private int range;						//현재 페이지 범위
 
-	private int listCnt;					// 총 게시물의 개수
+	private int total;						// 총 게시물의 개수
 
-	private int pageCnt;					//총 페이지 범위의 개수
+	private int pageCnt;					//총 페이지 수
 
 	private int startPage;					//시작번호
+	
+	private int endPage;					// 각 페이지 범위 끝 번호
 
-	private int startList;					//한 페이지 목록의 개수
-
-	private int endPage;					// 끝 번호
+	private int startList;					//DB게시판
+	
+	private int endList;					//DB게시판 끝번호
 
 	private boolean prev;					//이전 페이지
 
@@ -34,19 +36,19 @@ public class PagingA {
 	
 	
 
-	public void pageInfo(int page, int range, int listCnt) {
+	public void pageInfo(int page, int range, int total) {
 
 		this.page = page;
 
 		this.range = range;
 
-		this.listCnt = listCnt;
+		this.total = total;
 
 		
 
 		//전체 페이지수 
 
-		this.pageCnt = (int) Math.ceil(listCnt/listSize);
+		this.pageCnt = (int) (Math.ceil(total/listSize) + Math.ceil(total/listSize));
 
 		
 
@@ -62,11 +64,11 @@ public class PagingA {
 
 				
 
-		//게시판 시작번호
+		//DB게시판 시작번호
 
 		this.startList = (page - 1) * listSize;
-
-		
+		//DB게시판 끝번호
+		this.endList = page * listSize;
 
 		//이전 버튼 상태
 

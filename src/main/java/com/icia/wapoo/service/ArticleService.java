@@ -96,6 +96,7 @@ public class ArticleService {
 		{
 			
 			count = articleDao.boardInsert(article);
+			article.getArticleId();
 			
 			if(count > 0)
 			{
@@ -147,9 +148,9 @@ public class ArticleService {
 	}
 
 	//페이징 번호 맞게 출력
-	public List<Article> getBoardList(PagingA paging) throws Exception {
+	public List<Article> getBoardList(PagingA paging, long boardId) throws Exception {
 
-		List<Article> list = articleDao.getBoardList(paging);
+		List<Article> list = articleDao.getBoardList(paging, boardId);
 		
 		
 		

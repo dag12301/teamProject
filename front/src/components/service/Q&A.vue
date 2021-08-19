@@ -35,43 +35,76 @@
 
       <!-- 순서 버튼 -->
     <nav aria-label="Page navigation example" class="mt-5 position-relative .center-block" style="">
-      <ul class="pagination position-absolute" style="left: 30vw">
+      <ul class="pagination position-absolute" style="left: 30vw" >
         <li class="page-item">
           <a class="page-link" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item" v-for="num in pageCnt" :key="num">
+          <a class="page-link" href="#" >{{num}}</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">{{paging}}</a></li>
+        
         <li class="page-item">
           <a class="page-link" href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
       </ul>
+      
     </nav>
     <!-- 끝 -->
 </div>
 </template>
 
 <script>
+//import * as authAPI from "@/api/article.js";
 
 export default {
-  methods: {
-    listPage(articleId, status) {     //페이지 이동
-    if(this.privateToggle(status)){
-      console.log(articleId)
-      return location.href="/boardList?board=qna&articleId=" + articleId
+  data() {
+    return {
+      paging: {
+      },
+      pageCnt:[]
     }
-    return alert("비공개 입니다")
+  },
+  computed: {
     
   },
+  methods: {
+    pageNumber (pageCnt) {
+      const list= []
+      for(var i = 1; i <= pageCnt; i++){
+        list.push(i)
+      }
+      return list
+    },
+    listPage(articleId, status) {     //페이지 이동
+      if(this.privateToggle(status)){
+        console.log(articleId)
+        return location.href="/boardList?board=qna&articleId=" + articleId
+      }
+      return alert("비공개 입니다")
+    },
     privateToggle (status) {    //공개 비공개 검사
       if(status === 'b'){
         return true
       }
-    }
+    },
+    // numPage() {           //페이지 번호로 이동 /qna getBoardList
+    //   authAPI
+    //   .getBoardList(2, page, range)
+    //   .then(res => {
+    //     this.$store.commit('serviceCenter/pagingQueAn', null)
+    //   })
+      
+    // }
+  },
+  created () {
+    this.paging = this.$store.state.serviceCenter.pagingQueAn
+    this.pageCnt = this.pageNumber(this.paging.pageCnt)
+    
   }
 }
 </script>

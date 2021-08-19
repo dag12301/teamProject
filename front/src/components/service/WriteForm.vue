@@ -26,7 +26,7 @@
 
 	<!-- 제출/취소 버튼 -->
 <div class="col-md-12 text-center">
-	<button id="btn" type="button" class="btn btn-success" @click="writeRequest">작성</button>
+	<button id="btn" type="button" class="btn btn-success" @click.prevent="writeRequest">작성</button>
 	<router-link class="btn btn-primary" :to="{ name: 'Q&A' }">취소</router-link>
 </div>
 </template>

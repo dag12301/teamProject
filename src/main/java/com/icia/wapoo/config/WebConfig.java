@@ -15,13 +15,13 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private JwtInterceptor jwtInterceptor;
     /**
-     * �뿬湲곗뿉 �벑濡앸맂 �쐞移섎뒗 �넗�겙�뾾�씠 吏꾪뻾 媛��뒫�븿.
+     
      */
     private static final String[] EXCLUDE_PATHS = {
             "/api/member/register",
             "/api/member/login",
             "/test",
-            "/**", // 媛쒕컻�슜�씠�씪 �쟾遺� �뿴�뼱�몺
+            "/**", // 
             "/api/validation/**",
             "/article/**",
             "/article/board",

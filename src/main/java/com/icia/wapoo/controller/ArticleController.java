@@ -1,9 +1,8 @@
 package com.icia.wapoo.controller;
 
-<<<<<<< HEAD
+
 import com.icia.wapoo.jwt.service.JwtService;
-=======
->>>>>>> master
+
 import com.icia.wapoo.model.Article;
 import com.icia.wapoo.model.FileData;
 import com.icia.wapoo.paging.PagingA;
@@ -25,6 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.icia.wapoo.service.ArticleService;
 import com.icia.wapoo.service.MemberService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,10 +73,27 @@ public class ArticleController {
 	{
 		//JWT 토큰값
 		String JWT = jwtService.resolveToken(request);
+		System.out.println(JWT);
+		System.out.println("1---------------------------");
 		Map<String, Object> token = jwtService.getUserInfo(JWT);
+		
+		System.out.println("2---------------------------");
+		System.out.println(token);
 		// token에서 memberId 값 가져오기
-		long memberId = (long) token.get("memberId");
-		//test 멤버 값
+		System.out.println( token.get("memberId"));
+		System.out.println("4---------------------------");
+		System.out.println(token.get("memberId").getClass());
+		System.out.println("3---------------------------");
+		
+		
+		System.out.println( ((Integer) token.get("memberId")).intValue() );
+
+		
+//		
+//		
+		long memberId = (long)((Integer) token.get("memberId")).intValue();
+
+		//test 멤버 값 
 		//long memberId = 1;
 		System.out.println(memberId);
 		
@@ -121,9 +138,11 @@ public class ArticleController {
 		{
 			System.out.println("memberId 없음");
 		}
+		System.out.println(articleId);
+		
 		
 		//articleId
-		System.out.println(articleId);
+		System.out.println(memberId);
 		
 		Article article = null;
 		
@@ -204,22 +223,42 @@ public class ArticleController {
 	
 	//페이징처리 리스트
 	@GetMapping(value="/pagingBoard")
-	public List<Article> getBoardList(@RequestParam(required = false, defaultValue = "1") int page,
+	public Map<String, Object> getBoardList(@RequestParam(required = false, defaultValue = "1") int page,
 									  @RequestParam(required = false, defaultValue = "1") int range,
 									  @RequestParam long boardId) throws Exception 
 	{
+		System.out.println("page : " +page);
+		System.out.println("page : " +page);
+		System.out.println("boardId : " +boardId);
+		
+		//Map<String, Object> writeData = (Map<String, Object>) writeForm.get("params");
+		Map<String, Object> map = new HashMap<>();
+		
 		//전체 게시글 개수
-		int listCnt = articleService.getBoardListCnt(boardId);
+		int total = articleService.getBoardListCnt(boardId);
 
 	    //Pagination 객체생성
 	
 			PagingA paging = new PagingA();
 	
-			paging.pageInfo(page, range, listCnt);
+			paging.pageInfo(page, range, total);
+			
+			System.out.println(paging.getStartList());
+			
+			System.out.println("page : " + page);
+			System.out.println("range: " + range);
+			System.out.println("endList: " + paging.getEndList());
+			
+			System.out.println(paging.getEndPage());
+			System.out.println(paging.getStartPage());
 	
-			List<Article>  list =  articleService.getBoardList(paging);
+			List<Article>  list =  articleService.getBoardList(paging, boardId);
+			
+			map.put("paging", paging);
+			map.put("list", list);
+			
 	
-			return list;
+			return map;
 	}
 	
 	//페이징 필요값들

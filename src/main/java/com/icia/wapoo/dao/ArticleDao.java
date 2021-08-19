@@ -28,7 +28,7 @@ public interface ArticleDao {
 	//총 게시글 개수 확인
 	public int getBoardListCnt(long boardId) throws Exception;
 	// 페이징 개수
-	public List<Article> getBoardList(PagingA paging) throws Exception;
+	public List<Article> getBoardList(PagingA paging, long boardId) throws Exception;
 
 	
 

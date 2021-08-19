@@ -38,7 +38,7 @@ export default {
     getCountNotice(boardId) {     // notice 통신 
       if(this.$store.state.countNotice){
        
-        return this.downAllList(boardId), this.SET_COUNT_NOTICE(false)
+        return this.downAllList(boardId, 1, 1), this.SET_COUNT_NOTICE(false)
         
       }else{
         return console.log("else 일때" +this.$store.state.countNotice)
@@ -47,7 +47,7 @@ export default {
     getCountQueAn(boardId) {       // Q&A 통신 
       if(this.$store.state.countQueAn){
          console.log("if 일때" +this.$store.state.countQueAn)
-        return this.downAllList(boardId), this.SET_COUNT_QUEAN(false)
+        return this.downAllList(boardId, 1, 1), this.SET_COUNT_QUEAN(false)
         
       }else{
         return console.log("Q&A")
@@ -55,53 +55,52 @@ export default {
     },
     getCountFQA(boardId) {         // FAQ 통신 
       if(this.$store.state.countFAQ){
-        return this.downAllList(boardId), this.SET_COUNT_FQA(false)
+        return this.downAllList(boardId, 1, 1), this.SET_COUNT_FQA(false)
         
       }else{
         return console.log("FAQ")
       }
     },
 
-    downAllList(query) {        //리스트 axios
+    downAllList(boardId, page, range) {        //리스트 axios 통신 query = boardId  page:페이지  range: 범위  boardId 
       authAPI
-      .allList(query)
+      .getBoardList(boardId, page, range)
+      //.allList(query)     //페이지 전체 불러오기 list
       .then(res => {
-        res.data.forEach(el => {
-
-          if(query == 1){
+        console.log(res)
+        console.log("1")
+        console.log(res.data)
+        console.log("2")
+        console.log(res.data.paging)
+        console.log("3")
+        console.log(res.data.list)
+        console.log("4")
+        //페이징 vuex에 넣기
+        if(boardId == 1){
+          this.$store.commit('serviceCenter/setPagingNotices', res.data.paging)
+        }else if(boardId == 2){
+          this.$store.commit('serviceCenter/setPagingQueAn', res.data.paging)
+        }else if(boardId == 3){
+          this.$store.commit('serviceCenter/setPagingFQA', res.data.paging)
+        }
+        
+        res.data.list.forEach(el => {      //store에 데이터 넣기 게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)
+          if(boardId == 1){
             this.$store.commit('serviceCenter/setCenternotices', el)
-          }else if(query == 2){
+          }else if(boardId == 2){
             this.$store.commit('serviceCenter/setCenterQueAn', el)
-          }else if(query == 3){
+          }else if(boardId == 3){
             this.$store.commit('serviceCenter/setCenterFQA', el)
           }
-        
         })
-      
       })
       .catch(err => {
         console.log(err)
-      })
-      .then( () => {
-        console.log("test")
-      })
-    },
-    test () {
-      authAPI
-      .test()
-      .then(res => {
-        console.log(res, "성공")
-      })
-      .catch(err => {
-        console.log(err)
-      })
-      .then( () => {
-        console.log("test")
       })
     }
     
   },
-  mounted() {
+  mounted() {           //DB 통신 하기 boardId 값
     this.getCountNotice(1),
     this.getCountQueAn(2),
     this.getCountFQA(3)

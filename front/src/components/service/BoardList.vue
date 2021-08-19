@@ -26,7 +26,7 @@
 모달
 </button>{{modalToggle}}
 	<button id="btn" type="button" class="btn btn-success" @click="test">수정</button>
-  <button id="btn" type="button" class="btn btn-success" @click="listdelte">삭제</button>
+  <button id="btn" type="button" class="btn btn-success" @click="listdelete">삭제</button>
   <router-link class="btn btn-danger" :to="{ path: this.board }">목록</router-link>
 </div><br><br>
 <!-- 댓글 -->
@@ -83,34 +83,29 @@ export default {
     }
   },
   created() {         //게시물 불러오기
-    console.log(this.$route )
-    console.log(this.$route.query )
-    console.log(this.$route.query.board )
-    console.log(this.$route.query.articleId )
+    let query = this.$route.query.articleId   //articleId받기 
+    this.board = this.$route.query.board      //게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)
 
-    let query = this.$route.query.articleId
-    this.board = this.$route.query.board
-
-    authAPI
+    authAPI         //통신코드
     .list(query)
     .then(res => {
-      this.list = res.data
+      this.list = res.data      //list에  DB데이터 박기
     })
   },
   methods: {
-  test() {
-    console.log(String(this.list.writerId)),
-    console.log(String(this.list.articleId))
-  },
+    test() {
+      console.log(String(this.list.writerId)),
+      console.log(String(this.list.articleId))
+    },
 
-    listdelte () {
+    listdelete () {        //삭제 코드
 
-      let params = {
+      let params = {      //삭제에 필요한 데이터들
         writerId: String(this.list.writerId),
         articleId: String(this.list.articleId)
       }
 
-      authAPI
+      authAPI             //삭제 통신
       .listDelete(params)
       .then(res => {
         alert("삭제되었습니다.")

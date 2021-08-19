@@ -1,7 +1,7 @@
 import http from "@/api/http";
 
 
-// notice, Q&A FAQ
+// notice, Q&A FAQ  리스트
 export async function allList(query) {
   return http.get("/article/board?boardId=" + query)
 }
@@ -25,5 +25,15 @@ export async function listDelete(params){
     params
   })
 }
+//페이지처리된 리스트  page:페이지  range: 범위  boardId 테이블 종류
+export async function getBoardList(boardId, page, range){
+  return http.get("/article/pagingBoard?boardId=" + boardId + "&page=" + page + "&range=" +  range)
+}
+//페이징 필요값들
+export async function paging() {
+  return http.get("/article/pagingBoard/paging")
+}
+
+
 
 
