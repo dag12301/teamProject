@@ -53,7 +53,7 @@ export default {
     getCountNotice(boardId) {     // notice 통신 
       if(this.$store.state.countNotice){
        
-        return this.downAllList(boardId, 1, 1), this.SET_COUNT_NOTICE(false)
+        return this.downAllList(boardId, 1, 2), this.SET_COUNT_NOTICE(false)
         
       }else{
         return console.log("else 일때" +this.$store.state.countNotice)
@@ -62,7 +62,7 @@ export default {
     getCountQueAn(boardId) {       // Q&A 통신 
       if(this.$store.state.countQueAn){
          console.log("if 일때" +this.$store.state.countQueAn)
-        return this.downAllList(boardId, 1, 1), this.SET_COUNT_QUEAN(false)
+        return this.downAllList(boardId, 1, 2), this.SET_COUNT_QUEAN(false)
         
       }else{
         return console.log("Q&A")
@@ -70,7 +70,7 @@ export default {
     },
     getCountFQA(boardId) {         // FAQ 통신 
       if(this.$store.state.countFAQ){
-        return this.downAllList(boardId, 1, 1), this.SET_COUNT_FQA(false)
+        return this.downAllList(boardId, 1, 2), this.SET_COUNT_FQA(false)
         
       }else{
         return console.log("FAQ")
@@ -82,21 +82,21 @@ export default {
       .getBoardList(boardId, page, range)
       //.allList(query)     //페이지 전체 불러오기 list
       .then(res => {
-        console.log(res)
-        console.log("1")
-        console.log(res.data)
-        console.log("2")
-        console.log(res.data.paging)
-        console.log("3")
-        console.log(res.data.list)
-        console.log("4")
-        //페이징 vuex에 넣기
+        console.log("--------------------------")
+      
+        console.log(res.data.paging.page)
+        console.log("------------------------")
+        
+        //페이징 vuex에 넣기  originRange
         if(boardId == 1){
           this.$store.commit('serviceCenter/setPagingNotices', res.data.paging)
+          this.$store.state.serviceCenter.originRange.push(res.data.paging.range)
         }else if(boardId == 2){
           this.$store.commit('serviceCenter/setPagingQueAn', res.data.paging)
+          this.$store.state.serviceCenter.originRange.push(res.data.paging.range)
         }else if(boardId == 3){
           this.$store.commit('serviceCenter/setPagingFQA', res.data.paging)
+          this.$store.state.serviceCenter.originRange.push(res.data.paging.range)
         }
         
         res.data.list.forEach(el => {      //store에 데이터 넣기 게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)
