@@ -2,12 +2,15 @@ import { createStore } from "vuex";
 
 import auth from "@/store/auth";
 import Akinator from "@/store/akinator";
-import foodDiv from "./foodDiv/foodDiv.js";
-import foodList from "./foodDiv/foodList.js";
+import fooddiv from "./foodDiv/foodDiv.js";
+import foodlist from "./foodDiv/foodList.js";
 import shopList from "./shopList/shopList.js";
 import menu from "./menu/menu.js";
 import createPersistedState from "vuex-persistedstate";
 import serviceCenter from "./serviceCenter";
+
+import couponon from "./event/couponon.js";
+import couponend from "./event/couponend.js";
 
 export default createStore({
   state: {
@@ -72,8 +75,10 @@ export default createStore({
     shopList,
     serviceCenter,
     menu,
-    foodDiv,
-    foodList,
+    fooddiv,
+    foodlist,
+    couponon,
+    couponend,
   },
   plugins: [
     createPersistedState({

@@ -49,7 +49,9 @@ export default ({
     .foodnum-a:hover{background-color:lightblue;}                    
          
     /* nav tag */
-    .foodnum-ul{padding-top:10px; font-style: bold; font-size: 15px;}  
+
+    .foodnum-ul{padding-top:10px; font-style: bold; font-size: 15px; top: 4px;}  
+
     .foodnum-ul li {
         display:inline;   
         border-left:1px solid #999;             /* 메뉴의 왼쪽에 "|" 표시 */                
