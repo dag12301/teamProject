@@ -23,43 +23,40 @@ const routes = [
   {
     path: "/foodlist",
     name: "FoodList",
-    component: () => import("../views/food/FoodList.vue")
+    component: () => import("../views/food/FoodList.vue"),
   },
   {
     path: "/event",
     name: "Event",
     component: () => import("../views/event/Event.vue"),
 
-    children:
-    [
+    children: [
       {
         path: "/all",
         name: "coupon-all",
-        component: () => import("../components/event/coupon.vue")
+        component: () => import("../components/event/coupon.vue"),
       },
       {
         path: "/on",
         name: "coupon-on",
-        component: () => import("../components/event/couponon.vue")
+        component: () => import("../components/event/couponon.vue"),
       },
       {
         path: "/end",
         name: "coupon-end",
-        component: () => import("../components/event/couponend.vue")
-      }
-    ]
+        component: () => import("../components/event/couponend.vue"),
+      },
+    ],
   },
   {
     path: "/eventadd",
     name: "EventAdd",
-    component: () => import("../views/event/EventAdd.vue")
-
+    component: () => import("../views/event/EventAdd.vue"),
   },
   {
     path: "/fooddetail",
     name: "FoodDetail",
-    component: () => import("../views/food/FoodDetail.vue")
-
+    component: () => import("../views/food/FoodDetail.vue"),
   },
   {
     path: "/serviceCenter",
@@ -113,6 +110,11 @@ const routes = [
     path: "/admin",
     name: "AdminHome",
     component: () => import("../views/admin/AdminHome.vue"),
+  },
+  {
+    path: "/storeFoods",
+    name: "StoreFoods",
+    component: () => import("../views/store/StoreFoods.vue"),
   },
 ];
 

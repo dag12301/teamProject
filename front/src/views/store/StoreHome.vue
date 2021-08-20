@@ -21,10 +21,10 @@
                 <button class="btn btn-primary mt-2">가게 등록</button>
               </router-link>
             </div>
-          </div>
-          <div v-if="storeInfo.status != null">
-            <!-- 가게화면 -->
-            {{ storeInfo }}
+            <div v-else-if="storeInfo.status != null">
+              <!-- 가게상세정보화면 -->
+              {{ storeInfo }}
+            </div>
           </div>
         </div>
       </div>
