@@ -69,4 +69,14 @@ public class StoreService {
     public void updateStoreStatus(int storeId, String status) {
         storeDao.updateStoreStatus(storeId, status);
     }
+
+    public Store getStoreById(int memberId) {
+        List<Store> stores = storeDao.selectStoreById(memberId);
+        // 가게가 여러개 있는일은 없어야하는데, 일단은 최상위 1개만 보내도록 하자.
+        if(stores.size() > 0){
+            // 결과가 있을때만 꺼내서 줌.
+            return stores.get(0);
+        }
+        return new Store();
+    }
 }

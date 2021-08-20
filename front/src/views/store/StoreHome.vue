@@ -10,8 +10,21 @@
       <div class="row align-items-center">
         <div class="col align-self-center">
           <div id="choices">
-            <span>아직 가게를 등록하지 않으셨군요?</span><br />
-            <button class="btn btn-primary mt-2">가게 등록</button>
+            <div v-if="!storeInfo">
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+            <div v-else-if="storeInfo.status == null">
+              <span>아직 가게를 등록하지 않으셨군요?</span><br />
+              <router-link to="storeRegister">
+                <button class="btn btn-primary mt-2">가게 등록</button>
+              </router-link>
+            </div>
+          </div>
+          <div v-if="storeInfo.status != null">
+            <!-- 가게화면 -->
+            {{ storeInfo }}
           </div>
         </div>
       </div>
@@ -21,12 +34,14 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { error, success } from "@/api/notification";
+import { error, success, normal } from "@/api/notification";
+import axios from "axios";
 
 export default {
   data() {
     return {
       userInfo: null,
+      storeInfo: null,
     };
   },
   computed: {
@@ -38,6 +53,7 @@ export default {
   mounted() {
     this.userInfo = this.getInfo;
     console.log(this.userInfo);
+    normal("가게정보를 검색합니다...", this);
     if (this.userInfo[1] != "SELLER") {
       error("이 페이지에 접근할 수없습니다.", this);
       this.$store.dispatch("auth/logout");
@@ -52,6 +68,25 @@ export default {
     };
 
     // 권한이 있는지 헤더를 실어서 보낸다.
+    axios
+      .post("http://localhost:8083/store/findStore", null, { headers })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log(response.data);
+          this.storeInfo = response.data;
+          if (this.storeInfo.status != null) {
+            success("등록된 가게정보를 찾았습니다!", this);
+            return;
+          }
+          error("등록된 가게가 없습니다!", this);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        error("오류가 발생했습니다. 다시 시도해주세요", this);
+        this.$store.dispatch("auth/logout");
+        this.$router.push({ path: "/" });
+      });
   },
 };
 </script>

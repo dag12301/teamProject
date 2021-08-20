@@ -21,4 +21,6 @@ public interface StoreDao {
     int selectStoreListCount(@Param("option") String option);
 
     int updateStoreStatus(@Param("storeId") int storeId, @Param("status") String status);
+
+    List<Store> selectStoreById(@Param("memberId") int memberId);
 }

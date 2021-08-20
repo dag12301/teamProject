@@ -65,4 +65,9 @@
         SET STATUS = #{status}
         WHERE storeId = #{storeId}
     </update>
+    <select id="selectStoreById" parameterType="int" resultType="Store">
+        SELECT *
+        FROM store
+        WHERE owner_id = #{memberId};
+    </select>
 </mapper>
