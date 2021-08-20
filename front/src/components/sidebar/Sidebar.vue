@@ -28,6 +28,13 @@
       >
         가게등록</SidebarLink
       >
+      <SidebarLink
+        to="/store"
+        icon="fas fa-store"
+        v-if="userInfo[1] == 'SELLER'"
+      >
+        내 가게</SidebarLink
+      >
     </div>
     <div v-else>
       <SidebarLink to="/#" icon="fas fa-robot">아키네이터</SidebarLink>

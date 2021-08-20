@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -52,16 +53,20 @@ public class StoreService {
         }
     }
 
-    public List<Map<String, Object>> getStoreList(int listPerPage, int requestPage) {
+    public List<Map<String, Object>> getStoreList(int listPerPage, int requestPage, String option) {
         int StartLimit = (requestPage-1)* listPerPage;
         int EndLimit = listPerPage;
         System.out.println((StartLimit+1) + "번째 부터 시작하여 "+EndLimit +"개를 가져옵니다.");
-        List<Map<String, Object>> list = storeDao.selectStoreList(StartLimit, EndLimit);
+        List<Map<String, Object>> list = storeDao.selectStoreList(StartLimit, EndLimit, option);
         System.out.println("가져온 게시물 수 : " + list.size());
         return list;
     }
 
-    public int getStoreListCount() {
-        return storeDao.selectStoreListCount();
+    public int getStoreListCount(String option) {
+        return storeDao.selectStoreListCount(option);
+    }
+
+    public void updateStoreStatus(int storeId, String status) {
+        storeDao.updateStoreStatus(storeId, status);
     }
 }

@@ -35,6 +35,7 @@
         <result column="storename" property="storename"/>
         <result column="status" property="status"/>
         <result column="membername" property="membername"/>
+        <result column="storeId" property="storeId"/>
     </resultMap>
     <select id="selectStoreList" resultMap="exampleResultMap">
         SELECT
@@ -42,14 +43,26 @@
             s.`name` storename,
             s.`status` as status,
             address as address,
-            m.`name` membername
+            m.`name` membername,
+            s.storeId storeId
         FROM store s, `member` m
         WHERE s.owner_id = m.memberId
+        <if test="!option.equals('ALL')">
+            AND s.`status` = #{option}
+        </if>
         ORDER BY regDate DESC
             LIMIT #{startLimit}, #{endLimit}
     </select>
     <select id="selectStoreListCount" resultType="int">
         SELECT COUNT(*) AS result
-        FROM store;
+        FROM store
+        <if test="!option.equals('ALL')">
+            WHERE status = #{option}
+        </if>
     </select>
+    <update id="updateStoreStatus">
+        UPDATE store
+        SET STATUS = #{status}
+        WHERE storeId = #{storeId}
+    </update>
 </mapper>

@@ -92,7 +92,6 @@ export default {
           context.commit("delToken");
           context.commit("delUserInfo");
           console.log("로그아웃 했음.");
-          this.$router.push({ path: "/" });
           resolve();
         }, 1000); // 1초 후 로그아웃됨
       });

@@ -4,11 +4,7 @@
       <!-- 프로필 -->
       {{ userInfo[1] }} 님 안녕하세요. ㅇㅇ ㅇㅇ
       <div v-if="userInfo[0]">
-        <button
-          type="button"
-          class="btn btn-success"
-          @click="this.$store.dispatch('auth/logout')"
-        >
+        <button type="button" class="btn btn-success" @click="logout">
           로그아웃
         </button>
       </div>
@@ -48,6 +44,10 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_MODAL_LOGIN", "SET_MODAL_REGISTER"]),
+    logout() {
+      this.$store.dispatch("auth/logout");
+      this.$router.push({ path: "/" });
+    },
   },
   components: {
     LoginModal,
