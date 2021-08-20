@@ -30,4 +30,26 @@
         filesize = #{filesize},
         store_id = #{store_id}
     </insert>
+    <resultMap id="exampleResultMap" type="java.util.Map">
+        <result column="regDate" property="regDate"/>
+        <result column="storename" property="storename"/>
+        <result column="status" property="status"/>
+        <result column="membername" property="membername"/>
+    </resultMap>
+    <select id="selectStoreList" resultMap="exampleResultMap">
+        SELECT
+            regDate,
+            s.`name` storename,
+            s.`status` as status,
+            address as address,
+            m.`name` membername
+        FROM store s, `member` m
+        WHERE s.owner_id = m.memberId
+        ORDER BY regDate DESC
+            LIMIT #{startLimit}, #{endLimit}
+    </select>
+    <select id="selectStoreListCount" resultType="int">
+        SELECT COUNT(*) AS result
+        FROM store;
+    </select>
 </mapper>

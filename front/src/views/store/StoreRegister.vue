@@ -40,7 +40,7 @@
       </div>
       <!-- 가게종류 -->
       <div class="input-group-sm mb-3">
-        <span class="input-group-text" id="storetype_desc"
+        <span class="input-group-text" id="store_type"
           >가게 종류에대해 설명해주세요</span
         >
         <input
@@ -50,6 +50,8 @@
           aria-label="storeType"
           aria-describedby="store_type"
           v_model="store_type"
+          v-bind:value="store_type"
+          @input="type_typing"
         />
       </div>
       <!-- 가게에대한 설명 -->
@@ -86,6 +88,7 @@
         id="addressDetail"
         v-model="addressDetail"
         style="text-align: center"
+        @input="type_addressDetail"
       />
       <div
         class="btn btn-primary mt-4"
@@ -312,6 +315,7 @@ export default {
       formData.append("localy", this.address.y);
       if (!this.store_type) {
         error("가게 종류를 입력해주세요!", this);
+        console.log(this.store_type);
         return false;
       }
       formData.append("storeKind", this.store_type);
@@ -343,7 +347,7 @@ export default {
           if (response.status === 200) {
             success("가게 등록에 성공했습니다.", this);
             alert("가게 등록에 성공했습니다. 관리자의 승인을 기다립니다");
-            this.$$router.push({ path: "/" });
+            this.$router.push({ path: "/" });
           }
         })
         .catch((error) => {
@@ -353,6 +357,12 @@ export default {
             this.$router.push({ path: "/" });
           }
         });
+    },
+    type_typing(e) {
+      this.store_type = e.target.value;
+    },
+    type_addressDetail(e) {
+      this.addressDetail = e.target.value;
     },
   },
 };

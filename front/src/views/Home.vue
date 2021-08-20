@@ -10,7 +10,7 @@
             <!--지도 -->
             <div class="col-xl-7">
               <div class="card mb-4">
-                <kakao></kakao>
+                <kakao style="z-index: 0"></kakao>
               </div>
             </div>
             <!--가게 리스트 -->

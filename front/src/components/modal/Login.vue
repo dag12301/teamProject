@@ -37,6 +37,7 @@
           type="password"
           class="login-password"
           placeholder="비밀번호"
+          @keyup.enter="doLogin"
         />
       </div>
       <div class="login-check-wrapper">
@@ -100,7 +101,7 @@ export default {
       : (this.loginSave = true);
   },
   computed: {
-    ...mapGetters(["auth/getAccessToken"]),
+    ...mapGetters(["auth/getAccessToken", "getUserInfo"]),
     ...mapState(["isAuthenticated"]),
   },
   methods: {
@@ -132,12 +133,22 @@ export default {
         .then((res) => {
           if (res.status === 200) {
             success("로그인에 성공했습니다.", this);
-            alert("로그인에 성공했습니다.");
+
             this.$store.dispatch("auth/getInfo");
             this.SET_MODAL_REGISTER(false);
             if (this.loginSave == true) {
               localStorage.setItem("loginId", this.userId);
             }
+            const loginedUserInfo = this.getUserInfo();
+            if (loginedUserInfo.role === "BUYER") {
+              this.$router.push({ path: "/" });
+            } else if (loginedUserInfo.role === "SELLER") {
+              this.$router.push({ path: "/storeregister" });
+            } else if (loginedUserInfo.role === "ADMIN") {
+              this.$router.push({ path: "/admin" });
+            }
+            alert("로그인에 성공했습니다.");
+            // 로그인에 성공은 했으나 역할이 이상할떄 예외처리 해줘야함.
             return;
           }
         })
