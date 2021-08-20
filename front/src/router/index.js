@@ -78,6 +78,11 @@ const routes = [
     name: "StoreRegister",
     component: () => import("../views/store/StoreRegister.vue"),
   },
+  {
+    path: "/admin",
+    name: "AdminHome",
+    component: () => import("../views/admin/AdminHome.vue"),
+  },
 ];
 
 const router = createRouter({

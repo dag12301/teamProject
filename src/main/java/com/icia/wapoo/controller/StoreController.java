@@ -7,6 +7,7 @@ import com.icia.wapoo.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.ILoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,9 @@ import java.util.Map;
 @RequestMapping("/store")
 @Slf4j
 public class StoreController {
-
+    @Autowired
     private final JwtService jwtService;
-
+    @Autowired
     private final StoreService storeService;
 
 
