@@ -1,6 +1,6 @@
 <template>
     <h2 class="event-h2" style="margin-top: 50px;">쿠폰 추가 페이지<h5>(관리자 전용)</h5></h2>
-    <form action="" name="EventAdd" method="POST">
+    <form action="" name="EventAdd" v-on:submit.prevent="submitForm">
         <table>
             <tr>
                 <td class="td1">제목:</td>
@@ -21,6 +21,43 @@
     </form>
 </template>
 
+<script>
+import { normal, error, success } from "@/api/notification";
+import axios from "axios";
+
+export default {
+  data:function(){
+    return{
+       title : '',
+       body : '',
+       dueDate: ''
+    }
+  },
+  methods:{
+    submitForm:function(){
+      console.log(this.title, this.body, this.dueDate);
+      var url = 'http://localhost:8083/event/eventinsert';
+      var data = {
+        title: this.title,
+        body: this.body,
+        dueDate: this.dueDate
+      }
+      axios.post(url, data)
+        .then(function(data){
+          console.log(data);
+          
+           success("데이터 로딩 완료!", this);
+        })
+        .catch(function(error){
+          console.log(error);
+        });
+    }
+  }
+};
+ 
+</script>
+
+
 <style scoped>
 table{
     margin-left:25%;
@@ -38,9 +75,3 @@ table{
     margin-top: 40px;
 }
 </style>
-
-<script>
-
-
-
-</script>
