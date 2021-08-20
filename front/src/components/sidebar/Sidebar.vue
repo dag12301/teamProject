@@ -44,8 +44,9 @@
         >고객센터</SidebarLink
       >
       <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
-      <SidebarLink to="/event" icon="fas fa-utensils">이벤트</SidebarLink>
+      <SidebarLink to="/all" icon="fas fa-utensils">이벤트</SidebarLink>
       <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
+      <SidebarLink to="/eventadd" icon="fas fa-question">이벤트추가</SidebarLink>
     </div>
 
     <span class="burger" @click="toggleSidebar">

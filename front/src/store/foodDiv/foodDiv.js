@@ -1,7 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    foods: [
+    fooddivs: [
       {
         foodname: "전체보기",
       },
@@ -43,3 +43,4 @@ export default {
   mutations: {},
   actions: {},
 };
+

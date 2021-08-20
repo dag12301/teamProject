@@ -1,7 +1,7 @@
 <template>
   <div
     class="col-xs-8 col-sm-6"
-    v-for="(foodlist, index) in $store.state.foodlist.foods"
+    v-for="(foodlist, index) in $store.state.foodlist.foodlists"
     :key="index"
   >
     <a href="#" class="list-group-item" style="height: 100px"

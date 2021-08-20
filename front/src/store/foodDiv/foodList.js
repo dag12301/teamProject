@@ -1,7 +1,8 @@
 export default {
+
   namespaced: true,
   state: {
-    foods: [
+    foodlists: [
       {
         title: "전체보기",
         time: "배달 : 40~50분",
@@ -48,3 +49,4 @@ export default {
   mutations: {},
   actions: {},
 };
+
