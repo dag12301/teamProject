@@ -42,16 +42,17 @@ export default {
         dueDate: this.dueDate
       }
       axios.post('http://localhost:8083/event/eventinsert', data)
-        .then(data){
+        .then((data) => {
           console.log(data);
           
            success("데이터 로딩 완료!", this);
-        }
-        .catch(error){
+        })
+        
+        .catch((error) => {
           console.log(error);
-        };
-    }
-  }
+        });
+    },
+  },
 };
  
 </script>
