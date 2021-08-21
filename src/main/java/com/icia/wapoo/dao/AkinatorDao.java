@@ -12,4 +12,8 @@ public interface AkinatorDao {
     List selectAllQuestions();
 
     List selectAllAnswers(@Param("questionId") long questionId);
+
+    int insertAkinator(@Param("food_id") int food_id,
+                       @Param("question_id") int question_id,
+                       @Param("answerValue") int answerValue);
 }

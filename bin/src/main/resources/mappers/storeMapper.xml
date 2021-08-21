@@ -19,7 +19,7 @@
         `body` = #{body},
         owner_id = #{owner_id}
     </insert>
-    <insert id="insertStoreFile" parameterType="storeFile">
+    <insert id="insertStoreFile" parameterType="imageFile">
         INSERT INTO store_file
         SET
         storefileId = #{storefileId},

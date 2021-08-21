@@ -4,6 +4,7 @@ import com.icia.wapoo.dao.AkinatorDao;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +26,20 @@ public class AkinatorService {
             akinatorList.add(eachQuestion);
         }
         return akinatorList;
+    }
+
+    @Transactional
+    public int addAkinator(Map<String, Object> akinator, int foodId) {
+        int result = 0;
+        for(int i = 1; i<=akinator.size(); i++){
+            result += akinatorDao.insertAkinator(foodId,
+                    i,
+                    ((Integer) akinator.get(Integer.toString(i))).intValue());
+        }
+        if(result != akinator.size()) {
+            System.out.println("result "+result+" akinator.size() "+akinator.size());
+            throw new RuntimeException("addAkinator : 아키네이터 추가가 실패했습니다.");
+        }
+        return 1;
     }
 }

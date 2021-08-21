@@ -1,7 +1,8 @@
 package com.icia.wapoo.dao;
 
+import com.icia.wapoo.model.Food;
 import com.icia.wapoo.model.Store;
-import com.icia.wapoo.model.StoreFile;
+import com.icia.wapoo.model.ImageFile;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,7 @@ import java.util.Map;
 @Repository
 @Mapper
 public interface StoreDao {
-    int insertStoreFile(StoreFile storeFile);
+    int insertStoreFile(ImageFile imageFile);
 
     int insertStore(Store store);
 
@@ -23,4 +24,8 @@ public interface StoreDao {
     int updateStoreStatus(@Param("storeId") int storeId, @Param("status") String status);
 
     List<Store> selectStoreById(@Param("memberId") int memberId);
+
+    int insertFood( Food food);
+
+    int insertFoodFile(ImageFile imageFile);
 }

@@ -12,5 +12,11 @@
         FROM answer
         WHERE question_id = #{questionId}
     </select>
+    <insert id="insertAkinator" parameterType="int">
+        INSERT INTO akinator
+        SET food_id = #{food_id},
+            question_id = #{question_id},
+            answerValue = #{answerValue}
+    </insert>
 
 </mapper>

@@ -13,7 +13,7 @@
       <div class="row">
         <div class="col-md-5 align-self-center" v-if="uploadImageFile">
           <img :src="uploadImageFile" />
-          <div class="btn btn-danger mt-2">사진삭제</div>
+          <div class="btn btn-danger mt-2" @click="clearImg">사진삭제</div>
         </div>
         <div
           id="imageContainer"
@@ -42,6 +42,7 @@
               id="foodName"
               placeholder="예) 와푸 삼겹살볶음"
               @input="set_food_name"
+              ref="image"
             />
             <label for="foodPrice" class="form-label mt-2">가격</label>
             <div class="input-group">
@@ -75,6 +76,9 @@
 					"
           rows="7"
         ></textarea>
+        <div class="spinner-border mt-4" role="status" v-if="akinators == null">
+          <span class="visually-hidden">Loading...</span>
+        </div>
         <!-- 아키네이터 -->
         <div id="akinators" class="mt-4" v-if="akinators != null">
           <!-- 아키네이터 질문양식에 대한 사각형 설명! -->
@@ -118,14 +122,13 @@
       <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-5">
-          <div class="btn btn-success">등록하기</div>
+          <div class="btn btn-success" @click="sendForm">등록하기</div>
         </div>
         <div class="col-md-5">
-          <div class="btn btn-danger">다시입력</div>
+          <div class="btn btn-danger" @click="resetForm">다시입력</div>
         </div>
         <div class="col-md-1"></div>
       </div>
-      {{ foodInfo }}
     </div>
   </div>
 </template>
@@ -133,6 +136,7 @@
 <script>
 import { error, success, normal } from "@/api/notification";
 import axios from "axios";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -144,6 +148,7 @@ export default {
       akinators: null,
       foodName: null,
       foodInfo: new Map(),
+      uploadFile: null,
     };
   },
   mounted() {
@@ -159,12 +164,110 @@ export default {
       .catch((err) => {
         console.log(err);
         error("오류가 발생했습니다. 다시 시도해주세요", this);
-        // this.$store.dispatch("auth/logout");
-        // this.$router.push({ path: "/" });
+        this.$store.dispatch("auth/logout");
+        this.$router.push({ path: "/" });
       });
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      getToken: "auth/getAccessToken",
+    }),
+  },
   methods: {
+    sendForm() {
+      const token = this.getToken;
+
+      let formData = new FormData();
+
+      if (!this.foodName) {
+        error("음식 이름을 입력해주세요!", this);
+        return;
+      }
+      formData.append("name", this.foodName);
+
+      if (!this.price || !this.priceValid) {
+        error("음식 가격을 입력해주세요!", this);
+        return;
+      }
+      formData.append("price", this.price);
+
+      if (!this.foodDesc) {
+        error("음식 설명을 제대로 기입해주세요", this);
+        return;
+      }
+      formData.append("description", this.foodDesc);
+
+      if (this.foodInfo.size != this.akinators.length) {
+        error("모든 아키네이터 항목에 답변을 달아주세요!", this);
+        console.log(
+          this.foodInfo.size +
+            " 와 " +
+            this.akinators.length +
+            " 가 같지않습니다."
+        );
+        return;
+      }
+
+      if (!this.uploadFile) {
+        error("대표사진을 선택해주세요!", this);
+        return;
+      }
+      formData.append("file", this.uploadFile);
+
+      normal("음식을 등록하는중입니다..", this);
+
+      const headers = {
+        "content-type": "multipart/form-data",
+        accesstoken: token,
+      };
+      axios
+        .post("http://localhost:8083/store/addFood", formData, { headers })
+        .then((response) => {
+          if (response.status === 200) {
+            this.requestAddAkinator(response.data);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          error("오류가 발생했습니다. 다시 시도해주세요", this);
+          this.$store.dispatch("auth/logout");
+          this.$router.push({ path: "/" });
+        });
+    },
+    requestAddAkinator(foodId) {
+      const headers = {
+        "content-type": "application/json",
+      };
+      const map = this.foodInfo;
+      // Map to object
+      const modified = [...map];
+      const reducerApplied = modified.reduce((accum, current) => {
+        return {
+          ...accum,
+          [current[0]]: current[1],
+        };
+      }, {});
+      const data = {
+        akinator: reducerApplied,
+        foodId: foodId,
+      };
+      console.log(this.foodInfo);
+      console.log(data.akinator);
+      axios
+        .post("http://localhost:8083/store/setAkinator", data, { headers })
+        .then((response) => {
+          console.log(response);
+          success("음식을 등록했습니다!", this);
+          this.$router.push({ path: "/storeMenus" });
+        })
+        .catch((err) => {
+          console.log(err);
+          error("오류가 발생했습니다. 다시 시도해주세요", this);
+          // 나중에 음식수정에서 아키네이터 다시 수정할수있게 해야지
+          this.$store.dispatch("auth/logout");
+          this.$router.push({ path: "/" });
+        });
+    },
     chk_food_price() {
       // validation
       let ChkifOnlyNumber = /[^0-9]/;
@@ -177,6 +280,7 @@ export default {
     },
     onFileSelected(event) {
       let input = event.target;
+      this.uploadFile = input.files[0];
       if (input.files && input.files[0]) {
         let reader = new FileReader();
         reader.onload = (e) => {
@@ -191,6 +295,12 @@ export default {
     },
     set_food_info(question_id, answerValue) {
       this.foodInfo.set(question_id, answerValue);
+    },
+    resetForm() {
+      location.reload();
+    },
+    clearImg() {
+      this.uploadImageFile = null;
     },
   },
 };
@@ -212,6 +322,7 @@ img {
   height: 15rem;
   border-radius: 10px;
   margin-left: -12px;
+  width: 15rem;
 }
 .questions {
   -ms-user-select: none;
