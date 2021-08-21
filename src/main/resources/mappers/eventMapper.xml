@@ -5,16 +5,16 @@
 <mapper namespace="com.icia.wapoo.dao.EventDao">
 	
 
-    <insert id="insertEvent" useGeneratedKeys="true" keyColumn="eventId" keyProperty="EventId" parameterType="Event">
+    <insert id="insertEvent" useGeneratedKeys="true" keyColumn="eventId" keyProperty="eventId" parameterType="Event">
         INSERT INTO `event`
         SET
         regDate = NOW(),
         updateDate = NOW(),
-        dueDate = #{dueDate}
-        status = 'S',
-        body = #{body},
-        title = #{title},
-        provider_id = 3
+        dueDate = #{dueDate},
+        status = 'Y',
+        `body` = #{body},
+        `title` = #{title},
+        provider_id = #{provider_id}
     </insert>
 
 </mapper>

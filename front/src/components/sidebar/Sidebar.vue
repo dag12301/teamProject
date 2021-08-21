@@ -18,16 +18,16 @@
     <div v-if="userInfo[1] == 'ADMIN'">
       <!-- 관리자로 로그인 했을때 보이는 메뉴들 -->
       <SidebarLink to="/admin" icon="fas fa-home">가게관리페이지</SidebarLink>
-      <SidebarLink to="/eventadd" icon="fas fa-ticket-alt">쿠폰등록</SidebarLink>
+      <SidebarLink to="/eventadd" icon="fas fa-ticket-alt">이벤트등록</SidebarLink>
     </div>
     <div v-else-if="userInfo[1] == 'SELLER'">
       <!-- 판매자로 로그인 했을때 보이는 메뉴들 -->
       <SidebarLink
-        to="/storeregister"
+        to="/store"
         icon="fas fa-store"
         v-if="userInfo[1] == 'SELLER'"
       >
-        가게등록</SidebarLink
+        내 가게</SidebarLink
       >
     </div>
     <div v-else>
@@ -40,6 +40,9 @@
       <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
       <SidebarLink to="/all" icon="fas fa-ticket-alt">이벤트</SidebarLink>
       <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
+      <SidebarLink to="/eventadd" icon="fas fa-question"
+        >이벤트추가</SidebarLink
+      >
     </div>
 
     <span class="burger" @click="toggleSidebar">

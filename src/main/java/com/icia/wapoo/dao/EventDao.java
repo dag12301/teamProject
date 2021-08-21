@@ -15,6 +15,6 @@ import com.icia.wapoo.model.StoreFile;
 @Mapper
 public interface EventDao {
 	
-    int insertEvent(Event event);
+    public int insertEvent(Event event);
 
 }

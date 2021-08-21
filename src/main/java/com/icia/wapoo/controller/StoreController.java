@@ -45,4 +45,22 @@ public class StoreController {
         System.out.println("결과값은?" + result);
         return new ResponseEntity("OK", HttpStatus.OK);
     }
+
+    @PostMapping("/findStore")
+    public ResponseEntity findStore(HttpServletRequest request) {
+        try{
+            String token = jwtService.resolveToken(request);
+            Map<String, Object> claims = jwtService.getUserInfo(token);
+            Integer memberId = ((Integer) claims.get("memberId")).intValue();
+            Store store = null;
+            if( memberId != null ){
+                System.out.println("허용된 사용자, 가게를 찾아봅니다.");
+                store = storeService.getStoreById(memberId);
+            }
+            return new ResponseEntity(store, HttpStatus.OK);
+        } catch (Exception e){
+            System.out.println("허용할수없는 토큰");
+        }
+        return new ResponseEntity(HttpStatus.FORBIDDEN);
+    }
 }

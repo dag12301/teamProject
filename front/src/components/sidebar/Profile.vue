@@ -1,14 +1,15 @@
 <template>
   <transition name="fade">
     <div class="card" v-if="!collapsed">
+      <notifications
+        group="notifyApp"
+        position="bottom right"
+        style="margin-right: 30vh"
+      />
       <!-- 프로필 -->
       {{ userInfo[1] }} 님 안녕하세요. ㅇㅇ ㅇㅇ
       <div v-if="userInfo[0]">
-        <button
-          type="button"
-          class="btn btn-success"
-          @click="this.$store.dispatch('auth/logout')"
-        >
+        <button type="button" class="btn btn-success" @click="logout">
           로그아웃
         </button>
       </div>
@@ -35,6 +36,7 @@ import { collapsed } from "./state";
 import { mapGetters, mapMutations } from "vuex";
 import LoginModal from "@/components/modal/Login.vue";
 import RegisterModal from "@/components/modal/Register.vue";
+import { success } from "@/api/notification";
 
 export default {
   props: {},
@@ -48,6 +50,13 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_MODAL_LOGIN", "SET_MODAL_REGISTER"]),
+    logout() {
+      this.$store.dispatch("auth/logout");
+      setTimeout(() => {
+        this.$router.push({ path: "/" });
+      }, 500);
+      success("성공적으로 로그아웃 하였습니다!", this);
+    },
   },
   components: {
     LoginModal,

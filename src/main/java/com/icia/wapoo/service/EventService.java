@@ -28,7 +28,7 @@ public class EventService {
     public int insertEvent(Event event){
     	System.out.println("서비스 들어옴");
     	int count = eventDao.insertEvent(event);
-        System.out.println("EventService : 적용된 쿠폰수 => " + count);
+        System.out.println("EventService : 적용된 이벤트 수 => " + count);
         
         if ( count > 0) {
         	System.out.println("EventService 통과");

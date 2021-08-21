@@ -16,7 +16,11 @@ public interface StoreDao {
 
     int insertStore(Store store);
 
-    List<Map<String, Object>> selectStoreList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit);
+    List<Map<String, Object>> selectStoreList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option);
 
-    int selectStoreListCount();
+    int selectStoreListCount(@Param("option") String option);
+
+    int updateStoreStatus(@Param("storeId") int storeId, @Param("status") String status);
+
+    List<Store> selectStoreById(@Param("memberId") int memberId);
 }
