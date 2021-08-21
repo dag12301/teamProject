@@ -3,6 +3,7 @@ package com.icia.wapoo.controller;
 import com.icia.wapoo.S3.S3Service;
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.Store;
+import com.icia.wapoo.service.AkinatorService;
 import com.icia.wapoo.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,8 @@ public class StoreController {
     private final JwtService jwtService;
     @Autowired
     private final StoreService storeService;
+    @Autowired
+    private final AkinatorService akinatorService;
 
 
     @PostMapping("/addstore")
@@ -62,5 +65,11 @@ public class StoreController {
             System.out.println("허용할수없는 토큰");
         }
         return new ResponseEntity(HttpStatus.FORBIDDEN);
+    }
+
+    @GetMapping("/getAkinatorList")
+    public ResponseEntity getAkinatorList() {
+        List<Map<String,Object>> akinatorList = akinatorService.getAkinatorList();
+        return new ResponseEntity(akinatorList, HttpStatus.OK);
     }
 }

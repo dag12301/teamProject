@@ -112,9 +112,14 @@ const routes = [
     component: () => import("../views/admin/AdminHome.vue"),
   },
   {
-    path: "/storeFoods",
-    name: "StoreFoods",
-    component: () => import("../views/store/StoreFoods.vue"),
+    path: "/storeMenus",
+    name: "StoreMenus",
+    component: () => import("../views/store/StoreMenus.vue"),
+  },
+  {
+    path: "/addMenu",
+    name: "addMenu",
+    component: () => import("../views/store/StoreAddMenu.vue"),
   },
 ];
 

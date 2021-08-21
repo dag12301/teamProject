@@ -29,11 +29,11 @@
         내 가게</SidebarLink
       >
       <SidebarLink
-        to="/storeFoods"
+        to="/storeMenus"
         icon="fas fa-store"
         v-if="userInfo[1] == 'SELLER'"
       >
-        우리가게 음식들</SidebarLink
+        가게메뉴</SidebarLink
       >
     </div>
     <div v-else>
@@ -45,12 +45,12 @@
       >
       <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
       <SidebarLink to="/all" icon="fas fa-utensils">이벤트</SidebarLink>
-      <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
+
       <SidebarLink to="/eventadd" icon="fas fa-question"
         >이벤트추가</SidebarLink
       >
     </div>
-
+    <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
     <span class="burger" @click="toggleSidebar">
       <BurgerButton />
     </span>
