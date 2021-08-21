@@ -18,6 +18,9 @@
     <div v-if="userInfo[1] == 'ADMIN'">
       <!-- 관리자로 로그인 했을때 보이는 메뉴들 -->
       <SidebarLink to="/admin" icon="fas fa-home">가게관리페이지</SidebarLink>
+      <SidebarLink to="/eventadd" icon="fas fa-ticket-alt"
+        >이벤트등록</SidebarLink
+      >
     </div>
     <div v-else-if="userInfo[1] == 'SELLER'">
       <!-- 판매자로 로그인 했을때 보이는 메뉴들 -->
