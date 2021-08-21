@@ -28,29 +28,28 @@ import axios from "axios";
 export default {
   data:function(){
     return{
-       title : '',
-       body : '',
-       dueDate: ''
+       title : this.title,
+       body : this.body,
+       dueDate: this.dueDate
     }
   },
   methods:{
     submitForm:function(){
       console.log(this.title, this.body, this.dueDate);
-      var url = 'http://localhost:8083/event/eventinsert';
       var data = {
         title: this.title,
         body: this.body,
         dueDate: this.dueDate
       }
-      axios.post(url, data)
-        .then(function(data){
+      axios.post('http://localhost:8083/event/eventinsert', data)
+        .then(data){
           console.log(data);
           
            success("데이터 로딩 완료!", this);
-        })
-        .catch(function(error){
+        }
+        .catch(error){
           console.log(error);
-        });
+        };
     }
   }
 };
