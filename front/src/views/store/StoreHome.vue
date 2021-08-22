@@ -125,6 +125,7 @@ export default {
             return;
           }
           error("등록된 가게가 없습니다!", this);
+          this.dataLoaded = true;
         }
       })
       .catch((err) => {

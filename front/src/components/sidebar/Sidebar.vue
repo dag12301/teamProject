@@ -33,7 +33,7 @@
       >
       <SidebarLink
         to="/storeMenus"
-        icon="fas fa-store"
+        icon="fas fa-bars"
         v-if="userInfo[1] == 'SELLER'"
       >
         가게메뉴</SidebarLink
