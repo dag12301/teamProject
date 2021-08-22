@@ -21,10 +21,10 @@
                 <button class="btn btn-primary mt-2">가게 등록</button>
               </router-link>
             </div>
-          </div>
-          <div v-if="storeInfo.status != null">
-            <!-- 가게화면 -->
-            {{ storeInfo }}
+            <div v-else-if="storeInfo.status != null">
+              <!-- 가게상세정보화면 , 컴포넌트로만들자 -->
+              {{ storeInfo }} 파일도불러와야지
+            </div>
           </div>
         </div>
       </div>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import { error, success, normal } from "@/api/notification";
 import axios from "axios";
 
@@ -48,6 +48,11 @@ export default {
     ...mapGetters({
       getInfo: "auth/getUserInfo",
       getToken: "auth/getAccessToken",
+    }),
+  },
+  methods: {
+    ...mapMutations({
+      setMyStore: "SET_MY_STORE",
     }),
   },
   mounted() {
@@ -76,6 +81,8 @@ export default {
           this.storeInfo = response.data;
           if (this.storeInfo.status != null) {
             success("등록된 가게정보를 찾았습니다!", this);
+            // 전역변수에 가게 등록로직
+            this.setMyStore(this.storeInfo);
             return;
           }
           error("등록된 가게가 없습니다!", this);

@@ -2,13 +2,13 @@ package com.icia.wapoo.service;
 
 import com.icia.wapoo.S3.S3Service;
 import com.icia.wapoo.dao.StoreDao;
+import com.icia.wapoo.model.ImageFile;
+import com.icia.wapoo.model.Food;
 import com.icia.wapoo.model.Store;
-import com.icia.wapoo.model.StoreFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -38,13 +38,13 @@ public class StoreService {
                 } catch (IOException e) {
                     throw new RuntimeException("S3 업로드중 오류발생!");
                 }
-                StoreFile storeFile = new StoreFile();
-                storeFile.setStore_id(store.getStoreId());
-                storeFile.setFilesize(file.getSize());
-                storeFile.setFiletype(file.getContentType());
-                storeFile.setName(fileURL);
-                storeFile.setOrgName(file.getName());
-                storeDao.insertStoreFile(storeFile);
+                ImageFile storeImageFile = new ImageFile();
+                storeImageFile.setRef_id(store.getStoreId());
+                storeImageFile.setFilesize(file.getSize());
+                storeImageFile.setFiletype(file.getContentType());
+                storeImageFile.setName(fileURL);
+                storeImageFile.setOrgName(file.getName());
+                storeDao.insertStoreFile(storeImageFile);
             }
             return result;
 
@@ -79,4 +79,35 @@ public class StoreService {
         }
         return new Store();
     }
+
+
+    @Transactional
+    public int addFood(Food food, MultipartFile file) {
+        int result = storeDao.insertFood(food);
+        System.out.println("적용된 수 : "+result + ", FoodId : "+food.getFoodId());
+        if ( result > 0) {
+
+
+                String fileURL = null;
+                try {
+                    fileURL = s3Service.upload(file, "food_"+food.getFoodId());
+                } catch (IOException e) {
+                    throw new RuntimeException("S3 업로드중 오류발생!");
+                }
+                ImageFile imageFile = new ImageFile();
+                imageFile.setRef_id(food.getFoodId());
+                imageFile.setFilesize(file.getSize());
+                imageFile.setFiletype(file.getContentType());
+                imageFile.setName(fileURL);
+                imageFile.setOrgName(file.getName());
+                storeDao.insertFoodFile(imageFile);
+
+
+
+        } else {
+            throw new RuntimeException("음식 정보 삽입중에 오류발생!");
+        }
+        return food.getFoodId();
+    }
+
 }

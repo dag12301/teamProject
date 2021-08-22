@@ -1,19 +1,13 @@
 package com.icia.wapoo.service;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.icia.wapoo.S3.S3Service;
 import com.icia.wapoo.dao.EventDao;
-import com.icia.wapoo.dao.StoreDao;
+
 import com.icia.wapoo.model.Event;
-import com.icia.wapoo.model.Store;
-import com.icia.wapoo.model.StoreFile;
+
 
 import lombok.RequiredArgsConstructor;
 

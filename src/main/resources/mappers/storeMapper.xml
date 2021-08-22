@@ -19,16 +19,16 @@
         `body` = #{body},
         owner_id = #{owner_id}
     </insert>
-    <insert id="insertStoreFile" parameterType="storeFile">
+    <insert id="insertStoreFile" parameterType="imageFile">
         INSERT INTO store_file
         SET
-        storefileId = #{storefileId},
+        storefileId = #{fileId},
         regDate = NOW(),
         orgName = #{orgName},
         `name` = #{name},
         filetype = #{filetype},
         filesize = #{filesize},
-        store_id = #{store_id}
+        store_id = #{ref_id}
     </insert>
     <resultMap id="exampleResultMap" type="java.util.Map">
         <result column="regDate" property="regDate"/>
@@ -70,4 +70,26 @@
         FROM store
         WHERE owner_id = #{memberId};
     </select>
+    <insert id="insertFood" useGeneratedKeys="true" keyColumn="foodId" keyProperty="foodId" parameterType="Food">
+        INSERT INTO `food`
+        SET
+            `regDate` = NOW(),
+            updateDate = NOW(),
+            `status` = '1',
+            `name` = #{name},
+            `description` = #{description},
+            price = #{price},
+            store_id = #{store_id}
+    </insert>
+    <insert id="insertFoodFile" parameterType="imageFile">
+        INSERT INTO food_file
+        SET
+            foodfileId = #{fileId},
+            regDate = NOW(),
+            orgName = #{orgName},
+            `name` = #{name},
+            filetype = #{filetype},
+            filesize = #{filesize},
+            food_id = #{ref_id}
+    </insert>
 </mapper>

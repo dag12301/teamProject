@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StoreFile {
-    private int storefileId;
+public class ImageFile {
+    private int fileId;
     private String regDate;
     private String orgName;
     private String name;
     private String filetype;
     private long filesize;
-    private int store_id;
+    private int ref_id;
 }

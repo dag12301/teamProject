@@ -29,6 +29,7 @@ export default createStore({
 
     selectedPlace: "주소찾기를 눌러주세요...", // 주소찾기에서 선택한 주소
     selectedAddressDetail: "", // 주소찾기에서 선택한 상세주소
+    myStore: null,
   },
   mutations: {
     SET_MODAL_LOGIN(state, boolean) {
@@ -67,6 +68,9 @@ export default createStore({
     SET_SELECTED_PLACE(state, [place, detail]) {
       state.selectedPlace = place;
       state.selectedAddressDetail = detail;
+    },
+    SET_MY_STORE(state, store) {
+      state.availableStore = store;
     },
   },
   modules: {

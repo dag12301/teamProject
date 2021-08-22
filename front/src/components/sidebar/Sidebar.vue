@@ -31,6 +31,13 @@
       >
         내 가게</SidebarLink
       >
+      <SidebarLink
+        to="/storeMenus"
+        icon="fas fa-store"
+        v-if="userInfo[1] == 'SELLER'"
+      >
+        가게메뉴</SidebarLink
+      >
     </div>
     <div v-else>
       <SidebarLink to="/#" icon="fas fa-robot">아키네이터</SidebarLink>
@@ -40,13 +47,13 @@
         >고객센터</SidebarLink
       >
       <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
-      <SidebarLink to="/all" icon="fas fa-ticket-alt">이벤트</SidebarLink>
-      <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
+      <SidebarLink to="/all" icon="fas fa-utensils">이벤트</SidebarLink>
+
       <SidebarLink to="/eventadd" icon="fas fa-question"
         >이벤트추가</SidebarLink
       >
     </div>
-
+    <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
     <span class="burger" @click="toggleSidebar">
       <BurgerButton />
     </span>

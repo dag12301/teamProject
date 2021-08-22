@@ -2,7 +2,9 @@ package com.icia.wapoo.controller;
 
 import com.icia.wapoo.S3.S3Service;
 import com.icia.wapoo.jwt.service.JwtService;
+import com.icia.wapoo.model.Food;
 import com.icia.wapoo.model.Store;
+import com.icia.wapoo.service.AkinatorService;
 import com.icia.wapoo.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class StoreController {
     private final JwtService jwtService;
     @Autowired
     private final StoreService storeService;
+    @Autowired
+    private final AkinatorService akinatorService;
 
 
     @PostMapping("/addstore")
@@ -62,5 +66,62 @@ public class StoreController {
             System.out.println("허용할수없는 토큰");
         }
         return new ResponseEntity(HttpStatus.FORBIDDEN);
+    }
+
+    @GetMapping("/getAkinatorList")
+    public ResponseEntity getAkinatorList() {
+        List<Map<String,Object>> akinatorList = akinatorService.getAkinatorList();
+        return new ResponseEntity(akinatorList, HttpStatus.OK);
+    }
+
+    @PostMapping("/addFood")
+    public ResponseEntity addFood(
+            Food food
+            ,@RequestPart(value = "file", required = false) MultipartFile file, HttpServletRequest request
+    ) {
+        try{
+            String token = jwtService.resolveToken(request);
+            Map<String, Object> claims = jwtService.getUserInfo(token);
+            Integer memberId = ((Integer) claims.get("memberId")).intValue();
+            Store store = null;
+            if( memberId != null ){
+                store = storeService.getStoreById(memberId);
+
+                if(store == null) {
+                    //가게가 없다?
+                    System.out.println("가게가 없다구요?");
+                    return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                if(store.getStatus().equals("Y")){
+                    // 가게가 영업승인이 났을 때,
+                    food.setStore_id(store.getStoreId());
+                    System.out.println(food);
+                    int foodId = storeService.addFood(food, file);
+                    if(foodId > 0 ){
+                        System.out.println("새로생긴 FoodId를 성공적으로 넘겨줍니다 : "+ foodId);
+                        return new ResponseEntity(foodId, HttpStatus.OK);
+                    }
+                    return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
+                // 가게가 영업승인이 안났어..
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            // 멤버아이디가 없을때?
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } catch (Exception e){
+            System.out.println("허용할수없는 토큰");
+        }
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/setAkinator")
+    public ResponseEntity getStoreList(@RequestBody Map<String, Object> data) {
+        Map<String, Object> akinator = (Map<String, Object>) data.get("akinator");
+        int foodId = ((Integer) data.get("foodId")).intValue();
+        int result = akinatorService.addAkinator(akinator, foodId);
+        if(result == 1){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
