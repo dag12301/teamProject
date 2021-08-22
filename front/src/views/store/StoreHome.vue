@@ -1,29 +1,39 @@
 <template>
   <div>
+    <!-- 제목 -->
     <h1 class="ml-4" v-if="userInfo">{{ userInfo[2] }} 님, 환영합니다!</h1>
+    <!-- 노티 -->
     <notifications
       group="notifyApp"
       position="bottom right"
       style="margin-right: 30vh"
     />
-    <div id="storeWrapper" class="container">
-      <div class="row align-items-center">
-        <div class="col align-self-center">
-          <div id="choices">
-            <div v-if="!storeInfo">
-              <div class="spinner-border" role="status">
-                <span class="visually-hidden">Loading...</span>
+    <!-- 스피너 -->
+    <div v-if="!dataLoaded">
+      <div class="spinner-border mt-4" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <div v-else>
+      <!-- 가게상세정보 -->
+      <div>
+        <store-detail
+          :storeFiles="storeFiles"
+          :storeInfo="storeInfo"
+          v-if="storeInfo.status != null"
+        ></store-detail>
+      </div>
+      <!-- 가게가 없을때 -->
+      <div id="storeWrapper" class="container" v-if="storeInfo.status == null">
+        <div class="row align-items-center">
+          <div class="col align-self-center">
+            <div id="choices">
+              <div>
+                <span>아직 가게를 등록하지 않으셨군요?</span><br />
+                <router-link to="storeRegister">
+                  <button class="btn btn-primary mt-2">가게 등록</button>
+                </router-link>
               </div>
-            </div>
-            <div v-else-if="storeInfo.status == null">
-              <span>아직 가게를 등록하지 않으셨군요?</span><br />
-              <router-link to="storeRegister">
-                <button class="btn btn-primary mt-2">가게 등록</button>
-              </router-link>
-            </div>
-            <div v-else-if="storeInfo.status != null">
-              <!-- 가게상세정보화면 , 컴포넌트로만들자 -->
-              {{ storeInfo }} 파일도불러와야지
             </div>
           </div>
         </div>
@@ -36,12 +46,18 @@
 import { mapGetters, mapMutations } from "vuex";
 import { error, success, normal } from "@/api/notification";
 import axios from "axios";
+import storeDetail from "@/components/store/StoreDetail.vue";
 
 export default {
+  components: {
+    storeDetail,
+  },
   data() {
     return {
       userInfo: null,
       storeInfo: null,
+      storeFiles: null,
+      dataLoaded: false,
     };
   },
   computed: {
@@ -54,6 +70,28 @@ export default {
     ...mapMutations({
       setMyStore: "SET_MY_STORE",
     }),
+    getStoreFiles(storeId) {
+      axios
+        .get("http://localhost:8083/store/getStoreFiles", {
+          params: {
+            storeId: storeId,
+          },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            this.storeFiles = response.data;
+            success("가게사진들을 불러왔습니다!", this);
+            this.dataLoaded = true;
+            return;
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          error("오류가 발생했습니다. 다시 시도해주세요", this);
+          // this.$store.dispatch("auth/logout");
+          // this.$router.push({ path: "/" });
+        });
+    },
   },
   mounted() {
     this.userInfo = this.getInfo;
@@ -83,6 +121,7 @@ export default {
             success("등록된 가게정보를 찾았습니다!", this);
             // 전역변수에 가게 등록로직
             this.setMyStore(this.storeInfo);
+            this.getStoreFiles(this.storeInfo.storeId);
             return;
           }
           error("등록된 가게가 없습니다!", this);
@@ -102,10 +141,9 @@ export default {
 #storeWrapper {
   width: 40rem;
   height: 30rem;
-  left: 4rem;
   position: relative;
   top: 2rem;
-  border: 2px solid gray;
+  border: 2px dashed palegreen;
   border-radius: 10px;
   text-align: center;
 }

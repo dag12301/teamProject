@@ -110,4 +110,20 @@ public class StoreService {
         return food.getFoodId();
     }
 
+    public List<ImageFile> getStoreFiles(int storeId) {
+        return storeDao.selectStoreFileList(storeId);
+    }
+
+    public List<Map<String, Object>> getFoodList(int listPerPage, int requestPage, String option, int store_id) {
+        int StartLimit = (requestPage-1)* listPerPage;
+        int EndLimit = listPerPage;
+        System.out.println((StartLimit+1) + "번째 부터 시작하여 "+EndLimit +"개를 가져옵니다.");
+        List<Map<String, Object>> list = storeDao.selectFoodList(StartLimit, EndLimit, option, store_id);
+        System.out.println("가져온 게시물 수 : " + list.size());
+        return list;
+    }
+
+    public int getFoodListCount(String option, int store_id) {
+        return storeDao.selectFoodListCount(option, store_id);
+    }
 }

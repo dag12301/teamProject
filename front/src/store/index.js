@@ -70,7 +70,7 @@ export default createStore({
       state.selectedAddressDetail = detail;
     },
     SET_MY_STORE(state, store) {
-      state.availableStore = store;
+      state.myStore = store;
     },
   },
   modules: {

@@ -28,4 +28,10 @@ public interface StoreDao {
     int insertFood( Food food);
 
     int insertFoodFile(ImageFile imageFile);
+
+    List<ImageFile> selectStoreFileList(int storeId);
+
+    List<Map<String, Object>> selectFoodList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option, @Param("store_id") int store_id);
+
+    int selectFoodListCount(@Param("option") String option, @Param("store_id") int store_id);
 }
