@@ -3,6 +3,7 @@ package com.icia.wapoo.controller;
 import com.icia.wapoo.S3.S3Service;
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.Food;
+import com.icia.wapoo.model.ImageFile;
 import com.icia.wapoo.model.Store;
 import com.icia.wapoo.service.AkinatorService;
 import com.icia.wapoo.service.StoreService;
@@ -35,27 +36,26 @@ public class StoreController {
     @Autowired
     private final AkinatorService akinatorService;
 
+    private int getMemberIdByRequest(HttpServletRequest request) {
+        System.out.println("받은 토큰으로 멤버를 검색합니다");
+        String token = jwtService.resolveToken(request);
+        Map<String, Object> claims = jwtService.getUserInfo(token);
+        return ((Integer) claims.get("memberId")).intValue();
+    }
 
     @PostMapping("/addstore")
     public ResponseEntity addStore(Store store
             , @RequestPart(value = "fileList", required = false) List<MultipartFile> files, HttpServletRequest request){
-
-        String token = jwtService.resolveToken(request);
-        System.out.println(token);
-        Map<String, Object> claims = jwtService.getUserInfo(token);
-        System.out.println("클레임있나여" +claims);
-        store.setOwner_id(((Integer) claims.get("memberId")).intValue());
+        store.setOwner_id(getMemberIdByRequest(request));
         int result = storeService.registerStore(store, files);
-        System.out.println("결과값은?" + result);
-        return new ResponseEntity("OK", HttpStatus.OK);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @PostMapping("/findStore")
     public ResponseEntity findStore(HttpServletRequest request) {
         try{
-            String token = jwtService.resolveToken(request);
-            Map<String, Object> claims = jwtService.getUserInfo(token);
-            Integer memberId = ((Integer) claims.get("memberId")).intValue();
+            Integer memberId = null;
+            memberId = getMemberIdByRequest(request);
             Store store = null;
             if( memberId != null ){
                 System.out.println("허용된 사용자, 가게를 찾아봅니다.");
@@ -80,9 +80,8 @@ public class StoreController {
             ,@RequestPart(value = "file", required = false) MultipartFile file, HttpServletRequest request
     ) {
         try{
-            String token = jwtService.resolveToken(request);
-            Map<String, Object> claims = jwtService.getUserInfo(token);
-            Integer memberId = ((Integer) claims.get("memberId")).intValue();
+            Integer memberId = null;
+            memberId = getMemberIdByRequest(request);
             Store store = null;
             if( memberId != null ){
                 store = storeService.getStoreById(memberId);
@@ -123,5 +122,37 @@ public class StoreController {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("/getStoreFiles")
+    public ResponseEntity getStoreFiles(@RequestParam("storeId") Integer storeId) {
+        if(storeId != null) {
+            List<ImageFile> fileList = storeService.getStoreFiles(storeId.intValue());
+            return new ResponseEntity(fileList, HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/getFoodList")
+    public ResponseEntity getFoodList(@RequestBody Map<String, Object> data) {
+        int listPerPage = ((Integer) data.get("listPerPage")).intValue();
+        int currentPage = ((Integer) data.get("currentPage")).intValue();
+        int storeId = ((Integer) data.get("storeId")).intValue();
+        String option = (String) data.get("statusOption");
+        if(listPerPage <= 0 || currentPage <=0){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        System.out.println("요청페이지 : " + currentPage + ", 요청게시물 수 : "+listPerPage);
+        // 가게페이지를 가져옵니다.
+        System.out.println(option);
+
+        List<Map<String, Object>> result = storeService.getFoodList(listPerPage, currentPage, option, storeId);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+    @GetMapping("/getFoodListCount")
+    public ResponseEntity getFoodListCount(@RequestParam("option") String option, @RequestParam("storeId") Integer storeId) {
+
+        int result = storeService.getFoodListCount(option, storeId);
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 }

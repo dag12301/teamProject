@@ -160,6 +160,7 @@ export default {
         })
         .catch((err) => {
           console.log("에러?" + err);
+          error("서버에 연결할 수 없습니다", this);
         });
     },
     loginseller() {

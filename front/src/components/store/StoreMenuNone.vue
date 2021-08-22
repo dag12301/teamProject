@@ -1,7 +1,8 @@
 <template>
   <div id="wrapper">
     <router-link to="/addMenu"
-      ><div class="btn btn-primary">음식 추가하기</div></router-link
+      ><div style="height: 35%"></div>
+      <div class="btn btn-primary">음식 추가하기</div></router-link
     >
   </div>
 </template>
