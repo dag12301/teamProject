@@ -121,24 +121,33 @@
         </ul>
       </div>
       <div class="store-imageFile-upload-wrapper">
-        <div v-if="!files.length" class="store-imageFile-upload-example-container">
+        <div
+          v-if="!files.length"
+          class="store-imageFile-upload-example-container"
+        >
           <!--  -->
           <div class="store-imageFile-upload-example">
             <div class="store-imageFile-image-example-wrapper">이미지</div>
             <div class="store-imageFile-notice-item">
               실사진 최소 1장 이상 등록하셔야 하며, 가로사진을 권장합니다.
             </div>
-            <div class="store-imageFile-notice-item store-imageFile-notice-item-red">
+            <div
+              class="
+                store-imageFile-notice-item store-imageFile-notice-item-red
+              "
+            >
               사진 올릴떄 주의사항
             </div>
-            <div class="store-imageFile-notice-item store-imageFile-upload-button">
+            <div
+              class="store-imageFile-notice-item store-imageFile-upload-button"
+            >
               <div class="image-box">
                 <!-- <div class="image-profile">
                 <img :src="profileImage" />
                 </div>-->
                 <label for="imageFile">일반 사진 등록</label>
                 <input
-                  type="imageFile"
+                  type="file"
                   id="imageFile"
                   ref="files"
                   @change="imageUpload"
@@ -169,7 +178,7 @@
               <div class="image-box">
                 <label for="imageFile">추가 사진 등록</label>
                 <input
-                  type="imageFile"
+                  type="file"
                   id="imageFile"
                   ref="files"
                   @change="imageAddUpload"
@@ -1103,7 +1112,7 @@ select::-ms-expand {
   text-align: center;
 }
 
-.image-box input[type="imageFile"] {
+.image-box input[type="file"] {
   position: absolute;
   width: 0;
   height: 0;

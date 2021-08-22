@@ -7,8 +7,7 @@
       position="bottom right"
       style="margin-right: 30vh"
     />
-    <span v-if="!foodList"
-      >등록한 음식이 없으시네요?
+    <span>
       <router-link to="/addMenu">음식 추가하기</router-link>
     </span>
     <!-- 음식이 있을 때 -->
@@ -147,6 +146,7 @@ export default {
       statusOption: "ALL",
       selectedFood: "",
       foodDetail: "",
+      storeId: null,
     };
   },
   computed: {
@@ -194,17 +194,17 @@ export default {
     },
   },
   mounted() {
+    this.storeId = this.$store.state.myStore.storeId;
     this.requestPage(1);
   },
   methods: {
     requestPage(page) {
-      const storeId = this.$store.state.myStore.storeId;
-      this.requestListCount(storeId);
+      this.requestListCount(this.storeId);
       const data = {
         listPerPage: this.listPerPage,
         currentPage: page,
         statusOption: this.statusOption,
-        storeId: storeId,
+        storeId: this.storeId,
       };
       axios
         .post("http://localhost:8083/store/getFoodList", data)
