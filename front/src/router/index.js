@@ -114,6 +114,16 @@ const routes = [
     name: "AdminHome",
     component: () => import("../views/admin/AdminHome.vue"),
   },
+  {
+    path: "/admincouponadd",
+    name: "AdminCouponAdd",
+    component: () => import("../views/admin/AdminCouponAdd.vue"),
+  },
+  {
+    path: "/admincoupon",
+    name: "AdminCoupon",
+    component: () => import("../views/admin/AdminCoupon.vue"),
+  }
 ];
 
 const router = createRouter({
