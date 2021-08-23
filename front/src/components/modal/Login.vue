@@ -13,14 +13,7 @@
             class="login-selector-user"
             :class="{ selectedLogin: loginType }"
           >
-            일반 회원
-          </div>
-          <div
-            @click="sellerlLoginSelect"
-            class="login-selector-seller"
-            :class="{ selectedLogin: !loginType }"
-          >
-            판매자
+            Wapoo 회원 로그인
           </div>
         </div>
       </div>

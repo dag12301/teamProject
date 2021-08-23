@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar" :style="{ width: sidebarWidth }">
-    <span v-if="collapsed">
-      <h1>
+    <span v-if="collapsed" @click="this.$router.push({ path: '/' })">
+      <h1 class="logo">
         <div>와</div>
         <div>푸</div>
       </h1>
@@ -11,10 +11,11 @@
     </span>
 
     <span v-else>
-      <h2>WAPOO</h2>
+      <h2 @click="this.$router.push({ path: '/' })" class="logo">WAPOO</h2>
       <!-- 펼쳤을때 -->
       <Profile class="profile" />
     </span>
+    <Location icon="fas fa-compass" />
     <div v-if="userRole != null && userRole == 'ADMIN'">
       <!-- 관리자로 로그인 했을때 보이는 메뉴들 -->
       <SidebarLink to="/admin" icon="fas fa-home">가게관리페이지</SidebarLink>
@@ -69,12 +70,13 @@
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import SidebarLink from "./SidebarLink.vue";
 import Profile from "./Profile.vue";
+import Location from "./Location.vue";
 import BurgerButton from "./Burger.vue";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
   props: {},
-  components: { SidebarLink, BurgerButton, Profile },
+  components: { SidebarLink, BurgerButton, Profile, Location },
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth };
   },
@@ -136,5 +138,9 @@ export default {
   padding: 0.75em;
 
   color: gba(255, 255, 255);
+}
+
+.logo {
+  cursor: pointer;
 }
 </style>

@@ -130,7 +130,12 @@
       >
         회원가입(일반 회원)
       </div>
-      <div v-else @click="registerUser" class="register-button">
+      <div
+        v-else
+        @click="registerUser"
+        class="register-button"
+        style="background-color: tomato"
+      >
         회원가입(판매자)
       </div>
     </template>

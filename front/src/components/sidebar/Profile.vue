@@ -21,9 +21,6 @@
         >
           로그인
         </button>
-        <button class="btn btn-primary" @click="SET_MODAL_REGISTER(true)">
-          회원가입
-        </button>
       </div>
     </div>
   </transition>
