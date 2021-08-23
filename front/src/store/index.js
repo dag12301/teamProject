@@ -46,17 +46,14 @@ export default createStore({
     SET_COUNT_NOTICE(state, boolean) {
       //notice 상태 확인 변화
       state.countNotice = boolean;
-      console.log(state.countNotice);
     },
     SET_COUNT_QUEAN(state, boolean) {
       //notice 상태 확인 변화
       state.countQueAn = boolean;
-      console.log(state.countQueAn);
     },
     SET_COUNT_FQA(state, boolean) {
       //notice 상태 확인 변화
       state.countFAQ = boolean;
-      console.log(state.countFAQ);
     },
     SET_MODAL_MAP(state, boolean) {
       state.mapModal = boolean;

@@ -34,9 +34,16 @@
           :key="index"
           @click="listPage(qn.articleId, qn.status)"
         >
-          <td class="col-1">{{ index }}</td>
+          <td class="col-1">{{ qn.nickname }}</td>
           <td class="col-1">{{ qn.title }}</td>
-          <td class="col-5 text-left">{{ qn.body }}</td>
+          <td class="col-5 text-left">
+            <span>
+              {{ qn.body }}
+            </span>
+            <span v-if="qn.children > 0">
+              [{{qn.children}}]
+            </span>
+          </td>
           <td class="col-2">{{ qn.regDate }}</td>
           <td class="col-1">{{ qn.hit }}</td>
           <td class="col-1" v-if="privateToggle(qn.status)">
@@ -53,19 +60,19 @@
     <nav aria-label="Page navigation example" class="mt-5 position-relative .center-block" style="">
       <ul class="pagination position-absolute" style="left: 30vw" >
         <!-- 이전 순서 버튼 -->
-        <li class="page-item" v-if="this.$store.state.serviceCenter.pagingQueAn.prev == true">
-          <a class="page-link" href="#" aria-label="Previous" @click="fn_prev(paging.range, paging.rangeSize)">
+        <li class="page-item" v-if="this.paging.prev == true" @click="prevBotton(paging.range, paging.rangeSize, this.listSize)">
+          <a class="page-link" href="#" aria-label="Previous" >
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
         <!-- 숫자 순서 버튼 -->
         <li class="page-item" v-for="num in this.getnumSize" :key="num">        
-          <a class="page-link" href="#" @click="numPage(num, this.$store.state.serviceCenter.pagingQueAn.range)" >{{num}}</a>
+          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" >{{num}}</a>
         </li>
         
         <!-- 다음 순서 버튼 -->
-        <li class="page-item">
-          <a class="page-link" href="#" aria-label="Next" @click="fn_next(paging.range, paging.rangeSize)">
+        <li class="page-item" v-if="this.paging.next == true" @click="nextBotton(paging.range, paging.rangeSize, this.listSize)">
+          <a class="page-link" href="#" aria-label="Next" >
             <span aria-hidden="true">&raquo;</span>
           </a>
         </li>
@@ -82,13 +89,11 @@ import { mapMutations, mapGetters  } from 'vuex';
 export default {
   data () {
     return {
-      paging:[]
+      paging:[],
+      listSize: 10,     //리스트 수
+      rangeSize: 5      //버튼 수
     }
   },
-  ...mapMutations([
-      
-      
-    ]),
   computed: {
     ...mapGetters({
       getnumSize: "serviceCenter/getnumSize",
@@ -114,40 +119,43 @@ export default {
     },
     privateToggle(status) {
       //공개 비공개 검사
-      if (status === "b") {
+      if (status === "Y") {
         return true;
       }
     },
-    fn_prev( range1, rangeSize1) {       //이전버튼
-      let page = ((range1 - 2) * rangeSize1) + 1
-      let range = range1 - 1
-      if(range < this.$store.state.serviceCenter.originRange[2])
-      {
-        range = this.$store.state.serviceCenter.originRange[2]
-      }
-      console.log("prev---------------------------")
-      console.log(range1)
-      console.log("---------------------------")
-      this.numPage(page, range)
+    prevBotton(range1, rangeSize, listSize) {
+      var page = ((range1 - 2) * rangeSize) + 1;
+		  var range = range1 - 1;
+
+      this.numPage(page, range, rangeSize, listSize)
     },
-    fn_next(range1, rangeSize1) {       ////다음버튼
+    nextBotton(range1, rangeSize, listSize) {
       console.log("next---------------------------")
-      console.log(range1)
-      console.log("---------------------------")
-      var page = parseInt((range1 * rangeSize1)) 
-      var range = parseInt(range1) + parseInt(1)//this.$store.state.serviceCenter.originRange[2]
-      console.log("---------------------------" + range)
-      this.numPage(page, range)
+      let page = parseInt((range1 * rangeSize)) + 1
+		  let range = range1 + 1
+    console.log("range1: " + range1)
+    console.log(page)
+    console.log("range: " + range)
+    
+    console.log("---------------------------")
+      this.numPage(page, range, rangeSize, listSize)
     },
-    numPage(page, range) {           //페이지 번호로 이동 axios
+
+    numPage(page, range, listSize, rangeSize) {           //페이지 번호로 이동 axios
       authAPI
-      .getBoardList(2, page, range)
+      .getBoardList(2, page, range, listSize, rangeSize)
       .then(res => {
         this.nullCenterQueAn()         //테이터 삭제
-        this.nullPagingpagingQueAn()
-        console.log(res.data.paging)
+        this.nullPagingpagingQueAn()    //페이징 삭제
+        console.log("삭제---------------------------")
+        console.log("setPagingQueAn : " + this.$store.state.serviceCenter.pagingQueAn)
+        console.log("---------------------------")
+        
         this.setPagingQueAn(res.data.paging)
-        console.log("영기이"+ this.$store.state.serviceCenter.pagingQueAn.range)
+        console.log("저장---------------------------")
+        console.log("setPagingQueAn : " + this.$store.state.serviceCenter.pagingNotices.next)
+        console.log("---------------------------")
+        
         res.data.list.forEach(element => {      //vuex에 데이터 넣기
           this.setCenterQueAn(element)   
         });
@@ -155,12 +163,15 @@ export default {
       })
     }
   },
+  //고객센터통해 접근할 경우
   mounted() {
-    console.log("---------------------------")
-      console.log(this.$store.state.serviceCenter.pagingQueAn.prev)
-      console.log("---------------------------")
-    
-    this.paging = this.getQueAnPaging
+    this.paging =  this.getQueAnPaging  
+  },
+  //버튼 클릭시
+  updated() {
+    this.paging = this.getQueAnPaging  
+    this.listSize = this.paging.listSize,
+    this.rangeSize = this.paging.rangeSize
   }
 }
 </script>

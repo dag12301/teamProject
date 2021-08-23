@@ -6,50 +6,48 @@ export default {
     ],
     pagingQueAn:[],
     pagingFQA:[],
+    //게시물 저장
     notices: [
     ],
     queAn: [
 
     ],
-    FQA: [],
-    originRange:[]  
+    FQA: [] 
 
   },
   getters: {
-    
-    
-    AllCenterList (state) {
-      return state.notices.length
+    getnumNoticeSize (state) {                     //notice 버튼 숫자 리스트
+      let list =[]
+  
+      for(var i =  state.pagingNotices.startPage; i <= state.pagingNotices.endPage; i++){
+        list.push(i) 
+      }
+      return list
     },
-    
+    getNoticePaging (state) {                     //notice 페이지 정보
+      return state.pagingNotices
+    },
     getnumSize (state)  {                      //Q&A 버튼 숫자 리스트
       let list =[]
-      if( state.pagingQueAn.startPage < 1){
-        console.log("-------------------신호-------------------- ")
-        state.pagingQueAn.startPage = 1
-      }
-      console.log("--------------------------------------- ")
-      console.log("startPage: " + state.pagingQueAn.startPage)
-      console.log("endPage: " + state.pagingQueAn.endPage)
-      console.log("Range: " + state.pagingQueAn.range)
-      console.log("originRange: " + state.originRange[1])
-      console.log("--------------------------------------- ")
-      for(var i =  state.pagingQueAn.startPage; i <= state.pagingQueAn.endPage; i++)
-      {
+  
+      for(var i =  state.pagingQueAn.startPage; i <= state.pagingQueAn.endPage; i++){
         list.push(i) 
       }
       return list
     },
     getQueAnPaging (state) {                     //Q&A 페이지 정보
-      let page = {
-        rangeSize: state.pagingQueAn.rangeSize,
-        
-        range: state.pagingQueAn.range,
-        prev: state.pagingQueAn.prev,
-        next: state.pagingQueAn.next
+      return state.pagingQueAn
+    },
+    getFQANumSize (state)  {                      //FQA 버튼 숫자 리스트
+      let list =[]
+      
+      for(var i =  state.pagingFQA.startPage; i <= state.pagingFQA.endPage; i++){
+        list.push(i) 
       }
-      console.log(state.pagingQueAn.endPage + "aaaaaaaaaaaaaaaaaaaaaa")
-      return page
+      return list
+    },
+    getFQAPaging (state) {                     //FQA 페이지 정보
+      return state.pagingFQA
     }
   },
   mutations: {
@@ -62,20 +60,34 @@ export default {
     setCenterFQA (state, payload) {                       //FQA 페이지 저장
       return  state.FQA.push(payload)
     },
-    setPagingNotices (state, payload) {                     //Notices페이징 저장 정보
+    setPagingNotices (state, payload) {                     //버튼 Notices페이징 저장 정보
       return  state.pagingNotices = payload
     },
-    setPagingQueAn (state, payload) {                       //QueAn페징 저장 정보
+    setPagingQueAn (state, payload) {                       //버튼 QueAn페징 저장 정보
       return  state.pagingQueAn = payload
     },
-    setPagingFQA (state, payload) {                         //FQA페이징 저장 정보
+    setPagingFQA (state, payload) {                         //버튼 FQA페이징 저장 정보
       return  state.pagingFQA = payload
+    },
+    nullCenterNotices (state) {                             //notices페이지 삭제
+      console.log(state.notices)
+      return state.notices = []
     },
     nullCenterQueAn(state) {                             //QueAn페이지 삭제
       return state.queAn = []
     },
+    nullCenterFQA(state) {                              //FQA페이지 삭제
+      return state.FQA = []
+    },
     nullPagingpagingQueAn(state) {                      //FQA페이징 삭제 
       return state.pagingQueAn = []
+    },
+    nullPagingNotice(state){                        //notice페이징 삭제
+      console.log(state.pagingNotices)
+      return state.pagingNotices = []
+    },  
+    nullPagingFQA(state){                           //pagingFQA페이징 삭제
+      return state.pagingFQA = []
     }
   },
   actions: {

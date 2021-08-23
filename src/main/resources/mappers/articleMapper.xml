@@ -21,39 +21,41 @@ FROM article
 
 
 <!-- 글 삭제 -->
-<delete id="boardDelete" parameterType="long">
+<delete id="boardDelete" parameterType="Article">
 DELETE FROM article
-	WHERE articleId =#{value}
+	WHERE articleId = #{value}
 
 </delete>
 
-
-<!-- 모든 게시물 -->
-<select id="selectAllByBoardId" parameterType="long" resultType="Article">
-	SELECT *
-	FROM `article`
-	WHERE board_id = #{boardId}
-</select>
+<!-- 댓글 삭제 parant_id: 모든 댓글 삭제 -->
+<delete id="commentDelete" parameterType="Article">
+DELETE FROM article
+	WHERE parant_id= #{value}
+</delete>
 
 <!-- 게시물 보기 -->
 <select id="boardList" parameterType="long" resultType="Article">
-SELECT	IFNULL(articleId, '') AS articleId,
-		IFNULL(regDate, '') AS regDate,
-		IFNULL(updateDate, '') AS updateDate,
-		IFNULL(title, '') AS title,
-		IFNULL(BODY, '') AS BODY,
-		IFNULL(hit, 1) AS hit,
-		IFNULL(STATUS, '') AS STATUS,
-		IFNULL(parant_id, 0) AS parantId,
-		IFNULL(board_id, 0) AS boardId,
-		IFNULL(writer_id, 0) AS writerId
-FROM article
-  	WHERE articleId = #{articleId}
+SELECT A.articleId,
+	A.regDate,
+	A.updateDate,
+	A.title,
+	A.BODY,
+	A.hit,
+	A.STATUS,
+	A.children,
+	A.parant_id AS patantId,
+	A.board_id AS boardId,
+	A.writer_id AS writerId,
+	B.nickname
+	
+FROM    `article` A INNER JOIN `member` B
+ON A.writer_id = B.memberId
+
+WHERE articleId = #{articleId}
 </select>
 
 <!-- 게시물 등록 -->
 <insert id="boardInsert" useGeneratedKeys="true" keyProperty="articleId" parameterType="Article">
-
 INSERT INTO article(
 	regDate,
 	updateDate,
@@ -75,30 +77,67 @@ VALUES (
 
 )
 </insert>
-	
-<!-- 게시물 조회수 증가 -->
-<update id="boardHit" parameterType="long">
-UPDATE article
-	SET hit = hit + 1
-WHERE articleId = #{articleId}
-</update>
 
-<!-- 페이징 처리 -->
-<select id="getBoardList" resultType="Article">
-SELECT
-	articleId,
+
+<!-- 댓글 등록 -->
+<insert id="commentInsert" useGeneratedKeys="true" keyProperty="articleId" parameterType="Article">
+INSERT INTO article(
 	regDate,
 	updateDate,
 	title,
 	BODY,
 	hit,
-	STATUS,
-	board_id AS boardId,
-	writer_id AS writerId
-FROM
-	article
-WHERE
-	board_id = #{boardId}
+	parant_id,
+	board_id,
+	writer_id)
+VALUES (
+	NOW(),
+	NOW(),
+	#{title},
+	'',
+	0,
+	#{parantId},
+	4,
+	#{writerId}
+)
+</insert>
+	
+<!-- 게시물 조회수 증가 -->
+<update id="boardHit" parameterType="int">
+UPDATE article
+	SET hit = hit + 1
+WHERE articleId = #{articleId}
+</update>
+
+<!-- 게시물 댓글 수 증가 -->
+<update id="childrenHit" parameterType="Article">
+UPDATE article
+	SET children = children + 1
+WHERE articleId = #{articleId}
+
+</update>
+
+<!-- 페이징 처리 -->
+<select id="getBoardList" resultType="Article">
+SELECT A.articleId,
+	A.regDate,
+	A.updateDate,
+	A.title,
+	A.BODY,
+	A.hit,
+	A.STATUS,
+	A.children,
+	A.board_id AS boardId,
+	A.writer_id AS writerId,
+	B.nickname
+	
+FROM    `article` A INNER JOIN `member` B
+ON A.writer_id = B.memberId
+
+WHERE	board_id = #{boardId}
+
+ORDER BY A.articleId DESC
+
 LIMIT #{paging.startList}, #{paging.listSize}
 
 </select>
@@ -106,17 +145,49 @@ LIMIT #{paging.startList}, #{paging.listSize}
 <select id="getBoardListCnt" resultType="int">
 SELECT
 
-	COUNT(*) AS listCnt
+	COUNT(*) AS totalPage
 
 FROM
 	article
 WHERE	
 	board_id = #{boardId}
-	</select>
+
+</select>
 
 
+<!-- 게시글 업데이트 -->
+<update id="boardUpadte" parameterType="Article" >
+UPDATE article
+
+SET	`updateDate` = NOW(),
+	`title` = #{title},
+	`body` = #{body}
+
+WHERE articleId = #{articleId};
 
 
+</update>
+<!-- 댓글 조회 -->
+<select id="commentList"  resultType="Article">
+SELECT A.articleId,
+	A.regDate,
+	A.updateDate,
+	A.title,
+	A.BODY,
+	A.hit,
+	A.STATUS,
+	A.children,
+	A.parant_id AS patantId,
+	A.board_id AS boardId,
+	A.writer_id AS writerId,
+	B.nickname
+	
+FROM    `article` A INNER JOIN `member` B
+ON A.writer_id = B.memberId
+
+WHERE parant_id = #{parantId}
+ORDER BY articleId DESC
+</select>
 
 
 

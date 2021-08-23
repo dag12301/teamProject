@@ -15,9 +15,11 @@ public class Article{
 	private String body;			// 내용
 	private int hit;				// 조회수
 	private String status;			// 상태
+	private long children;			//댓글 수
 	private long parantId;			// 부모 게시글
 	private long boardId;			// 게시판 종류
 	private long writerId;			// 작성자
-
 	
+	private String nickname;		//닉네임
+
 }

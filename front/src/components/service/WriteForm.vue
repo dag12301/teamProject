@@ -67,6 +67,7 @@
 
 <script>
 import * as authAPI from "@/api/article.js";
+import { mapMutations } from 'vuex';
 
 export default {
   data() {
@@ -78,6 +79,9 @@ export default {
     };
   },
   methods: {
+    ...mapMutations([
+      "SET_MODAL_LOGIN"
+    ]),
     privateStatus() {
       if (this.statusMessage === "공개") {
         this.statusMessage = "비공개";
@@ -87,9 +91,9 @@ export default {
     },
     writeRequest() {
       if (this.statusMessage == "공개") {
-        this.status = "a";
+        this.status = "Y";
       } else {
-        this.status = "b";
+        this.status = "N";
       }
 
       if (this.title === "" || this.title == null) {
@@ -103,16 +107,25 @@ export default {
         title: this.title,
         body: this.body,
         status: this.status,
-        boardId: "3", //Q&A 개시판 2
+        boardId: "2", //Q&A 개시판 2
       };
       console.log(params);
 
       authAPI
         .writeProc(params) //axios 이동
         .then((res) => {
-          alert("등록되었습니다.");
-          location.href = "/qna"; //페이지 이동
-
+          console.log(res)
+          if(res.data == "100"){
+            alert("등록되었습니다.");
+            location.href = "/qna"; //페이지 이동
+          }else if(res.data == "200")
+          {
+            alert("비회원은 글작성이 안됩니다.")
+            this.SET_MODAL_LOGIN(true)
+          }
+          else{
+            alert("오류")
+          }
           console.log(res);
         })
         .catch((err) => {
