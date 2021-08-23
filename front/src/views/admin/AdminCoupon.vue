@@ -119,7 +119,7 @@
                 list.couponEnd[4]
               }}
             </td>
-            
+
             <td class="table-success" v-if="list.status == 'Y'">
               {{ list.status }}
             </td>
@@ -197,7 +197,7 @@
 
 <script>
 import { normal, error, success } from "@/api/notification";
-import axios from "axios";
+import http from "@/api/http";
 import JWT from "@/api/jwt";
 import Detail from "@/components/admin/couponDetail.vue";
 
@@ -279,8 +279,8 @@ export default {
         currentPage: request,
         statusOption: this.statusOption,
       };
-      axios
-        .post("http://localhost:8083/coupon/getcouponList", data)
+      http
+        .post("/coupon/getcouponList", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -290,14 +290,14 @@ export default {
             console.log("현재페이지 : " + this.currentPage);
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           error("오류가 발생했습니다. 다시 시도해주세요", this);
         });
     },
     requestListCount() {
-      axios
-        .get("http://localhost:8083/coupon/getcouponListCount", {
+      http
+        .get("/coupon/getcouponListCount", {
           params: {
             option: this.statusOption,
           },
@@ -315,8 +315,8 @@ export default {
         couponId: couponId,
         status: status,
       };
-      axios
-        .post("http://localhost:8083/admin/updatecouponStatus", data)
+      http
+        .post("/admin/updatecouponStatus", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -324,8 +324,8 @@ export default {
             this.clearDetail();
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           error("오류가 발생했습니다. 다시 시도해주세요", this);
         });
     },

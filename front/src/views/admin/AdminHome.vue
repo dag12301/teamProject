@@ -222,7 +222,7 @@
 
 <script>
 import { normal, error, success } from "@/api/notification";
-import axios from "axios";
+import http from "@/api/http";
 import JWT from "@/api/jwt";
 import Detail from "@/components/admin/storeDetail.vue";
 
@@ -307,8 +307,8 @@ export default {
         currentPage: request,
         statusOption: this.statusOption,
       };
-      axios
-        .post("http://localhost:8083/admin/getStoreList", data)
+      http
+        .post("/admin/getStoreList", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -318,14 +318,14 @@ export default {
             console.log("현재페이지 : " + this.currentPage);
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           error("오류가 발생했습니다. 다시 시도해주세요", this);
         });
     },
     requestListCount() {
-      axios
-        .get("http://localhost:8083/admin/getStoreListCount", {
+      http
+        .get("/admin/getStoreListCount", {
           params: {
             option: this.statusOption,
           },
@@ -334,8 +334,8 @@ export default {
           this.totalCount = response.data;
           console.log("등록된 가게의 총 갯수 : " + this.totalCount);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
     },
     requestChangeStoreStatus(storeId, status) {
@@ -343,8 +343,8 @@ export default {
         storeId: storeId,
         status: status,
       };
-      axios
-        .post("http://localhost:8083/admin/updateStoreStatus", data)
+      http
+        .post("/admin/updateStoreStatus", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -352,8 +352,8 @@ export default {
             this.clearDetail();
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           error("오류가 발생했습니다. 다시 시도해주세요", this);
         });
     },

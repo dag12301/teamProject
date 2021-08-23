@@ -103,7 +103,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getInfo: "auth/getUserInfo",
+      getToken: "auth/getAccessToken",
     }),
     ...mapState(["isAuthenticated"]),
   },
@@ -126,7 +126,6 @@ export default {
         error("비밀번호를 입력해주세요", this);
         return;
       }
-      // auth.js 에서 가져온 로그인 시도
       const response = this.login({
         userId: this.userId,
         password: this.userPassword,
@@ -134,29 +133,24 @@ export default {
       // 받은 정보의 처리
       response
         .then((res) => {
-          if (res.status === 200) {
-            success("로그인에 성공했습니다.", this);
-
-            this.$store.dispatch("auth/getInfo");
-            this.SET_MODAL_REGISTER(false);
-            if (this.loginSave == true) {
-              localStorage.setItem("loginId", this.userId);
-            }
-            setTimeout(() => {
-              this.userInfo = this.getInfo;
-              console.log("로그인한 회원정보" + this.userInfo);
-              if (this.userInfo[1] === "BUYER") {
-                this.$router.push({ path: "/" });
-              } else if (this.userInfo[1] === "SELLER") {
-                this.$router.push({ path: "/store" });
-              } else if (this.userInfo[1] === "ADMIN") {
-                this.$router.push({ path: "/admin" });
-              }
-              success("로그인에 성공했습니다", this);
-              // 로그인에 성공은 했으나 역할이 이상할떄 예외처리 해줘야함.
-              return;
-            }, 500);
+          this.SET_MODAL_REGISTER(false);
+          if (this.loginSave == true) {
+            localStorage.setItem("loginId", this.userId);
           }
+          setTimeout(() => {
+            const jwt = require("jsonwebtoken");
+            const decodeAccessToken = jwt.decode(this.getToken);
+            if (decodeAccessToken.role === "BUYER") {
+              this.$router.push({ path: "/" });
+            } else if (decodeAccessToken.role === "SELLER") {
+              this.$router.push({ path: "/store" });
+            } else if (decodeAccessToken.role === "ADMIN") {
+              this.$router.push({ path: "/admin" });
+            }
+            success("로그인에 성공했습니다", this);
+            // 로그인에 성공은 했으나 역할이 이상할떄 예외처리 해줘야함.
+            return;
+          }, 2000);
         })
         .catch((err) => {
           console.log("에러?" + err);

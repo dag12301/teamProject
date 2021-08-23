@@ -135,7 +135,7 @@
 
 <script>
 import { error, success, normal } from "@/api/notification";
-import axios from "axios";
+import http from "@/api/http";
 import { mapGetters } from "vuex";
 
 export default {
@@ -153,8 +153,8 @@ export default {
   },
   mounted() {
     normal("음식등록을 위한 데이터를 불러옵니다", this);
-    axios
-      .get("http://localhost:8083/store/getAkinatorList")
+    http
+      .get("/store/getAkinatorList")
       .then((response) => {
         if (response.status === 200) {
           this.akinators = response.data;
@@ -175,8 +175,6 @@ export default {
   },
   methods: {
     sendForm() {
-      const token = this.getToken;
-
       let formData = new FormData();
 
       if (!this.foodName) {
@@ -216,12 +214,8 @@ export default {
 
       normal("음식을 등록하는중입니다..", this);
 
-      const headers = {
-        "content-type": "multipart/form-data",
-        accesstoken: token,
-      };
-      axios
-        .post("http://localhost:8083/store/addFood", formData, { headers })
+      http
+        .post("/store/addFood", formData)
         .then((response) => {
           if (response.status === 200) {
             this.requestAddAkinator(response.data);
@@ -235,9 +229,6 @@ export default {
         });
     },
     requestAddAkinator(foodId) {
-      const headers = {
-        "content-type": "application/json",
-      };
       const map = this.foodInfo;
       // Map to object
       const modified = [...map];
@@ -251,10 +242,8 @@ export default {
         akinator: reducerApplied,
         foodId: foodId,
       };
-      console.log(this.foodInfo);
-      console.log(data.akinator);
-      axios
-        .post("http://localhost:8083/store/setAkinator", data, { headers })
+      http
+        .post("/store/setAkinator", data)
         .then((response) => {
           console.log(response);
           success("음식을 등록했습니다!", this);
