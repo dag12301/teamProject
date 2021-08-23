@@ -11,19 +11,17 @@ import JWT from "@/api/jwt";
 
 const instance = axios.create({
   baseURL: "http://localhost:8083", // 스프링 BackEnd 의 주소,
-  headers: { "content-type": "application/json" },
+  headers: {
+    "content-type": "application/json",
+  },
 });
 
 instance.interceptors.request.use(function (config) {
   try {
     let access_token = JWT.getToken();
     if (access_token != null) {
-      console.log("===보낼토큰===");
-      console.log(access_token);
-      console.log("====오리진====");
-      console.log(location.origin);
       config["headers"] = {
-        accesstoken: access_token,
+        Authorization: access_token,
       };
     } else {
       JWT.destroyToken();

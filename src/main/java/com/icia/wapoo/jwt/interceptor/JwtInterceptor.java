@@ -28,21 +28,19 @@ public class JwtInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        Enumeration headerNames = request.getHeaderNames();
-        while(headerNames.hasMoreElements()) {
-            String name = (String) headerNames.nextElement();
-            String value = request.getHeader(name);
-            System.out.println("name : " +name);
-            System.out.println("value : " + value);
+        String token = jwtService.resolveToken(request);
+        System.out.println("인터셉터에서 받은 토큰 : "+ token);
+        System.out.println("request method : " + request.getMethod());
+        if("OPTIONS".equals(request.getMethod())) {
+            //브라우저에서 API 요청시, 백서버가 요청을 받을 수 있는지 없는지, request method에 OPTION을 사용해
+            // 서버 호출을 진행한다.
+            return true;
         }
-
-        final String token = request.getHeader(HEADER_AUTH);
-        System.out.println("인터셉터에서 받은 토큰 -> "+ token);
         if(token != null && jwtService.validateToken(token)){
             System.out.println("인터셉터 통과");
             return true;
         }else{
-            throw new RuntimeException("==인터셉터에서 걸렸습니다== WebConfig 참조해주세요..");
+            throw new RuntimeException("==인터셉터에서 걸렸습니다==");
         }
     }
 }

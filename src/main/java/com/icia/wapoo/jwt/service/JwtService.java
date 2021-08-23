@@ -70,7 +70,7 @@ public class JwtService {
     // Request의 Header 에서 값 추출.
     public String resolveToken(HttpServletRequest request) {
         System.out.println("JwtService.resolveToken : 토큰을 추출합니다.");
-        return request.getHeader("accesstoken");
+        return request.getHeader("Authorization");
     }
 
     // 토큰에서 정보 해독
