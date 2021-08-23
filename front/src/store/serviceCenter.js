@@ -1,49 +1,98 @@
 export default {
   namespaced: true,
   state: {
-    pagingNotices: [],
-    pagingQueAn: [],
-    pagingFQA: [],
-    notices: [],
-    queAn: [],
-    FQA: [],
+    pagingNotices: [
+
+    ],
+    pagingQueAn:[],
+    pagingFQA:[],
+    //게시물 저장
+    notices: [
+    ],
+    queAn: [
+
+    ],
+    FQA: [] 
+
   },
   getters: {
-    getCenterList(state) {
-      state.notices.array.forEach((element) => {
-        return element;
-      });
+    getnumNoticeSize (state) {                     //notice 버튼 숫자 리스트
+      let list =[]
+  
+      for(var i =  state.pagingNotices.startPage; i <= state.pagingNotices.endPage; i++){
+        list.push(i) 
+      }
+      return list
     },
-    AllCenterList(state) {
-      return state.notices.length;
+    getNoticePaging (state) {                     //notice 페이지 정보
+      return state.pagingNotices
     },
+    getnumSize (state)  {                      //Q&A 버튼 숫자 리스트
+      let list =[]
+  
+      for(var i =  state.pagingQueAn.startPage; i <= state.pagingQueAn.endPage; i++){
+        list.push(i) 
+      }
+      return list
+    },
+    getQueAnPaging (state) {                     //Q&A 페이지 정보
+      return state.pagingQueAn
+    },
+    getFQANumSize (state)  {                      //FQA 버튼 숫자 리스트
+      let list =[]
+      
+      for(var i =  state.pagingFQA.startPage; i <= state.pagingFQA.endPage; i++){
+        list.push(i) 
+      }
+      return list
+    },
+    getFQAPaging (state) {                     //FQA 페이지 정보
+      return state.pagingFQA
+    }
   },
   mutations: {
-    setCenternotices(state, payload) {
-      return state.notices.push(payload);
+    setCenternotices (state, payload) {                   //Notices페이지 저장
+      return  state.notices.push(payload)
     },
-    setCenterQueAn(state, payload) {
-      return state.queAn.push(payload);
+    setCenterQueAn(state, payload) {                      //QueAn 페이지 저장
+      return  state.queAn.push(payload)
     },
-    setCenterFQA(state, payload) {
-      return state.FQA.push(payload);
+    setCenterFQA (state, payload) {                       //FQA 페이지 저장
+      return  state.FQA.push(payload)
     },
-    setPagingNotices(state, payload) {
-      //Notices페이지 정보
-      return (state.pagingNotices = payload);
+    setPagingNotices (state, payload) {                     //버튼 Notices페이징 저장 정보
+      return  state.pagingNotices = payload
     },
-    setPagingQueAn(state, payload) {
-      //QueAn페이지 정보
-      return (state.pagingQueAn = payload);
+    setPagingQueAn (state, payload) {                       //버튼 QueAn페징 저장 정보
+      return  state.pagingQueAn = payload
     },
-    setPagingFQA(state, payload) {
-      //FQA페이지 정보
-      return (state.pagingFQA = payload);
+    setPagingFQA (state, payload) {                         //버튼 FQA페이징 저장 정보
+      return  state.pagingFQA = payload
     },
-    nullCenterQueAn(state, payload) {
-      //QueAn페이지 삭제
-      return (state.pagingFQA = payload);
+    nullCenterNotices (state) {                             //notices페이지 삭제
+      console.log(state.notices)
+      return state.notices = []
     },
+    nullCenterQueAn(state) {                             //QueAn페이지 삭제
+      return state.queAn = []
+    },
+    nullCenterFQA(state) {                              //FQA페이지 삭제
+      return state.FQA = []
+    },
+    nullPagingpagingQueAn(state) {                      //FQA페이징 삭제 
+      return state.pagingQueAn = []
+    },
+    nullPagingNotice(state){                        //notice페이징 삭제
+      console.log(state.pagingNotices)
+      return state.pagingNotices = []
+    },  
+    nullPagingFQA(state){                           //pagingFQA페이징 삭제
+      return state.pagingFQA = []
+    }
   },
-  actions: {},
-};
+  actions: {
+    
+  }
+
+
+}
