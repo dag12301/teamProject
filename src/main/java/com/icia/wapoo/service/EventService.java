@@ -30,7 +30,7 @@ public class EventService {
         	
         } else {
         	System.out.println("EventService 통과못함");
-            throw new RuntimeException("가게 정보 삽입중에 오류발생!");
+            throw new RuntimeException("이벤트 정보 삽입중에 오류발생!");
         }
     }
 }
