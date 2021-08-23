@@ -20,7 +20,7 @@
     </insert>
 
 	
-	<select id="selectCouponList" resultType="Coupon">
+	<select id="selectCouponList" resultMap="exampleResultMap">
         SELECT
             couponNumber,
             couponName,
@@ -37,6 +37,7 @@
         ORDER BY publishedDate DESC
             LIMIT #{startLimit}, #{endLimit}
     </select>
+    
     <select id="selectCouponListCount" resultType="int">
         SELECT COUNT(*) AS result
         FROM coupon
