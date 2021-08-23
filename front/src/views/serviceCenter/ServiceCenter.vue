@@ -1,33 +1,15 @@
 <template>
   <div class="service-center">
-   
-    
     <div class="service-group mb-5 ">
-        
         <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" >공지사항</router-link>
         
-        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }" >Q&A</router-link>
+        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }">Q&A</router-link>
         
         <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }">FQA</router-link>
-      
     </div>
 
-      <router-link
-        class="btn btn-success ms-5 col-2"
-        :to="{ name: 'FQA' }"
-        @click="getCountFQA(3)"
-        >FQA</router-link
-      >
-
-      <router-link
-        class="btn btn-success ms-5 col-2"
-        :to="{ name: 'BoardList' }"
-        @click="getCountFQA(3)"
-        >boardList</router-link
-      >
-    
-
     <router-view ></router-view>
+
   </div>  
 </template>
 
@@ -45,30 +27,47 @@ export default {
   computed: {},
   methods: {
     ...mapMutations([
-      "serviceCenter/setCenterList",
       "SET_COUNT_NOTICE",
       "SET_COUNT_QUEAN",
       "SET_COUNT_FQA",
     ]),
-    getCountNotice(boardId) {     // notice 통신 
+    ...mapMutations({
+      // 페이지저장
+      setCenternotices: "serviceCenter/setCenternotices",  
+      setCenterQueAn: "serviceCenter/setCenterQueAn",
+      setCenterFQA: "serviceCenter/setCenterFQA",
+      //버튼 페이징 저장
+      setPagingNotices: "serviceCenter/setPagingNotices",
+      setPagingQueAn: "serviceCenter/setPagingQueAn",
+      setPagingFQA: "serviceCenter/setPagingFQA",
+      //게시물 삭제
+      nullCenterNotices: "serviceCenter/nullCenterNotices",
+      nullCenterQueAn: "serviceCenter/nullCenterQueAn",
+      nullCenterFQA: "serviceCenter/nullCenterFQA",
+      //페이징 삭제
+      nullPagingpagingQueAn: "serviceCenter/nullPagingpagingQueAn",
+      nullPagingNotice: "serviceCenter/nullPagingNotice",
+      nullPagingFQA: "serviceCenter/nullPagingFQA"
+
+    }),
+
+    
+    getCountNotice(boardId) {     // notice 서버 통신 
+
       if(this.$store.state.countNotice){
-       
         return this.downAllList(boardId, 1, 1), this.SET_COUNT_NOTICE(false)
-        
       }else{
         return console.log("else 일때" +this.$store.state.countNotice)
       }
     },
-    getCountQueAn(boardId) {       // Q&A 통신 
+    getCountQueAn(boardId) {       // Q&A 서버 통신 
       if(this.$store.state.countQueAn){
-         console.log("if 일때" +this.$store.state.countQueAn)
         return this.downAllList(boardId, 1, 1), this.SET_COUNT_QUEAN(false)
-        
       }else{
         return console.log("Q&A")
       }
     },
-    getCountFQA(boardId) {         // FAQ 통신 
+    getCountFQA(boardId) {         // FAQ 서버 통신 
       if(this.$store.state.countFAQ){
         return this.downAllList(boardId, 1, 1), this.SET_COUNT_FQA(false)
         
@@ -80,38 +79,40 @@ export default {
     downAllList(boardId, page, range) {        //리스트 axios 통신 query = boardId  page:페이지  range: 범위  boardId 
       authAPI
       .getBoardList(boardId, page, range)
-      //.allList(query)     //페이지 전체 불러오기 list
       .then(res => {
         console.log(res)
-        console.log("1")
-        console.log(res.data)
-        console.log("2")
-        console.log(res.data.paging)
-        console.log("3")
-        console.log(res.data.list)
-        console.log("4")
-        //페이징 vuex에 넣기
         if(boardId == 1){
-          this.$store.commit('serviceCenter/setPagingNotices', res.data.paging)
+          this.setPagingNotices(res.data.paging)  
         }else if(boardId == 2){
-          this.$store.commit('serviceCenter/setPagingQueAn', res.data.paging)
+          this.setPagingQueAn(res.data.paging)
         }else if(boardId == 3){
-          this.$store.commit('serviceCenter/setPagingFQA', res.data.paging)
+          this.setPagingFQA(res.data.paging) 
         }
-        
-        res.data.list.forEach(el => {      //store에 데이터 넣기 게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)
+        res.data.list.forEach(el => {      //store에 데이터 넣기 게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)  
           if(boardId == 1){
-            this.$store.commit('serviceCenter/setCenternotices', el)
+            this.setCenternotices(el)
+            
           }else if(boardId == 2){
-            this.$store.commit('serviceCenter/setCenterQueAn', el)
+            this.setCenterQueAn(el)
+           
           }else if(boardId == 3){
-            this.$store.commit('serviceCenter/setCenterFQA', el)
+            this.setCenterFQA(el)
           }
         })
       })
       .catch(err => {
         console.log(err)
       })
+    },
+    deleteServiceCenter() {
+      //게시물 삭제
+      this.nullCenterNotices
+      this.nullCenterQueAn
+      this.nullCenterFQA
+      //페이징 삭제
+      this.nullPagingpagingQueAn
+      this.nullPagingNotice
+      this.nullPagingFQA
     }
     
   },
@@ -119,13 +120,13 @@ export default {
     this.getCountNotice(1),
     this.getCountQueAn(2),
     this.getCountFQA(3)
+  },
+  beforeUnmount() {   //component 종료전 데이터 삭제
+    this.deleteServiceCenter
   }
 }
 </script>
 
 <style scoped>
-/* .service-group button{
-    height: 4vh;
-    width: 10vw;
-  } */
+
 </style>

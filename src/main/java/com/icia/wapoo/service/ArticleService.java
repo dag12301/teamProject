@@ -18,14 +18,6 @@ public class ArticleService {
 	@Autowired
 	private ArticleDao articleDao;
 	
-	//게시글 총 수
-	public List<Article> listAllByBoard(long boardId) 
-	{
-		List<Article> list = articleDao.selectAllByBoardId(boardId);
-		list.stream().forEach(System.out::println);
-		return list;
-	}
-	
 	//게시글 조회
 	public Article boardList(long articleId) 
 	{
@@ -60,9 +52,7 @@ public class ArticleService {
 		}
 		catch(Exception e)
 		{
-			
-			System.out.println();
-			System.out.println(e);
+			System.out.println("boardHit 오류 : "+ e);
 		}
 		
 		return count;
@@ -83,12 +73,7 @@ public class ArticleService {
 		
 		article.setStatus((String)writeData.get("status"));
 		
-		
-		
 		article.setBoardId( Integer.parseInt((String)writeData.get("boardId")));
-		
-		
-
 		
 		article.setWriterId(writerId);
 		
@@ -112,39 +97,102 @@ public class ArticleService {
 		return count;
 	}
 	
-	//게시글 삭제
-	public long boardDelete(long articleId)
+	//댓글 등록
+	public int commentInsert(Map<String, Object> params, long memberId)
 	{
-		long count = 0;
+		int count = 0;
 		
-		Article article = articleDao.boardSelect(articleId);
+		Article article = new Article();
 		
-		if(article != null)
+		article.setTitle((String)params.get("title"));
+		
+		article.setParantId( (long)(((Integer) params.get("parantId")).intValue()));
+		
+		article.setWriterId(memberId);
+		
+		try
 		{
-			
-			count = articleDao.boardDelete(articleId);
-			
-			
-			if(count > 0)
-			{
-				//파일등 다른 작업 필요시 여기서 함
-			}
-			
+			count = articleDao.commentInsert(article);
 		}
-
+		catch(Exception e)
+		{
+			System.out.println("commentInsert DB오류"+ e);
+		}
+		
 		return count;
 	}
 	
+	//게시글 댓글 수 증가
+	public int childrenHit(long articleId)
+	{
+		int count = 0;
+		
+		try 
+		{
+			count = articleDao.childrenHit(articleId);	
+			
+		}
+		catch(Exception e)
+		{
+			System.out.println("childrenHit 오류 : "+ e);
+		}
+		
+		return count;
+	}
+	
+	
+	//게시글 삭제
+	public int boardDelete(long articleId)
+	{
+		int count = 0;
+		
+		try
+		{
+			count = articleDao.boardDelete(articleId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("boardDelete DB오류"+ e);
+		}
+			
+		if(count > 0)
+		{
+			//파일등 다른 작업 필요시 여기서 함
+		}
+		return count;
+	}
+	
+	//댓글 삭제
+	public long commentDelete(long parantId)
+	{
+		int count = 0;
+		
+		try
+		{
+			count = articleDao.commentDelete(parantId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("commentDelete DB오류: "+ e);
+		}
+		
+		return count;
+	}
 	
 	//총게시글 수
 	public int getBoardListCnt(long boardId) throws Exception {
 		
 		int count = 0;
 		
-		count = articleDao.getBoardListCnt(boardId);
-		
+		try
+		{
+			count = articleDao.getBoardListCnt(boardId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("getBoardListCnt DB오류 : "+ e);
+		}
 		return count;
-
 	}
 
 	//페이징 번호 맞게 출력
@@ -152,12 +200,43 @@ public class ArticleService {
 
 		List<Article> list = articleDao.getBoardList(paging, boardId);
 		
+		return list;
+	}
+	
+	//게시글 업데이트
+	public int boardUpadte(Article article)
+	{
+		int count = 0;
 		
+		try
+		{
+			count = articleDao.boardUpadte(article);
+		}
+		catch(Exception e)
+		{
+			System.out.println("게시글 업데이트 오류");
+			System.out.println(e);
+		}
+		return count;
+	}
+	
+	//댓글 리스트
+	public List<Article> commentList(long parantId)
+	{
+		List<Article> list = null;
+		
+		try
+		{
+			list = articleDao.commentList(parantId);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 		
 		return list;
-
 	}
-
+	
 
 
 	
