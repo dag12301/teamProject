@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getToken: "auth/getAccessToken",
+      userRole: "auth/getUserRole",
     }),
     ...mapState(["isAuthenticated"]),
   },
@@ -131,14 +131,14 @@ export default {
             localStorage.setItem("loginId", this.userId);
           }
           setTimeout(() => {
-            const jwt = require("jsonwebtoken");
-            const decodeAccessToken = jwt.decode(this.getToken);
-            if (decodeAccessToken.role === "BUYER") {
+            if (this.userRole != null) {
               this.$router.push({ path: "/" });
-            } else if (decodeAccessToken.role === "SELLER") {
-              this.$router.push({ path: "/store" });
-            } else if (decodeAccessToken.role === "ADMIN") {
-              this.$router.push({ path: "/admin" });
+
+              if (this.userRole === "SELLER") {
+                this.$router.push({ path: "/store" });
+              } else if (this.userRole === "ADMIN") {
+                this.$router.push({ path: "/admin" });
+              }
             }
             success("로그인에 성공했습니다", this);
             // 로그인에 성공은 했으나 역할이 이상할떄 예외처리 해줘야함.
