@@ -83,7 +83,7 @@ public class CouponController {
 	 
 	 
 	 @PostMapping("/getcouponList")
-	    public ResponseEntity getStoreList(@RequestBody Map<String, Object> data) {
+	    public ResponseEntity getCouponList(@RequestBody Map<String, Object> data) {
 	        int listPerPage = ((Integer) data.get("listPerPage")).intValue();
 	        int currentPage = ((Integer) data.get("currentPage")).intValue();
 	        String option = (String) data.get("statusOption");
@@ -98,7 +98,7 @@ public class CouponController {
 	        return new ResponseEntity(result, HttpStatus.OK);
 	    }
 	    @GetMapping("/getcouponListCount")
-	    public ResponseEntity getStoreListCount(@RequestParam("option") String option) {
+	    public ResponseEntity getCouponListCount(@RequestParam("option") String option) {
 	        int result = couponService.getCouponListCount(option);
 	        return new ResponseEntity(result, HttpStatus.OK);
 	    }
