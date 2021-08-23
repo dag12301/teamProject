@@ -19,19 +19,35 @@ export async function writeProc(params){
     params
   })
 }
+//댓글 등록
+export async function commentProc(params){
+  return http.post("/article/board/commentProc", {
+    params
+  })
+}
 //게시글 삭제
 export async function listDelete(params){
   return http.post("/article/board/delete", {
     params
   })
 }
-//페이지처리된 리스트  page:페이지  range: 범위  boardId 테이블 종류
-export async function getBoardList(boardId, page, range){
-  return http.get("/article/pagingBoard?boardId=" + boardId + "&page=" + page + "&range=" +  range)
+//페이징 리스트
+export async function getBoardList(boardId, page, range, listSize, rangeSize){
+  return http.get("/article/pagingBoard",{
+    params: {
+      boardId: boardId,
+      page: page,
+      range: range,
+      listSize: listSize,
+      rangeSize: rangeSize
+    }
+  })
 }
-//페이징 필요값들
-export async function paging() {
-  return http.get("/article/pagingBoard/paging")
+//수정 페이지
+export async function update(params) {
+  return http.post("/article/board/update", {
+    params
+  })
 }
 
 

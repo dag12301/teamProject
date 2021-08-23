@@ -18,9 +18,9 @@
     <div v-if="userInfo[1] == 'ADMIN'">
       <!-- 관리자로 로그인 했을때 보이는 메뉴들 -->
       <SidebarLink to="/admin" icon="fas fa-home">가게관리페이지</SidebarLink>
-      <SidebarLink to="/eventadd" icon="fas fa-ticket-alt"
-        >이벤트등록</SidebarLink
-      >
+      <SidebarLink to="/admincoupon" icon="fas fa-ticket-alt">쿠폰관리페이지</SidebarLink>
+      <SidebarLink to="/eventadd" icon="fas fa-ticket-alt">이벤트등록</SidebarLink>
+      <SidebarLink to="/admincouponadd" icon="fas fa-ticket-alt">쿠폰등록</SidebarLink>
     </div>
     <div v-else-if="userInfo[1] == 'SELLER'">
       <!-- 판매자로 로그인 했을때 보이는 메뉴들 -->
@@ -43,7 +43,7 @@
       <SidebarLink to="/#" icon="fas fa-robot">아키네이터</SidebarLink>
       <SidebarLink to="/" icon="fas fa-home">홈페이지</SidebarLink>
       <SidebarLink to="/cart" icon="fas fa-shopping-cart">장바구니</SidebarLink>
-      <SidebarLink to="/serviceCenter" icon="far fa-comments"
+      <SidebarLink to="/serviceCenter" icon="far fa-comments" @click="serviceCenter"
         >고객센터</SidebarLink
       >
       <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
@@ -65,7 +65,7 @@ import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import SidebarLink from "./SidebarLink.vue";
 import Profile from "./Profile.vue";
 import BurgerButton from "./Burger.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 
 export default {
   props: {},
@@ -78,6 +78,18 @@ export default {
       userInfo: "auth/getUserInfo",
     }),
   },
+  methods: {
+    ...mapMutations([//serviceCenter 토글
+      "SET_COUNT_NOTICE",
+      "SET_COUNT_QUEAN",
+      "SET_COUNT_FQA"
+    ]),
+    serviceCenter() {//serviceCenter 토글 true
+      this.nullCenterNotices
+      this.nullCenterQueAn
+      this.nullCenterFQA
+    }
+  }
 };
 </script>
 

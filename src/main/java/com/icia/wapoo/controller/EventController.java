@@ -35,7 +35,7 @@ public class EventController {
     private final JwtService jwtService;
 
     @PostMapping("/eventinsert")
-    public void getStoreList(@RequestBody Map<String, Object> data) {
+    public void eventInsert(@RequestBody Map<String, Object> data) {
         String title = ((String) data.get("title")).toString();
         String body = ((String) data.get("body")).toString();
         String dueDate = ((String) data.get("dueDate")).toString();
