@@ -3,7 +3,7 @@
     <template v-slot:header>
       <notifications
         group="notifyApp"
-        position="right right"
+        position="bottom right"
         style="margin-right: 30vh"
       />
       <div class="header-top-wrapper">
@@ -92,6 +92,7 @@ export default {
       loginType: true,
       userId: "",
       userPassword: "",
+      userInfo: null,
     };
   },
   mounted() {
@@ -101,7 +102,9 @@ export default {
       : (this.loginSave = true);
   },
   computed: {
-    ...mapGetters(["auth/getAccessToken", "getUserInfo"]),
+    ...mapGetters({
+      getInfo: "auth/getUserInfo",
+    }),
     ...mapState(["isAuthenticated"]),
   },
   methods: {
@@ -139,21 +142,25 @@ export default {
             if (this.loginSave == true) {
               localStorage.setItem("loginId", this.userId);
             }
-            const loginedUserInfo = this.getUserInfo();
-            if (loginedUserInfo.role === "BUYER") {
-              this.$router.push({ path: "/" });
-            } else if (loginedUserInfo.role === "SELLER") {
-              this.$router.push({ path: "/storeregister" });
-            } else if (loginedUserInfo.role === "ADMIN") {
-              this.$router.push({ path: "/admin" });
-            }
-            alert("로그인에 성공했습니다.");
-            // 로그인에 성공은 했으나 역할이 이상할떄 예외처리 해줘야함.
-            return;
+            setTimeout(() => {
+              this.userInfo = this.getInfo;
+              console.log("로그인한 회원정보" + this.userInfo);
+              if (this.userInfo[1] === "BUYER") {
+                this.$router.push({ path: "/" });
+              } else if (this.userInfo[1] === "SELLER") {
+                this.$router.push({ path: "/store" });
+              } else if (this.userInfo[1] === "ADMIN") {
+                this.$router.push({ path: "/admin" });
+              }
+              success("로그인에 성공했습니다", this);
+              // 로그인에 성공은 했으나 역할이 이상할떄 예외처리 해줘야함.
+              return;
+            }, 500);
           }
         })
         .catch((err) => {
           console.log("에러?" + err);
+          error("서버에 연결할 수 없습니다", this);
         });
     },
     loginseller() {

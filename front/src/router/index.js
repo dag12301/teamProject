@@ -29,6 +29,29 @@ const routes = [
     path: "/event",
     name: "Event",
     component: () => import("../views/event/Event.vue"),
+
+    children: [
+      {
+        path: "/all",
+        name: "coupon-all",
+        component: () => import("../components/event/coupon.vue"),
+      },
+      {
+        path: "/on",
+        name: "coupon-on",
+        component: () => import("../components/event/couponon.vue"),
+      },
+      {
+        path: "/end",
+        name: "coupon-end",
+        component: () => import("../components/event/couponend.vue"),
+      },
+    ],
+  },
+  {
+    path: "/eventadd",
+    name: "EventAdd",
+    component: () => import("../views/event/EventAdd.vue"),
   },
   {
     path: "/fooddetail",
@@ -79,9 +102,24 @@ const routes = [
     component: () => import("../views/store/StoreRegister.vue"),
   },
   {
+    path: "/store",
+    name: "StoreHome",
+    component: () => import("../views/store/StoreHome.vue"),
+  },
+  {
     path: "/admin",
     name: "AdminHome",
     component: () => import("../views/admin/AdminHome.vue"),
+  },
+  {
+    path: "/storeMenus",
+    name: "StoreMenus",
+    component: () => import("../views/store/StoreMenus.vue"),
+  },
+  {
+    path: "/addMenu",
+    name: "addMenu",
+    component: () => import("../views/store/StoreAddMenu.vue"),
   },
 ];
 

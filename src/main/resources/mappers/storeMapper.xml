@@ -19,22 +19,23 @@
         `body` = #{body},
         owner_id = #{owner_id}
     </insert>
-    <insert id="insertStoreFile" parameterType="storeFile">
+    <insert id="insertStoreFile" parameterType="imageFile">
         INSERT INTO store_file
         SET
-        storefileId = #{storefileId},
+        storefileId = #{fileId},
         regDate = NOW(),
         orgName = #{orgName},
         `name` = #{name},
         filetype = #{filetype},
         filesize = #{filesize},
-        store_id = #{store_id}
+        store_id = #{ref_id}
     </insert>
     <resultMap id="exampleResultMap" type="java.util.Map">
         <result column="regDate" property="regDate"/>
         <result column="storename" property="storename"/>
         <result column="status" property="status"/>
         <result column="membername" property="membername"/>
+        <result column="storeId" property="storeId"/>
     </resultMap>
     <select id="selectStoreList" resultMap="exampleResultMap">
         SELECT
@@ -42,14 +43,94 @@
             s.`name` storename,
             s.`status` as status,
             address as address,
-            m.`name` membername
+            m.`name` membername,
+            s.storeId storeId
         FROM store s, `member` m
         WHERE s.owner_id = m.memberId
+        <if test="!option.equals('ALL')">
+            AND s.`status` = #{option}
+        </if>
         ORDER BY regDate DESC
             LIMIT #{startLimit}, #{endLimit}
     </select>
     <select id="selectStoreListCount" resultType="int">
         SELECT COUNT(*) AS result
-        FROM store;
+        FROM store
+        <if test="!option.equals('ALL')">
+            WHERE status = #{option}
+        </if>
+    </select>
+    <update id="updateStoreStatus">
+        UPDATE store
+        SET STATUS = #{status}
+        WHERE storeId = #{storeId}
+    </update>
+    <select id="selectStoreById" parameterType="int" resultType="Store">
+        SELECT *
+        FROM store
+        WHERE owner_id = #{memberId};
+    </select>
+    <insert id="insertFood" useGeneratedKeys="true" keyColumn="foodId" keyProperty="foodId" parameterType="Food">
+        INSERT INTO `food`
+        SET
+            `regDate` = NOW(),
+            updateDate = NOW(),
+            `status` = '1',
+            `name` = #{name},
+            `description` = #{description},
+            price = #{price},
+            store_id = #{store_id}
+    </insert>
+    <insert id="insertFoodFile" parameterType="imageFile">
+        INSERT INTO food_file
+        SET
+            foodfileId = #{fileId},
+            regDate = NOW(),
+            orgName = #{orgName},
+            `name` = #{name},
+            filetype = #{filetype},
+            filesize = #{filesize},
+            food_id = #{ref_id}
+    </insert>
+    <select id="selectStoreFileList" parameterType="int" resultType="imageFile">
+        SELECT *
+        FROM store_file
+        WHERE store_id = #{storeId}
+    </select>
+
+    <resultMap id="FoodResultMap" type="java.util.Map">
+        <result column="regDate" property="regDate"/>
+        <result column="foodname" property="foodname"/>
+        <result column="status" property="status"/>
+        <result column="description" property="description"/>
+        <result column="price" property="price"/>
+        <result column="filename" property="filename"/>
+        <result column="foodId" property="foodId"/>
+    </resultMap>
+    <select id="selectFoodList" resultMap="FoodResultMap">
+        SELECT
+        fo.regDate regDate,
+        fo.`name` foodname,
+        fo.`status` as status,
+        fo.`description` as description,
+        fo.price as price,
+        fi.`name` filename,
+        fo.foodId foodId
+        FROM food fo, food_file fi
+        WHERE fo.foodId = fi.food_id
+        AND fo.store_id = #{store_id}
+        <if test="!option.equals('ALL')">
+            AND fo.`status` = #{option}
+        </if>
+        ORDER BY fo.regDate DESC
+        LIMIT #{startLimit}, #{endLimit}
+    </select>
+    <select id="selectFoodListCount" resultType="int">
+        SELECT COUNT(*) AS result
+        FROM food
+        WHERE store_id = #{store_id}
+        <if test="!option.equals('ALL')">
+            AND status = #{option}
+        </if>
     </select>
 </mapper>

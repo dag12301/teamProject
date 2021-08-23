@@ -1,7 +1,8 @@
 package com.icia.wapoo.dao;
 
+import com.icia.wapoo.model.Food;
 import com.icia.wapoo.model.Store;
-import com.icia.wapoo.model.StoreFile;
+import com.icia.wapoo.model.ImageFile;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -12,11 +13,25 @@ import java.util.Map;
 @Repository
 @Mapper
 public interface StoreDao {
-    int insertStoreFile(StoreFile storeFile);
+    int insertStoreFile(ImageFile imageFile);
 
     int insertStore(Store store);
 
-    List<Map<String, Object>> selectStoreList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit);
+    List<Map<String, Object>> selectStoreList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option);
 
-    int selectStoreListCount();
+    int selectStoreListCount(@Param("option") String option);
+
+    int updateStoreStatus(@Param("storeId") int storeId, @Param("status") String status);
+
+    List<Store> selectStoreById(@Param("memberId") int memberId);
+
+    int insertFood( Food food);
+
+    int insertFoodFile(ImageFile imageFile);
+
+    List<ImageFile> selectStoreFileList(int storeId);
+
+    List<Map<String, Object>> selectFoodList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option, @Param("store_id") int store_id);
+
+    int selectFoodListCount(@Param("option") String option, @Param("store_id") int store_id);
 }

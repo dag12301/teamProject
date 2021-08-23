@@ -104,7 +104,7 @@
       <label for="formFileMultiple" class="form-label" @click="upload"
         >Multiple files input example</label
       >
-      <input class="form-control" type="file" id="formFileMultiple" multiple />
+      <input class="form-control" type="imageFile" id="formFileMultiple" multiple />
     </div> -->
     <div class="store-deal-information-container">
       <div class="store-deal-information-title">사진 등록</div>
@@ -120,26 +120,35 @@
           </li>
         </ul>
       </div>
-      <div class="store-file-upload-wrapper">
-        <div v-if="!files.length" class="store-file-upload-example-container">
+      <div class="store-imageFile-upload-wrapper">
+        <div
+          v-if="!files.length"
+          class="store-imageFile-upload-example-container"
+        >
           <!--  -->
-          <div class="store-file-upload-example">
-            <div class="store-file-image-example-wrapper">이미지</div>
-            <div class="store-file-notice-item">
+          <div class="store-imageFile-upload-example">
+            <div class="store-imageFile-image-example-wrapper">이미지</div>
+            <div class="store-imageFile-notice-item">
               실사진 최소 1장 이상 등록하셔야 하며, 가로사진을 권장합니다.
             </div>
-            <div class="store-file-notice-item store-file-notice-item-red">
+            <div
+              class="
+                store-imageFile-notice-item store-imageFile-notice-item-red
+              "
+            >
               사진 올릴떄 주의사항
             </div>
-            <div class="store-file-notice-item store-file-upload-button">
+            <div
+              class="store-imageFile-notice-item store-imageFile-upload-button"
+            >
               <div class="image-box">
                 <!-- <div class="image-profile">
                 <img :src="profileImage" />
                 </div>-->
-                <label for="file">일반 사진 등록</label>
+                <label for="imageFile">일반 사진 등록</label>
                 <input
                   type="file"
-                  id="file"
+                  id="imageFile"
                   ref="files"
                   @change="imageUpload"
                   multiple
@@ -148,35 +157,35 @@
             </div>
           </div>
         </div>
-        <div v-else class="file-preview-content-container">
+        <div v-else class="imageFile-preview-content-container">
           <!-- v-else -->
-          <div class="file-preview-container">
+          <div class="imageFile-preview-container">
             <div
-              v-for="(file, index) in files"
+              v-for="(imageFile, index) in files"
               :key="index"
-              class="file-preview-wrapper"
+              class="imageFile-preview-wrapper"
             >
               <div
-                class="file-close-button"
+                class="imageFile-close-button"
                 @click="fileDeleteButton"
-                :name="file.number"
+                :name="imageFile.number"
               >
                 x
               </div>
-              <img :src="file.preview" />
+              <img :src="imageFile.preview" />
             </div>
-            <div class="file-preview-wrapper-upload">
+            <div class="imageFile-preview-wrapper-upload">
               <div class="image-box">
-                <label for="file">추가 사진 등록</label>
+                <label for="imageFile">추가 사진 등록</label>
                 <input
                   type="file"
-                  id="file"
+                  id="imageFile"
                   ref="files"
                   @change="imageAddUpload"
                   multiple
                 />
               </div>
-              <!-- <div class="file-close-button" @click="fileDeleteButton" :name="file.number">x</div> -->
+              <!-- <div class="imageFile-close-button" @click="fileDeleteButton" :name="imageFile.number">x</div> -->
             </div>
           </div>
         </div>
@@ -235,7 +244,7 @@ export default {
         this.files = [
           ...this.files,
           {
-            file: this.$refs.files.files[i],
+            imageFile: this.$refs.files.files[i],
 
             preview: URL.createObjectURL(this.$refs.files.files[i]),
 
@@ -262,7 +271,7 @@ export default {
           //이미지 업로드
           {
             //실제 파일
-            file: this.$refs.files.files[i],
+            imageFile: this.$refs.files.files[i],
             //이미지 프리뷰
             preview: URL.createObjectURL(this.$refs.files.files[i]),
             //삭제및 관리를 위한 number
@@ -330,7 +339,7 @@ export default {
       }
       // 파일 추가
       for (let i = 0; i < this.files.length; i++) {
-        formData.append("fileList", this.files[i].file);
+        formData.append("fileList", this.files[i].imageFile);
       }
       const token = JWT.getToken();
       const headers = {
@@ -1046,7 +1055,7 @@ select::-ms-expand {
   color: rgb(68, 68, 68);
   font-size: 17px;
 }
-.store-file-upload-example {
+.store-imageFile-upload-example {
   height: 100%;
 }
 .store-write-content-container {
@@ -1059,11 +1068,11 @@ select::-ms-expand {
   padding: 20px 40px;
   border: 1px solid #dddddd;
 }
-.file-preview-content-container {
+.imageFile-preview-content-container {
   height: 100%;
 }
 
-.store-file-upload-wrapper {
+.store-imageFile-upload-wrapper {
   margin: 20px;
   border: 1px solid #dddddd;
   background-color: #f4f4f4;
@@ -1076,7 +1085,7 @@ select::-ms-expand {
   height: 100%;
 }
 
-.store-file-upload-example-container {
+.store-imageFile-upload-example-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1085,15 +1094,15 @@ select::-ms-expand {
   width: 100%; */
 }
 
-.store-file-image-example-wrapper {
+.store-imageFile-image-example-wrapper {
   text-align: center;
 }
 
-.store-file-notice-item {
+.store-imageFile-notice-item {
   margin-top: 5px;
   text-align: center;
 }
-.store-file-notice-item-red {
+.store-imageFile-notice-item-red {
   color: #ef4351;
 }
 
@@ -1123,19 +1132,19 @@ select::-ms-expand {
   border-radius: 5px;
 }
 
-.file-preview-wrapper {
+.imageFile-preview-wrapper {
   padding: 10px;
   position: relative;
 }
 
-.file-preview-wrapper > img {
+.imageFile-preview-wrapper > img {
   position: relative;
   width: 190px;
   height: 130px;
   z-index: 10;
 }
 
-.file-close-button {
+.imageFile-close-button {
   position: absolute;
 
   /* align-items: center; */
@@ -1153,13 +1162,13 @@ select::-ms-expand {
   cursor: pointer;
 }
 
-.file-preview-container {
+.imageFile-preview-container {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
 }
 
-.file-preview-wrapper-upload {
+.imageFile-preview-wrapper-upload {
   margin: 10px;
   padding-top: 20px;
   background-color: #888888;

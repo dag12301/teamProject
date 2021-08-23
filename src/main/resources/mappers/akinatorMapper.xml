@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.wapoo.dao.AkinatorDao">
+    <select id="selectAllQuestions" resultType="Map">
+        SELECT *
+        FROM question
+    </select>
+    <select id="selectAllAnswers" resultType="Map">
+        SELECT *
+        FROM answer
+        WHERE question_id = #{questionId}
+    </select>
+    <insert id="insertAkinator" parameterType="int">
+        INSERT INTO akinator
+        SET food_id = #{food_id},
+            question_id = #{question_id},
+            answerValue = #{answerValue}
+    </insert>
+
+</mapper>

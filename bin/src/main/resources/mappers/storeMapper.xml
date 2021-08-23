@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.wapoo.dao.StoreDao">
+    <insert id="insertStore" useGeneratedKeys="true" keyColumn="storeId" keyProperty="storeId" parameterType="Store">
+        INSERT INTO `store`
+        SET
+        `regDate` = NOW(),
+        updateDate = NOW(),
+        `status` = 'S',
+        `name` = #{name},
+        phone = #{phone},
+        address = #{address},
+        addressDetail = #{addressDetail},
+        localx = #{localx},
+        localy = #{localy},
+        storeKind = #{storeKind},
+        `body` = #{body},
+        owner_id = #{owner_id}
+    </insert>
+    <insert id="insertStoreFile" parameterType="imageFile">
+        INSERT INTO store_file
+        SET
+        storefileId = #{storefileId},
+        regDate = NOW(),
+        orgName = #{orgName},
+        `name` = #{name},
+        filetype = #{filetype},
+        filesize = #{filesize},
+        store_id = #{store_id}
+    </insert>
+    <resultMap id="exampleResultMap" type="java.util.Map">
+        <result column="regDate" property="regDate"/>
+        <result column="storename" property="storename"/>
+        <result column="status" property="status"/>
+        <result column="membername" property="membername"/>
+    </resultMap>
+    <select id="selectStoreList" resultMap="exampleResultMap">
+        SELECT
+            regDate,
+            s.`name` storename,
+            s.`status` as status,
+            address as address,
+            m.`name` membername
+        FROM store s, `member` m
+        WHERE s.owner_id = m.memberId
+        ORDER BY regDate DESC
+            LIMIT #{startLimit}, #{endLimit}
+    </select>
+    <select id="selectStoreListCount" resultType="int">
+        SELECT COUNT(*) AS result
+        FROM store;
+    </select>
+</mapper>

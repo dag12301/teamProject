@@ -34,7 +34,7 @@
   <!-- 첨부파일 -->
   <div class="input-group">
     <input
-      type="file"
+      type="imageFile"
       class="form-control"
       id="inputGroupFile04"
       aria-describedby="inputGroupFileAddon04"

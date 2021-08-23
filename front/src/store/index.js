@@ -2,12 +2,15 @@ import { createStore } from "vuex";
 
 import auth from "@/store/auth";
 import Akinator from "@/store/akinator";
-import foodDiv from "./foodDiv/foodDiv.js";
-import foodList from "./foodDiv/foodList.js";
+import fooddiv from "./foodDiv/foodDiv.js";
+import foodlist from "./foodDiv/foodList.js";
 import shopList from "./shopList/shopList.js";
 import menu from "./menu/menu.js";
 import createPersistedState from "vuex-persistedstate";
 import serviceCenter from "./serviceCenter";
+
+import couponon from "./event/couponon.js";
+import couponend from "./event/couponend.js";
 
 export default createStore({
   state: {
@@ -26,6 +29,7 @@ export default createStore({
 
     selectedPlace: "주소찾기를 눌러주세요...", // 주소찾기에서 선택한 주소
     selectedAddressDetail: "", // 주소찾기에서 선택한 상세주소
+    myStore: null,
   },
   mutations: {
     SET_MODAL_LOGIN(state, boolean) {
@@ -62,6 +66,9 @@ export default createStore({
       state.selectedPlace = place;
       state.selectedAddressDetail = detail;
     },
+    SET_MY_STORE(state, store) {
+      state.myStore = store;
+    },
   },
   modules: {
     auth,
@@ -69,8 +76,10 @@ export default createStore({
     shopList,
     serviceCenter,
     menu,
-    foodDiv,
-    foodList,
+    fooddiv,
+    foodlist,
+    couponon,
+    couponend,
   },
   plugins: [
     createPersistedState({
