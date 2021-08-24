@@ -6,11 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.icia.wapoo.dao.ArticleDao;
 import com.icia.wapoo.dao.ProfileDao;
-import com.icia.wapoo.model.Article;
 import com.icia.wapoo.model.Profile;
-import com.icia.wapoo.model.Store;
 
 @Service
 public class ProfileService {
@@ -18,23 +15,15 @@ public class ProfileService {
 	@Autowired
 	private ProfileDao profileDao;
 	
-	//프로필 조회
-	public Profile profileSelect(String profileId) 
+	//프로필 조회 profileDao에서 가져옴
+	public Profile profileSelect(int memberId)
 	{
-		Profile profile = null;
+		System.out.println("프로필 서비스");
 		
-		try 
-		{
-			profile = profileDao.profileSelect(profileId);
-		}
-		catch(Exception e)
-		{
-			System.out.println();
-			System.out.println(e);
-		}
+		System.out.println("프로필 서비스(멤버아이디) : " + memberId);
+		Profile profile = profileDao.checkProfile(memberId);
 		
-		System.out.println(profile);
-		
+		System.out.println("프로필 서비스(프로필) : " + profile);
 		
 		return profile;
 	}

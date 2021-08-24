@@ -7,11 +7,11 @@
         style="margin-right: 30vh"
       />
       <!-- 프로필 -->
-      <div v-if="userInfo[0]">
+      <div v-if="userNickname">
         <div style="text-align:center">
           <div class="user" style="padding-bottom:10%">
             <img src="https://image.news1.kr/system/hp/2019/11/29/3943620/dims/optimize" class="profile"/>
-            <span style="color:black;"><span style="font-weight:bold;">{{ userInfo[1] }}</span> 님 <br /> 안녕하세요.</span>
+            <span style="color:black;"><span style="font-weight:bold;">{{ userNickname }}</span> 님 <br /> 안녕하세요.</span>
           </div>
         </div>
         <div class="login">
@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userInfo: "auth/getUserInfo",
+      userNickname: "auth/getUserNickname",
     }),
   },
   methods: {

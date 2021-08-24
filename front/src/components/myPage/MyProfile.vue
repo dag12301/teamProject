@@ -62,7 +62,6 @@
 
 <script>
 import http from "@/api/http";
-import { mapGetters, mapMutations } from "vuex";
 import { error, success, normal } from "@/api/notification";
 
 
@@ -70,15 +69,8 @@ export default {
   data() {
     return {
       profile: null,
-      dataLoaded: false,
       
     };
-  },
-  computed: {
-    ...mapGetters({
-      getInfo: "auth/getUserInfo",
-      getToken: "auth/getAccessToken",
-    }),
   },
 	methods: {
     secession() {
@@ -87,14 +79,6 @@ export default {
   },
   mounted() {
     console.log("프로필창에 들어옴");
-    this.profile = this.getInfo;
-    console.log(this.profile);
-    normal("프로필을 검색합니다...", this);
-    if (this.profile == null) {
-      error("이 페이지에 접근할 수없습니다.", this);
-      this.$router.push({ path: "/" });
-      return;
-    }
 
     http
       .post("/profile/myProfile")
@@ -104,11 +88,11 @@ export default {
           console.log(response.data);
           this.profile = response.data;
           if (this.profile != null) {
+            console.log("불러옴");
             success("프로필을 불러왔습니다.", this);
             return;
           }
           error("응 안돼 돌아가", this);
-          this.dataLoaded = true;
         }
       })
       .catch((err) => {

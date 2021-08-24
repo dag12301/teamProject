@@ -30,15 +30,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/profile")
 @RequiredArgsConstructor
 public class ProfileController {
-
-	@Autowired
-    private ProfileService profileService;
 	
 	//JWT 값 받기
 	@Autowired
     private JwtService jwtService;
     @Autowired
-    private MemberService memberService;
+    private ProfileService profileService;
 	
     private int getMemberIdByRequest(HttpServletRequest request) {
         System.out.println("받은 토큰으로 멤버를 검색합니다");
@@ -49,15 +46,18 @@ public class ProfileController {
     
 	//게시글 조회
 	@PostMapping("/myProfile")
-	public Profile list(HttpServletRequest request)
+	public Profile profileSelect(HttpServletRequest request,int memberId)
 	{
-		String token = jwtService.resolveToken(request);  
-		System.out.println("토큰 : " + token);
-		Map<String, Object> claims = jwtService.getUserInfo(token);
+		System.out.println("request임 : " + request);
+        String token = jwtService.resolveToken(request);
+        System.out.println("토큰 : " + token);
+        Map<String, Object> claims = jwtService.getUserInfo(token);
+        System.out.println("claims임 : " + claims);
+        
+		System.out.println("컨트롤러(멤버아이디) : " + memberId);
+		Profile profile = profileService.profileSelect(memberId);
+		System.out.println("컨트롤러(프로필) : " + profile);
 		
-		System.out.println("토큰정보? : " + claims);
-		Profile profile = profileService.profileSelect(token);
-	      
         return profile;
 	}
 	

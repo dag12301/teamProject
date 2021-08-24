@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.icia.wapoo.model.Profile;
+import com.icia.wapoo.model.Store;
 
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,12 @@ import java.util.Map;
 @Mapper
 public interface ProfileDao {
 
-	//프로필 보기
-	public Profile profileSelect(String profileId);
+	//profileMapper랑 연결됨 
+	//@Param = #{memberId}
+	//Profile = resultType
+	//parameterType = 여러개 가져와야할때 지정
+	Profile checkProfile(@Param("memberId") int memberId);
 	
-	//List<Profile> profileSelect(@Param("memberId") int memberId);
 
 	
 }

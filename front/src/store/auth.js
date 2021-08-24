@@ -33,10 +33,19 @@ export default {
       const jwt = require("jsonwebtoken");
       const decodeAccessToken = jwt.decode(state.token.accessToken);
       if (decodeAccessToken != null) {
+        console.log(decodeAccessToken);
         return decodeAccessToken.role;
       }
       return "BUYER";
     },
+    getUserNickname(state) {
+      const jwt = require("jsonwebtoken");
+      const decodeAccessToken = jwt.decode(state.token.accessToken);
+      if (decodeAccessToken != null) {
+        return decodeAccessToken.nickname;
+      }
+      return "알수없음";
+    }
   },
   mutations: {
     setToken(state, payload) {
