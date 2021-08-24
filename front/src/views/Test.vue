@@ -6,13 +6,16 @@
 
 <script>
 import { mapGetters } from "vuex";
+import http from "@/api/http";
 export default {
   computed: {
     ...mapGetters(["GET_LOCAL"]),
   },
   methods: {
     test() {
-      console.log(this.GET_LOCAL);
+      http.get("/api/test").then((res) => {
+        console.log(res);
+      });
     },
   },
 };

@@ -20,7 +20,7 @@
     </insert>
 
 	
-	<select id="selectCouponList" resultMap="exampleResultMap">
+	<select id="selectCouponList" resultType="Coupon">
         SELECT
             couponNumber,
             couponName,

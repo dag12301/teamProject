@@ -40,12 +40,11 @@ public class MemberController {
     {
 
         try {
-            System.out.println("로그인 정보 조회");
-            System.out.println(loginData);
             Member member = memberService.getMemberByLoginInfo(
                     (String) loginData.get("loginId"),
                     (String) loginData.get("password")
             );
+
             if(member == null){
                 return new ResponseEntity("회원정보를 찾지 못했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
@@ -59,7 +58,6 @@ public class MemberController {
 
 
             return new ResponseEntity(member, HttpStatus.OK);
-
         	} catch (Exception e){
 
             log.error("토큰 생성중에 오류가 발생했습니다.");

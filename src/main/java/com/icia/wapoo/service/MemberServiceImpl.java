@@ -23,14 +23,7 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public Member getMemberByLoginInfo(String loginId, String password) {
         System.out.println("아이디 " + loginId +" 비번 "+ password + " 으로 로그인시도");
-        LoginInfo loginInfo = null;
-        System.out.println(loginId.getClass());
-        System.out.println(password.getClass());
-        if(loginInfoDao.selectloginInfo(loginId, password) == null){
-            System.out.println("없다!!");
-        }else{
-            loginInfo = loginInfoDao.selectloginInfo(loginId, password);
-        }
+        LoginInfo loginInfo = loginInfoDao.selectloginInfo(loginId, password);
 
 
         if(loginInfo == null) {
