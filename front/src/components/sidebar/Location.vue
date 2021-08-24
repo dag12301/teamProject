@@ -16,14 +16,11 @@
 
 <script>
 import { collapsed } from "./state";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
-    return {
-      latitude: null,
-      longitude: null,
-      local: null,
-    };
+    return {};
   },
   props: {
     icon: { type: String, required: true },
@@ -31,52 +28,10 @@ export default {
   setup() {
     return { collapsed };
   },
-  mounted() {
-    // 다 전역변수로 옮기고, 메인화면과 사이드바 동기화
-  },
-  methods: {
-    refreshLocation() {
-      return navigator.geolocation.getCurrentPosition((position) => {
-        this.setLocation(position.coords.latitude, position.coords.longitude);
-      });
-    },
-    setLocation(latitude, longitude) {
-      this.latitude = latitude;
-      this.longitude = longitude;
-      let geocoder = new kakao.maps.services.Geocoder();
-
-      let coord = new kakao.maps.LatLng(latitude, longitude);
-
-      const addressSearch = (coord) => {
-        return new Promise((resolve, reject) => {
-          geocoder.coord2Address(
-            coord.getLng(),
-            coord.getLat(),
-            function (result, status) {
-              if (status === kakao.maps.services.Status.OK) {
-                resolve(result);
-              } else {
-                reject(status);
-              }
-            }
-          );
-        });
-      };
-      const setLocal = (result) => {
-        // vuex 전역변수로 뿌리고 메인화면수정
-        this.local = result[0].address;
-      };
-
-      // async
-      (async () => {
-        try {
-          const result = await addressSearch(coord);
-          setLocal(result);
-        } catch (e) {
-          console.log(e);
-        }
-      })();
-    },
+  computed: {
+    ...mapGetters({
+      local: "GET_LOCAL",
+    }),
   },
 };
 </script>

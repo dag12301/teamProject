@@ -39,6 +39,7 @@ export default {
     Kakao,
     ShopList,
   },
+  computed: {},
 };
 </script>
 
