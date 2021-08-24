@@ -17,11 +17,17 @@ import { mapMutations, mapGetters } from "vuex";
 export default {
   computed: {
     ...mapGetters(["GET_LOCAL", "GET_LAT", "GET_LON"]),
+    latitude() {
+      return this.GET_LAT != null ? this.GET_LAT : this.baselatitude;
+    },
+    longitude() {
+      return this.GET_LON != null ? this.GET_LON : this.baselongitude;
+    },
   },
   data() {
     return {
-      latitude: 37.43884057982199,
-      longitude: 126.675102369038,
+      baselatitude: 37.43884057982199,
+      baselongitude: 126.675102369038,
       local: null,
       map: null,
     };
@@ -66,13 +72,17 @@ export default {
     },
     refreshLocation() {
       console.log("refreshLocation");
-      return navigator.geolocation.watchPosition((position) => {
-        this.setLocation(position.coords.latitude, position.coords.longitude);
-      });
+      return navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setLocation(position.coords.latitude, position.coords.longitude);
+          console.log("gotoSetLocation");
+        },
+        (error) => {
+          console.log("아니 위치정보받는데 에러가난다고" + error);
+        }
+      );
     },
     setLocation(latitude, longitude) {
-      this.latitude = latitude;
-      this.longitude = longitude;
       this.$store.commit("SET_LAT", latitude);
       this.$store.commit("SET_LON", longitude);
       console.log("사용자 위치 추적: " + latitude + ", " + longitude);
