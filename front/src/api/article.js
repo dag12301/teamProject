@@ -15,9 +15,10 @@ export   function list(query) {
 }
 //게시글 등록
 export async function writeProc(params){
-  return http.post("/article/board/writeProc", {
+  return http.post("/article/board/writeProc",{
     params
   })
+
 }
 //댓글 등록
 export async function commentProc(params){
@@ -50,6 +51,18 @@ export async function update(params) {
   })
 }
 
+//이미지 업로드
+export function imageupload(form) {
+  return http.post("/article/imageUpload", form, {
+    headers: {'Content-Type': 'multipart/form-data'}
+  })
+}
+//본인 확인
+export async function articleVerify(params){
+  return http.post("/article/articleVerify", {
+    params
+  })
+}
 
 
 
