@@ -14,11 +14,7 @@ import java.util.Map;
 public interface ProfileDao {
 
 	//프로필 보기
-	List profileSelect();
-	
-	//public Profile profileSelect(String profileId);
-	
-	//List<Profile> profileSelect(Profile profile);
+	public Profile profileSelect(String profileId);
 	
 	//List<Profile> profileSelect(@Param("memberId") int memberId);
 

@@ -96,7 +96,6 @@ export default {
       return;
     }
 
-
     http
       .post("/profile/myProfile")
       .then((response) => {

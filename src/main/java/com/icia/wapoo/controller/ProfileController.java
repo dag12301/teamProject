@@ -48,31 +48,17 @@ public class ProfileController {
     }
     
 	//게시글 조회
-    /*
-    @PostMapping("/myProfile")
-	public List<Profile> profileSelect(HttpServletRequest request)
+	@PostMapping("/myProfile")
+	public Profile list(HttpServletRequest request)
 	{
 		String token = jwtService.resolveToken(request);  
 		System.out.println("토큰 : " + token);
 		Map<String, Object> claims = jwtService.getUserInfo(token);
 		
 		System.out.println("토큰정보? : " + claims);
-		List<Profile> profileList = profileService.profileSelect(token);
-	      
-        return profileList;
-	}
-    */
-    
-	@PostMapping("/myProfile")
-	public ResponseEntity list(HttpServletRequest request)
-	{
-		String token = jwtService.resolveToken(request);  
-		System.out.println("토큰 : " + token);
-		
 		Profile profile = profileService.profileSelect(token);
-		System.out.println("토큰? : " + profile);
 	      
-		return new ResponseEntity(profile, HttpStatus.OK);
+        return profile;
 	}
 	
 	/*
