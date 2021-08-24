@@ -178,7 +178,7 @@
               <div class="image-box">
                 <label for="imageFile">추가 사진 등록</label>
                 <input
-                  type="file"
+                  type="imageFile"
                   id="imageFile"
                   ref="files"
                   @change="imageAddUpload"

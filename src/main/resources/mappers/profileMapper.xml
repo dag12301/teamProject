@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.icia.wapoo.dao.ProfileDao">
+
+<select id="checkProfile" resultType="profile">
+  	 SELECT m.`memberId` as memberId,
+		l.`loginId` AS loginId,
+		m.`name` AS name, 
+		m.`phone` AS tel, 
+		m.`email` AS email, 
+		m.`nickname` AS nickname
+   FROM `loginInfo` l, `member` m 
+  WHERE memberId = #{memberId};
+</select>
+
+</mapper>

@@ -90,7 +90,48 @@ const routes = [
       },
     ],
   },
-
+  {
+    path: "/myPage",
+    name: "MyPage",
+    component: () => import("../views/myPage/MyPage"),
+    children: [
+      {
+        path: "/myProfile",
+        name: "MyProfile",
+        component: () => import("../components/myPage/MyProfile.vue"),
+      },
+    
+      {
+        path: "/edit",
+        name: "Edit",
+        component: () => import("../components/myPage/EditProfile.vue"),
+      },
+    
+      {
+        path: "/myCoupon",
+        name: "MyCoupon",
+        component: () => import("../components/myPage/MyCoupon.vue"),
+      },
+      
+      {
+        path: "/orderMenu",
+        name: "OrderMenu",
+        component: () => import("../components/myPage/OrderMenu.vue"),
+      },
+    
+      {
+        path: "/myReview",
+        name: "MyReview",
+        component: () => import("../components/myPage/MyReview.vue"),
+      },
+    
+      {
+        path: "/question",
+        name: "Question",
+        component: () => import("../components/myPage/Question.vue"),
+      },
+    ]
+  },
   {
     path: "/test",
     name: "Test",
