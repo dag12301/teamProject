@@ -81,7 +81,6 @@ public class CouponController {
 	        
 	 }
 	 
-	 
 	 @PostMapping("/getcouponList")
 	    public ResponseEntity getCouponList(@RequestBody Map<String, Object> data) {
 	        int listPerPage = ((Integer) data.get("listPerPage")).intValue();
@@ -103,4 +102,16 @@ public class CouponController {
 	        return new ResponseEntity(result, HttpStatus.OK);
 	    }
 
+	    @PostMapping("/updatecouponStatus")
+	    public ResponseEntity updateCouponStatus(@RequestBody Map<String, Object> data) {
+	        int couponId = ((Integer) data.get("couponId")).intValue();
+	        String status = (String) data.get("status");
+	        System.out.println("status를 변경합니다.");
+	        if(status == null || couponId < 1){
+	            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+	        }
+	        System.out.println("updateCouponStatus로 들어갑니다.");
+	        couponService.updateCouponStatus(couponId, status);
+	        return new ResponseEntity(HttpStatus.OK);
+	    }
 }

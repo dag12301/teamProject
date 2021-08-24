@@ -48,4 +48,10 @@ public class CouponService {
     public int getCouponListCount(String option) {
         return couponDao.selectCouponListCount(option);
     }
+    
+    public void updateCouponStatus(int couponId, String status) {
+    	System.out.println("updateCouponStatus로 들어왔습니다.");
+    	System.out.println(couponId+"를 "+status+"로 변경합니다.");
+        couponDao.updateCoupon(couponId, status);
+    }
 }

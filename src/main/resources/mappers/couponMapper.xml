@@ -30,6 +30,7 @@
     </resultMap>
 	<select id="selectCouponList" resultMap="couponResultMap">
         SELECT
+        	couponId,
             couponNumber,
             couponName,
             couponEnd,
@@ -51,4 +52,11 @@
             WHERE status = #{option}
         </if>
     </select>
+    
+    <update id="updateCouponStatus">
+        UPDATE coupon
+		SET STATUS = #{status}
+		WHERE couponId = #{couponId}
+
+    </update>
 </mapper>

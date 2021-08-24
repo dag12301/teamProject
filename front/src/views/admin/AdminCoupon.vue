@@ -8,12 +8,7 @@
       style="margin-right: 30vh"
     />
 
-    <!-- 설정 -->
-    <div
-      class="container-fluid mt-2"
-      id="optionWrapper"
-      :class="{ detailIsOn: couponDetail }"
-    >
+    
       <div class="row align-items-center">
         <div class="col-7">
           <div class="form-check form-check-inline">
@@ -75,7 +70,6 @@
           </div>
         </div>
       </div>
-    </div>
     <!-- 테이블시작 -->
     <div
       id="wrapper"
@@ -144,7 +138,6 @@
             <td class="table-dark" v-else>?</td>
             <td class="table-light">{{ list.couponPrice }}</td>
             <td class="table-light">{{ list.discountRate + "%"}}</td>
-            
           </tr>
         </tbody>
       </table>
@@ -216,7 +209,6 @@ export default {
       showindex: 5, // 번호로 표시될 페이지 총 갯수
       statusOption: "ALL",
       selectedCoupon: "",
-      couponDetail: false,
     };
   },
   computed: {
@@ -309,7 +301,7 @@ export default {
         })
         .then((response) => {
           this.totalCount = response.data;
-          console.log("등록된 가게의 총 갯수 : " + this.totalCount);
+          console.log("등록된 쿠폰의 총 갯수 : " + this.totalCount);
         })
         .catch((err) => {
           console.log(err);
@@ -321,11 +313,11 @@ export default {
         status: status,
       };
       http
-        .post("/admin/updateCouponStatus", data)
+        .post("http://localhost:8083/coupon/updatecouponStatus", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
-            success("가게 상태변경 완료!", this);
+            success("쿠폰 상태변경 완료!", this);
             this.clearDetail();
           }
         })
@@ -338,30 +330,45 @@ export default {
       this.statusOption = value;
       this.requestPage(1);
     },
-    selectCoupon(list) {
-      this.selectedCoupon = list;
-      this.couponDetail = true;
+    selectcoupon(list) {
+      this.selectedcoupon = list;
+      console.log(this.selectedcoupon);
+       var confirmflag = confirm("status를 변경합니다.");
+
+           if(confirmflag){
+             if(this.selectedcoupon.status === 'Y') {
+               console.log(this.selectedcoupon.couponId);
+               this.requestChangeCouponStatus(this.selectedcoupon.couponId, "N");
+             }
+             else {
+               this.requestChangeCouponStatus(this.selectedcoupon.couponId, "Y");
+             }
+           }else{
+             console.log("취소");
+           }
+      
+      console.log(this.selectedcoupon.status);
     },
     clearDetail() {
       this.couponDetail = false;
       this.requestPage(this.currentPage);
     },
     approveCoupon() {
-      if (this.selectedCoupon.status === "Y") {
-        error("이미 승인된 가게입니다!", this);
+      if (this.selectedcoupon.status === "Y") {
+        error("이미 승인된 쿠폰입니다!", this);
         return;
       }
-      success("가게를 승인합니다!", this);
-      // 가게 status를 바꿔주는 mvc패턴을 만들고, couponname과 membername으로 가게를찾아야해
-      this.requestChangeCouponStatus(this.selectedCoupon.couponId, "Y");
+      success("쿠폰를 승인합니다!", this);
+      
+      this.requestChangeCouponStatus(this.selectedcoupon.couponId, "Y");
     },
     denyCoupon() {
-      if (this.selectedCoupon.status === "N") {
-        error("이미 취소된 가게입니다!", this);
+      if (this.selectedcoupon.status === "N") {
+        error("이미 취소된 쿠폰입니다!", this);
         return;
       }
-      error("가게를 등록취소합니다!", this);
-      this.requestChangeCouponStatus(this.selectedCoupon.couponId, "N");
+      error("쿠폰를 등록취소합니다!", this);
+      this.requestChangeCouponStatus(this.selectedcoupon.couponId, "N");
     },
   },
 };
@@ -374,8 +381,7 @@ export default {
 .available-link {
   cursor: pointer;
 }
-#optionWrapper {
-}
+
 .detailIsOn {
   visibility: hidden;
 }

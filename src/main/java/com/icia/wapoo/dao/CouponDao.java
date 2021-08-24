@@ -11,11 +11,13 @@ import com.icia.wapoo.model.Coupon;
 
 @Repository
 @Mapper
-public interface CouponDao {
+interface CouponDao {
 	
     public int insertCoupon(Coupon coupon);
 
     List<Map<String, Object>> selectCouponList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option);
 
     int selectCouponListCount(@Param("option") String option);
+    
+    int updateCoupon(@Param("couponId") int couponId, @Param("status") String status);
 }
