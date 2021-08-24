@@ -50,7 +50,7 @@
         @click="serviceCenter"
         >고객센터</SidebarLink
       >
-      <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
+      <SidebarLink to="/shops" icon="fas fa-utensils">음식/가게</SidebarLink>
       <SidebarLink to="/all" icon="fas fa-utensils">이벤트</SidebarLink>
 
     </div>

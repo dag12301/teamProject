@@ -133,4 +133,59 @@
             AND status = #{option}
         </if>
     </select>
+    <select id="selectNearStoresList" resultType="Map">
+        SELECT *, (
+        ROUND(6371 * ACOS( COS( RADIANS(#{lat}) )
+        * COS( RADIANS( s.localy ) )
+        * COS( RADIANS( s.localx )
+        - RADIANS( #{lon}) )
+        + SIN( RADIANS(#{lat}) )
+        * SIN( RADIANS( s.localy ) ) ), 2)) AS distance
+        FROM store s, (
+                SELECT fileUrl, store_id FROM (
+                      SELECT name fileUrl,
+                             store_id,
+                             ROW_NUMBER() OVER (PARTITION BY store_id
+                                                ORDER BY regDate DESC) as rankNo
+                      FROM store_file
+                ) t
+                WHERE rankNo = 1
+            ) f
+        WHERE s.storeId = f.store_id
+        <if test="!options.equals('ALL')">
+        AND s.storeKind LIKE CONCAT('%', #{options}, '%')
+        </if>
+        AND s.status = 'Y'
+        <![CDATA[
+        HAVING distance < #{radius}
+        ]]>
+        ORDER BY distance LIMIT 0,#{qantity};
+    </select>
+    <select id="selectStoreByStoreId" resultType="Store">
+        SELECT
+            `name`,
+            phone,
+            address,
+            addressDetail,
+            localx,
+            localy,
+            storeKind,
+            `body`
+        FROM store
+        WHERE STATUS = 'Y'
+          AND storeId = #{storeId};
+    </select>
+    <select id="selectAllFoods" resultType="Map">
+        SELECT
+            fo.foodId,
+            fo.`name`,
+            fo.`description`,
+            fo.price,
+            fo.`status`,
+            fi.`name` fileUrl
+        FROM food fo, food_file fi
+        WHERE fo.foodId = fi.food_id
+          AND fo.store_id = #{storeId}
+          AND NOT fo.`status` = 3;
+    </select>
 </mapper>

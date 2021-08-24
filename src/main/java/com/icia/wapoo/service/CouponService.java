@@ -40,10 +40,12 @@ public class CouponService {
         int StartLimit = (requestPage-1)* listPerPage;
         int EndLimit = listPerPage;
         System.out.println((StartLimit+1) + "번째 부터 시작하여 "+EndLimit +"개를 가져옵니다.");
-        List<Map<String, Object>> list = couponDao.selectCouponList(StartLimit, EndLimit, option);// 여기서에러
-        System.out.println("가져온 게시물 수 : " + list.size());
-        return list;
+//        List<Map<String, Object>> list = couponDao.selectCouponList(StartLimit, EndLimit, option);// 여기서에러
+//        System.out.println("가져온 게시물 수 : " + list.size());
+//        return list;
+        return null;
     }
+
 
     public int getCouponListCount(String option) {
         return couponDao.selectCouponListCount(option);

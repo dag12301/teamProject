@@ -13,9 +13,9 @@ import com.icia.wapoo.model.Coupon;
 @Mapper
 public interface CouponDao {
 	
-    public int insertCoupon(Coupon coupon);
+    int insertCoupon(Coupon coupon);
 
-    List<Map<String, Object>> selectCouponList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option);
+    List<Coupon> selectCouponList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option);
 
     int selectCouponListCount(@Param("option") String option);
     

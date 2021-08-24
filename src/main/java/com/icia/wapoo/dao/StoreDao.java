@@ -34,4 +34,15 @@ public interface StoreDao {
     List<Map<String, Object>> selectFoodList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option, @Param("store_id") int store_id);
 
     int selectFoodListCount(@Param("option") String option, @Param("store_id") int store_id);
+
+    List<Map<String, Object>> selectNearStoresList(
+            @Param("lat") Double latitude,
+            @Param("lon") Double longitude,
+            @Param("radius") float radius,
+            @Param("qantity") int qantity,
+            @Param("options") String options);
+
+    Store selectStoreByStoreId(@Param("storeId") Integer storeId);
+
+    List<Map<String, Object>> selectAllFoods(@Param("storeId") Integer storeId);
 }

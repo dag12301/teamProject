@@ -19,6 +19,7 @@
         event_id = null
     </insert>
 
+<<<<<<< HEAD
 	<resultMap id="couponResultMap" type="java.util.Map">
         <result column="countNumber" property="countNumber"/>
         <result column="couponName" property="couponName"/>
@@ -29,6 +30,10 @@
         <result column="publishedDate" property="publishedDate" />
     </resultMap>
 	<select id="selectCouponList" resultMap="couponResultMap">
+=======
+	
+	<select id="selectCouponList" resultType="Coupon">
+>>>>>>> 1de5bfdc92bdbbe4bbb4ad7f0e5b871dc864f82c
         SELECT
         	couponId,
             couponNumber,

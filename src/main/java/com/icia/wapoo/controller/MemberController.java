@@ -40,16 +40,15 @@ public class MemberController {
     {
 
         try {
-            System.out.println("로그인 정보 조회");
-            System.out.println(loginData);
             Member member = memberService.getMemberByLoginInfo(
                     (String) loginData.get("loginId"),
                     (String) loginData.get("password")
             );
+
             if(member == null){
                 return new ResponseEntity("회원정보를 찾지 못했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            System.out.println(member);
+            System.out.println("찾은회원 : "+member);
 
             String token = jwtService.create(member);
             System.out.println("[생성된토큰] "+token);
@@ -59,7 +58,6 @@ public class MemberController {
 
 
             return new ResponseEntity(member, HttpStatus.OK);
-
         	} catch (Exception e){
 
             log.error("토큰 생성중에 오류가 발생했습니다.");
@@ -105,9 +103,7 @@ public class MemberController {
      */
     @PostMapping("/member/register")
     public ResponseEntity register(
-            @RequestBody Map<String, Object> loginData) {
-        Map<String, Object> userData = (Map<String, Object>) loginData.get("params");
-
+            @RequestBody Map<String, Object> userData) {
         System.out.println("회원가입 요청 정보 : " +userData);
         boolean result = memberService.registerMember(userData);
         if(result != true ){

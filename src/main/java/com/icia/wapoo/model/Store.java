@@ -16,8 +16,8 @@ public class Store {
     private String phone;
     private String address;
     private String addressDetail;
-    private float localx;
-    private float localy;
+    private String localx;
+    private String localy;
     private String storeKind;
     private String body;
     private int owner_id;
