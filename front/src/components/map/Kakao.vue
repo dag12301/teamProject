@@ -39,7 +39,7 @@ export default {
   },
 
   methods: {
-    ...mapMutations(["SET_LOCAL", "SET_LETLNG"]),
+    ...mapMutations({ SET_LOCAL: "SET_LOCAL", SET_OBSERVE: "SET_OBSERVE" }),
     initMap() {
       this.refreshLocation();
       var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
@@ -70,8 +70,10 @@ export default {
     setLocation(latitude, longitude) {
       this.latitude = latitude;
       this.longitude = longitude;
-      this.SET_LETLNG(latitude, longitude);
+      this.$store.commit("SET_LAT", latitude);
+      this.$store.commit("SET_LON", longitude);
       console.log("사용자 위치 추적: " + latitude + ", " + longitude);
+      this.$store.commit("SET_OBSERVE", true);
 
       let geocoder = new kakao.maps.services.Geocoder();
 

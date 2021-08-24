@@ -4,30 +4,41 @@ import com.icia.wapoo.dao.LoginInfoDao;
 import com.icia.wapoo.dao.MemberDao;
 import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.model.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
 
 @Service("memberService")
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
 
     @Autowired
-    public MemberDao memberDao;
+    private final MemberDao memberDao;
 
     @Autowired
-    public LoginInfoDao loginInfoDao;
+    private final LoginInfoDao loginInfoDao;
 
     @Override
     public Member getMemberByLoginInfo(String loginId, String password) {
-        System.out.println(loginId +" : "+ password);
-        LoginInfo loginInfo = loginInfoDao.selectloginInfo(loginId, password);
-        System.out.println("loginInfoDao -> "+loginInfo);
+        System.out.println("아이디 " + loginId +" 비번 "+ password + " 으로 로그인시도");
+        LoginInfo loginInfo = null;
+        System.out.println(loginId.getClass());
+        System.out.println(password.getClass());
+        if(loginInfoDao.selectloginInfo(loginId, password) == null){
+            System.out.println("없다!!");
+        }else{
+            loginInfo = loginInfoDao.selectloginInfo(loginId, password);
+        }
+
+
         if(loginInfo == null) {
             System.out.println("아이디, 비밀번호로 로그인 가능한 정보가 없습니다." + loginInfo);
             // 아이디, 비밀번호로 조회한 로그인가능한 정보가 없음.
             return null;
         }
+        System.out.println("loginInfoDao : "+loginInfo);
         return memberDao.selectMemberById(loginInfo.getMember_id());
     }
 

@@ -25,6 +25,7 @@
         </div>
         <!-- 메뉴 리스트 시작-->
         <div class="card mb-4"></div>
+        <div class="btn btn-primary" @click="showStoreList">선택</div>
       </main>
     </div>
   </div>
@@ -34,24 +35,35 @@
 import Kakao from "@/components/map/Kakao.vue";
 import ShopList from "@/components/shop/ShopList.vue";
 import { mapGetters } from "vuex";
+import http from "@/api/http";
 
 export default {
   components: {
     Kakao,
     ShopList,
   },
-  watch: {
-    ...mapGetters(["GET_LATLNG"]),
+  computed: {
+    ...mapGetters({ LAT: "GET_LAT", LON: "GET_LON", OBS: "GET_OBSERVED" }),
   },
   methods: {
     showStoreList() {
-      if (this.GET_LATLNG) {
-        console.log(this.GET_LATLNG);
+      if (this.OBS === true) {
+        this.getStoreListByLocation(this.LAT, this.LON);
       }
+    },
+    getStoreListByLocation(lat, lon) {
+      http
+        .post("/store/getStoreListByLatLoc", { lat, lon })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
   },
   mounted() {
-    this.showStoreList();
+    // this.showStoreList();
   },
 };
 </script>

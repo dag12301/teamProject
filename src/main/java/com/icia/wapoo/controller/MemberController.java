@@ -49,7 +49,7 @@ public class MemberController {
             if(member == null){
                 return new ResponseEntity("회원정보를 찾지 못했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            System.out.println(member);
+            System.out.println("찾은회원 : "+member);
 
             String token = jwtService.create(member);
             System.out.println("[생성된토큰] "+token);

@@ -155,4 +155,11 @@ public class StoreController {
         int result = storeService.getFoodListCount(option, storeId);
         return new ResponseEntity(result, HttpStatus.OK);
     }
+
+    @PostMapping("/getStoreListByLocation")
+    public ResponseEntity getStoreListByLocation(@RequestBody Map<String, Object> data) {
+        System.out.println(data.get("lat"));
+        System.out.println(data.get("lon"));
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

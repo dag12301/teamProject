@@ -25,7 +25,8 @@ public class WebConfig implements WebMvcConfigurer {
     private static final String[] EXCLUDE_PATHS = {
             "/api/member/register",
             "/api/member/login",
-            "/api/validation/**"
+            "/api/validation/**",
+            "/store/getStoreListByLocation"
     };
 
     @Override

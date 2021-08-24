@@ -34,13 +34,20 @@ export default createStore({
     local: null,
     latitude: null,
     longitude: null,
+    isObserved: false,
   },
   getters: {
     GET_LOCAL(state) {
       return state.local;
     },
-    GET_LATLNG(state) {
-      return [state.latitude, this.longitude];
+    GET_LAT(state) {
+      return state.latitude;
+    },
+    GET_LON(state) {
+      return state.longitude;
+    },
+    GET_OBSERVED(state) {
+      return state.isObserved;
     },
   },
   mutations: {
@@ -84,9 +91,14 @@ export default createStore({
     SET_LOCAL(state, local) {
       state.local = local;
     },
-    SET_LETLNG(state, latitude, longitude) {
+    SET_LAT(state, latitude) {
       state.latitude = latitude;
+    },
+    SET_LON(state, longitude) {
       state.longitude = longitude;
+    },
+    SET_OBSERVE(state, boolean) {
+      state.isObserved = boolean;
     },
   },
   modules: {
