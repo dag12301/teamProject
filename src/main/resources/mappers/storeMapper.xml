@@ -133,7 +133,7 @@
             AND status = #{option}
         </if>
     </select>
-    <select id="selectNearStoresList" parameterType="Double" resultType="Map">
+    <select id="selectNearStoresList" resultType="Map">
         SELECT *, (
         ROUND(6371 * ACOS( COS( RADIANS(#{lat}) )
         * COS( RADIANS( s.localy ) )
@@ -141,10 +141,24 @@
         - RADIANS( #{lon}) )
         + SIN( RADIANS(#{lat}) )
         * SIN( RADIANS( s.localy ) ) ), 2)) AS distance
-        FROM store s
+        FROM store s, (
+                SELECT fileUrl, store_id FROM (
+                      SELECT name fileUrl,
+                             store_id,
+                             ROW_NUMBER() OVER (PARTITION BY store_id
+                                                ORDER BY regDate DESC) as rankNo
+                      FROM store_file
+                ) t
+                WHERE rankNo = 1
+            ) f
+        WHERE s.storeId = f.store_id
+        <if test="!options.equals('ALL')">
+        AND s.storeKind LIKE CONCAT('%', #{options}, '%')
+        </if>
+        AND s.status = 'Y'
         <![CDATA[
-        HAVING distance < 5
+        HAVING distance < #{radius}
         ]]>
-        ORDER BY distance LIMIT 0,5;
+        ORDER BY distance LIMIT 0,#{qantity};
     </select>
 </mapper>

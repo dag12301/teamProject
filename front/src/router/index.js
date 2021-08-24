@@ -16,8 +16,8 @@ const routes = [
     component: () => import("../views/cart/Cart.vue"),
   },
   {
-    path: "/food",
-    name: "Food",
+    path: "/shops",
+    name: "Shops",
     component: () => import("../views/food/Food.vue"),
   },
   {
@@ -109,19 +109,19 @@ const routes = [
       {
         path: "/review",
         name: "Review",
-        component: () => import("../components/adminComponent/Review.vue")
+        component: () => import("../components/adminComponent/Review.vue"),
       },
       {
         path: "/storemap",
         name: "StoreMap",
-        component: () => import("../components/adminComponent/StoreMap.vue")
+        component: () => import("../components/adminComponent/StoreMap.vue"),
       },
       {
         path: "/storemenu",
         name: "StoreMenu",
-        component: () => import("../components/adminComponent/StoreMenu.vue")
-      }
-    ]
+        component: () => import("../components/adminComponent/StoreMenu.vue"),
+      },
+    ],
   },
   {
     path: "/admin",
@@ -147,7 +147,7 @@ const routes = [
     path: "/addMenu",
     name: "addMenu",
     component: () => import("../views/store/StoreAddMenu.vue"),
-  }
+  },
 ];
 
 const router = createRouter({

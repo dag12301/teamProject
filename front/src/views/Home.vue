@@ -16,6 +16,7 @@
             <!--가게 리스트 -->
             <div class="col-xl-5">
               <div class="card mb-4">
+                <!-- 가게가 있을 때 -->
                 <div class="list-group" v-if="showList">
                   <ShopList
                     v-for="shop in nearShopList"
@@ -24,13 +25,15 @@
                   >
                   </ShopList>
                 </div>
+                <!-- 가게가 없을 때 -->
+                <span> 주변에 가게가 없습니당!!</span>
               </div>
             </div>
           </div>
         </div>
         <!-- 메뉴 리스트 시작-->
         <div class="card mb-4"></div>
-        <div class="btn btn-primary" @click="showStoreList">선택</div>
+        <div class="btn btn-primary" @click="test">선택</div>
       </main>
     </div>
   </div>
@@ -85,6 +88,11 @@ export default {
         .catch((e) => {
           console.log(e);
         });
+    },
+    test() {
+      http.get("/api/test").then((res) => {
+        console.log(res);
+      });
     },
   },
   mounted() {

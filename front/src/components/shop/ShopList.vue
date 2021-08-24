@@ -14,7 +14,7 @@
             <h5 class="mb-1">{{ shopInfo.name }}</h5>
           </div>
           <!-- 음식사진시작 -->
-          <div class="col-9">
+          <div>
             <div class="slide">
               <splide :options="options">
                 <splide-slide v-for="file in fileList" :key="file">
@@ -86,16 +86,20 @@ export default {
         focus: "center", //어떤 슬라이드에 초점을 맞춰야 하는지 결정합니다.
         type: "loop",
         breakpoints: {
-          1585: {
-            width: 700,
+          1200: {
+            width: 600,
             perPage: 5,
           },
-          1430: {
-            width: 600,
+          1100: {
+            width: 500,
             perPage: 3,
           },
-          930: {
+          1000: {
             width: 400,
+            perPage: 3,
+          },
+          900: {
+            width: 300,
             perPage: 3,
           },
         },

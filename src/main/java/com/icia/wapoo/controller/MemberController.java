@@ -103,9 +103,7 @@ public class MemberController {
      */
     @PostMapping("/member/register")
     public ResponseEntity register(
-            @RequestBody Map<String, Object> loginData) {
-        Map<String, Object> userData = (Map<String, Object>) loginData.get("params");
-
+            @RequestBody Map<String, Object> userData) {
         System.out.println("회원가입 요청 정보 : " +userData);
         boolean result = memberService.registerMember(userData);
         if(result != true ){

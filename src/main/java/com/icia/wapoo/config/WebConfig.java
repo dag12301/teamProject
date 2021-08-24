@@ -27,7 +27,6 @@ public class WebConfig implements WebMvcConfigurer {
             "/api/member/login",
             "/api/validation/**",
             "/store/getStoreListByLocation",
-            "/api/test",
             "/store/getStoreFiles"
     };
 

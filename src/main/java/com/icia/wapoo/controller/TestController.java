@@ -13,15 +13,8 @@ import java.util.List;
 @RestController
 public class TestController {
 
-    @Autowired
-    LoginInfoDao loginInfoDao;
-    @Autowired
-    StoreDao storeDao;
-
     @GetMapping("/api/test")
     public String test() {
-        List<ImageFile> imageFile = storeDao.selectStoreFileList(1);
-        imageFile.stream().forEach(System.out::println);
         return "OK";
     }
 }

@@ -125,7 +125,7 @@ export default {
       });
       // 받은 정보의 처리
       response
-        .then((res) => {
+        .then(() => {
           this.SET_MODAL_REGISTER(false);
           if (this.loginSave == true) {
             localStorage.setItem("loginId", this.userId);
@@ -135,7 +135,7 @@ export default {
               this.$router.push({ path: "/" });
 
               if (this.userRole === "SELLER") {
-                this.$router.push({ path: "/store" });
+                this.$router.push({ path: "/storemenu" });
               } else if (this.userRole === "ADMIN") {
                 this.$router.push({ path: "/admin" });
               }

@@ -128,7 +128,7 @@ public class StoreService {
         return storeDao.selectFoodListCount(option, store_id);
     }
 
-    public List<Map<String, Object>> getNearStoresList(Double latitude, Double longitude) {
-        return storeDao.selectNearStoresList(latitude, longitude);
+    public List<Map<String, Object>> getNearStoresList(Double latitude, Double longitude, float radius, int qantity, String options) {
+        return storeDao.selectNearStoresList(latitude, longitude, radius, qantity, options);
     }
 }
