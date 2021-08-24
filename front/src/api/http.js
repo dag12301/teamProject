@@ -27,7 +27,7 @@ instance.interceptors.request.use(
         };
         const jwt = require("jsonwebtoken");
         const decodeAccessToken = jwt.decode(access_token);
-        if (decodeAccessToken.exp < Date.now() / 1000) {
+        if (decodeAccessToken.exp < Date.now() / 1000 + 60) {
           console.log("토큰 만료됨");
           store.dispatch("auth/logout");
         }
