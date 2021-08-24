@@ -33,13 +33,26 @@
 <script>
 import Kakao from "@/components/map/Kakao.vue";
 import ShopList from "@/components/shop/ShopList.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
     Kakao,
     ShopList,
   },
-  computed: {},
+  watch: {
+    ...mapGetters(["GET_LATLNG"]),
+  },
+  methods: {
+    showStoreList() {
+      if (this.GET_LATLNG) {
+        console.log(this.GET_LATLNG);
+      }
+    },
+  },
+  mounted() {
+    this.showStoreList();
+  },
 };
 </script>
 

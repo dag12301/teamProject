@@ -32,10 +32,15 @@ export default createStore({
     myStore: null,
 
     local: null,
+    latitude: null,
+    longitude: null,
   },
   getters: {
     GET_LOCAL(state) {
       return state.local;
+    },
+    GET_LATLNG(state) {
+      return [state.latitude, this.longitude];
     },
   },
   mutations: {
@@ -78,6 +83,10 @@ export default createStore({
     },
     SET_LOCAL(state, local) {
       state.local = local;
+    },
+    SET_LETLNG(state, latitude, longitude) {
+      state.latitude = latitude;
+      state.longitude = longitude;
     },
   },
   modules: {

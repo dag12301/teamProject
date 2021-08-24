@@ -23,6 +23,7 @@ export default {
       latitude: 37.43884057982199,
       longitude: 126.675102369038,
       local: null,
+      map: null,
     };
   },
   mounted() {
@@ -36,8 +37,9 @@ export default {
       document.head.appendChild(script);
     }
   },
+
   methods: {
-    ...mapMutations(["SET_LOCAL"]),
+    ...mapMutations(["SET_LOCAL", "SET_LETLNG"]),
     initMap() {
       this.refreshLocation();
       var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
@@ -47,7 +49,7 @@ export default {
         level: 3, //지도의 레벨(확대, 축소 정도)
       };
 
-      var map = new kakao.maps.Map(container, options); // eslint-disable-line no-unused-vars
+      this.map = new kakao.maps.Map(container, options); // eslint-disable-line no-unused-vars
       //지도 생성 및 객체 리턴
       const markerPosition = new kakao.maps.LatLng(
         this.latitude,
@@ -57,7 +59,7 @@ export default {
       const marker = new kakao.maps.Marker({
         position: markerPosition,
       });
-      marker.setMap(map);
+      marker.setMap(this.map);
     },
     refreshLocation() {
       console.log("refreshLocation");
@@ -68,6 +70,9 @@ export default {
     setLocation(latitude, longitude) {
       this.latitude = latitude;
       this.longitude = longitude;
+      this.SET_LETLNG(latitude, longitude);
+      console.log("사용자 위치 추적: " + latitude + ", " + longitude);
+
       let geocoder = new kakao.maps.services.Geocoder();
 
       let coord = new kakao.maps.LatLng(latitude, longitude);
@@ -90,6 +95,23 @@ export default {
       const setLocal = (result) => {
         this.local = result[0].address;
         this.$store.commit("SET_LOCAL", result[0].address);
+        var coords = new kakao.maps.LatLng(this.latitude, this.longitude);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: this.map,
+          position: coords,
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div style="width:150px;text-align:center;padding:6px 0;">현재위치</div>',
+        });
+        infowindow.open(this.map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        this.map.setCenter(coords);
       };
       // async
       (async () => {
@@ -101,6 +123,7 @@ export default {
         }
       })();
     },
+    // 지도이동
   },
 };
 </script>
