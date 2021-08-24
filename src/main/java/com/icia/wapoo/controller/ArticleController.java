@@ -1,9 +1,11 @@
 package com.icia.wapoo.controller;
 
 
+import com.icia.wapoo.S3.S3Service;
 import com.icia.wapoo.jwt.service.JwtService;
 
 import com.icia.wapoo.model.Article;
+import com.icia.wapoo.model.ImageFile;
 import com.icia.wapoo.paging.PagingA;
 
 import lombok.RequiredArgsConstructor;
@@ -15,11 +17,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.icia.wapoo.service.ArticleService;
 import com.icia.wapoo.service.MemberService;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,28 +45,22 @@ public class ArticleController {
     private JwtService jwtService;
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+	private final S3Service s3Service = null;
 
 	/**
 	 * 작성자 : 김건우
 	 * @param boardId 1: 공지사항, 2: ... 여기에 값을 넣으면 그 카테고리에있는 게시물을 다 가져옴
 	 * @return
 	 */
-	
-	//테스트
-	@GetMapping(value="/test")
-    public String testA(@RequestParam Map<String, Object> userData)
+    //본인 확인
+    @PostMapping("/articleVerify")
+    public ResponseEntity  verify(@RequestBody Map<String, Object> writeForm,HttpServletRequest request)
     {
-        System.out.println();
-    	return "테스트요청";
-    }
-	
-	
-	//글 업로드
-	@PostMapping("/board/writeProc")
-	public ResponseEntity write( @RequestBody Map<String, Object> writeForm,HttpServletRequest request)
-	{
-		System.out.println("글 업로드");
+    	System.out.println("본인 확인");
 		
+		//System.out.println("글 multipartFile" + multipartFile);
 		long memberId = 0;
 		try
 		{
@@ -76,8 +76,124 @@ public class ArticleController {
 		{
 			System.out.println("memberId 없음");
 		}
-		//test 멤버 값 
-		//long memberId = 1;
+		
+		Map<String, Object> params = (Map<String, Object>) writeForm.get("params");
+		System.out.println(params);
+		
+		Article article = null;
+		
+		long articleId = (((Integer) params.get("articleId")).intValue());
+		article = articleService.boardList(articleId);
+		System.out.println(article);
+		System.out.println("memberId : " + memberId);
+		
+		if(article != null)
+		{
+			if(article.getStatus().equals("Y"))
+			{
+				System.out.println("글 확인 가능");
+				return new ResponseEntity("100", HttpStatus.OK);
+			}
+			else
+			{
+				if(article.getWriterId() == memberId)
+				{
+					System.out.println("비공개 글 확인 가능");
+					return new ResponseEntity("100", HttpStatus.OK);
+				}
+				else
+				{
+					System.out.println("글 확인 불가");
+					return new ResponseEntity("250", HttpStatus.OK);
+				}
+			}
+		}
+		else
+		{
+			System.out.println("글 없음");
+			return new ResponseEntity("400", HttpStatus.OK);
+		}
+		
+    	
+    	
+    }
+    
+    
+  //이미지 업로드
+    @PostMapping("/imageUpload")
+    public List<ImageFile> imageFile(@RequestPart(value="image", required=false) List<MultipartFile> image)
+    {
+    	System.out.println("이미지 업로드");
+    	System.out.println(image);
+    	
+    	List<ImageFile> files = new ArrayList<>();
+         
+    	 for(MultipartFile file: image)
+    	 {
+    		 ImageFile articleImageFile = new ImageFile();
+        	 String fileURL = null;
+    		 
+    		 try 
+             {
+                fileURL = s3Service.upload(file, "image_article_");
+             } 
+             catch (IOException e) 
+             {
+                 throw new RuntimeException("S3 업로드중 오류발생!");
+             }
+    		 
+    		 articleImageFile.setFilesize(file.getSize());				//파일 사이즈
+             articleImageFile.setFiletype(file.getContentType());		//파일 타입
+             articleImageFile.setName(fileURL);							//파일 경로
+             articleImageFile.setOrgName(file.getName());				//원래 이름
+             
+             files.add(articleImageFile);
+             
+             
+             
+    	 }
+    		 
+    	 System.out.println(files);
+    	 
+    	 
+         
+         
+    	
+    	
+    	return files;
+    }
+	
+	//테스트
+	@GetMapping(value="/test")
+    public String testA(@RequestParam Map<String, Object> userData)
+    {
+        System.out.println();
+    	return "테스트요청";
+    }
+	
+	
+	//글 업로드  @RequestPart(value="file", required=true)
+	@PostMapping("/board/writeProc")
+	public ResponseEntity write( @RequestBody Map<String, Object> writeForm, HttpServletRequest request)
+	{
+		System.out.println("글 업로드");
+		
+		//System.out.println("글 multipartFile" + multipartFile);
+		long memberId = 0;
+		try
+		{
+			//JWT 토큰값
+			String JWT = jwtService.resolveToken(request);
+			System.out.println(JWT);
+			
+			Map<String, Object> token = jwtService.getUserInfo(JWT);
+			// token에서 memberId 값 가져오기
+			 memberId = (long)((Integer) token.get("memberId")).intValue();
+		}
+		catch(Exception e)
+		{
+			System.out.println("memberId 없음");
+		}
 		System.out.println("memberId : " + memberId);
 		
 		if(memberId > 0)
@@ -85,17 +201,74 @@ public class ArticleController {
 			System.out.println("회원이다.");
 			
 			Map<String, Object> writeData = (Map<String, Object>) writeForm.get("params");
-			System.out.println(writeData);
+			System.out.println("writeData : " + writeData);
 			
 			int count = 0;
 			
+			Article article = new Article();
 			
-			count = articleService.listInsert(writeData, memberId);
+			
+			article.setTitle((String)writeData.get("title"));
+
+			article.setBody((String)writeData.get("body"));
+			
+			article.setStatus((String)writeData.get("status"));
+			
+			article.setBoardId( Integer.parseInt((String)writeData.get("boardId")));
+			
+			article.setWriterId(memberId);
+			
+			count = articleService.listInsert(article, memberId);
 			
 			if(count > 0)
 			{
-				System.out.println("글작성 성공 \n");
-				return new ResponseEntity("100", HttpStatus.OK);
+				System.out.println("글 업로드");
+				
+				
+					//이미지 체크
+					if(writeData.size() -4 > 0)
+					{
+						System.out.println("이미지 업로드");
+						
+						for(int i = 0; i < writeData.size() -4; i++)
+						{
+							Map<String, String> map = (Map<String, String>) writeData.get("image" + i);
+					
+							ImageFile image = new ImageFile();
+							
+							image.setOrgName(map.get("orgName"));
+							
+							image.setName(map.get("name"));
+							
+							image.setFiletype(map.get("filetype"));
+							
+							String filesize = String.valueOf(map.get("filesize"));
+							
+							int score = Integer.parseInt(String.valueOf(map.get("filesize")));
+
+							image.setFilesize(score );
+							
+							image.setRef_id((int)article.getArticleId());
+							
+							
+							articleService.registerStore(image);
+							
+						}
+						
+						
+						System.out.println("글작성, 이미지 성공 \n");
+						return new ResponseEntity("100", HttpStatus.OK);
+						
+					}
+					else
+					{
+						System.out.println("글작성, 이미지 없음 \n");
+						return new ResponseEntity("100", HttpStatus.OK);
+					}
+				
+				
+				
+				
 			}
 			else
 			{
@@ -108,8 +281,13 @@ public class ArticleController {
 			System.out.println("비회원 실패 \n");
 			return new ResponseEntity("200", HttpStatus.OK);
 		}
-
 	}
+
+	private long parseInt(String string) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 
 	//댓글 업로드
 	@PostMapping("/board/commentProc")
@@ -202,32 +380,48 @@ public class ArticleController {
 		boolean MYPAGE = false; 				  //작성자 여부
 		List<Article> list = null;				  //댓글 여기에 보냄		
 		Article article = null;
+		//파일
+		List<ImageFile> articleImageFile = null;
 		
 		if(articleId > 0)
 		{
 			article = articleService.boardList(articleId);//게시글
 			list = articleService.commentList(article.getArticleId());//댓글
 			System.out.println("list[0] : " + list);
+			//파일
+			
+			articleImageFile = articleService.imageFileList(articleId);
+			
+			if(articleImageFile != null)
+			{
+				System.out.println("이미지 있음");
+			}
+			else
+			{
+				System.out.println("이미지 없음");
+			}
+
+			if(articleService.boardHit(articleId) > 0)//조회수 증가
+			{
+				System.out.println("조회수 증가");
+			}
 			
 			if(article != null && memberId != article.getWriterId())//글 존재 여부, 작성자여부 확인
 			{	
-				if(articleService.boardHit(articleId) > 0)//조회수 증가
-				{
-					System.out.println("조회수 증가");
-				}
+				System.out.println("작성자 아님");
 			}
 			else
 			{
 				MYPAGE = true;//작성자여부 true
 				
-				System.out.println("게시를 없거나, 조회수 뻥튀기 안됌");
+				System.out.println("조회수 뻥튀기 안됌");
 			}	
 		}
 		
 		map.put("MYPAGE", MYPAGE);
 		map.put("article", article);
 		map.put("list", list);
-		
+		map.put("articleImageFile", articleImageFile);
 		
 		
 		return map;
@@ -273,7 +467,7 @@ public class ArticleController {
 		System.out.println("memberId : " + memberId);
 		
 		
-		if(memberId == 0)
+		if(memberId != 0)
 		{
 			if(writerId == memberId)
 			{
