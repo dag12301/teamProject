@@ -5,7 +5,7 @@
     :key="index"
   >
     <a href="#" class="list-group-item" style="height: 100px"
-      ><router-link :to="{ name: 'FoodDetail' }" exact>
+      ><router-link :to="{ name: 'StoreHome' }" exact>
         <div class=".col-md-3 .col-md-pull-9 f-left">
           <img
             class="menu-img"

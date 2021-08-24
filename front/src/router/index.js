@@ -54,11 +54,6 @@ const routes = [
     component: () => import("../views/event/EventAdd.vue"),
   },
   {
-    path: "/fooddetail",
-    name: "FoodDetail",
-    component: () => import("../views/food/FoodDetail.vue"),
-  },
-  {
     path: "/serviceCenter",
     name: "ServiceCenter",
     component: () => import("../views/serviceCenter/ServiceCenter.vue"),
