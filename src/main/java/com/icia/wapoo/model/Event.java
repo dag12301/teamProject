@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Event {
-	int eventId;
-	String regDate;
-	String updateDate;
-	String dueDate;
-	String status;
-	String body;
-	String title;
-	int provider_id;
+	private int eventId;
+	private String regDate;
+	private String updateDate;
+	private String dueDate;
+	private String status;
+	private String body;
+	private String title;
+	private int provider_id;
 }

@@ -146,11 +146,38 @@ const routes = [
     path: "/store",
     name: "StoreHome",
     component: () => import("../views/store/StoreHome.vue"),
+    children: [
+      {
+        path: "/review",
+        name: "Review",
+        component: () => import("../components/adminComponent/Review.vue")
+      },
+      {
+        path: "/storemap",
+        name: "StoreMap",
+        component: () => import("../components/adminComponent/StoreMap.vue")
+      },
+      {
+        path: "/storemenu",
+        name: "StoreMenu",
+        component: () => import("../components/adminComponent/StoreMenu.vue")
+      }
+    ]
   },
   {
     path: "/admin",
     name: "AdminHome",
     component: () => import("../views/admin/AdminHome.vue"),
+  },
+  {
+    path: "/admincouponadd",
+    name: "AdminCouponAdd",
+    component: () => import("../views/admin/AdminCouponAdd.vue"),
+  },
+  {
+    path: "/admincoupon",
+    name: "AdminCoupon",
+    component: () => import("../views/admin/AdminCoupon.vue"),
   },
   {
     path: "/storeMenus",
@@ -161,7 +188,7 @@ const routes = [
     path: "/addMenu",
     name: "addMenu",
     component: () => import("../views/store/StoreAddMenu.vue"),
-  },
+  }
 ];
 
 const router = createRouter({

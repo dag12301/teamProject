@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.wapoo.dao.CouponDao">
+	
+
+    <insert id="insertCoupon" useGeneratedKeys="true" keyColumn="couponId" keyProperty="couponId" parameterType="Coupon">
+        INSERT INTO `coupon`
+        SET
+        `couponNumber` = #{couponNumber},
+        `couponName` = #{couponName},
+        `couponEnd` = #{couponEnd},
+        status = 'Y',
+        `couponPrice` = #{couponPrice},
+        `discountRate` = #{discountRate},
+        publishedDate = NOW(),
+        food_id = null,
+        event_id = null
+    </insert>
+
+	
+	<select id="selectCouponList" resultMap="exampleResultMap">
+        SELECT
+            couponNumber,
+            couponName,
+            couponEnd,
+            status,
+            couponPrice,
+            discountRate,
+            publishedDate
+        FROM coupon
+        WHERE 
+        <if test="!option.equals('ALL')">
+            status = #{option}
+        </if>
+        ORDER BY publishedDate DESC
+            LIMIT #{startLimit}, #{endLimit}
+    </select>
+    
+    <select id="selectCouponListCount" resultType="int">
+        SELECT COUNT(*) AS result
+        FROM coupon
+        <if test="!option.equals('ALL')">
+            WHERE status = #{option}
+        </if>
+    </select>
+</mapper>

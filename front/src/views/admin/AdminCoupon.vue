@@ -12,7 +12,7 @@
     <div
       class="container-fluid mt-2"
       id="optionWrapper"
-      :class="{ detailIsOn: storeDetail }"
+      :class="{ detailIsOn: couponDetail }"
     >
       <div class="row align-items-center">
         <div class="col-7">
@@ -33,24 +33,11 @@
               class="form-check-input"
               type="radio"
               name="inlineRadioOptions"
-              id="inlineRadio2"
-              @click="setStatusOption('S')"
-              value="S"
-            />
-            <label class="form-check-label" for="inlineRadio2"
-              >신청대기중</label
-            >
-          </div>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
               id="inlineRadio3"
               @click="setStatusOption('Y')"
               value="Y"
             />
-            <label class="form-check-label" for="inlineRadio3">영업중</label>
+            <label class="form-check-label" for="inlineRadio3">진행중</label>
           </div>
           <div class="form-check form-check-inline">
             <input
@@ -61,7 +48,7 @@
               @click="setStatusOption('N')"
               value="N"
             />
-            <label class="form-check-label" for="inlineRadio4">영업정지</label>
+            <label class="form-check-label" for="inlineRadio4">종료</label>
           </div>
         </div>
         <div class="col-5">
@@ -93,42 +80,46 @@
     <div
       id="wrapper"
       class="container-fluid mw-100 mt-2"
-      :class="{ detailIsOn: storeDetail }"
+      :class="{ detailIsOn: couponDetail }"
     >
       <table class="table table-bordered align-self-center table-striped">
         <thead>
           <tr class="bg-secondary">
             <th scope="col fw-bold">#</th>
-            <th scope="col fw-bold">등록일</th>
-            <th scope="col fw-bold">가게이름</th>
+            <th scope="col fw-bold">쿠폰번호</th>
+            <th scope="col fw-bold">쿠폰명</th>
+            <th scope="col fw-bold">사용종료일</th>
             <th scope="col fw-bold">상태</th>
-            <th scope="col fw-bold">주소</th>
-            <th scope="col fw-bold">신청자</th>
+            <th scope="col fw-bold">할인금액</th>
+            <th scope="col fw-bold">할인율</th>
+            <th scope="col fw-bold">쿠폰발행일자</th>
             <!-- 클릭시 자세하게 볼 수 있도록 -->
           </tr>
         </thead>
         <!-- 테이블 내용 -->
         <tbody>
           <tr v-if="totalCount === 0">
-            <td class="table-danger" colspan="6">등록된 가게가 없습니다.</td>
+            <td class="table-danger" colspan="8">등록된 쿠폰가 없습니다.</td>
           </tr>
           <tr
-            v-for="(list, index) in storeList"
+            v-for="(list, index) in couponList"
             :key="index"
-            class="eachStoreRow"
-            @click="selectStore(list)"
+            class="eachcouponRow"
+            @click="selectcoupon(list)"
           >
             <td class="table-light">{{ startListNum + index + 1 }}</td>
+            <td class="table-light">{{ list.couponNumber }}</td>
+            <td class="table-light">{{ list.couponName }}</td>
             <td class="table-light text-wrap fw-light" style="width: 6rem">
               {{
-                list.regDate[2] +
+                list.couponEnd[2] +
                 "일 " +
-                list.regDate[3] +
+                list.couponEnd[3] +
                 ":" +
-                list.regDate[4]
+                list.couponEnd[4]
               }}
             </td>
-            <td class="table-light">{{ list.storename }}</td>
+
             <td class="table-success" v-if="list.status == 'Y'">
               {{ list.status }}
             </td>
@@ -139,8 +130,17 @@
               {{ list.status }}
             </td>
             <td class="table-dark" v-else>?</td>
-            <td class="table-light">{{ list.address }}</td>
-            <td class="table-light">{{ list.membername }}</td>
+            <td class="table-light">{{ list.couponPrice }}</td>
+            <td class="table-light">{{ list.discountRate }}</td>
+            <td class="table-light text-wrap fw-light" style="width: 6rem">
+              {{
+                list.publishedDate[2] +
+                "일 " +
+                list.publishedDate[3] +
+                ":" +
+                list.publishedDate[4]
+              }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -192,31 +192,6 @@
         </ul>
       </nav>
     </div>
-    <!-- 가게 상세페이지 -->
-    <div class="container detailWrapper" :class="{ detailIsOn: !storeDetail }">
-      <div class="row mb-2 p-3">
-        <div
-          class="col-3 btn btn-success align-align-self-auto m-1"
-          @click="approveStore"
-        >
-          승인하기
-        </div>
-        <div
-          class="col-3 btn btn-danger align-align-self-auto m-1"
-          @click="denyStore"
-        >
-          등록거절
-        </div>
-        <div class="col-2"></div>
-        <div
-          class="btn btn-primary col-3 align-self-end m-1"
-          @click="clearDetail"
-        >
-          목록으로 돌아가기
-        </div>
-      </div>
-      <Detail :data="selectedStore"></Detail>
-    </div>
   </div>
 </template>
 
@@ -224,22 +199,19 @@
 import { normal, error, success } from "@/api/notification";
 import http from "@/api/http";
 import JWT from "@/api/jwt";
-import Detail from "@/components/admin/storeDetail.vue";
+import Detail from "@/components/admin/couponDetail.vue";
 
 export default {
-  components: {
-    Detail,
-  },
   data() {
     return {
-      storeList: [],
+      couponList: [],
       currentPage: 1, // 현재 페이지
-      listPerPage: 10, // 한번에 보여줄 리스트숫자
+      listPerPage: 2, // 한번에 보여줄 리스트숫자
       totalCount: 0, // 총 게시글 수
       showindex: 5, // 번호로 표시될 페이지 총 갯수
       statusOption: "ALL",
-      selectedStore: "",
-      storeDetail: false,
+      selectedcoupon: "",
+      couponDetail: false,
     };
   },
   computed: {
@@ -308,12 +280,12 @@ export default {
         statusOption: this.statusOption,
       };
       http
-        .post("/admin/getStoreList", data)
+        .post("/coupon/getcouponList", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
             success("데이터 로딩 완료!", this);
-            this.storeList = response.data;
+            this.couponList = response.data;
             this.currentPage = request;
             console.log("현재페이지 : " + this.currentPage);
           }
@@ -325,7 +297,7 @@ export default {
     },
     requestListCount() {
       http
-        .get("/admin/getStoreListCount", {
+        .get("/coupon/getcouponListCount", {
           params: {
             option: this.statusOption,
           },
@@ -334,17 +306,17 @@ export default {
           this.totalCount = response.data;
           console.log("등록된 가게의 총 갯수 : " + this.totalCount);
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          console.log(error);
         });
     },
-    requestChangeStoreStatus(storeId, status) {
+    requestChangecouponStatus(couponId, status) {
       const data = {
-        storeId: storeId,
+        couponId: couponId,
         status: status,
       };
       http
-        .post("/admin/updateStoreStatus", data)
+        .post("/admin/updatecouponStatus", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -361,30 +333,30 @@ export default {
       this.statusOption = value;
       this.requestPage(1);
     },
-    selectStore(list) {
-      this.selectedStore = list;
-      this.storeDetail = true;
+    selectcoupon(list) {
+      this.selectedcoupon = list;
+      this.couponDetail = true;
     },
     clearDetail() {
-      this.storeDetail = false;
+      this.couponDetail = false;
       this.requestPage(this.currentPage);
     },
-    approveStore() {
-      if (this.selectedStore.status === "Y") {
+    approvecoupon() {
+      if (this.selectedcoupon.status === "Y") {
         error("이미 승인된 가게입니다!", this);
         return;
       }
       success("가게를 승인합니다!", this);
-      // 가게 status를 바꿔주는 mvc패턴을 만들고, storename과 membername으로 가게를찾아야해
-      this.requestChangeStoreStatus(this.selectedStore.storeId, "Y");
+      // 가게 status를 바꿔주는 mvc패턴을 만들고, couponname과 membername으로 가게를찾아야해
+      this.requestChangecouponStatus(this.selectedcoupon.couponId, "Y");
     },
-    denyStore() {
-      if (this.selectedStore.status === "N") {
+    denycoupon() {
+      if (this.selectedcoupon.status === "N") {
         error("이미 취소된 가게입니다!", this);
         return;
       }
       error("가게를 등록취소합니다!", this);
-      this.requestChangeStoreStatus(this.selectedStore.storeId, "N");
+      this.requestChangecouponStatus(this.selectedcoupon.couponId, "N");
     },
   },
 };
@@ -402,7 +374,7 @@ export default {
 .detailIsOn {
   visibility: hidden;
 }
-.eachStoreRow:hover {
+.eachcouponRow:hover {
   cursor: pointer;
   outline: 2px solid rgba(0, 26, 255, 0.4);
   transition: 0.3s;

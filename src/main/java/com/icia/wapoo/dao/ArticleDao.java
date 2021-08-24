@@ -13,22 +13,34 @@ import java.util.List;
 @Mapper
 public interface ArticleDao {
 
-	List<Article> selectAllByBoardId(@Param("boardId") long boardId);
 	//게시글 등록
+
 	public int boardInsert(Article article);
+	//댓글 등록
+	public int commentInsert(Article article);
+	//게시물 댓글수 증가
+	public int childrenHit(long articleId);
 	// 게시글 조회
-	public Article boardSelect(long articleId);
+	Article boardSelect(long articleId);
 	//게시글 삭제
-	public long boardDelete(long articleId);
+
+	public int boardDelete(long articleId);
+	// 댓글 삭제
+	public int commentDelete(long parantId);
+
 	//게시글 view
-	public Article boardList(@Param("articleId") long articleId);
+	Article boardList(@Param("articleId") long articleId);
 	//조회수 증가
-	public int boardHit(@Param("articleId") long articleId);
+	int boardHit(@Param("articleId") long articleId);
 	
 	//총 게시글 개수 확인
-	public int getBoardListCnt(long boardId) throws Exception;
+	int getBoardListCnt(long boardId) throws Exception;
 	// 페이징 개수
 	public List<Article> getBoardList(PagingA paging, long boardId) throws Exception;
+	//게시글 수정
+	public int boardUpadte(Article article);
+	//댓글 조회
+	public List<Article> commentList(long parantId);
 
 	
 

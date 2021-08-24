@@ -8,31 +8,41 @@
  */
 import axios from "axios";
 import JWT from "@/api/jwt";
+import store from "@/store";
 
 const instance = axios.create({
   baseURL: "http://localhost:8083", // 스프링 BackEnd 의 주소,
-  headers: { "content-type": "application/json" },
+  headers: {
+    "content-type": "application/json",
+  },
 });
 
-instance.interceptors.request.use(function (config) {
-  try {
-    let access_token = JWT.getToken();
-    if (access_token != null) {
-      console.log("===보낼토큰===");
-      console.log(access_token);
-      console.log("====오리진====");
-      console.log(location.origin);
-      config["headers"] = {
-        accesstoken: access_token,
-      };
-    } else {
-      JWT.destroyToken();
+instance.interceptors.request.use(
+  function (config) {
+    try {
+      let access_token = JWT.getToken();
+      if (access_token != null) {
+        config["headers"] = {
+          Authorization: access_token,
+        };
+        const jwt = require("jsonwebtoken");
+        const decodeAccessToken = jwt.decode(access_token);
+        if (decodeAccessToken.exp < Date.now() / 1000 + 60) {
+          console.log("토큰 만료됨");
+          store.dispatch("auth/logout");
+        }
+      } else {
+        JWT.destroyToken();
+      }
+      return config;
+    } catch (err) {
+      console.log("토큰을 헤더에 싣는데 실패했습니다. :" + err);
     }
-    return config;
-  } catch (err) {
-    console.log(err);
+  },
+  function (error) {
+    return Promise.reject(error);
   }
-});
+);
 
 // 받는 모든 요청에, 이 인터셉터가 관여한다.
 instance.interceptors.response.use(
@@ -48,7 +58,7 @@ instance.interceptors.response.use(
     if (errorStatus === 401) console.log("인증에 실패했습니다.");
     if (errorStatus === 403) console.log("권한이 없습니다.");
     if (errorStatus === 500) console.log("서버에서 오류가 발생했습니다.");
-    return error.response;
+    return Promise.reject(error);
   }
 );
 export default instance;

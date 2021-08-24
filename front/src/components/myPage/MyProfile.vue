@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import http from "@/api/http";
 import { mapGetters, mapMutations } from "vuex";
 import { error, success, normal } from "@/api/notification";
 
@@ -96,14 +96,9 @@ export default {
       return;
     }
 
-    const token = this.getToken;
-    const headers = {
-      "content-type": "application/json",
-      accesstoken: token,
-    };
 
-    axios
-      .post("http://localhost:8083/profile/myProfile", null, { headers })
+    http
+      .post("/profile/myProfile")
       .then((response) => {
         if (response.status === 200) {
           console.log("연동됨");

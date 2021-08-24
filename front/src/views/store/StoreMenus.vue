@@ -129,7 +129,7 @@
 import MenuBox from "@/components/store/StoreMenu.vue";
 import NoMenu from "@/components/store/StoreMenuNone.vue";
 import { normal, error, success } from "@/api/notification";
-import axios from "axios";
+import http from "@/api/http";
 
 export default {
   components: {
@@ -206,8 +206,8 @@ export default {
         statusOption: this.statusOption,
         storeId: this.storeId,
       };
-      axios
-        .post("http://localhost:8083/store/getFoodList", data)
+      http
+        .post("/store/getFoodList", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -223,8 +223,8 @@ export default {
         });
     },
     requestListCount(storeId) {
-      axios
-        .get("http://localhost:8083/store/getFoodListCount", {
+      http
+        .get("/store/getFoodListCount", {
           params: {
             option: this.statusOption,
             storeId: storeId,
@@ -273,7 +273,7 @@ export default {
     //     storeId: storeId,
     //     status: status,
     //   };
-    //   axios
+    //   http
     //     .post("http://localhost:8083/admin/updateStoreStatus", data)
     //     .then((response) => {
     //       if (response.status === 200) {

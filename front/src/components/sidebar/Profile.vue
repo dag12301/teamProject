@@ -33,18 +33,13 @@
         </div>
       </div>
       <div v-else>
-        <div class="noLogin">
-          <button
-            type="button"
-            class="btn btn-success"
-            @click="SET_MODAL_LOGIN(true)"
-          >
-            로그인
-          </button>
-          <button class="btn btn-primary" @click="SET_MODAL_REGISTER(true)">
-            회원가입
-          </button>
-        </div>
+        <button
+          type="button"
+          class="btn btn-success"
+          @click="SET_MODAL_LOGIN(true)"
+        >
+          로그인
+        </button>
       </div>
     </div>
   </transition>
