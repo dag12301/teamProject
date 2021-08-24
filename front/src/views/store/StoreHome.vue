@@ -45,7 +45,7 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import { error, success, normal } from "@/api/notification";
-import axios from "axios";
+import http from "@/api/http";
 import storeDetail from "@/components/store/StoreDetail.vue";
 
 export default {
@@ -62,7 +62,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      getInfo: "auth/getUserInfo",
+      getRole: "auth/getUserRole",
       getToken: "auth/getAccessToken",
     }),
   },
@@ -71,8 +71,8 @@ export default {
       setMyStore: "SET_MY_STORE",
     }),
     getStoreFiles(storeId) {
-      axios
-        .get("http://localhost:8083/store/getStoreFiles", {
+      http
+        .get("/store/getStoreFiles", {
           params: {
             storeId: storeId,
           },
@@ -94,25 +94,15 @@ export default {
     },
   },
   mounted() {
-    this.userInfo = this.getInfo;
-    console.log(this.userInfo);
     normal("가게정보를 검색합니다...", this);
-    if (this.userInfo[1] != "SELLER") {
+    if (this.getRole != "SELLER") {
       error("이 페이지에 접근할 수없습니다.", this);
       this.$store.dispatch("auth/logout");
       this.$router.push({ path: "/" });
       return;
     }
-    // 등록된가게가있는지 확인해볼것
-    const token = this.getToken;
-    const headers = {
-      "content-type": "application/json",
-      accesstoken: token,
-    };
-
-    // 권한이 있는지 헤더를 실어서 보낸다.
-    axios
-      .post("http://localhost:8083/store/findStore", null, { headers })
+    http
+      .post("/store/findStore")
       .then((response) => {
         if (response.status === 200) {
           console.log(response.data);
