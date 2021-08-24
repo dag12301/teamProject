@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.icia.wapoo.model.Article;
+import com.icia.wapoo.model.ImageFile;
 import com.icia.wapoo.paging.PagingA;
 
 import java.util.List;
@@ -13,8 +14,9 @@ import java.util.List;
 @Mapper
 public interface ArticleDao {
 
-	//게시글 등록
-
+	//파일 등록
+	public int insertArticleFile(ImageFile file);
+	
 	public int boardInsert(Article article);
 	//댓글 등록
 	public int commentInsert(Article article);
@@ -22,6 +24,8 @@ public interface ArticleDao {
 	public int childrenHit(long articleId);
 	// 게시글 조회
 	Article boardSelect(long articleId);
+	// 게시글 이미지 조회
+	List<ImageFile> imageFileList(long articleId);
 	//게시글 삭제
 
 	public int boardDelete(long articleId);

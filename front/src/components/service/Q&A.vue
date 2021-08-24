@@ -32,7 +32,7 @@
         <tr
           v-for="(qn, index) in this.$store.state.serviceCenter.queAn"
           :key="index"
-          @click="listPage(qn.articleId, qn.status)"
+          @click="listPage(qn.articleId)"
         >
           <td class="col-1">{{ qn.nickname }}</td>
           <td class="col-1">{{ qn.title }}</td>
@@ -111,11 +111,28 @@ export default {
     nullCenterQueAn: "serviceCenter/nullCenterQueAn",
     setPagingQueAn: "serviceCenter/setPagingQueAn"
     }),
-    listPage(articleId, status) {     //페이지 이동
-      if(this.privateToggle(status)){
-        return location.href="/boardList?board=qna&articleId=" + articleId
+    listPage(articleId) {     //페이지 이동
+      let params = {
+        articleId: articleId,
       }
-      return alert("비공개 입니다");
+
+      authAPI
+        .articleVerify(params)    //페이지 검사
+        .then(res => {
+          console.log(res)
+          if(res.data == 100){
+            return location.href="/boardList?board=qna&articleId=" + articleId
+          }else if(res.data == 250){
+            return alert("비공개 입니다");
+          }else if(res.data == 400){
+            return alert("글 없습니다");
+          }else{
+            return alert("다시 시도해 주세요");
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
     },
     privateToggle(status) {
       //공개 비공개 검사

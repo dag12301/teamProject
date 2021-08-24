@@ -40,7 +40,16 @@
   <textarea id="textarea" class="input-group" v-model="body" v-else>
     
   </textarea>
+  <!-- 이미지 -->
+   <div class="w-32 h-32 border-2 border-dotted border-blue-500">
+  <div v-if="images != null" class="w-full h-full flex items-center" >
+    <div v-for="image in images" :key="image.articlefileId">
+      <img :src="image.name" alt="image.orgName">
+    </div>
+    
+  </div>
   
+</div>
 
   <!-- 수정및목록이동 버튼 -->
   <div class="col-md-12 text-center">
@@ -104,6 +113,7 @@ export default {
       board: null,
       list: {},
       MYPAGE: null,//작성자 일때 true 토글
+      images: '', //이미지
       //댓글
       comments: null,//댓글 리스트
       //수정
@@ -122,11 +132,12 @@ export default {
     authAPI //통신코드
       .list(query)
       .then((res) => {
-        console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
-        console.log(res)
+        
+        console.log(res.data.articleImageFile)
         this.list = res.data.article //list에  DB데이터 박기
         this.MYPAGE = res.data.MYPAGE
         this.comments = res.data.list
+        this.images = res.data.articleImageFile//이미지
       });
   },
   methods: {
