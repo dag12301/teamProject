@@ -14,19 +14,29 @@
               </div>
             </div>
             <!--가게 리스트 -->
+            <div v-if="!showList">
+              <!-- 로딩중 -->
+              <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
             <div class="col-xl-5">
               <div class="card mb-4">
                 <!-- 가게가 있을 때 -->
-                <div class="list-group" v-if="showList">
-                  <ShopList
-                    v-for="shop in nearShopList"
-                    :key="shop"
-                    :shopInfo="shop"
+                <div v-if="showList">
+                  <div class="list-group" v-if="nearShopList">
+                    <ShopList
+                      v-for="shop in nearShopList"
+                      :key="shop"
+                      :shopInfo="shop"
+                    >
+                    </ShopList>
+                  </div>
+                  <!-- 가게가 없을 때 -->
+                  <span v-else-if="!nearShopList">
+                    주변에 가게가 없습니당!!</span
                   >
-                  </ShopList>
                 </div>
-                <!-- 가게가 없을 때 -->
-                <span> 주변에 가게가 없습니당!!</span>
               </div>
             </div>
           </div>
@@ -92,6 +102,12 @@ export default {
     test() {
       http.get("/api/test").then((res) => {
         console.log(res);
+      });
+    },
+    showShopDetail(storeId) {
+      this.$router.push({
+        path: "/shopDetail?n=" + storeId,
+        query: { shopInfo: storeId },
       });
     },
   },
