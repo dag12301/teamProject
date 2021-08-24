@@ -26,6 +26,12 @@ const routes = [
     component: () => import("../views/food/FoodList.vue"),
   },
   {
+    path: "/shopDetail",
+    name: "ShopDetail",
+    component: () => import("../views/food/FoodDetail.vue"),
+    props: true,
+  },
+  {
     path: "/event",
     name: "Event",
     component: () => import("../views/event/Event.vue"),
@@ -52,11 +58,6 @@ const routes = [
     path: "/eventadd",
     name: "EventAdd",
     component: () => import("../views/event/EventAdd.vue"),
-  },
-  {
-    path: "/fooddetail",
-    name: "FoodDetail",
-    component: () => import("../views/food/FoodDetail.vue"),
   },
   {
     path: "/serviceCenter",

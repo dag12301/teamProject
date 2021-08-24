@@ -19,7 +19,7 @@
         :key="index"
       >
         <div class="list-group-item" style="height: 100px">
-          <div @click="showShopDetail(shop.store_id)" exact>
+          <div @click="showShopDetail(shop.store_id)">
             <div class=".col-md-3 .col-md-pull-9 f-left">
               <img class="menu-img" :src="shop.fileUrl" />
             </div>
@@ -55,8 +55,11 @@
 export default {
   props: ["shopList"],
   methods: {
-    showShopDetail(shopNumber) {
-      console.log("진행하려고하는 가게 아이디 : " + shopNumber);
+    showShopDetail(storeId) {
+      this.$router.push({
+        path: "/shopDetail?n=" + storeId,
+        query: { shopInfo: storeId },
+      });
     },
   },
 };

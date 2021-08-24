@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -177,5 +178,18 @@ public class StoreController {
         System.out.println("현재 위도(y)는 "+ latitude+" , 현재 경도(x)는 "+longitude+" 에서 가게정보를 요청합니다.");
         List<Map<String, Object>> list = storeService.getNearStoresList(latitude, longitude, radius, qantity, options);
         return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/getStoreInfos")
+    public ResponseEntity getStoreInfos(@RequestParam("storeId") Integer storeId) {
+
+        Store store = storeService.getStoreInfo(storeId);
+        List<ImageFile> fileList = storeService.getStoreFiles(storeId);
+        List<Map<String, Object>> foodList = storeService.getAllFood(storeId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("storeInfo", store);
+        map.put("foodList", foodList);
+        map.put("fileList", fileList);
+        return new ResponseEntity(map, HttpStatus.OK);
     }
 }

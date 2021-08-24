@@ -41,4 +41,8 @@ public interface StoreDao {
             @Param("radius") float radius,
             @Param("qantity") int qantity,
             @Param("options") String options);
+
+    Store selectStoreByStoreId(@Param("storeId") Integer storeId);
+
+    List<Map<String, Object>> selectAllFoods(@Param("storeId") Integer storeId);
 }

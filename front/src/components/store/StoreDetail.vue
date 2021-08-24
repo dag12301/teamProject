@@ -77,7 +77,8 @@
 
 <script>
 export default {
-  props: ["storeInfo", "storeFiles"],
+  props: ["storeInfo", "storeFiles", "isMyStore"],
+  // isMyStore == true 일때 자신의 가게임.
   components: {},
 };
 </script>

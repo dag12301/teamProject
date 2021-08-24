@@ -20,6 +20,7 @@
         <store-detail
           :storeFiles="storeFiles"
           :storeInfo="storeInfo"
+          :isMyStore="authorized"
           v-if="storeInfo.status != null"
         ></store-detail>
       </div>
@@ -58,6 +59,7 @@ export default {
       storeInfo: null,
       storeFiles: null,
       dataLoaded: false,
+      authorized: false,
     };
   },
   computed: {
@@ -112,6 +114,7 @@ export default {
             // 전역변수에 가게 등록로직
             this.setMyStore(this.storeInfo);
             this.getStoreFiles(this.storeInfo.storeId);
+            this.authorized = true;
             return;
           }
           error("등록된 가게가 없습니다!", this);

@@ -27,7 +27,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/api/member/login",
             "/api/validation/**",
             "/store/getStoreListByLocation",
-            "/store/getStoreFiles"
+            "/store/getStoreFiles",
+            "/store/getStoreInfos"
     };
 
     @Override
