@@ -53,7 +53,7 @@
         </if>
     </select>
     
-    <update id="updateCouponStatus">
+    <update id="updateCouponStatus" parameterType="Coupon">
         UPDATE coupon
 		SET STATUS = #{status}
 		WHERE couponId = #{couponId}

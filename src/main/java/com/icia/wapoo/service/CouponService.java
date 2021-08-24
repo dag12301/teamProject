@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class CouponService {
    
     @Autowired
-    private final CouponDao couponDao;
+    private CouponDao couponDao;
 
     @Transactional
     public int insertCoupon(Coupon coupon){
@@ -52,6 +52,6 @@ public class CouponService {
     public void updateCouponStatus(int couponId, String status) {
     	System.out.println("updateCouponStatus로 들어왔습니다.");
     	System.out.println(couponId+"를 "+status+"로 변경합니다.");
-        couponDao.updateCoupon(couponId, status);
+        couponDao.updateCouponStatus(couponId, status);
     }
 }

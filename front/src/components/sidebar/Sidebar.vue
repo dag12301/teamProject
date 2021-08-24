@@ -25,9 +25,7 @@
       <SidebarLink to="/eventadd" icon="fas fa-ticket-alt"
         >이벤트등록</SidebarLink
       >
-      <SidebarLink to="/admincouponadd" icon="fas fa-ticket-alt"
-        >쿠폰등록</SidebarLink
-      >
+      
     </div>
     <div v-else-if="userRole != null && userRole == 'SELLER'">
       <!-- 판매자로 로그인 했을때 보이는 메뉴들 -->

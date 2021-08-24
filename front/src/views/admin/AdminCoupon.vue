@@ -49,24 +49,9 @@
         <div class="col-5">
           <!-- 검색 -->
           <div class="input-group w-100">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              선택하세요
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item">이름</a></li>
-              <li><a class="dropdown-item">주소</a></li>
-              <li><a class="dropdown-item">신청자</a></li>
-            </ul>
-            <input
-              type="text"
-              class="form-control"
-              aria-label="Text input with dropdown button"
-            />
+              <router-link class="nav-link" :to="{name: 'AdminCouponAdd'}" style="margin-left: 85%; color: black;" exact>
+                <i class="fas fa-plus"></i>
+              </router-link>
           </div>
         </div>
       </div>
@@ -341,6 +326,7 @@ export default {
                this.requestChangeCouponStatus(this.selectedcoupon.couponId, "N");
              }
              else {
+               console.log(this.selectedcoupon.couponId);
                this.requestChangeCouponStatus(this.selectedcoupon.couponId, "Y");
              }
            }else{

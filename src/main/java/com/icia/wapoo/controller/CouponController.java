@@ -105,7 +105,7 @@ public class CouponController {
 	    @PostMapping("/updatecouponStatus")
 	    public ResponseEntity updateCouponStatus(@RequestBody Map<String, Object> data) {
 	        int couponId = ((Integer) data.get("couponId")).intValue();
-	        String status = (String) data.get("status");
+	        String status = ((String) data.get("status")).toString();
 	        System.out.println("status를 변경합니다.");
 	        if(status == null || couponId < 1){
 	            return new ResponseEntity(HttpStatus.BAD_REQUEST);

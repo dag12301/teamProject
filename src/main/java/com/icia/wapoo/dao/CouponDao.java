@@ -11,7 +11,7 @@ import com.icia.wapoo.model.Coupon;
 
 @Repository
 @Mapper
-interface CouponDao {
+public interface CouponDao {
 	
     public int insertCoupon(Coupon coupon);
 
@@ -19,5 +19,5 @@ interface CouponDao {
 
     int selectCouponListCount(@Param("option") String option);
     
-    int updateCoupon(@Param("couponId") int couponId, @Param("status") String status);
+    int updateCouponStatus(@Param("couponId") int couponId, @Param("status") String status);
 }
