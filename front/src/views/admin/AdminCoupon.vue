@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>가게관리페이지</h1>
+    <h1>쿠폰관리페이지</h1>
     <!-- 노티피케이션 -->
     <notifications
       group="notifyApp"
@@ -112,11 +112,12 @@
             <td class="table-light">{{ list.couponName }}</td>
             <td class="table-light text-wrap fw-light" style="width: 6rem">
               {{
+                list.couponEnd[0] +
+                "년 " +
+                list.couponEnd[1] +
+                "월" +
                 list.couponEnd[2] +
-                "일 " +
-                list.couponEnd[3] +
-                ":" +
-                list.couponEnd[4]
+                "일"
               }}
             </td>
             
@@ -134,11 +135,12 @@
             <td class="table-light">{{ list.discountRate }}</td>
             <td class="table-light text-wrap fw-light" style="width: 6rem">
               {{
+                list.publishedDate[0] +
+                "년 " +
+                list.publishedDate[1] +
+                "월" +
                 list.publishedDate[2] +
-                "일 " +
-                list.publishedDate[3] +
-                ":" +
-                list.publishedDate[4]
+                "일"
               }}
             </td>
           </tr>
@@ -206,7 +208,7 @@ export default {
     return {
       couponList: [],
       currentPage: 1, // 현재 페이지
-      listPerPage: 2, // 한번에 보여줄 리스트숫자
+      listPerPage: 5, // 한번에 보여줄 리스트숫자
       totalCount: 0, // 총 게시글 수
       showindex: 5, // 번호로 표시될 페이지 총 갯수
       statusOption: "ALL",
@@ -304,7 +306,7 @@ export default {
         })
         .then((response) => {
           this.totalCount = response.data;
-          console.log("등록된 가게의 총 갯수 : " + this.totalCount);
+          console.log("등록된 쿠폰의 총 갯수 : " + this.totalCount);
         })
         .catch((error) => {
           console.log(error);
@@ -343,19 +345,19 @@ export default {
     },
     approvecoupon() {
       if (this.selectedcoupon.status === "Y") {
-        error("이미 승인된 가게입니다!", this);
+        error("이미 승인된 쿠폰입니다!", this);
         return;
       }
-      success("가게를 승인합니다!", this);
+      success("쿠폰을 승인합니다!", this);
       // 가게 status를 바꿔주는 mvc패턴을 만들고, couponname과 membername으로 가게를찾아야해
       this.requestChangecouponStatus(this.selectedcoupon.couponId, "Y");
     },
     denycoupon() {
       if (this.selectedcoupon.status === "N") {
-        error("이미 취소된 가게입니다!", this);
+        error("이미 취소된 쿠폰입니다!", this);
         return;
       }
-      error("가게를 등록취소합니다!", this);
+      error("쿠폰을 등록취소합니다!", this);
       this.requestChangecouponStatus(this.selectedcoupon.couponId, "N");
     },
   },

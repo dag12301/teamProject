@@ -19,8 +19,16 @@
         event_id = null
     </insert>
 
-	
-	<select id="selectCouponList" resultMap="exampleResultMap">
+	<resultMap id="couponResultMap" type="java.util.Map">
+        <result column="countNumber" property="countNumber"/>
+        <result column="couponName" property="couponName"/>
+        <result column="couponEnd" property="couponEnd"/>
+        <result column="status" property="status"/>
+        <result column="couponPrice" property="couponPrice"/>
+        <result column="discountRate" property="discountRate" />
+        <result column="publishedDate" property="publishedDate" />
+    </resultMap>
+	<select id="selectCouponList" resultMap="couponResultMap">
         SELECT
             couponNumber,
             couponName,
@@ -30,12 +38,10 @@
             discountRate,
             publishedDate
         FROM coupon
-        WHERE 
         <if test="!option.equals('ALL')">
+        WHERE 
             status = #{option}
         </if>
-        ORDER BY publishedDate DESC
-            LIMIT #{startLimit}, #{endLimit}
     </select>
     
     <select id="selectCouponListCount" resultType="int">
