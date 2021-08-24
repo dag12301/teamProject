@@ -16,8 +16,13 @@
             <!--가게 리스트 -->
             <div class="col-xl-5">
               <div class="card mb-4">
-                <div class="list-group">
-                  <ShopList></ShopList>
+                <div class="list-group" v-if="showList">
+                  <ShopList
+                    v-for="shop in nearShopList"
+                    :key="shop"
+                    :shopInfo="shop"
+                  >
+                  </ShopList>
                 </div>
               </div>
             </div>
@@ -38,12 +43,30 @@ import { mapGetters } from "vuex";
 import http from "@/api/http";
 
 export default {
+  data() {
+    return {
+      nearShopList: [],
+      showList: false,
+    };
+  },
   components: {
     Kakao,
     ShopList,
   },
   computed: {
     ...mapGetters({ LAT: "GET_LAT", LON: "GET_LON", OBS: "GET_OBSERVED" }),
+  },
+  watch: {
+    LAT(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.showStoreList();
+      }
+    },
+    LON(newVal, oldVal) {
+      if (newVal != oldVal) {
+        this.showStoreList();
+      }
+    },
   },
   methods: {
     showStoreList() {
@@ -53,9 +76,11 @@ export default {
     },
     getStoreListByLocation(lat, lon) {
       http
-        .post("/store/getStoreListByLatLoc", { lat, lon })
+        .post("/store/getStoreListByLocation", { lat, lon })
         .then((res) => {
-          console.log(res);
+          console.log(res.data);
+          this.nearShopList = res.data;
+          this.showList = true;
         })
         .catch((e) => {
           console.log(e);
@@ -63,9 +88,9 @@ export default {
     },
   },
   mounted() {
-    // this.showStoreList();
+    this.showStoreList();
   },
 };
 </script>
 
-<style></style>
+<style scoped></style>

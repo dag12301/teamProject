@@ -16,7 +16,7 @@ import { mapMutations, mapGetters } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["GET_LOCAL"]),
+    ...mapGetters(["GET_LOCAL", "GET_LAT", "GET_LON"]),
   },
   data() {
     return {
@@ -45,7 +45,10 @@ export default {
       var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       var options = {
         //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(this.latitude, this.longitude), //지도의 중심좌표.
+        center: new kakao.maps.LatLng(
+          this.GET_LAT != null ? this.GET_LAT : this.latitude,
+          this.GET_LON != null ? this.GET_LAT : this.longitude
+        ), //지도의 중심좌표.
         level: 3, //지도의 레벨(확대, 축소 정도)
       };
 
@@ -113,6 +116,7 @@ export default {
         infowindow.open(this.map, marker);
 
         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        console.log("지도이동");
         this.map.setCenter(coords);
       };
       // async

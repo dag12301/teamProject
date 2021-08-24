@@ -158,8 +158,10 @@ public class StoreController {
 
     @PostMapping("/getStoreListByLocation")
     public ResponseEntity getStoreListByLocation(@RequestBody Map<String, Object> data) {
-        System.out.println(data.get("lat"));
-        System.out.println(data.get("lon"));
-        return new ResponseEntity(HttpStatus.OK);
+        Double latitude = (Double) data.get("lat");
+        Double longitude = (Double) data.get("lon");
+        System.out.println("현재 위도(y)는 "+ latitude+" , 현재 경도(x)는 "+longitude);
+        List<Map<String, Object>> list = storeService.getNearStoresList(latitude, longitude);
+        return new ResponseEntity(list, HttpStatus.OK);
     }
 }

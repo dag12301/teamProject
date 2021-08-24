@@ -133,4 +133,18 @@
             AND status = #{option}
         </if>
     </select>
+    <select id="selectNearStoresList" parameterType="Double" resultType="Map">
+        SELECT *, (
+        ROUND(6371 * ACOS( COS( RADIANS(#{lat}) )
+        * COS( RADIANS( s.localy ) )
+        * COS( RADIANS( s.localx )
+        - RADIANS( #{lon}) )
+        + SIN( RADIANS(#{lat}) )
+        * SIN( RADIANS( s.localy ) ) ), 2)) AS distance
+        FROM store s
+        <![CDATA[
+        HAVING distance < 5
+        ]]>
+        ORDER BY distance LIMIT 0,5;
+    </select>
 </mapper>
