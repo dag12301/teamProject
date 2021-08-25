@@ -139,4 +139,13 @@ public class StoreService {
     public List<Map<String, Object>> getAllFood(Integer storeId) {
         return storeDao.selectAllFoods(storeId);
     }
+
+    public int modifyFoodInfo(Map<String, Object> formData, MultipartFile file) {
+        System.out.println("뽑아보기");
+        System.out.println(formData.get("foodname"));
+        System.out.println(formData.get("description"));
+        System.out.println(formData.get("status"));
+        System.out.println(file.isEmpty());
+        return 1;
+    }
 }

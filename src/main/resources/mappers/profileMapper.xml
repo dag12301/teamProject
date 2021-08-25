@@ -3,7 +3,7 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.icia.wapoo.dao.ProfileDao">
 
-<select id="checkProfile" resultType="profile">
+<select id="checkProfile" resultType="Profile">
  SELECT m.`memberId` as memberId,
 		l.`loginId` AS loginId,
 		m.`name` AS name, 
