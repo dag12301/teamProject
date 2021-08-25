@@ -1,6 +1,6 @@
 <template>
-  <ul v-show="list" class="list-item">
-    <div class="item-box" @click="SET_MODAL_ORDER(true)">
+  <ul v-show="list" class="list-item" @click="SET_MODAL_ORDER(true)">
+    <div class="item-box">
       <div class="item-text">
         <div class="menu-name">
           <!--가게 음식메뉴 이름-->
@@ -13,23 +13,14 @@
       </div>
     </div>
   </ul>
-
-  <order-modal
-    :data="list"
-    v-if="this.$store.state.orderModal == true"
-  ></order-modal>
 </template>
 
 <script>
-import OrderModal from "@/components/modal/Order.vue";
-
 import { mapMutations } from "vuex";
 export default {
   props: ["list"],
   methods: { ...mapMutations(["SET_MODAL_ORDER"]) },
-  components: {
-    OrderModal,
-  },
+  components: {},
 };
 </script>
 

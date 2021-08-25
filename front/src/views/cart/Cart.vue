@@ -89,6 +89,12 @@
               </div>
             </div>
           </div>
+          <div class="couponWrapper">
+            <!-- 사용할 수 있는 쿠폰이 있으면 불러오기 -->
+          </div>
+          <div class="calculatorWrapper">
+            <!-- orderList 에 대한 총액정리 쿠폰 적용 후. -->
+          </div>
           <div class="commandOrderWrapper" v-if="foodList.length > 0">
             <div class="row">
               <div class="col commandOrder" @click="putOrder">주문하기</div>
