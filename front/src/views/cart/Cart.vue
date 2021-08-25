@@ -74,7 +74,7 @@
                           </li>
                           <div
                             class="btn btn-primary"
-                            @click="delCart(food.foodId)"
+                            @click="removeFood(food.foodId)"
                           >
                             삭제하기
                           </div>
@@ -173,6 +173,16 @@ export default {
         this.foodList = [];
         this.orderList = new Map();
       }
+    },
+    removeFood(foodId) {
+      let filteredFoodList = this.foodList.filter(
+        (food) => food.foodId !== foodId
+      );
+      this.foodList = filteredFoodList;
+      if (this.orderList.has(foodId)) {
+        this.orderList.delete(foodId);
+      }
+      this.delCart(foodId);
     },
   },
 };

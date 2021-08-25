@@ -15,6 +15,7 @@ export default {
         state.bag = new Set();
         state.bag.add(foodId);
       }
+      alert("장바구니에 추가되었습니다!");
     },
     delCart(state, foodId) {
       if (state.bag.has(foodId)) {
