@@ -85,9 +85,9 @@ export default {
       "SET_COUNT_FQA"
     ]),
     serviceCenter() {//serviceCenter 토글 true
-      this.nullCenterNotices
-      this.nullCenterQueAn
-      this.nullCenterFQA
+      this.SET_COUNT_NOTICE(true)
+      this.SET_COUNT_QUEAN(true)
+      this.SET_COUNT_FQA(true)
     }
   }
 };

@@ -1,26 +1,28 @@
 <template>
   <div>
-    <h2>Q&A</h2>
+    <h2 class="mb-3">Q&A</h2>
     <div id="Search" class="input-group mb-3">
       <input
         type="text"
         class="form-control"
-        placeholder="여기다 글쓰고 검색하셈"
+        placeholder="검색"
         aria-label="Recipient's username"
         aria-describedby="button-addon2"
+        v-model="search"
       />
       <button
         class="btn btn-outline-secondary"
         type="button"
         id="button-addon2"
+        @click="searching"
       >
         검색
       </button>
     </div>
     <!-- 글쓰기 -->
     <div class="">
-      <button type="button" class="btn btn-primary">내글조회</button>
-      <router-link class="btn btn-primary" :to="{ name: 'WriteForm' }"
+      <button type="button" class="btn btn-primary " @click="myPage">내글조회</button>
+      <router-link class="btn btn-primary position-relative left-30 write" :to="{ name: 'WriteForm' }"
         >글쓰기</router-link
       >
     </div>
@@ -29,6 +31,14 @@
     <!-- 리스트 -->
     <table class="table table-striped">
       <tbody>
+        <tr>
+          <th>닉네임</th>
+          <th>제목</th>
+          <th>내용</th>
+          <th>날짜</th>
+          <th>조회수</th>
+          <th>공개 여부</th>
+        </tr>
         <tr
           v-for="(qn, index) in this.$store.state.serviceCenter.queAn"
           :key="index"
@@ -57,7 +67,7 @@
     </table>
 
       <!-- 순서 버튼 -->
-    <nav aria-label="Page navigation example" class="mt-5 position-relative .center-block" style="">
+    <nav aria-label="Page navigation example" class="mt-5 position-relative .center-block" v-if="myCount">
       <ul class="pagination position-absolute" style="left: 30vw" >
         <!-- 이전 순서 버튼 -->
         <li class="page-item" v-if="this.paging.prev == true" @click="prevBotton(paging.range, paging.rangeSize, this.listSize)">
@@ -66,8 +76,9 @@
           </a>
         </li>
         <!-- 숫자 순서 버튼 -->
-        <li class="page-item" v-for="num in this.getnumSize" :key="num">        
-          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" >{{num}}</a>
+        <li class="page-item" v-for="num in this.getnumSize" :key="num"  :style="{ontSize: '20px'}">        
+          <a class="page-link"  href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize, this.search)" v-if="paging.page != num">{{num}}</a>
+          <a class="page-link"  href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize, this.search)" style="background-color: #0d6efd; color: #fff;" v-else >{{num}}</a>
         </li>
         
         <!-- 다음 순서 버튼 -->
@@ -91,7 +102,10 @@ export default {
     return {
       paging:[],
       listSize: 10,     //리스트 수
-      rangeSize: 5      //버튼 수
+      rangeSize: 5,      //버튼 수,
+      search: null,     //검색
+      myCount: true      //myCount
+
     }
   },
   computed: {
@@ -147,36 +161,45 @@ export default {
       this.numPage(page, range, rangeSize, listSize)
     },
     nextBotton(range1, rangeSize, listSize) {
-      console.log("next---------------------------")
+     
       let page = parseInt((range1 * rangeSize)) + 1
 		  let range = range1 + 1
-    console.log("range1: " + range1)
-    console.log(page)
-    console.log("range: " + range)
-    
-    console.log("---------------------------")
+   
       this.numPage(page, range, rangeSize, listSize)
     },
 
-    numPage(page, range, listSize, rangeSize) {           //페이지 번호로 이동 axios
+    numPage(page, range, listSize, rangeSize, search=null) {           //페이지 번호로 이동 axios
       authAPI
-      .getBoardList(2, page, range, listSize, rangeSize)
+      .getBoardList(2, page, range, listSize, rangeSize, search)
       .then(res => {
+        console.log(res)
         this.nullCenterQueAn()         //테이터 삭제
         this.nullPagingpagingQueAn()    //페이징 삭제
-        console.log("삭제---------------------------")
-        console.log("setPagingQueAn : " + this.$store.state.serviceCenter.pagingQueAn)
-        console.log("---------------------------")
-        
+        this.search = res.data.search
         this.setPagingQueAn(res.data.paging)
-        console.log("저장---------------------------")
-        console.log("setPagingQueAn : " + this.$store.state.serviceCenter.pagingNotices.next)
-        console.log("---------------------------")
         
         res.data.list.forEach(element => {      //vuex에 데이터 넣기
           this.setCenterQueAn(element)   
         });
-        
+      })
+    },
+    //검색
+    searching() {
+      this.numPage(1, this.paging.range, this.listSize,this.rangeSize, this.search)
+    },
+    // 내글 보기
+    myPage() {
+      this.myCount = false
+
+      authAPI
+      .pagingMyBoard(2)
+      .then(res => {
+        console.log(res)
+        this.nullCenterQueAn()         //테이터 삭제
+        res.data.list.forEach(element => {      //vuex에 데이터 넣기
+          this.setCenterQueAn(element)   
+        });
+
       })
     }
   },
@@ -186,14 +209,16 @@ export default {
   },
   //버튼 클릭시
   updated() {
-    this.paging = this.getQueAnPaging  
-    this.listSize = this.paging.listSize,
-    this.rangeSize = this.paging.rangeSize
+    this.paging = this.getQueAnPaging
   }
 }
 </script>
 
 <style scoped>
+.write{
+  left: 30vw
+}
+
 #Search {
   width: 35%;
   left: 35%;

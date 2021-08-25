@@ -41,7 +41,8 @@
         </li>
         <!-- 숫자 순서 버튼 -->
         <li class="page-item" v-for="num in this.getnumNoticeSize" :key="num">        
-          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" >{{num}}</a>
+          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" v-if="paging.page != num">{{num}}</a>
+          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" style="background-color: #0d6efd; color: #fff;" v-else>{{num}}</a>
         </li>
         
         <!-- 다음 순서 버튼 -->

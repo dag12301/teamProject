@@ -33,30 +33,26 @@ export async function listDelete(params){
   })
 }
 //페이징 리스트
-export async function getBoardList(boardId, page, range, listSize, rangeSize){
+export async function getBoardList(boardId, page, range, listSize, rangeSize, search=null){
   return http.get("/article/pagingBoard",{
     params: {
       boardId: boardId,
       page: page,
       range: range,
       listSize: listSize,
-      rangeSize: rangeSize
+      rangeSize: rangeSize,
+      search: search
     }
   })
 }
 //수정 페이지
-export async function update(params) {
+export function update(params) {
   return http.post("/article/board/update", {
     params
   })
 }
 
-//이미지 업로드
-export function imageupload(form) {
-  return http.post("/article/imageUpload", form, {
-    headers: {'Content-Type': 'multipart/form-data'}
-  })
-}
+
 //본인 확인
 export async function articleVerify(params){
   return http.post("/article/articleVerify", {
@@ -64,5 +60,20 @@ export async function articleVerify(params){
   })
 }
 
-
-
+//이미지 업로드  
+export function write12(form, articleId) {
+  return http.post("/article/board/imageUpload", form, {
+    headers: {'Content-Type': 'multipart/form-data'},
+    params: {
+      articleId: articleId
+    }
+  })
+}
+//작성자가쓴 글 
+export async function pagingMyBoard(boardId){
+  return http.get("/article/pagingMyBoard",{
+    params: {
+      boardId: boardId
+    }
+  })
+}
