@@ -14,6 +14,7 @@ export default {
     userEmail: "null",
     userName: "null",
     userPhone: "null",
+    myStore: null,
   },
   getters: {
     getAccessToken: function (state) {
@@ -36,6 +37,9 @@ export default {
         return decodeAccessToken.role;
       }
       return "BUYER";
+    },
+    getMyStore(state) {
+      return state.myStore;
     },
   },
   mutations: {
@@ -63,6 +67,9 @@ export default {
       state.userNickname = null;
       state.userPhone = null;
       state.userEmail = null;
+    },
+    SET_MY_STORE(state, store) {
+      state.myStore = store;
     },
   },
   actions: {
