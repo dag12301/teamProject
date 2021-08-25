@@ -30,6 +30,23 @@ const routes = [
     name: "ShopDetail",
     component: () => import("../views/food/FoodDetail.vue"),
     props: true,
+    children: [
+      {
+        path: "/review",
+        name: "shopReview",
+        component: () => import("../components/adminComponent/Review.vue"),
+      },
+      {
+        path: "/storemap",
+        name: "shopMap",
+        component: () => import("../components/adminComponent/StoreMap.vue"),
+      },
+      {
+        path: "/storemenu",
+        name: "shopMenu",
+        component: () => import("../components/adminComponent/StoreMenu.vue"),
+      },
+    ],
   },
   {
     path: "/event",

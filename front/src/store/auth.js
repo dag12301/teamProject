@@ -39,20 +39,9 @@ export default {
       }
       return "BUYER";
     },
-<<<<<<< HEAD
-    getUserNickname(state) {
-      const jwt = require("jsonwebtoken");
-      const decodeAccessToken = jwt.decode(state.token.accessToken);
-      if (decodeAccessToken != null) {
-        return decodeAccessToken.nickname;
-      }
-      return "알수없음";
-    }
-=======
     getMyStore(state) {
       return state.myStore;
     },
->>>>>>> 2fde0298c151cbca64dcf4e82d5102bccad85052
   },
   mutations: {
     setToken(state, payload) {

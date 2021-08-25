@@ -18,4 +18,6 @@ public interface CouponDao {
     List<Coupon> selectCouponList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option);
 
     int selectCouponListCount(@Param("option") String option);
+    
+    int updateCouponStatus(@Param("couponId") int couponId, @Param("status") String status);
 }

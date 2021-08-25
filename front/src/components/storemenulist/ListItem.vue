@@ -10,6 +10,7 @@
         <div class="item-box">
           <div class="item-text">
             <div class="menu-name">
+              <!--가게 음식메뉴 이름-->
               {{ item }}
             </div>
             <div class="menu-price">9,000원</div>

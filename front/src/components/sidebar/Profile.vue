@@ -7,7 +7,7 @@
         style="margin-right: 30vh"
       />
       <!-- 프로필 -->
-      <div v-if="loginCheck">
+      <div v-if="userInfo[0]">
         <div style="text-align:center">
           <div class="user" style="padding-bottom:10%">
             <img src="https://image.news1.kr/system/hp/2019/11/29/3943620/dims/optimize" class="profile"/>
@@ -55,25 +55,13 @@ import RegisterModal from "@/components/modal/Register.vue";
 import { success } from "@/api/notification";
 
 export default {
-  mounted() {
-    loginCheck: {
-      if(this.userNickname = "")
-      {
-        return false;
-      }
-      else
-      {
-        return true;
-      }
-    }
-  },
   props: {},
   setup() {
     return { collapsed };
   },
   computed: {
     ...mapGetters({
-      userNickname: "auth/getUserNickname",
+      userInfo: "auth/getUserInfo",
     }),
   },
   methods: {

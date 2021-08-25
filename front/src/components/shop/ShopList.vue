@@ -50,6 +50,7 @@ export default {
   props: ["shopInfo"],
   mounted() {
     console.log(this.shopInfo.storeId); // 사진을 불러오기위함
+    console.log("사진 불러온다");
     if (this.shopInfo.storeId != null) {
       http
         .get("/store/getStoreFiles", {
@@ -61,6 +62,7 @@ export default {
           if (res.status === 200) {
             this.fileList = res.data;
             console.log(res.data);
+            console.log("사진 불러왔다");
           }
         })
         .catch((err) => {
@@ -74,7 +76,6 @@ export default {
       options: {
         rewind: true, //첫 번째 슬라이드 이전 또는 마지막 슬라이드 이후에 슬라이더를 되감는지 여부.
         gap: "2em", // 슬라이드 사이의 간격.
-        width: 700,
         speed: 300, // 밀리초 단위의 전환 속도입니다.
         rewindSpeed: 300, //되감기 시 전환 속도(밀리초)입니다.
         perPage: 5, //페이지당 표시할 슬라이드 수를 결정합니다.
@@ -127,7 +128,6 @@ export default {
   padding: 0px;
 }
 .storeKind {
-  text-align: right;
   width: 70px;
   padding: 0px;
 }
@@ -140,6 +140,13 @@ export default {
   .slide {
     position: absolute;
     display: none;
+    width: 100px;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .slide {
+    position: absolute;
+    width: 700px;
   }
 }
 </style>
