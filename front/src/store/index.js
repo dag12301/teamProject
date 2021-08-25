@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 
 import auth from "@/store/auth";
+import cart from "@/store/cart";
 import Akinator from "@/store/akinator";
 import fooddiv from "./foodDiv/foodDiv.js";
 import foodlist from "./foodDiv/foodList.js";
@@ -114,10 +115,11 @@ export default createStore({
     foodlist,
     couponon,
     couponend,
+    cart,
   },
   plugins: [
     createPersistedState({
-      paths: ["auth"],
+      paths: ["auth", "cart"],
     }),
   ],
 });

@@ -9,9 +9,12 @@
       {{ data.price }} 원<br />
       {{ data.description }}
       수량:
+      <div class="btn btn-primary" @click="check">확인</div>
     </template>
     <template v-slot:footer>
-      <div class="btn btn-success">장바구니</div>
+      <div class="btn btn-success" @click="addCart(data.foodId)">
+        주문표에 추가하기
+      </div>
       <div class="btn btn-danger" @click="SET_MODAL_ORDER(false)">취소</div>
     </template>
   </Modal>
@@ -19,16 +22,24 @@
 
 <script>
 import Modal from "./Modal_order.vue";
-import { mapMutations } from "vuex";
+import { mapMutations, mapGetters } from "vuex";
 
 export default {
   props: ["data"],
   components: {
     Modal,
   },
-  mounted() {},
+  computed: {
+    ...mapGetters({ checkCart: "checkCart" }),
+  },
   methods: {
-    ...mapMutations(["SET_MODAL_ORDER"]),
+    ...mapMutations({
+      SET_MODAL_ORDER: "SET_MODAL_ORDER",
+      addCart: "addCart",
+    }),
+    check() {
+      console.log(this.checkCart);
+    },
   },
 };
 </script>

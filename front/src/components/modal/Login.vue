@@ -125,7 +125,9 @@ export default {
       });
       // 받은 정보의 처리
       response
-        .then(() => {
+        .then((res) => {
+          console.log("==");
+          console.log(res);
           this.SET_MODAL_REGISTER(false);
           if (this.loginSave == true) {
             localStorage.setItem("loginId", this.userId);
@@ -140,7 +142,7 @@ export default {
                 this.$router.push({ path: "/admin" });
               }
             }
-            success("로그인에 성공했습니다", this);
+
             // 로그인에 성공은 했으나 역할이 이상할떄 예외처리 해줘야함.
             return;
           }, 2000);
