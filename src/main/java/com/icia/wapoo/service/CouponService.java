@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class CouponService {
    
     @Autowired
-    private final CouponDao couponDao;
+    private CouponDao couponDao;
 
     @Transactional
     public int insertCoupon(Coupon coupon){
@@ -40,12 +40,20 @@ public class CouponService {
         int StartLimit = (requestPage-1)* listPerPage;
         int EndLimit = listPerPage;
         System.out.println((StartLimit+1) + "번째 부터 시작하여 "+EndLimit +"개를 가져옵니다.");
-        List<Map<String, Object>> list = couponDao.selectCouponList(StartLimit, EndLimit, option);
-        System.out.println("가져온 게시물 수 : " + list.size());
-        return list;
+//        List<Map<String, Object>> list = couponDao.selectCouponList(StartLimit, EndLimit, option);// 여기서에러
+//        System.out.println("가져온 게시물 수 : " + list.size());
+//        return list;
+        return null;
     }
+
 
     public int getCouponListCount(String option) {
         return couponDao.selectCouponListCount(option);
+    }
+    
+    public void updateCouponStatus(int couponId, String status) {
+    	System.out.println("updateCouponStatus로 들어왔습니다.");
+    	System.out.println(couponId+"를 "+status+"로 변경합니다.");
+        couponDao.updateCouponStatus(couponId, status);
     }
 }

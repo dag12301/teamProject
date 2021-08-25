@@ -7,9 +7,6 @@
       position="bottom right"
       style="margin-right: 30vh"
     />
-    <span>
-      <router-link to="/addMenu">음식 추가하기</router-link>
-    </span>
     <!-- 음식이 있을 때 -->
     <div class="row align-items-center">
       <div class="col-10">
@@ -62,6 +59,7 @@
     </div>
     <!-- 검색메뉴? -->
     <div id="tableWrapper">
+      <no-menu class="d-block"></no-menu>
       <div v-if="foodList">
         <div
           v-for="(food, index) in foodList"
@@ -119,8 +117,6 @@
           </ul>
         </nav>
       </div>
-      <!-- 메뉴가없을때. -->
-      <no-menu class="d-block" v-else></no-menu>
     </div>
   </div>
 </template>
@@ -129,7 +125,8 @@
 import MenuBox from "@/components/store/StoreMenu.vue";
 import NoMenu from "@/components/store/StoreMenuNone.vue";
 import { normal, error, success } from "@/api/notification";
-import axios from "axios";
+import http from "@/api/http";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -150,6 +147,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({ myStore: "auth/getMyStore" }),
     startListNum() {
       return (this.currentPage - 1) * this.listPerPage;
     },
@@ -194,8 +192,20 @@ export default {
     },
   },
   mounted() {
-    this.storeId = this.$store.state.myStore.storeId;
+    if (!this.myStore) {
+      this.$router.push({ path: "/store" });
+      console.log("storeId 정보가 없어서 다시 홈으로");
+    }
+    this.storeId = this.myStore.storeId;
+
     this.requestPage(1);
+  },
+  beforeUpdate() {
+    if (!this.myStore) {
+      this.$router.push({ path: "/store" });
+      console.log("storeId 정보가 없어서 다시 홈으로");
+    }
+    this.storeId = this.myStore.storeId;
   },
   methods: {
     requestPage(page) {
@@ -206,8 +216,8 @@ export default {
         statusOption: this.statusOption,
         storeId: this.storeId,
       };
-      axios
-        .post("http://localhost:8083/store/getFoodList", data)
+      http
+        .post("/store/getFoodList", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -223,8 +233,8 @@ export default {
         });
     },
     requestListCount(storeId) {
-      axios
-        .get("http://localhost:8083/store/getFoodListCount", {
+      http
+        .get("/store/getFoodListCount", {
           params: {
             option: this.statusOption,
             storeId: storeId,
@@ -244,7 +254,6 @@ export default {
     },
     selectFood(list) {
       this.selectedFood = list;
-      console.log(list);
       this.foodDetail = true;
     },
     clearDetail() {
@@ -273,7 +282,7 @@ export default {
     //     storeId: storeId,
     //     status: status,
     //   };
-    //   axios
+    //   http
     //     .post("http://localhost:8083/admin/updateStoreStatus", data)
     //     .then((response) => {
     //       if (response.status === 200) {

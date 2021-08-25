@@ -29,7 +29,25 @@ export default createStore({
 
     selectedPlace: "주소찾기를 눌러주세요...", // 주소찾기에서 선택한 주소
     selectedAddressDetail: "", // 주소찾기에서 선택한 상세주소
-    myStore: null,
+
+    local: null,
+    latitude: null,
+    longitude: null,
+    isObserved: false,
+  },
+  getters: {
+    GET_LOCAL(state) {
+      return state.local;
+    },
+    GET_LAT(state) {
+      return state.latitude;
+    },
+    GET_LON(state) {
+      return state.longitude;
+    },
+    GET_OBSERVED(state) {
+      return state.isObserved;
+    },
   },
   mutations: {
     SET_MODAL_LOGIN(state, boolean) {
@@ -66,8 +84,17 @@ export default createStore({
       state.selectedPlace = place;
       state.selectedAddressDetail = detail;
     },
-    SET_MY_STORE(state, store) {
-      state.myStore = store;
+    SET_LOCAL(state, local) {
+      state.local = local;
+    },
+    SET_LAT(state, latitude) {
+      state.latitude = latitude;
+    },
+    SET_LON(state, longitude) {
+      state.longitude = longitude;
+    },
+    SET_OBSERVE(state, boolean) {
+      state.isObserved = boolean;
     },
   },
   modules: {

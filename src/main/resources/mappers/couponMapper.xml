@@ -18,10 +18,10 @@
         food_id = null,
         event_id = null
     </insert>
-
 	
 	<select id="selectCouponList" resultType="Coupon">
         SELECT
+        	couponId,
             couponNumber,
             couponName,
             couponEnd,
@@ -30,13 +30,12 @@
             discountRate,
             publishedDate
         FROM coupon
-        WHERE 
         <if test="!option.equals('ALL')">
+        WHERE 
             status = #{option}
         </if>
-        ORDER BY publishedDate DESC
-            LIMIT #{startLimit}, #{endLimit}
     </select>
+    
     <select id="selectCouponListCount" resultType="int">
         SELECT COUNT(*) AS result
         FROM coupon
@@ -44,4 +43,11 @@
             WHERE status = #{option}
         </if>
     </select>
+    
+    <update id="updateCouponStatus">
+        UPDATE coupon
+		SET STATUS = #{status}
+		WHERE couponId = #{couponId}
+
+    </update>
 </mapper>

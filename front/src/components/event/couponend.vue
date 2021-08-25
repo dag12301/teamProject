@@ -49,7 +49,7 @@
     height: 40px;
     right: -20px;
     border-radius: 40px;
-    z-index: 1;
+    z-index: 0;
     top: 70px;
     background-color: white;
     width: 40px;
@@ -61,7 +61,7 @@
     height: 40px;
     left: -20px;
     border-radius: 40px;
-    z-index: 1;
+    z-index: 0;
     top: 70px;
     background-color: white;
     width: 40px;

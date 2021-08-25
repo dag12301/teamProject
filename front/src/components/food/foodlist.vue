@@ -1,39 +1,69 @@
 <template>
-  <div
-    class="col-xs-8 col-sm-6"
-    v-for="(foodlist, index) in $store.state.foodlist.foodlists"
-    :key="index"
-  >
-    <a href="#" class="list-group-item" style="height: 100px"
-      ><router-link :to="{ name: 'FoodDetail' }" exact>
-        <div class=".col-md-3 .col-md-pull-9 f-left">
-          <img
-            class="menu-img"
-            src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMDJfMjY4/MDAxNTY5OTc1Njg1MzA3.rRfHuw5dm4Lw-nbgvTlW92K9JHTMbdy6lbkfEGJT6Fsg.au6b5GbdbOaykDXH2mXC6JnKhF8XE5RcXdlbySPq97sg.JPEG.wlsgkthd18/1569975685162.jpg?type=w800"
-          />
-        </div>
-        <div class=".col-md-9 .col-md-push-3 f-right">
-          <div class="d-flex w-100 justify-content-between">
-            <h6 class="mb-1">{{ foodlist.title }}</h6>
-            <!--가게이름-->
-            <small>{{ foodlist.time }}</small>
+  <div>
+    <!-- 로딩중일때 -->
+    <div v-if="!shopList">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+    <!-- 가게가 없을때 -->
+    <div v-else-if="shopList.length == 0">
+      <div>충분한정보가없습니당!</div>
+    </div>
+    <!-- 가게가 있을때 -->
+    <div v-else-if="shopList != null || shopList.lenth > 1">
+      가게가 있다구욧
+      <div
+        class="col-xs-8 col-sm-6"
+        v-for="(shop, index) in shopList"
+        :key="index"
+      >
+        <div class="list-group-item" style="height: 100px">
+          <div @click="showShopDetail(shop.store_id)">
+            <div class=".col-md-3 .col-md-pull-9 f-left">
+              <img class="menu-img" :src="shop.fileUrl" />
+            </div>
+            <div class=".col-md-9 .col-md-push-3 f-right">
+              <div class="d-flex w-100 justify-content-between">
+                <!--가게이름-->
+                <h6 class="mb-1">{{ shop.name }}</h6>
+                <!-- 가게거리, computed를 이용해서 대략적 시간계산할것 -->
+                <small>{{ shop.distance }} km</small>
+              </div>
+              <!-- 가게 종류 -->
+              <p class="mb-1 menu-p">{{ shop.storeKind }}</p>
+              <p class="menu-p" style="margin-bottom: 5px">
+                <!-- 주소 -->
+                {{ shop.address }}, {{ shop.addressDetail }}
+              </p>
+              <!--주소-->
+              <p class="menu-p">
+                <!-- 전화번호 -->
+                {{ shop.phone }}&nbsp;&nbsp;<span class="details">{{
+                  shop.distance
+                }}</span>
+              </p>
+            </div>
           </div>
-          <p class="mb-1 menu-p">{{ foodlist.explain }}</p>
-          <!--소개-->
-          <p class="menu-p" style="margin-bottom: 5px">
-            {{ foodlist.address }}
-          </p>
-          <!--주소-->
-          <p class="menu-p">
-            {{ foodlist.phone }}&nbsp;&nbsp;<span class="details">{{
-              foodlist.detail
-            }}</span>
-          </p>
         </div>
-      </router-link></a
-    >
+      </div>
+    </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: ["shopList"],
+  methods: {
+    showShopDetail(storeId) {
+      this.$router.push({
+        path: "/shopDetail?n=" + storeId,
+        query: { shopInfo: storeId },
+      });
+    },
+  },
+};
+</script>
 
 <style scoped>
 .col-xs-8 .list-group-item {

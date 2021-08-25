@@ -130,7 +130,12 @@
       >
         회원가입(일반 회원)
       </div>
-      <div v-else @click="registerUser" class="register-button">
+      <div
+        v-else
+        @click="registerUser"
+        class="register-button"
+        style="background-color: tomato"
+      >
         회원가입(판매자)
       </div>
     </template>
@@ -142,7 +147,6 @@ import { mapMutations, mapState } from "vuex";
 
 import { error } from "@/api/notification";
 import Modal from "@/components/modal/Modal_Register";
-import * as authAPI from "@/api/auth";
 import http from "@/api/http";
 
 export default {
@@ -234,7 +238,7 @@ export default {
     },
     registerRequest() {
       const emailAddress = this.email + "@" + this.selectedDomain;
-      let params = {
+      let userData = {
         loginId: this.loginId,
         password: this.password,
         name: this.name,
@@ -244,7 +248,7 @@ export default {
         role: this.$store.state.selectRegister,
       };
       //등록 로직
-      console.log(params);
+      console.log(userData);
       if (
         !this.availableLoginId ||
         !this.availableEmail ||
@@ -261,8 +265,8 @@ export default {
         return;
       }
       // 중복이 모두 제거된상태에서 진행
-      authAPI
-        .register(params)
+      http
+        .post("/api/member/register", userData)
         .then((response) => {
           if (response.status == 200) {
             // 회원가입이 성공적으로 진행되었을 경우,

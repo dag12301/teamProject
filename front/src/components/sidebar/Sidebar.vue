@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar" :style="{ width: sidebarWidth }">
-    <span v-if="collapsed">
-      <h1>
+    <span v-if="collapsed" @click="this.$router.push({ path: '/' })">
+      <h1 class="logo">
         <div>와</div>
         <div>푸</div>
       </h1>
@@ -11,30 +11,31 @@
     </span>
 
     <span v-else>
-      <h2>WAPOO</h2>
+      <h2 @click="this.$router.push({ path: '/' })" class="logo">WAPOO</h2>
       <!-- 펼쳤을때 -->
       <Profile class="profile" />
     </span>
-    <div v-if="userInfo[1] == 'ADMIN'">
+    <Location icon="fas fa-compass" />
+    <div v-if="userRole != null && userRole == 'ADMIN'">
       <!-- 관리자로 로그인 했을때 보이는 메뉴들 -->
       <SidebarLink to="/admin" icon="fas fa-home">가게관리페이지</SidebarLink>
-      <SidebarLink to="/admincoupon" icon="fas fa-ticket-alt">쿠폰관리페이지</SidebarLink>
-      <SidebarLink to="/eventadd" icon="fas fa-ticket-alt">이벤트등록</SidebarLink>
-      <SidebarLink to="/admincouponadd" icon="fas fa-ticket-alt">쿠폰등록</SidebarLink>
-    </div>
-    <div v-else-if="userInfo[1] == 'SELLER'">
-      <!-- 판매자로 로그인 했을때 보이는 메뉴들 -->
-      <SidebarLink
-        to="/store"
-        icon="fas fa-store"
-        v-if="userInfo[1] == 'SELLER'"
+      <SidebarLink to="/admincoupon" icon="fas fa-ticket-alt"
+        >쿠폰관리페이지</SidebarLink
       >
+      <SidebarLink to="/eventadd" icon="fas fa-ticket-alt"
+        >이벤트등록</SidebarLink
+      >
+      
+    </div>
+    <div v-else-if="userRole != null && userRole == 'SELLER'">
+      <!-- 판매자로 로그인 했을때 보이는 메뉴들 -->
+      <SidebarLink to="/store" icon="fas fa-store">
         내 가게</SidebarLink
       >
       <SidebarLink
         to="/storeMenus"
         icon="fas fa-bars"
-        v-if="userInfo[1] == 'SELLER'"
+        v-if="userRole == 'SELLER'"
       >
         가게메뉴</SidebarLink
       >
@@ -43,15 +44,15 @@
       <SidebarLink to="/#" icon="fas fa-robot">아키네이터</SidebarLink>
       <SidebarLink to="/" icon="fas fa-home">홈페이지</SidebarLink>
       <SidebarLink to="/cart" icon="fas fa-shopping-cart">장바구니</SidebarLink>
-      <SidebarLink to="/serviceCenter" icon="far fa-comments" @click="serviceCenter"
+      <SidebarLink
+        to="/serviceCenter"
+        icon="far fa-comments"
+        @click="serviceCenter"
         >고객센터</SidebarLink
       >
-      <SidebarLink to="/food" icon="fas fa-utensils">음식/가게</SidebarLink>
+      <SidebarLink to="/shops" icon="fas fa-utensils">음식/가게</SidebarLink>
       <SidebarLink to="/all" icon="fas fa-utensils">이벤트</SidebarLink>
 
-      <SidebarLink to="/eventadd" icon="fas fa-question"
-        >이벤트추가</SidebarLink
-      >
     </div>
     <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
     <span class="burger" @click="toggleSidebar">
@@ -64,25 +65,25 @@
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import SidebarLink from "./SidebarLink.vue";
 import Profile from "./Profile.vue";
+import Location from "./Location.vue";
 import BurgerButton from "./Burger.vue";
 import { mapGetters, mapMutations } from "vuex";
 
 export default {
   props: {},
-  components: { SidebarLink, BurgerButton, Profile },
+  components: { SidebarLink, BurgerButton, Profile, Location },
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth };
   },
   computed: {
-    ...mapGetters({
-      userInfo: "auth/getUserInfo",
-    }),
+    ...mapGetters({ userRole: "auth/getUserRole" }),
   },
   methods: {
-    ...mapMutations([//serviceCenter 토글
+    ...mapMutations([
+      //serviceCenter 토글
       "SET_COUNT_NOTICE",
       "SET_COUNT_QUEAN",
-      "SET_COUNT_FQA"
+      "SET_COUNT_FQA",
     ]),
     serviceCenter() {//serviceCenter 토글 true
       this.SET_COUNT_NOTICE(true)
@@ -131,5 +132,9 @@ export default {
   padding: 0.75em;
 
   color: gba(255, 255, 255);
+}
+
+.logo {
+  cursor: pointer;
 }
 </style>

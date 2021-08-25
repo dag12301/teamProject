@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>가게관리페이지</h1>
+    <h1>쿠폰관리페이지</h1>
     <!-- 노티피케이션 -->
     <notifications
       group="notifyApp"
@@ -8,12 +8,7 @@
       style="margin-right: 30vh"
     />
 
-    <!-- 설정 -->
-    <div
-      class="container-fluid mt-2"
-      id="optionWrapper"
-      :class="{ detailIsOn: couponDetail }"
-    >
+    
       <div class="row align-items-center">
         <div class="col-7">
           <div class="form-check form-check-inline">
@@ -54,28 +49,12 @@
         <div class="col-5">
           <!-- 검색 -->
           <div class="input-group w-100">
-            <button
-              class="btn btn-outline-secondary dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              선택하세요
-            </button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item">이름</a></li>
-              <li><a class="dropdown-item">주소</a></li>
-              <li><a class="dropdown-item">신청자</a></li>
-            </ul>
-            <input
-              type="text"
-              class="form-control"
-              aria-label="Text input with dropdown button"
-            />
+              <router-link class="nav-link" :to="{name: 'AdminCouponAdd'}" style="margin-left: 85%; color: black;" exact>
+                <i class="fas fa-plus"></i>
+              </router-link>
           </div>
         </div>
       </div>
-    </div>
     <!-- 테이블시작 -->
     <div
       id="wrapper"
@@ -86,13 +65,14 @@
         <thead>
           <tr class="bg-secondary">
             <th scope="col fw-bold">#</th>
+            <th scope="col fw-bold">쿠폰발행일자</th>
+            <th scope="col fw-bold">사용종료일</th>
             <th scope="col fw-bold">쿠폰번호</th>
             <th scope="col fw-bold">쿠폰명</th>
-            <th scope="col fw-bold">사용종료일</th>
             <th scope="col fw-bold">상태</th>
             <th scope="col fw-bold">할인금액</th>
             <th scope="col fw-bold">할인율</th>
-            <th scope="col fw-bold">쿠폰발행일자</th>
+            
             <!-- 클릭시 자세하게 볼 수 있도록 -->
           </tr>
         </thead>
@@ -108,17 +88,28 @@
             @click="selectcoupon(list)"
           >
             <td class="table-light">{{ startListNum + index + 1 }}</td>
-            <td class="table-light">{{ list.couponNumber }}</td>
-            <td class="table-light">{{ list.couponName }}</td>
-            <td class="table-light text-wrap fw-light" style="width: 6rem">
+            <td class="table-light text-wrap fw-light" style="width: 10rem">
               {{
-                list.couponEnd[2] +
-                "일 " +
-                list.couponEnd[3] +
-                ":" +
-                list.couponEnd[4]
+                list.publishedDate[0] +
+                "년 " +
+                list.publishedDate[1] +
+                "월" +
+                list.publishedDate[2] +
+                "일"
               }}
             </td>
+            <td class="table-light text-wrap fw-light" style="width: 10rem">
+              {{
+                list.couponEnd[0] +
+                "년 " +
+                list.couponEnd[1] +
+                "월" +
+                list.couponEnd[2] +
+                "일"
+              }}
+            </td>
+            <td class="table-light" style="width: 8rem;">{{ list.couponNumber }}</td>
+            <td class="table-light" style="width: 12rem">{{ list.couponName }}</td>
             
             <td class="table-success" v-if="list.status == 'Y'">
               {{ list.status }}
@@ -131,16 +122,7 @@
             </td>
             <td class="table-dark" v-else>?</td>
             <td class="table-light">{{ list.couponPrice }}</td>
-            <td class="table-light">{{ list.discountRate }}</td>
-            <td class="table-light text-wrap fw-light" style="width: 6rem">
-              {{
-                list.publishedDate[2] +
-                "일 " +
-                list.publishedDate[3] +
-                ":" +
-                list.publishedDate[4]
-              }}
-            </td>
+            <td class="table-light">{{ list.discountRate + "%"}}</td>
           </tr>
         </tbody>
       </table>
@@ -197,11 +179,12 @@
 
 <script>
 import { normal, error, success } from "@/api/notification";
-import axios from "axios";
+import http from "@/api/http";
 import JWT from "@/api/jwt";
 import Detail from "@/components/admin/couponDetail.vue";
 
 export default {
+  
   data() {
     return {
       couponList: [],
@@ -210,8 +193,7 @@ export default {
       totalCount: 0, // 총 게시글 수
       showindex: 5, // 번호로 표시될 페이지 총 갯수
       statusOption: "ALL",
-      selectedcoupon: "",
-      couponDetail: false,
+      selectedCoupon: "",
     };
   },
   computed: {
@@ -279,8 +261,8 @@ export default {
         currentPage: request,
         statusOption: this.statusOption,
       };
-      axios
-        .post("http://localhost:8083/coupon/getcouponList", data)
+      http
+        .post("/coupon/getcouponList", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
@@ -290,42 +272,42 @@ export default {
             console.log("현재페이지 : " + this.currentPage);
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           error("오류가 발생했습니다. 다시 시도해주세요", this);
         });
     },
     requestListCount() {
-      axios
-        .get("http://localhost:8083/coupon/getcouponListCount", {
+      http
+        .get("/coupon/getcouponListCount", {
           params: {
             option: this.statusOption,
           },
         })
         .then((response) => {
           this.totalCount = response.data;
-          console.log("등록된 가게의 총 갯수 : " + this.totalCount);
+          console.log("등록된 쿠폰의 총 갯수 : " + this.totalCount);
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
         });
     },
-    requestChangecouponStatus(couponId, status) {
+    requestChangeCouponStatus(couponId, status) {   //상태변경
       const data = {
         couponId: couponId,
         status: status,
       };
-      axios
-        .post("http://localhost:8083/admin/updatecouponStatus", data)
+      http
+        .post("http://localhost:8083/coupon/updatecouponStatus", data)
         .then((response) => {
           if (response.status === 200) {
             console.log(response.data);
-            success("가게 상태변경 완료!", this);
+            success("쿠폰 상태변경 완료!", this);
             this.clearDetail();
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch((err) => {
+          console.log(err);
           error("오류가 발생했습니다. 다시 시도해주세요", this);
         });
     },
@@ -335,28 +317,44 @@ export default {
     },
     selectcoupon(list) {
       this.selectedcoupon = list;
-      this.couponDetail = true;
+      console.log(this.selectedcoupon);
+       var confirmflag = confirm("status를 변경합니다.");
+
+           if(confirmflag){
+             if(this.selectedcoupon.status === 'Y') {
+               console.log(this.selectedcoupon.couponId);
+               this.requestChangeCouponStatus(this.selectedcoupon.couponId, "N");
+             }
+             else {
+               console.log(this.selectedcoupon.couponId);
+               this.requestChangeCouponStatus(this.selectedcoupon.couponId, "Y");
+             }
+           }else{
+             console.log("취소");
+           }
+      
+      console.log(this.selectedcoupon.status);
     },
     clearDetail() {
       this.couponDetail = false;
       this.requestPage(this.currentPage);
     },
-    approvecoupon() {
+    approveCoupon() {
       if (this.selectedcoupon.status === "Y") {
-        error("이미 승인된 가게입니다!", this);
+        error("이미 승인된 쿠폰입니다!", this);
         return;
       }
-      success("가게를 승인합니다!", this);
-      // 가게 status를 바꿔주는 mvc패턴을 만들고, couponname과 membername으로 가게를찾아야해
-      this.requestChangecouponStatus(this.selectedcoupon.couponId, "Y");
+      success("쿠폰를 승인합니다!", this);
+      
+      this.requestChangeCouponStatus(this.selectedcoupon.couponId, "Y");
     },
-    denycoupon() {
+    denyCoupon() {
       if (this.selectedcoupon.status === "N") {
-        error("이미 취소된 가게입니다!", this);
+        error("이미 취소된 쿠폰입니다!", this);
         return;
       }
-      error("가게를 등록취소합니다!", this);
-      this.requestChangecouponStatus(this.selectedcoupon.couponId, "N");
+      error("쿠폰를 등록취소합니다!", this);
+      this.requestChangeCouponStatus(this.selectedcoupon.couponId, "N");
     },
   },
 };
@@ -369,8 +367,7 @@ export default {
 .available-link {
   cursor: pointer;
 }
-#optionWrapper {
-}
+
 .detailIsOn {
   visibility: hidden;
 }

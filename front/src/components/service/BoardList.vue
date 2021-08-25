@@ -12,7 +12,7 @@
   <!-- 타이틀 -->
 
   <table border="2" class="table">
-    <thead id="title" style="text-align: center" >
+    <thead id="title" style="text-align: center">
       <tr v-if="update == true">
         <th class="col-md-2">{{ list.nickname }}</th>
         <th class="col-md-6">제목: {{ list.title }}</th>
@@ -21,7 +21,7 @@
       </tr>
       <tr v-else>
         <th class="col-md-2">{{ list.writerId }}</th>
-        <th class="col-md-6">제목: <input type="text" v-model="title"></th>
+        <th class="col-md-6">제목: <input type="text" v-model="title" /></th>
         <th class="col-md-2">등록일:{{ list.regDate }}</th>
         <th class="col-md-2">조회수:{{ list.hit }}</th>
       </tr>
@@ -37,9 +37,7 @@
       {{ list.body }}
     </div>
   </div>
-  <textarea id="textarea" class="input-group" v-model="body" v-else>
-    
-  </textarea>
+  <textarea id="textarea" class="input-group" v-model="body" v-else> </textarea>
   <!-- 이미지 -->
   <div class="w-32 h-32 border-2 border-dotted border-blue-500" v-if="update == true">
     <div v-if="images != null" class="w-full h-full flex items-center" >
@@ -84,18 +82,29 @@
   <!-- 수정및목록이동 버튼 -->
   <div class="col-md-12 text-center">
     <span v-if="MYPAGE == true">
-      <button id="btn" type="button" class="btn btn-success" @click="test" v-if="update == true">
+      <button
+        id="btn"
+        type="button"
+        class="btn btn-success"
+        @click="test"
+        v-if="update == true"
+      >
         수정
       </button>
       <button class="btn btn-primary" v-else @click="boardUpdate">
         보내기
       </button>
-      
-      <button id="btn" type="button" class="btn btn-success" @click="listdelete">
+
+      <button
+        id="btn"
+        type="button"
+        class="btn btn-success"
+        @click="listdelete"
+      >
         삭제
       </button>
     </span>
-    
+
     <router-link class="btn btn-danger" :to="{ path: this.board }"
       >목록</router-link
     >
@@ -104,18 +113,26 @@
   <!-- 댓글 -->
   <div id="comment" class="col-md-8 text-right">
     <div>
-      <input type="text" v-model.trim ="commentTitle" style="background-color: rgba(176, 201, 183, 0.219);
-                                text-align: center;" />
+      <input
+        type="text"
+        v-model.trim="commentTitle"
+        style="background-color: rgba(176, 201, 183, 0.219); text-align: center"
+      />
       <button class="btn btn-dark" @click="commentProc">댓글입력</button>
     </div>
-    <br /><br /><br/>
-    
+    <br /><br /><br />
+
     <ul style="list-style: none">
       <li v-for="comment in comments" :key="comment.articleId">
         <div id="title">
-          <span>{{comment.nickname}} : </span>
-          <span>  {{comment.title}}</span>
-          <button id="commentdel" type="button" class="btn btn-light" @click="commentDelete(comment.writerId, comment.articleId)">
+          <span>{{ comment.nickname }} : </span>
+          <span> {{ comment.title }}</span>
+          <button
+            id="commentdel"
+            type="button"
+            class="btn btn-light"
+            @click="commentDelete(comment.writerId, comment.articleId)"
+          >
             삭제
           </button>
         </div>
@@ -142,7 +159,7 @@ export default {
       MYPAGE: null,//작성자 일때 true 토글
       images: '', //이미지 불러오기
       //댓글
-      comments: null,//댓글 리스트
+      comments: null, //댓글 리스트
       //수정
       title: null,
       body: null,
@@ -154,7 +171,7 @@ export default {
       uploadImageIndex: 0, // 이미지 업로드를 위한 변수
       
       //댓글 보내기
-      commentTitle: null
+      commentTitle: null,
     };
   },
   created() {
@@ -165,55 +182,56 @@ export default {
     authAPI //통신코드
       .list(query)
       .then((res) => {
-        
-        console.log(res.data.articleImageFile)
-        this.list = res.data.article //list에  DB데이터 박기
-        this.MYPAGE = res.data.MYPAGE
-        this.comments = res.data.list
-        this.images = res.data.articleImageFile//이미지
+        console.log(res.data.articleImageFile);
+        this.list = res.data.article; //list에  DB데이터 박기
+        this.MYPAGE = res.data.MYPAGE;
+        this.comments = res.data.list;
+        this.images = res.data.articleImageFile; //이미지
       });
   },
   methods: {
-    ...mapMutations([
-      "SET_MODAL_LOGIN"
-    ]),
+    ...mapMutations(["SET_MODAL_LOGIN"]),
     //댓글 달기 통신
     commentProc() {
-      if(this.commentTitle === "" || this.commentTitle == null){
-        return alert("글을 입력하세요")
+      if (this.commentTitle === "" || this.commentTitle == null) {
+        return alert("글을 입력하세요");
       }
-      let params={
+      let params = {
         title: this.commentTitle,
-        parantId: this.list.articleId
-      }
+        parantId: this.list.articleId,
+      };
       authAPI
-      .commentProc(params)
-      .then(res => {
-        console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        console.log(res)
-        if(res.data == 100){
-        alert("입력되었습니다.")
-        location.href = "/boardList?board=" + this.$route.query.board + "&articleId=" + this.$route.query.articleId;
-        }else if(res.data == 200){
-          alert("비회원은 권한이 없습니다.")
-          this.SET_MODAL_LOGIN(true)
-        }else if(res.data == 250){
-          alert("작성자가 아닙니다.")
-        location.href = "/"+this.board;
-        }else if(res.data == 300){
-          alert("DB문제입니다")
-        location.href = "/"+this.board;
-        }else if(res.data == 400){
-          alert("글없습니다")
-        location.href = "/"+this.board;
-        }else{
-          alert("서버에 문제가 있습니다.")
-        location.href = "/"+this.board;
-        }
-      })
-      .catcherr(err => {
-        console.log(err)
-      })
+        .commentProc(params)
+        .then((res) => {
+          console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+          console.log(res);
+          if (res.data == 100) {
+            alert("입력되었습니다.");
+            location.href =
+              "/boardList?board=" +
+              this.$route.query.board +
+              "&articleId=" +
+              this.$route.query.articleId;
+          } else if (res.data == 200) {
+            alert("비회원은 권한이 없습니다.");
+            this.SET_MODAL_LOGIN(true);
+          } else if (res.data == 250) {
+            alert("작성자가 아닙니다.");
+            location.href = "/" + this.board;
+          } else if (res.data == 300) {
+            alert("DB문제입니다");
+            location.href = "/" + this.board;
+          } else if (res.data == 400) {
+            alert("글없습니다");
+            location.href = "/" + this.board;
+          } else {
+            alert("서버에 문제가 있습니다.");
+            location.href = "/" + this.board;
+          }
+        })
+        .catcherr((err) => {
+          console.log(err);
+        });
     },
     //이미지
     imageAddUpload() {
@@ -241,36 +259,40 @@ export default {
         //삭제에 필요한 데이터들
         writerId: writerId,
         articleId: articleId,
-      }
-      console.log("2222222222222222222222222222222")
-      console.log(params)
+      };
+      console.log("2222222222222222222222222222222");
+      console.log(params);
       authAPI //삭제 통신
         .listDelete(params)
         .then((res) => {
           console.log(res);
-          if(res.data == 100){
-          alert("삭제되었습니다.")
-          location.href = "/boardList?board=" + this.$route.query.board + "&articleId=" + this.$route.query.articleId;
-          }else if(res.data == 200){
-            alert("비회원은 권한이 없습니다.")
-            this.SET_MODAL_LOGIN(true)
-          //location.href = "/"+this.board;
-          }else if(res.data == 250){
-            alert("작성자가 아닙니다.")
-          //location.href = "/"+this.board;
-          }else if(res.data == 300){
-            alert("DB문제입니다")
-          //location.href = "/"+this.board;
-          }else if(res.data == 400){
-          alert("글없습니다")
-          location.href = "/"+this.board;
-          }else{
-            alert("서버에 문제가 있습니다.")
-          location.href = "/"+this.board;
+          if (res.data == 100) {
+            alert("삭제되었습니다.");
+            location.href =
+              "/boardList?board=" +
+              this.$route.query.board +
+              "&articleId=" +
+              this.$route.query.articleId;
+          } else if (res.data == 200) {
+            alert("비회원은 권한이 없습니다.");
+            this.SET_MODAL_LOGIN(true);
+            //location.href = "/"+this.board;
+          } else if (res.data == 250) {
+            alert("작성자가 아닙니다.");
+            //location.href = "/"+this.board;
+          } else if (res.data == 300) {
+            alert("DB문제입니다");
+            //location.href = "/"+this.board;
+          } else if (res.data == 400) {
+            alert("글없습니다");
+            location.href = "/" + this.board;
+          } else {
+            alert("서버에 문제가 있습니다.");
+            location.href = "/" + this.board;
           }
         });
     },
-    //수정 페이지 버튼 
+    //수정 페이지 버튼
     test() {
       this.update = false             //버튼 상태
       this.title = this.list.title,  //title
@@ -361,12 +383,13 @@ export default {
 
     },
 
-    listdelete() {      //삭제 코드
+    listdelete() {
+      //삭제 코드
       let params = {
         //삭제에 필요한 데이터들
         writerId: this.list.writerId,
         articleId: this.list.articleId,
-      }
+      };
 
 
       authAPI //삭제 통신

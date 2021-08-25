@@ -1,8 +1,10 @@
 package com.icia.wapoo.config;
 
+import com.icia.wapoo.WapooApplication;
 import com.icia.wapoo.jwt.interceptor.JwtInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -14,24 +16,19 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebMvc
+@ComponentScan(basePackageClasses = WapooApplication.class)
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private JwtInterceptor jwtInterceptor;
-    /**
-     
-     */
+
     private static final String[] EXCLUDE_PATHS = {
             "/api/member/register",
             "/api/member/login",
-            "/test",
-
-            "/**", // 
-
             "/api/validation/**",
-            "/article/**",
-            "/article/board",
-            "serviceCenter/qna"
+            "/store/getStoreListByLocation",
+            "/store/getStoreFiles",
+            "/store/getStoreInfos"
     };
 
     @Override
@@ -43,11 +40,6 @@ public class WebConfig implements WebMvcConfigurer {
                 .excludePathPatterns(EXCLUDE_PATHS);
     }
 
-    /**
-     * CORS 해제
-     *
-     * @param registry
-     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
