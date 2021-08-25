@@ -1,8 +1,58 @@
 <template>
   <div class="cart">
-    <nav id="navbar-example2" class="navbar navbar-light bg-light px-3">
-      <div>장바구니</div>
+    <nav id="navbar-example2" class="cartNav">
+      <div>주문하기</div>
     </nav>
+    <div class="cartOrder">
+      <div class="orderText">
+        <p>배달정보</p>
+      </div>
+      <div class="orderAddress">
+        <table>
+          <tr>
+            <td style="width: 20%;"><span>주소</span></td>
+            <td><span>인천 미추홀구 계양동 122-222</span>
+        <input type="text" placeholder="(필수) 상세주소 입력" style="width: 100%"/></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="cartOrder">
+      <div class="orderText">
+        <p>결제수단 선택</p>
+      </div>
+      <div class="orderPay">
+        WATH POO에서 결제<br/>
+        현장 결제
+      </div>
+    </div>
+    <div class="cartOrder">
+      <div class="orderText">
+        <p>주문내역</p>
+      </div>
+      <div class="orderStore">
+        <p>맘스터치(가게이름)</p>
+      </div>
+      <div class="orderList">
+        <div class="listLeft">피자 x 1개</div>
+        <div class="listRight">가격</div>
+      </div>
+      <div class="cartOrder">
+      <div class="orderText">
+        <p>할인 쿠폰</p>
+      </div>
+      <div class="orderCoupon">
+        쿠폰 
+      </div>
+    </div>
+      <hr style="width:100%; margin: 0px;"/>
+      <div class="orderList">
+        <div class="listLeft orderLeft">결재금액</div>
+        <div class="listRight orderRight">10000원</div>
+      </div>
+    </div>
+
+
     <div class="address">
       <span>주소: 인천 미추홀구 계양동 122-222</span><span style="font-weight: 800;">  (으)로 배달</span>
       <button style="position: relative; left: 100px">수정</button>
@@ -130,12 +180,73 @@ export default {
 
 <style>
 .cart{
- 
-  
-  width: 70vw;
-  left: 300px;
+  width: 100%;
+  left: 10px;
   position: relative;
 }
+.cartNav {
+  background-color: #333;
+  color: white;
+  font-size: 20px;
+  font-weight: 550;
+}
+
+.cartOrder {
+  text-align: left;
+}
+.orderText {
+  background-color: lightslategray;
+  padding: 10px;
+}
+.orderText p {
+  margin: 0px;
+}
+.orderStore{
+  padding: 10px;
+  background-color: lightgray;
+}
+.orderStore p {
+  margin: 0px;
+}
+.orderList {
+  padding: 10px;
+  background-color: lightyellow;
+  
+}
+.orderList p {
+  margin: 0px;
+}
+
+.listLeft {
+  float: left;
+  width: 80%;
+}
+.listRight {
+  float: right;
+  width: 20%;
+}
+
+.orderLeft {
+  font-size: 20px;
+  font-weight: 550;
+}
+.orderRight {
+  font-size: 20px;
+  color: lightslategray;
+}
+
+
+.orderAddress {
+  padding: 10px;
+  background-color: #FAFAFA;
+}
+.orderAddress span {
+  font-weight: 550;
+}
+
+
+
+
 
 .address{
   text-align: center;
