@@ -3,6 +3,31 @@
 		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.icia.wapoo.dao.ArticleDao">
 
+<!-- 게시물 파일 등록 -->
+<insert id="insertArticleFile" parameterType="imageFile">
+INSERT INTO `article_file`(
+	regDate,
+	org_name,
+	NAME,
+	filetype,
+	filesize,
+	article_id)
+VALUES (NOW(),
+	#{orgName},
+	#{name},
+	#{filetype},
+	#{filesize},
+	#{ref_id});
+</insert>
+<!-- 게시물 이미지 조회 -->
+<select id="imageFileList" resultType="ImageFile">
+SELECT *
+FROM article_file
+WHERE article_id = #{articleId}
+
+</select>
+
+
 <!-- 글 조회 -->
 <select id="boardSelect" parameterType="long" resultType="Article">
 SELECT	IFNULL(articleId, '') AS articleId,
@@ -22,15 +47,17 @@ FROM article
 
 <!-- 글 삭제 -->
 <delete id="boardDelete" parameterType="Article">
-DELETE FROM article
-	WHERE articleId = #{value}
+	UPDATE article
+	SET STATUS = 'S'
+WHERE articleId = #{value}
 
 </delete>
 
 <!-- 댓글 삭제 parant_id: 모든 댓글 삭제 -->
 <delete id="commentDelete" parameterType="Article">
-DELETE FROM article
-	WHERE parant_id= #{value}
+UPDATE article
+	SET STATUS = 'S'
+WHERE parant_id = #{value}
 </delete>
 
 <!-- 게시물 보기 -->
@@ -135,6 +162,8 @@ FROM    `article` A INNER JOIN `member` B
 ON A.writer_id = B.memberId
 
 WHERE	board_id = #{boardId}
+OR	A.status = 'Y'
+OR	B.status = 'N'
 
 ORDER BY A.articleId DESC
 

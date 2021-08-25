@@ -20,7 +20,11 @@
     </insert>
 
 	
+<<<<<<< HEAD
 	<select id="selectCouponList" resultType="coupon">
+=======
+	<select id="selectCouponList" resultType="Coupon">
+>>>>>>> 77982631b88dac221194cd1bc4c45968b0250940
         SELECT
             couponNumber,
             couponName,

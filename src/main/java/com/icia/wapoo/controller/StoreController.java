@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,5 +155,41 @@ public class StoreController {
 
         int result = storeService.getFoodListCount(option, storeId);
         return new ResponseEntity(result, HttpStatus.OK);
+    }
+
+    @PostMapping("/getStoreListByLocation")
+    public ResponseEntity getStoreListByLocation(@RequestBody Map<String, Object> data) {
+        Double latitude = (Double) data.get("lat");
+        Double longitude = (Double) data.get("lon");
+        int qantity = 5; // 기본값은 5개를 불러온다.
+        if(data.containsKey("quantity")){
+            // 수량이 정해져있을경우,
+            qantity = ((Integer) data.get("quantity")).intValue();
+        }
+        String options = "ALL";
+        if(data.containsKey("options")) {
+            // 종류가 정해져있을경우,
+            options = (String) data.get("options");
+        }
+        float radius = 5;
+        if(data.containsKey("radius")) {
+            radius = (float) data.get("radius");
+        }
+        System.out.println("현재 위도(y)는 "+ latitude+" , 현재 경도(x)는 "+longitude+" 에서 가게정보를 요청합니다.");
+        List<Map<String, Object>> list = storeService.getNearStoresList(latitude, longitude, radius, qantity, options);
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/getStoreInfos")
+    public ResponseEntity getStoreInfos(@RequestParam("storeId") Integer storeId) {
+
+        Store store = storeService.getStoreInfo(storeId);
+        List<ImageFile> fileList = storeService.getStoreFiles(storeId);
+        List<Map<String, Object>> foodList = storeService.getAllFood(storeId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("storeInfo", store);
+        map.put("foodList", foodList);
+        map.put("fileList", fileList);
+        return new ResponseEntity(map, HttpStatus.OK);
     }
 }

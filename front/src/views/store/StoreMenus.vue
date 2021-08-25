@@ -7,9 +7,6 @@
       position="bottom right"
       style="margin-right: 30vh"
     />
-    <span>
-      <router-link to="/addMenu">음식 추가하기</router-link>
-    </span>
     <!-- 음식이 있을 때 -->
     <div class="row align-items-center">
       <div class="col-10">
@@ -62,6 +59,7 @@
     </div>
     <!-- 검색메뉴? -->
     <div id="tableWrapper">
+      <no-menu class="d-block"></no-menu>
       <div v-if="foodList">
         <div
           v-for="(food, index) in foodList"
@@ -119,8 +117,6 @@
           </ul>
         </nav>
       </div>
-      <!-- 메뉴가없을때. -->
-      <no-menu class="d-block" v-else></no-menu>
     </div>
   </div>
 </template>

@@ -7,11 +7,31 @@
       border: 1px solid gray;
       border-radius: 5px;
     "
+    @change="refreshLocation"
   ></div>
 </template>
 
 <script>
+import { mapMutations, mapGetters } from "vuex";
+
 export default {
+  computed: {
+    ...mapGetters(["GET_LOCAL", "GET_LAT", "GET_LON"]),
+    latitude() {
+      return this.GET_LAT != null ? this.GET_LAT : this.baselatitude;
+    },
+    longitude() {
+      return this.GET_LON != null ? this.GET_LON : this.baselongitude;
+    },
+  },
+  data() {
+    return {
+      baselatitude: 37.43884057982199,
+      baselongitude: 126.675102369038,
+      local: null,
+      map: null,
+    };
+  },
   mounted() {
     if (window.kakao && window.kakao.maps) {
       this.initMap();
@@ -23,27 +43,103 @@ export default {
       document.head.appendChild(script);
     }
   },
+
   methods: {
+    ...mapMutations({ SET_LOCAL: "SET_LOCAL", SET_OBSERVE: "SET_OBSERVE" }),
     initMap() {
+      this.refreshLocation();
       var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
       var options = {
         //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(37.43884057982199, 126.675102369038), //지도의 중심좌표.
+        center: new kakao.maps.LatLng(
+          this.GET_LAT != null ? this.GET_LAT : this.latitude,
+          this.GET_LON != null ? this.GET_LAT : this.longitude
+        ), //지도의 중심좌표.
         level: 3, //지도의 레벨(확대, 축소 정도)
       };
 
-      var map = new kakao.maps.Map(container, options); // eslint-disable-line no-unused-vars
+      this.map = new kakao.maps.Map(container, options); // eslint-disable-line no-unused-vars
       //지도 생성 및 객체 리턴
       const markerPosition = new kakao.maps.LatLng(
-        35.19656853772262,
-        129.0807270648317
+        this.latitude,
+        this.longitude
       );
 
       const marker = new kakao.maps.Marker({
         position: markerPosition,
       });
-      marker.setMap(map);
+      marker.setMap(this.map);
     },
+    refreshLocation() {
+      console.log("refreshLocation");
+      return navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setLocation(position.coords.latitude, position.coords.longitude);
+          console.log("gotoSetLocation");
+        },
+        (error) => {
+          console.log("아니 위치정보받는데 에러가난다고" + error);
+        }
+      );
+    },
+    setLocation(latitude, longitude) {
+      this.$store.commit("SET_LAT", latitude);
+      this.$store.commit("SET_LON", longitude);
+      console.log("사용자 위치 추적: " + latitude + ", " + longitude);
+      this.$store.commit("SET_OBSERVE", true);
+
+      let geocoder = new kakao.maps.services.Geocoder();
+
+      let coord = new kakao.maps.LatLng(latitude, longitude);
+
+      const addressSearch = (coord) => {
+        return new Promise((resolve, reject) => {
+          geocoder.coord2Address(
+            coord.getLng(),
+            coord.getLat(),
+            function (result, status) {
+              if (status === kakao.maps.services.Status.OK) {
+                resolve(result);
+              } else {
+                reject(status);
+              }
+            }
+          );
+        });
+      };
+      const setLocal = (result) => {
+        this.local = result[0].address;
+        this.$store.commit("SET_LOCAL", result[0].address);
+        var coords = new kakao.maps.LatLng(this.latitude, this.longitude);
+
+        // 결과값으로 받은 위치를 마커로 표시합니다
+        var marker = new kakao.maps.Marker({
+          map: this.map,
+          position: coords,
+        });
+
+        // 인포윈도우로 장소에 대한 설명을 표시합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content:
+            '<div style="width:150px;text-align:center;padding:6px 0;">현재위치</div>',
+        });
+        infowindow.open(this.map, marker);
+
+        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        console.log("지도이동");
+        this.map.setCenter(coords);
+      };
+      // async
+      (async () => {
+        try {
+          const result = await addressSearch(coord);
+          setLocal(result);
+        } catch (e) {
+          console.log(e);
+        }
+      })();
+    },
+    // 지도이동
   },
 };
 </script>

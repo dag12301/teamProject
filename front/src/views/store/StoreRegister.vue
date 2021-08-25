@@ -297,6 +297,7 @@ export default {
         error("가게 이름을 입력해주세요!", this);
         return false;
       }
+      console.log("가게이름완료");
       formData.append("name", this.store_name);
       // 전화번호 valiation
       const phoneCheckReg = /^\d{2,3}-\d{3,4}-\d{4}$/;
@@ -308,17 +309,20 @@ export default {
         error("가게번호는 숫자와 -(하이픈)만 입력 가능합니다.");
         return;
       }
+      console.log("전화번호완료");
       formData.append("phone", this.store_contact);
 
       if (!this.address.address_name) {
         error("주소찾기를 눌러 주소를 입력해주세요", this);
         return false;
       }
+      console.log("주소완료");
       formData.append("address", this.address.address_name);
       if (!this.addressDetail) {
         error("상세주소를 입력해주세요!", this);
         return false;
       }
+      console.log("상세주소완료");
       formData.append("addressDetail", this.addressDetail);
       formData.append("localx", this.address.x);
       formData.append("localy", this.address.y);
@@ -327,16 +331,19 @@ export default {
         console.log(this.store_type);
         return false;
       }
+      console.log("가게종류완료");
       formData.append("storeKind", this.store_type);
       if (!this.store_desc) {
         error("가게 상세정보를 입력해주세요!", this);
         return false;
       }
+      console.log("가게상세정보");
       formData.append("body", this.store_desc);
       if (this.files.length < 1) {
         error("최소 1장의 사진을 업로드 하세요", this);
         return;
       }
+      console.log("채소한장");
       // 파일 추가
       for (let i = 0; i < this.files.length; i++) {
         formData.append("fileList", this.files[i].imageFile);
@@ -344,8 +351,9 @@ export default {
       const token = JWT.getToken();
       const headers = {
         "Content-type": "multipart/form-data",
-        accesstoken: token,
+        Authorization: token,
       };
+      console.log("헤더는 사랑을 싣고");
       axios.defaults.headers.post = null;
       console.log("보낼토큰입니다 : " + token);
       axios

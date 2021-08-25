@@ -5,11 +5,17 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import http from "@/api/http";
 export default {
+  computed: {
+    ...mapGetters(["GET_LOCAL"]),
+  },
   methods: {
     test() {
-      http.get("/api/test").then((res) => console.log(res));
+      http.get("/api/test").then((res) => {
+        console.log(res);
+      });
     },
   },
 };
