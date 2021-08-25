@@ -30,23 +30,6 @@ const routes = [
     name: "ShopDetail",
     component: () => import("../views/food/FoodDetail.vue"),
     props: true,
-    children: [
-      {
-        path: "/review",
-        name: "shopReview",
-        component: () => import("../components/adminComponent/Review.vue"),
-      },
-      {
-        path: "/storemap",
-        name: "shopMap",
-        component: () => import("../components/adminComponent/StoreMap.vue"),
-      },
-      {
-        path: "/storemenu",
-        name: "shopMenu",
-        component: () => import("../components/adminComponent/StoreMenu.vue"),
-      },
-    ],
   },
   {
     path: "/event",
@@ -175,6 +158,7 @@ const router = createRouter({
 
 router.afterEach(() => {
   // ${//these hooks do not get a next function and cannot affect the navigation}
+  // jwt 디코드후, 롤 확인
   setTimeout(() => {
     //
   }, 0);

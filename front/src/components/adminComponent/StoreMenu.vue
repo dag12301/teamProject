@@ -1,51 +1,21 @@
 <template>
-    <ul class="wrapper">
-    <li v-for="(item, index) in list" :key="item + index">
-      <div class="div-box" @click="item.open = !item.open">
-        <div class="title div-left">
-          <span>{{ item.title }}</span> <!--드롭박스 이름-->
-        </div>
-        <div class="div-right">
-          <i class="fas fa-sort-down" :class="{ open: item.open }"></i>
-        </div>
-      </div>
-      <!-- component -> storemenulist폴더의 ListItem.vue파일 -->
-      <ListItem :list="item" />  
+  <ul class="wrapper">
+    <li v-for="food in foodList" :key="food">
+      <ListItem :list="food"></ListItem>
     </li>
   </ul>
 </template>
 
-
 <script>
-import ListItem from "../storemenulist/ListItem";
+import ListItem from "../storemenulist/ListItem.vue";
 
 export default {
-  data: () => {
-    return {
-      list: [
-        {
-          title: "인기메뉴",
-          open: false,
-          sublist:["메뉴"],
-        },
-        {
-          title: "햄버거메뉴",
-          open: false,
-          sublist: ["메뉴3", "메뉴4"],
-        },
-        {
-          title: "사이드메뉴",
-          open: false,
-          sublist: ["메뉴5", "메뉴6"],
-        },
-      ],
-    };
-  },
+  props: ["foodList"],
   components: {
     ListItem,
   },
+  methods: {},
 };
-
 </script>
 
 <style scoped>
