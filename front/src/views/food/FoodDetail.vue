@@ -3,24 +3,28 @@
     <div class="storeName" style="font-weight: 800; font-size: 30px; margin-top: 30px;">
       {{shopInfo.storeInfo.name}}
     </div>
-    <hr/>
+    <hr style="width: 100%;"/>
     <div class="storeText" style="width: 100%; height: 300px;">
-      <div class="storeImg" style="float:left; width: 50%;">
-        <img :src="shopInfo.fileList[0].name" class="col-md-6 mt-2" id="image" style="width: 200px; height: 200px;"/>
+      <div class="storeImg" style="float:left; width: 45%; text-align: right;">
+        <img :src="shopInfo.fileList[0].name" class="col-md-6 mt-2" id="image" style="width: 280px; height: 280px;"/>
       </div>
-      <div class="storeInf" style="float:right; width: 45%; text-align: left;">
+      <div class="storeInf" style="float:right; width: 50%; text-align: left;">
         
-        <p>{{shopInfo.storeInfo.storeKind}}</p>
+        <p style="color: gray; margin-bottom: 35px;">{{shopInfo.storeInfo.storeKind}}</p>
         <span style="font-weight: 600; font-size: 17px;">업체정보</span>
-        <hr />
+        <hr style="margin-top: 5px;"/>
         <table>
           <tr>
-            <td>전화번호</td>
-            <td>{{shopInfo.storeInfo.phone}}</td>
+            <td style="color: gray;">전화번호</td>
+            <td style="padding-left: 20px;">{{shopInfo.storeInfo.phone}}</td>
           </tr>
           <tr>
-            <td>주소</td>
-            <td>{{shopInfo.storeInfo.address}} {{shopInfo.storeInfo.addressDetail}}</td>
+            <td style="color:gray; margin-top: 20px;">주소</td>
+            <td style="padding-left: 20px;">{{shopInfo.storeInfo.address}} {{shopInfo.storeInfo.addressDetail}}</td>
+          </tr>
+          <tr>
+            <td style="color:gray; margin-top: 20px;">별점</td>
+            <td style="padding-left: 20px;"></td>
           </tr>
         </table>
         
@@ -30,7 +34,7 @@
           class="btn-group"
           role="group"
           aria-label="Basic radio toggle button group"
-          style="width: 100%;"
+          style="width: 100%; height: 45px; background-color: #FAFAFA;"
         >
           <input
             type="radio"
@@ -43,7 +47,7 @@
           />
           <label class="btn btn-outline-primary" for="btnradio1"
             >메뉴보기</label
-          >
+          >                               <!-- StoreMenu.vue -->
 
           <input
             type="radio"
@@ -68,12 +72,13 @@
           <label class="btn btn-outline-primary" for="btnradio3">후기</label>
         </div>
         <router-view></router-view>
-        <div class="storeBtn" style="width: 100%;">
-          <div class="storeShopping" style="float:left; width: 40%; padding: 10px;">
-            <button style="border: 0; width: 100%;" >장바구니</button>
+        
+        <div class="storeBtn" style="width: 100%; height: 80px;">
+          <div class="storeShopping" style="float:left; width: 40%; padding: 10px; height: 100%;">
+            <button style="border: 0; width: 100%; height: 100%; background-color: yellow; font-weight: 600; font-size: 20px;" >장바구니</button>
           </div>
-          <div class="storeOrder" style="float:right; width: 60%; padding:10px;">
-            <button style="border: 0; width: 100%;">주문하기</button>
+          <div class="storeOrder" style="float:right; width: 60%; padding:10px; height: 100%;">
+            <button style="border: 0; width: 100%; height: 100%; background-color: skyblue; font-weight: 600; font-size: 20px;">주문하기</button>
           </div>
         </div>
   </div>
