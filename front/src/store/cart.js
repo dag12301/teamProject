@@ -16,6 +16,15 @@ export default {
         state.bag.add(foodId);
       }
     },
+    delCart(state, foodId) {
+      if (state.bag.has(foodId)) {
+        state.bag.delete(foodId);
+      }
+    },
+    clearCart(state) {
+      state.bag = null;
+      state.bag = new Set();
+    },
   },
   actions: {},
 };

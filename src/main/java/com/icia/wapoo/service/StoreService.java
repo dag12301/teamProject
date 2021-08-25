@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +24,19 @@ public class StoreService {
     private final S3Service s3Service;
     @Autowired
     private final StoreDao storeDao;
+
+    public List<Map<String, Object>> getFoodListByFoodIdList(List<Integer> foodIdList) {
+        List<Map<String, Object>> foodList = new ArrayList<>();
+        for(int foodId : foodIdList) {
+            Map<String, Object> food = storeDao.selectFoodByFoodId(foodId);
+            if(food != null) {
+                // 수량추가
+                food.put("quantity", 1);
+                foodList.add(food);
+            }
+        }
+        return foodList;
+    }
 
     @Transactional
     public int registerStore(Store store, List<MultipartFile> files){
@@ -140,12 +154,11 @@ public class StoreService {
         return storeDao.selectAllFoods(storeId);
     }
 
-    public int modifyFoodInfo(Map<String, Object> formData, MultipartFile file) {
-        System.out.println("뽑아보기");
-        System.out.println(formData.get("foodname"));
-        System.out.println(formData.get("description"));
-        System.out.println(formData.get("status"));
-        System.out.println(file.isEmpty());
-        return 1;
+    public int modifyFoodInfo(Map<String, Object> formData) {
+        String foodname = (String) formData.get("foodname");
+        String desc = (String) formData.get("description");
+        String status = (String) formData.get("status");
+        int foodId = ((Integer)formData.get("foodId")).intValue();
+        return storeDao.updateFood(foodname,desc,status,foodId);
     }
 }
