@@ -1,53 +1,26 @@
 <template>
-  <transition
-    name="expand"
-    @enter="enter"
-    @after-enter="afterEnter"
-    @leave="leave"
-  >
-    <ul v-show="list.open" class="list-item">
-      <li clas="sub-items" v-for="(item, index) in list.sublist" :key="index">
-        <div class="item-box">
-          <div class="item-text">
-            <div class="menu-name">
-              <!--가게 음식메뉴 이름-->
-              {{ item }}
-            </div>
-            <div class="menu-price">9,000원</div>
-          </div>
-          <div class="item-img">이미지</div>
+  <ul v-show="list" class="list-item" @click="SET_MODAL_ORDER(true)">
+    <div class="item-box">
+      <div class="item-text">
+        <div class="menu-name">
+          <!--가게 음식메뉴 이름-->
+          {{ list.name }}
         </div>
-      </li>
-    </ul>
-  </transition>
+        <div class="menu-price">{{ list.price }}원</div>
+      </div>
+      <div class="item-img">
+        <img :src="list.fileUrl" class="item-img" />
+      </div>
+    </div>
+  </ul>
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
   props: ["list"],
-  methods: {
-    enter(el) {
-      el.style.height = "auto";
-      const height = getComputedStyle(el).height;
-      el.style.height = 0;
-
-      getComputedStyle(el);
-
-      setTimeout(() => {
-        el.style.height = height;
-      });
-    },
-    afterEnter(el) {
-      el.style.height = "auto";
-    },
-    leave(el) {
-      el.style.height = getComputedStyle(el).height;
-      getComputedStyle(el);
-      setTimeout(() => {
-        el.style.height = 0;
-      });
-    },
-  },
+  methods: { ...mapMutations(["SET_MODAL_ORDER"]) },
+  components: {},
 };
 </script>
 

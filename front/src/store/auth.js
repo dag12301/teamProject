@@ -86,8 +86,8 @@ export default {
             // 토큰을 저장한다.
             context.commit("setToken", res.headers.authorization);
             // 토큰을 이용해서 유저정보 불러오기
+            return Promise.resolve(res);
           }
-          return Promise.resolve(res);
         })
         .catch((error) => {
           return Promise.reject(error);

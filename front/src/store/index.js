@@ -1,6 +1,7 @@
 import { createStore } from "vuex";
 
 import auth from "@/store/auth";
+import cart from "@/store/cart";
 import Akinator from "@/store/akinator";
 import fooddiv from "./foodDiv/foodDiv.js";
 import foodlist from "./foodDiv/foodList.js";
@@ -19,6 +20,7 @@ export default createStore({
     loginModal: false, // 로그인 모달
     registerModal: false, // 레지스터 모달
     mapModal: false, // 맵 모달
+    orderModal: false, // 주문 모달
     selectRegister: "BUYER",
 
     akinator: false, // 아키네이터 상태
@@ -58,6 +60,12 @@ export default createStore({
       // boolean fals =>로그인, register 모달 닫기
       state.loginModal = false;
       state.registerModal = boolean; //boolean true => 회원가입 열기
+    },
+    SET_MODAL_ORDER(state, boolean) {
+      state.orderModal = boolean;
+      state.loginModal = false;
+      state.registerModal = false;
+      console.log(state.orderModal);
     },
     SET_AKINATOR(state, boolean) {
       state.akinator = boolean;
@@ -107,10 +115,11 @@ export default createStore({
     foodlist,
     couponon,
     couponend,
+    cart,
   },
   plugins: [
     createPersistedState({
-      paths: ["auth"],
+      paths: ["auth", "cart"],
     }),
   ],
 });

@@ -7,16 +7,7 @@
     />
     <div class="row">
       <div class="col-sm-4">
-        <img
-          :src="foodInfo.filename"
-          class="image d-block"
-          v-if="!uploadFile"
-        />
-        <img :src="uploadImageFile" class="image d-block" v-if="uploadFile" />
-        <div class="filebox">
-          <label class="btn btn-primary mt-2" for="ex_file">사진변경</label>
-          <input type="file" id="ex_file" @input="onFileSelected" />
-        </div>
+        <img :src="foodInfo.filename" class="image d-block" />
       </div>
       <div class="col-sm-8">
         <div v-if="!isEditMode">
@@ -109,8 +100,7 @@
 </template>
 
 <script>
-import JWT from "@/api/jwt";
-import axios from "axios";
+import http from "@/api/http";
 import { error, success, normal } from "@/api/notification";
 export default {
   data() {
@@ -143,41 +133,24 @@ export default {
     confirmEdit() {
       let doneEdit = confirm("이대로 진행할까요?");
       if (doneEdit === true) {
-        let formData = new FormData();
         if (!this.bounded.foodname) {
           error("음식 이름은 공백이 될 수 없습니다!", this);
           return;
         }
-        formData.append("foodname", this.bounded.foodname);
 
         if (!this.bounded.description) {
           error("음식 설명은 공백이 될 수 없습니다!", this);
           return;
         }
-        formData.append("description", this.bounded.description);
-
-        formData.append("status", this.bounded.status);
-
-        if (this.uploadFile) {
-          formData.append("file", this.uploadFile);
-          console.log("사진추가함");
-        }
         normal("음식정보를 수정합니다.", this);
 
-        const token = JWT.getToken();
-        const headers = {
-          "Content-type": "multipart/form-data",
-          Authorization: token,
-        };
-
-        axios
-          .post(
-            "http://localhost:8083/store/updateFoodInfo",
-            { formData: formData },
-            {
-              headers,
-            }
-          )
+        http
+          .post("http://localhost:8083/store/updateFoodInfo", {
+            foodId: this.bounded.foodId,
+            foodname: this.bounded.foodname,
+            description: this.bounded.description,
+            status: this.bounded.status,
+          })
           .then((res) => {
             if (res.status === 200) {
               console.log("음식 수정이 완료되었습니다.");
@@ -193,17 +166,6 @@ export default {
         this.bounded = this.foodInfo;
       }
       this.editMode = false;
-    },
-    onFileSelected(event) {
-      let input = event.target;
-      this.uploadFile = input.files[0];
-      if (input.files && input.files[0]) {
-        let reader = new FileReader();
-        reader.onload = (e) => {
-          this.uploadImageFile = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-      }
     },
   },
 };
@@ -228,28 +190,16 @@ export default {
   font-weight: lighter;
 }
 .multiline-ellipsis {
-  width: 360px;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: 15px;
-  color: grey;
-  height: 68px;
-}
-.buttonWrapper {
-  position: inherit;
-}
 
-.filebox input[type="file"] {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
+  text-overflow: ellipsis;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3; /* 라인수 */
+
+  -webkit-box-orient: vertical;
+
+  word-wrap: break-word;
 }
 </style>

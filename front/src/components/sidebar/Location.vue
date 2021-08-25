@@ -10,6 +10,7 @@
       <span v-if="!collapsed && local" class="localText">
         {{ local.address_name }}
       </span>
+      <span v-else> 위치를 알수없습니다! </span>
     </transition>
   </div>
 </template>
@@ -32,6 +33,24 @@ export default {
     ...mapGetters({
       local: "GET_LOCAL",
     }),
+  },
+  methods: {
+    refreshLocation() {
+      return navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setLocation(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.log("아니 위치정보받는데 에러가난다고" + error);
+        }
+      );
+    },
+    setLocation(latitude, longitude) {
+      this.$store.commit("SET_LAT", latitude);
+      this.$store.commit("SET_LON", longitude);
+      console.log("사용자 위치 추적: " + latitude + ", " + longitude);
+      this.$store.commit("SET_OBSERVE", true);
+    },
   },
 };
 </script>
