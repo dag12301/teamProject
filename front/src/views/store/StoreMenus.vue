@@ -126,6 +126,7 @@ import MenuBox from "@/components/store/StoreMenu.vue";
 import NoMenu from "@/components/store/StoreMenuNone.vue";
 import { normal, error, success } from "@/api/notification";
 import http from "@/api/http";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -146,6 +147,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters({ myStore: "auth/getMyStore" }),
     startListNum() {
       return (this.currentPage - 1) * this.listPerPage;
     },
@@ -190,8 +192,20 @@ export default {
     },
   },
   mounted() {
-    this.storeId = this.$store.state.myStore.storeId;
+    if (!this.myStore) {
+      this.$router.push({ path: "/store" });
+      console.log("storeId 정보가 없어서 다시 홈으로");
+    }
+    this.storeId = this.myStore.storeId;
+
     this.requestPage(1);
+  },
+  beforeUpdate() {
+    if (!this.myStore) {
+      this.$router.push({ path: "/store" });
+      console.log("storeId 정보가 없어서 다시 홈으로");
+    }
+    this.storeId = this.myStore.storeId;
   },
   methods: {
     requestPage(page) {
@@ -240,7 +254,6 @@ export default {
     },
     selectFood(list) {
       this.selectedFood = list;
-      console.log(list);
       this.foodDetail = true;
     },
     clearDetail() {

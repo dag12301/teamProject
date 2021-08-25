@@ -353,9 +353,9 @@ export default {
         "Content-type": "multipart/form-data",
         Authorization: token,
       };
-      console.log("헤더는 사랑을 싣고");
-      axios.defaults.headers.post = null;
-      console.log("보낼토큰입니다 : " + token);
+      // console.log("헤더는 사랑을 싣고");
+      // axios.defaults.headers.post = null;
+      // console.log("보낼토큰입니다 : " + token);
       axios
         .post("http://localhost:8083/store/addstore", formData, {
           headers,

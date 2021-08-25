@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setMyStore: "SET_MY_STORE",
+      setMyStore: "auth/SET_MY_STORE",
     }),
     getStoreFiles(storeId) {
       http

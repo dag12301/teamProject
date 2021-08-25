@@ -192,4 +192,9 @@ public class StoreController {
         map.put("fileList", fileList);
         return new ResponseEntity(map, HttpStatus.OK);
     }
+    @PostMapping("/updateFoodInfo")
+    public ResponseEntity modifyFoodInfo(@RequestPart(value = "formData") Map<String, Object> formData, @RequestPart(value = "file", required = false) MultipartFile file) {
+        int result = storeService.modifyFoodInfo(formData, file);
+        return new ResponseEntity(result , HttpStatus.OK);
+    }
 }
