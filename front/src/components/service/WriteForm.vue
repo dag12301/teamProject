@@ -43,7 +43,7 @@
                 </div>
               </div>
             </div>
-            <img :src="file.preview" />
+            
           </div>
             <div v-else class="file-preview-content-container" >
               <div class="file-preview-container" >
@@ -87,7 +87,6 @@ export default {
       body: null,
       status: "Y",
       files: [], //업로드용 파일
-      
     };
   },
   methods: {
@@ -117,7 +116,7 @@ export default {
     },
 
     //보내기 통신
-  async  writeRequest() {
+    async  writeRequest() {
       
       if (this.statusMessage == "공개") {
         this.status = "Y";
@@ -148,8 +147,8 @@ export default {
             articleId = res.data
           }
           if(res.data == "no"){
-            alert("비회원은 권한이 없습니다.")
-            this.SET_MODAL_LOGIN(true)
+            
+            return this.SET_MODAL_LOGIN(true), alert("비회원은 권한이 없습니다.")
           }else if(res.data == 0){
             return alert("다시 로그인 해주세요")
           }
@@ -175,14 +174,14 @@ export default {
         .write12(form, articleId)
         .then( res => {
           if(res.data == 100){
-            alert("글을 작성하였습니다")
-            location.href = "/qna";
+             alert("글을 작성하였습니다")
+            return location.href = "/qna";
           }else if(res.data == 300){
-            alert("글 작성 중 오류가 발생습니다")
+            return alert("글 작성 중 오류가 발생습니다")
           }else if(res.data == 400){
-            alert("글 작성을 실패했습니다")
+            return alert("글 작성을 실패했습니다")
           }else{  
-            alert("글 오류")
+            return alert("글 오류")
           }
         })
         .catch( err => {
@@ -190,13 +189,9 @@ export default {
           console.log("에러")
           })
       }
-      else{
-        alert("글을 작성하였습니다")
-        location.href="/qna"
-      }
     }
   }
-};
+}
 </script>
 
 <style scoped>
