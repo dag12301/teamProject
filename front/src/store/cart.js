@@ -23,8 +23,7 @@ export default {
       }
     },
     clearCart(state) {
-      state.bag = null;
-      state.bag = new Set();
+      state.bag.clear();
     },
   },
   actions: {},

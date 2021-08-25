@@ -12,7 +12,7 @@
       <div class="btn btn-primary" @click="check">확인</div>
     </template>
     <template v-slot:footer>
-      <div class="btn btn-success" @click="addCart(data.foodId)">
+      <div class="btn btn-success" @click="addToCart(data.foodId)">
         주문표에 추가하기
       </div>
       <div class="btn btn-danger" @click="SET_MODAL_ORDER(false)">취소</div>
@@ -39,6 +39,10 @@ export default {
     }),
     check() {
       console.log(this.checkCart);
+    },
+    addToCart(foodId) {
+      this.addCart(foodId);
+      this.SET_MODAL_ORDER(false);
     },
   },
 };

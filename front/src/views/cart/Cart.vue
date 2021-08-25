@@ -89,11 +89,13 @@
               </div>
             </div>
           </div>
-          <div class="couponWrapper">
+          <div class="couponWrapper d-block m-4">
             <!-- 사용할 수 있는 쿠폰이 있으면 불러오기 -->
+            <div>쿠폰정보가 없습니다</div>
           </div>
-          <div class="calculatorWrapper">
+          <div class="calculatorWrapper d-block m-4">
             <!-- orderList 에 대한 총액정리 쿠폰 적용 후. -->
+            <div>총액</div>
           </div>
           <div class="commandOrderWrapper" v-if="foodList.length > 0">
             <div class="row">
@@ -119,7 +121,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["checkCart", "clearCart"]),
+    ...mapGetters(["checkCart"]),
   },
   mounted() {
     if (this.checkCart != null) {
@@ -129,7 +131,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["delCart"]),
+    ...mapMutations(["delCart", "clearCart"]),
     getFoodList(foodIdSet) {
       const foodIdList = Array.from(foodIdSet);
       http
@@ -175,9 +177,9 @@ export default {
     clearOrder() {
       let willClear = confirm("정말 장바구니를 비우시겠습니까?");
       if (willClear === true) {
-        this.clearCart;
+        this.clearCart();
         this.foodList = [];
-        this.orderList = new Map();
+        this.orderList.clear();
       }
     },
     removeFood(foodId) {
@@ -194,7 +196,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .wrapper {
   height: 100%;
   width: 100%;
@@ -208,6 +210,20 @@ export default {
   border: 1px solid gainsboro;
   display: flex;
   align-items: center;
+}
+.calculatorWrapper {
+  overflow: hidden;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  padding: 50px;
+}
+.couponWrapper {
+  overflow: hidden;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  padding: 50px;
 }
 .foodContainer span {
   position: relative;
