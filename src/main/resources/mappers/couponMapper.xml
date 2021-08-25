@@ -18,22 +18,8 @@
         food_id = null,
         event_id = null
     </insert>
-
-<<<<<<< HEAD
-	<resultMap id="couponResultMap" type="java.util.Map">
-        <result column="countNumber" property="countNumber"/>
-        <result column="couponName" property="couponName"/>
-        <result column="couponEnd" property="couponEnd"/>
-        <result column="status" property="status"/>
-        <result column="couponPrice" property="couponPrice"/>
-        <result column="discountRate" property="discountRate" />
-        <result column="publishedDate" property="publishedDate" />
-    </resultMap>
-	<select id="selectCouponList" resultMap="couponResultMap">
-=======
 	
 	<select id="selectCouponList" resultType="Coupon">
->>>>>>> 1de5bfdc92bdbbe4bbb4ad7f0e5b871dc864f82c
         SELECT
         	couponId,
             couponNumber,
@@ -58,7 +44,7 @@
         </if>
     </select>
     
-    <update id="updateCouponStatus" parameterType="Coupon">
+    <update id="updateCouponStatus">
         UPDATE coupon
 		SET STATUS = #{status}
 		WHERE couponId = #{couponId}

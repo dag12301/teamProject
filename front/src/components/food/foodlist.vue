@@ -1,24 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div
-    class="col-xs-8 col-sm-6"
-    v-for="(foodlist, index) in $store.state.foodlist.foodlists"
-    :key="index"
-  >
-    <a href="#" class="list-group-item" style="height: 100px"
-      ><router-link :to="{ name: 'StoreHome' }" exact>
-        <div class=".col-md-3 .col-md-pull-9 f-left">
-          <img
-            class="menu-img"
-            src="https://mblogthumb-phinf.pstatic.net/MjAxOTEwMDJfMjY4/MDAxNTY5OTc1Njg1MzA3.rRfHuw5dm4Lw-nbgvTlW92K9JHTMbdy6lbkfEGJT6Fsg.au6b5GbdbOaykDXH2mXC6JnKhF8XE5RcXdlbySPq97sg.JPEG.wlsgkthd18/1569975685162.jpg?type=w800"
-          />
-        </div>
-        <div class=".col-md-9 .col-md-push-3 f-right">
-          <div class="d-flex w-100 justify-content-between">
-            <h6 class="mb-1">{{ foodlist.title }}</h6>
-            <!--가게이름-->
-            <small>{{ foodlist.time }}</small>
-=======
   <div>
     <!-- 로딩중일때 -->
     <div v-if="!shopList">
@@ -64,7 +44,6 @@
                 }}</span>
               </p>
             </div>
->>>>>>> 1de5bfdc92bdbbe4bbb4ad7f0e5b871dc864f82c
           </div>
         </div>
       </div>
