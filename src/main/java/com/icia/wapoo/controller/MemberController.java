@@ -44,7 +44,7 @@ public class MemberController {
                     (String) loginData.get("loginId"),
                     (String) loginData.get("password")
             );
-
+            
             if(member == null){
                 return new ResponseEntity("회원정보를 찾지 못했습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
             }
