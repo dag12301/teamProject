@@ -13,7 +13,7 @@
         <div v-else>
           <!-- 장바구니에 담지 않았을 때 -->
           <div v-if="!foodList || foodList.length == 0">
-            <div class="foodContainer d-block m-4">
+            <div class="foodContainer d-block m-4 emptyContainer">
               <span> 장바구니가 비어있습니다! </span>
             </div>
           </div>
@@ -91,6 +91,7 @@
           </div>
           <div class="couponWrapper d-block m-4">
             <!-- 사용할 수 있는 쿠폰이 있으면 불러오기 -->
+            <!-- 사용기한, 체크박스로 체크하면 사용 -->
             <div>쿠폰정보가 없습니다</div>
           </div>
           <div class="calculatorWrapper d-block m-4">
@@ -216,6 +217,9 @@ export default {
   border: 1px solid gainsboro;
   display: flex;
   align-items: center;
+  padding: 50px;
+}
+.emptyContainer {
   padding: 50px;
 }
 .couponWrapper {

@@ -10,7 +10,7 @@
             <!--지도 -->
             <div class="col-xl-7">
               <div class="card mb-4">
-                <kakao style="z-index: 0"></kakao>
+                <kakao style="z-index: 0" :shopList="nearShopList"></kakao>
               </div>
             </div>
             <!--가게 리스트 -->
@@ -93,6 +93,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.nearShopList = res.data;
+          console.log(this.nearShopList);
           this.showList = true;
         })
         .catch((e) => {

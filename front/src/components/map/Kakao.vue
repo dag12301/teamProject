@@ -15,6 +15,7 @@
 import { mapMutations, mapGetters } from "vuex";
 
 export default {
+  props: ["shopList"],
   computed: {
     ...mapGetters(["GET_LOCAL", "GET_LAT", "GET_LON"]),
     latitude() {
@@ -85,7 +86,6 @@ export default {
     setLocation(latitude, longitude) {
       this.$store.commit("SET_LAT", latitude);
       this.$store.commit("SET_LON", longitude);
-      console.log("사용자 위치 추적: " + latitude + ", " + longitude);
       this.$store.commit("SET_OBSERVE", true);
 
       let geocoder = new kakao.maps.services.Geocoder();
@@ -134,10 +134,57 @@ export default {
         try {
           const result = await addressSearch(coord);
           setLocal(result);
+          if (this.shopList != null) {
+            this.makeMakers(this.shopList);
+          }
         } catch (e) {
           console.log(e);
         }
       })();
+    },
+    makeMakers(shops) {
+      let positions = [];
+
+      for (let shop of shops) {
+        positions.push({
+          title: shop.name,
+          latlng: new kakao.maps.LatLng(shop.localy, shop.localx),
+        });
+      }
+      // 마커 이미지의 이미지 주소입니다
+      var imageSrc =
+        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+      for (let i = 0; i < positions.length; i++) {
+        // 마커 이미지의 이미지 크기 입니다
+        var imageSize = new kakao.maps.Size(24, 35);
+
+        // 마커 이미지를 생성합니다
+        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+
+        // 마커를 생성합니다
+        var marker = new kakao.maps.Marker({
+          map: this.map, // 마커를 표시할 지도
+          position: positions[i].latlng, // 마커를 표시할 위치
+          title: positions[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image: markerImage, // 마커 이미지
+        });
+        // 마커에 표시할 인포윈도우를 생성합니다
+        var infowindow = new kakao.maps.InfoWindow({
+          content: positions[i].title, // 인포윈도우에 표시할 내용
+        });
+        (function (marker, infowindow) {
+          // 마커에 mouseover 이벤트를 등록하고 마우스 오버 시 인포윈도우를 표시합니다
+          kakao.maps.event.addListener(marker, "mouseover", function () {
+            infowindow.open(this.map, marker);
+          });
+
+          // 마커에 mouseout 이벤트를 등록하고 마우스 아웃 시 인포윈도우를 닫습니다
+          kakao.maps.event.addListener(marker, "mouseout", function () {
+            infowindow.close();
+          });
+        })(marker, infowindow);
+      }
     },
     // 지도이동
   },
