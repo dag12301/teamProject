@@ -1,6 +1,7 @@
 <template>
+<div class="container" style="width: 800px;">
   <div style="height: 660px">
-    <div class="row">
+    <div class="row" style="border-top: 1px solid black">
       <div class="col-4 edit-1">이름 :</div>
       <div class="col-8 edit-2">이름</div>
     </div>
@@ -72,12 +73,8 @@
         <div v-if="!emailValid" class="msg">이메일 이상함</div>
       </div>
     </div>
-    <div class="retouch">
-      <button type="button" @Click="editProfile()" class="btn btn-secondary">
-        <span style="font-size: 20px">수정완료</span>
-      </button>
-    </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -133,7 +130,7 @@ export default {
   justify-content: center;
   align-items: center;
   border-style: solid;
-  border-width: 0px 1px 1px 0px;
+  border-width: 0px 1px 1px 1px;
 }
 .edit-2 {
   font-weight: 400;

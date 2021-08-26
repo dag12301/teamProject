@@ -1,55 +1,70 @@
 <template>
   <div style="height: 660px">
-    <div v-if="profile != null">
-      <div class="row" style="padding: 20px">
-        <div class="img" style="padding-bottom: 20px">
-          <img
-            src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
-            style="width: 150px; height: 150px; border-radius: 50%"
-          />
+    <div v-if="correction == false">
+      <div v-if="profile != null">
+        <div class="row" style="padding: 20px">
+          <div class="img" style="padding-bottom: 20px">
+            <img
+              src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
+              style="width: 150px; height: 150px; border-radius: 50%"
+            />
+          </div>
+          <div class="filebox">
+            <label for="ex_file">업로드</label>
+            <input type="file" id="ex_file" />
+          </div>
         </div>
-        <div class="filebox">
-          <label for="ex_file">업로드</label>
-          <input type="file" id="ex_file" />
+        <div class="row">
+          <div class="col-4 profile-1">이름 :</div>
+          <div class="col-8 profile-2">
+            {{ profile.name }}
+            <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-4 profile-1">이름 :</div>
-        <div class="col-8 profile-2">
-          {{ profile.name }}
-          <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
+        <div class="row">
+          <div class="col-4 profile-1">닉네임 :</div>
+          <div class="col-8 profile-2">
+            {{ profile.nickname }}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-4 profile-1">닉네임 :</div>
-        <div class="col-8 profile-2">
-          {{ profile.nickname }}
+        <div class="row">
+          <div class="col-4 profile-1">아이디 :</div>
+          <div class="col-8 profile-2">
+            {{ profile.loginId }}
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-4 profile-1">아이디 :</div>
-        <div class="col-8 profile-2">
-          {{ profile.loginId }}
+        <div class="row">
+          <div class="col-4 profile-1">핸드폰번호 :</div>
+          <div class="col-8 profile-2">
+            {{ profile.tel }}
+            <!-- tel 로 받아놓게했는데 DB에선 phone 으로 했음. 헷갈릴수있음 -->
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-4 profile-1">핸드폰번호 :</div>
-        <div class="col-8 profile-2">
-          {{ profile.tel }}
-          <!-- tel 로 받아놓게했는데 DB에선 phone 으로 했음. 헷갈릴수있음 -->
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 profile-1" style="border-bottom: 1px solid black">
-          이메일 :
-        </div>
-        <div class="col-8 profile-2" style="border-bottom: 1px solid black">
-          {{ profile.email }}
+        <div class="row">
+          <div class="col-4 profile-1" style="border-bottom: 1px solid black">
+            이메일 :
+          </div>
+          <div class="col-8 profile-2" style="border-bottom: 1px solid black">
+            {{ profile.email }}
+          </div>
         </div>
       </div>
     </div>
-    <div class="retouch">
-      <button type="button" @Click="secession()" class="btn btn-secondary">
+    <div v-if="correction == true">
+      <EditProfile></EditProfile>
+    </div>
+    <div class="button">
+      <div v-if="correction == false">
+        <button type="button"  @Click="edit(true)" class="btn btn-secondary">
+          <span style="font-size: 20px">수정하기</span>
+        </button>
+      </div>
+      <div v-if="correction == true">
+        <button type="button" @Click="edit(false)" class="btn btn-secondary">
+          <span style="font-size: 20px">수정완료</span>
+        </button>
+      </div>
+      <button type="button" @Click="secession()" class="btn btn-secondary" style="margin-left: 50px;">
         <span style="font-size: 20px">탈퇴하기</span>
       </button>
     </div>
@@ -59,14 +74,27 @@
 <script>
 import http from "@/api/http";
 import { error, success, normal } from "@/api/notification";
+import EditProfile from "@/components/myPage/EditProfile.vue";
 
 export default {
+  components: { EditProfile },
   data() {
     return {
-      profile: null,
+      correction : false,
     };
   },
   methods: {
+    edit(request) {
+      this.correction = request;
+      if(this.correction == false)
+      {
+        console.log("프로필 수정을 완료했습니다.");
+      }
+      else
+      {
+        console.log("프로필 수정창으로 이동합니다.");
+      }
+    },
     secession() {
       alert("탈퇴되었습니다!");
       // 탈퇴로직 작성
@@ -122,8 +150,12 @@ export default {
   border-style: solid;
   border-width: 1px 0px 0px;
 }
-.retouch {
+.button {
   padding: 20px;
+  margin: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .filebox label {
   display: inline-block;
