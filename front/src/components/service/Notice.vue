@@ -25,6 +25,7 @@
           notice.hit
         }}</span>
       </li>
+      <li v-if="this.getNoticeTotal == 0" style="font-weight: 700; font-size: 2vh"> 글이 없습니다.</li>
     </ul>
     <!-- 끝 -->
     <div class="p-1 bg-dark text-white"></div>
@@ -46,15 +47,9 @@
           </a>
         </li>
         <!-- 숫자 순서 버튼 -->
-        <li class="page-item" v-for="num in this.getnumNoticeSize" :key="num">
-          <a
-            class="page-link"
-            href="#"
-            @click="
-              numPage(num, this.paging.range, this.listSize, this.rangeSize)
-            "
-            >{{ num }}</a
-          >
+        <li class="page-item" v-for="num in this.getnumNoticeSize" :key="num">        
+          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" v-if="paging.page != num">{{num}}</a>
+          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" style="background-color: #0d6efd; color: #fff;" v-else>{{num}}</a>
         </li>
 
         <!-- 다음 순서 버튼 -->
@@ -89,6 +84,7 @@ export default {
     ...mapGetters({
       getnumNoticeSize: "serviceCenter/getnumNoticeSize",
       getNoticePaging: "serviceCenter/getNoticePaging",
+      getNoticeTotal: "serviceCenter/getNoticeTotal"
     }),
   },
   methods: {
@@ -149,10 +145,7 @@ export default {
   //고객센터통해 접근할 경우
   mounted() {
     this.paging = this.getNoticePaging; //this.$store.state.serviceCenter.pagingQueAn
-    console.log(
-      "mounted:               setPagingQueAn : " +
-        this.$store.state.serviceCenter.pagingNotices
-    );
+    
   },
   //버튼 클릭시
   updated() {
