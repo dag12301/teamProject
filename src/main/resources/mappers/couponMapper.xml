@@ -19,6 +19,7 @@
         event_id = null
     </insert>
 	
+
 	<select id="selectCouponList" resultType="Coupon">
         SELECT
         	couponId,

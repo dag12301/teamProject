@@ -34,6 +34,7 @@ export default {
       const jwt = require("jsonwebtoken");
       const decodeAccessToken = jwt.decode(state.token.accessToken);
       if (decodeAccessToken != null) {
+        console.log(decodeAccessToken);
         return decodeAccessToken.role;
       }
       return "BUYER";

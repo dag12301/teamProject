@@ -48,6 +48,7 @@
           </table>
         </div>
       </div>
+      
       <div
         class="btn-group"
         role="group"
@@ -148,6 +149,7 @@
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
+  
 </template>
 
 <script>
