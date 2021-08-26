@@ -23,9 +23,20 @@
             <div class="col-xl-5">
               <div class="card mb-4">
                 <!-- 가게가 있을 때 -->
-                    <ShopList>
+                <div v-if="showList">
+                  <div class="list-group" v-if="nearShopList">
+                    <ShopList
+                      v-for="shop in nearShopList"
+                      :key="shop"
+                      :shopInfo="shop"
+                    >
                     </ShopList>
+                  </div>
                   <!-- 가게가 없을 때 -->
+                  <span v-else-if="!nearShopList">
+                    주변에 가게가 없습니당!!</span
+                  >
+                </div>
               </div>
             </div>
           </div>
