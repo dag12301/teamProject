@@ -27,6 +27,36 @@ public class ArticleService {
 	@Autowired
 	private ArticleDao articleDao;
 	
+	//이지미 아마존
+	public int registerFile(long articleId, List<MultipartFile> files)
+	{
+        int count = 0;
+        for( MultipartFile file : files) {
+
+            String fileURL = null;
+            try {
+                fileURL = s3Service.upload(file, "store_"+articleId);
+            } catch (IOException e) {
+                throw new RuntimeException("S3 업로드중 오류발생!");
+            }
+            ImageFile ImageFile = new ImageFile();
+            ImageFile.setRef_id( (int)articleId);
+            ImageFile.setFilesize(file.getSize());
+            ImageFile.setFiletype(file.getContentType());
+            ImageFile.setName(fileURL);
+            ImageFile.setOrgName(file.getName());
+            try {
+            	articleDao.insertArticleFile(ImageFile);
+            }catch(Exception e) {
+            	System.out.println("registerFile : "+ e);
+            }
+            
+            count++;
+        }
+        return count;
+    }
+	
+	
 	//이미지 등록
     public int registerStore(ImageFile file){
         System.out.println("registerStore 실행 " );
@@ -104,7 +134,7 @@ public class ArticleService {
 	}
 	
 	//게시글 등록
-	public int listInsert(Article article, long writerId)
+	public int listInsert(Article article)
 	{
 		
 		int count = 0;
@@ -209,14 +239,31 @@ public class ArticleService {
 		return count;
 	}
 	
+	//이지미 삭제
+	public int imageDelete(int fileId)
+	{
+		int count = 0;
+		
+		try
+		{
+			count = articleDao.imageDelete(fileId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("imageDelete DB오류: "+ e);
+		}
+		
+		return count;
+	}
+	
 	//총게시글 수
-	public int getBoardListCnt(long boardId) throws Exception {
+	public int getBoardListCnt(long boardId, Object search) throws Exception {
 		
 		int count = 0;
 		
 		try
 		{
-			count = articleDao.getBoardListCnt(boardId);
+			count = articleDao.getBoardListCnt(boardId, search);
 		}
 		catch(Exception e)
 		{
@@ -226,9 +273,19 @@ public class ArticleService {
 	}
 
 	//페이징 번호 맞게 출력
-	public List<Article> getBoardList(PagingA paging, long boardId) throws Exception {
+	public List<Article> getBoardList(PagingA paging, long boardId, Object search) throws Exception {
 
-		List<Article> list = articleDao.getBoardList(paging, boardId);
+		List<Article> list = null;
+		try
+		{
+			list = articleDao.getBoardList(paging, boardId, search);
+		}
+		catch(Exception e)
+		{
+			System.out.println("getBoardList 오류 : " + e);
+		
+		}
+		
 		
 		return list;
 	}
@@ -267,6 +324,21 @@ public class ArticleService {
 		return list;
 	}
 	
+	//내글 모두 출력
+	public List<Article> myList(long memberId, long boardId)
+	{
+		List<Article> list = null;
+		
+		try
+		{
+			list = articleDao.myList(memberId, boardId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("MyList 오류: " + e);
+		}
+		return list;
+	}
 
 
 	

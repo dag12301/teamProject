@@ -27,8 +27,9 @@ public interface ArticleDao {
 	// 게시글 이미지 조회
 	List<ImageFile> imageFileList(long articleId);
 	//게시글 삭제
-
 	public int boardDelete(long articleId);
+	//이미지 삭제
+	int imageDelete(int fileId);
 	// 댓글 삭제
 	public int commentDelete(long parantId);
 
@@ -38,14 +39,15 @@ public interface ArticleDao {
 	int boardHit(@Param("articleId") long articleId);
 	
 	//총 게시글 개수 확인
-	int getBoardListCnt(long boardId) throws Exception;
+	int getBoardListCnt(long boardId, Object search) throws Exception;
 	// 페이징 개수
-	public List<Article> getBoardList(PagingA paging, long boardId) throws Exception;
+	public List<Article> getBoardList(PagingA paging, long boardId, Object search) throws Exception;
 	//게시글 수정
 	public int boardUpadte(Article article);
 	//댓글 조회
 	public List<Article> commentList(long parantId);
-
+	//내글 모두 보기
+	public List<Article> myList(long memberId, long boardId);
 	
 
 
