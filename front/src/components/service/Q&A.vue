@@ -194,6 +194,7 @@ export default {
     },
     // 내글 보기
     myPage() {
+      this.search = ''
       this.myCount = false
 
       authAPI
