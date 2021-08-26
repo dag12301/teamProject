@@ -95,6 +95,7 @@ export default {
           this.nearShopList = res.data;
           console.log(this.nearShopList);
           this.showList = true;
+          console.log("가게 메뉴들 불러온다");
         })
         .catch((e) => {
           console.log(e);
@@ -102,7 +103,7 @@ export default {
     },
     test() {
       http.get("/api/test").then((res) => {
-        console.log(res);
+        console.log("res임 : " + res);
       });
     },
     showShopDetail(storeId) {
