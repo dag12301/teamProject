@@ -1,11 +1,14 @@
 <template>
-  <div class="service-center">
+  <div class="service-center mt-5">
     <div class="service-group mb-5 ">
-        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" >공지사항</router-link>
+        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" @click="clickPages(1)" v-if="clickNumber == 1">공지사항</router-link>
+        <router-link class="btn btn-warning me-5 col-2" :to="{ name: 'Notice' }" @click="clickPages(1)" v-else>공지사항</router-link>
+
+        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }" @click="clickPages(2)" v-if="clickNumber == 2">Q&A</router-link>
+        <router-link class="btn btn-warning mx-5 col-2" :to="{ name: 'Q&A' }" @click="clickPages(2)" v-else>Q&A</router-link>
         
-        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }">Q&A</router-link>
-        
-        <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }">FQA</router-link>
+        <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }" @click="clickPages(3)" v-if="clickNumber == 3">FQA</router-link>
+        <router-link class="btn btn-warning ms-5 col-2" :to="{ name: 'FQA' }" @click="clickPages(3)" v-else>FQA</router-link>
     </div>
 
     <router-view ></router-view>
@@ -20,7 +23,7 @@ import { mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      articleId: null
+      clickNumber: null
     }
     
   },
@@ -50,7 +53,9 @@ export default {
       nullPagingFQA: "serviceCenter/nullPagingFQA"
 
     }),
-
+    clickPages(num) {
+      this.clickNumber = num
+    },
     
     getCountNotice(boardId) {     // notice 서버 통신 
 
@@ -80,7 +85,7 @@ export default {
       authAPI
       .getBoardList(boardId, page, range)
       .then(res => {
-        console.log(res)
+        
         if(boardId == 1){
           this.setPagingNotices(res.data.paging)  
         }else if(boardId == 2){
@@ -104,25 +109,28 @@ export default {
         console.log(err)
       })
     },
-    deleteServiceCenter() {
+    deleteAll(){
       //게시물 삭제
-      this.nullCenterNotices
-      this.nullCenterQueAn
-      this.nullCenterFQA
+      this.nullCenterNotices()
+      this.nullCenterQueAn()
+      this.nullCenterFQA()
       //페이징 삭제
-      this.nullPagingpagingQueAn
-      this.nullPagingNotice
-      this.nullPagingFQA
+      this.nullPagingpagingQueAn()
+      this.nullPagingNotice()
+      this.nullPagingFQA()
+      
     }
     
   },
+  
   mounted() {           //DB 통신 하기 boardId 값
     this.getCountNotice(1),
     this.getCountQueAn(2),
     this.getCountFQA(3)
   },
   beforeUnmount() {   //component 종료전 데이터 삭제
-    this.deleteServiceCenter
+    this.deleteAll()
+      
   }
 }
 </script>

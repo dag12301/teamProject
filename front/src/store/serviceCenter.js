@@ -48,6 +48,15 @@ export default {
     },
     getFQAPaging (state) {                     //FQA 페이지 정보
       return state.pagingFQA
+    },
+    getNoticeTotal(state){
+      return state.notices.length
+    },
+    getQueAnTotal(state){
+      return state.queAn.length
+    },
+    getFQATotal(state){
+      return state.FQA.length
     }
   },
   mutations: {

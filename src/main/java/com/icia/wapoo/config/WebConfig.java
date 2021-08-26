@@ -30,7 +30,8 @@ public class WebConfig implements WebMvcConfigurer {
             "/store/getStoreFiles",
             "/store/getStoreInfos",
             "/order/**",
-            "/**"
+            "/**",
+            "/article/**"
     };
 
     @Override

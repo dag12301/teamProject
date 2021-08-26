@@ -86,6 +86,9 @@ public class CouponController {
 	        int listPerPage = ((Integer) data.get("listPerPage")).intValue();
 	        int currentPage = ((Integer) data.get("currentPage")).intValue();
 	        String option = (String) data.get("statusOption");
+	        System.out.println("첫번째 "+listPerPage);
+	        System.out.println("두번째 "+currentPage);
+	        System.out.println("세번째 "+option);
 	        if(listPerPage <= 0 || currentPage <=0){
 	            return new ResponseEntity(HttpStatus.BAD_REQUEST);
 	        }
