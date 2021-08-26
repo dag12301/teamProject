@@ -1,7 +1,9 @@
 <template>
   <div>
     <h2 class="mb-3">Q&A</h2>
-    <div id="Search" class="input-group mb-3">
+
+    <!-- 검색 -->
+    <div id="Search" class="input-group mt-3">
       <input
         type="text"
         class="form-control"
@@ -19,6 +21,7 @@
         검색
       </button>
     </div>
+    
     <!-- 글쓰기 -->
     <div class="">
       <button type="button" class="btn btn-primary " @click="myPage">내글조회</button>
@@ -61,11 +64,14 @@
             <i class="fas fa-lock"></i>
           </td>
         </tr>
+        <tr v-if="getQueAnTotal == 0">
+          <td colspan="6" style="font-weight: 700; font-size: 2vh">글이 없습니다</td>
+        </tr>
       </tbody>
     </table>
 
       <!-- 순서 버튼 -->
-    <nav aria-label="Page navigation example" class="mt-5 position-relative .center-block" v-if="myCount">
+    <nav aria-label="Page navigation example " class="mt-5 mb-5 position-relative .center-block" v-if="myCount">
       <ul class="pagination position-absolute" style="left: 30vw" >
         <!-- 이전 순서 버튼 -->
         <li
@@ -95,7 +101,7 @@
         </li>
       </ul>
     </nav>
-    <!-- 끝 -->
+    
   </div>
 </template>
 
@@ -118,6 +124,7 @@ export default {
     ...mapGetters({
       getnumSize: "serviceCenter/getnumSize",
       getQueAnPaging: "serviceCenter/getQueAnPaging",
+      getQueAnTotal: "serviceCenter/getQueAnTotal"
     }),
   },
 

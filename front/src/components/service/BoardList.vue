@@ -344,6 +344,7 @@ export default {
           console.log(params)
         })
 
+
         //이미지 있는지 확인
       if( this.files.length > 0){
 
@@ -366,7 +367,7 @@ export default {
         .then( res => {
           if(res.data == 100){
             alert("글을 작성하였습니다")
-            location.href = "/qna";
+            location.href = "/" + this.board;
           }else if(res.data == 300){
             alert("글 작성 중 오류가 발생습니다")
           }else if(res.data == 400){
@@ -379,6 +380,10 @@ export default {
           console.log(err)
           console.log("에러")
           })
+      }else{
+        //이지미 없을 때
+        alert("글을 작성하였습니다")
+            location.href = "/" + this.board;
       }
 
     },

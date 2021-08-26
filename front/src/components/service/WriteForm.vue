@@ -188,6 +188,10 @@ export default {
           console.log(err)
           console.log("에러")
           })
+      }else{
+        //이지미 없을 때
+        alert("글을 작성하였습니다")
+            location.href = "/qna" ;
       }
     }
   }

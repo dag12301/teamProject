@@ -565,7 +565,7 @@ public class ArticleController {
 		//페이지 리스트 수가 rangeSize보다 작을 때
 		if(range == 1 && paging.getTotalpage() <= paging.getEndPage())
 		{
-			System.out.println("작아 \n\n ");
+			
 			paging.setEndPage(paging.getTotalpage());
 			
 			range = 1;

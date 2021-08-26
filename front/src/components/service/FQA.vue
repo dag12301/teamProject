@@ -30,6 +30,7 @@
           notice.hit
         }}</span>
       </li>
+      <li v-if="this.getFQATotal == 0" style="font-weight: 700; font-size: 2vh">글이 없습니다.</li>
     </ul>
     <!-- 끝 -->
     <div class="p-1 bg-dark text-white"></div>
@@ -88,6 +89,7 @@ export default {
     ...mapGetters({
       getFQAPaging: "serviceCenter/getFQAPaging",
       getFQANumSize: "serviceCenter/getFQANumSize",
+      getFQATotal: "serviceCenter/getFQATotal"
     }),
   },
   methods: {
