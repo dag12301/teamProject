@@ -188,4 +188,24 @@
           AND fo.store_id = #{storeId}
           AND NOT fo.`status` = 3;
     </select>
+    <update id="updateFood">
+        UPDATE food
+        SET updateDate = NOW(),
+            `name`= #{foodname},
+            `description` = #{desc},
+            `status` = #{status}
+        WHERE foodId = #{foodId}
+    </update>
+    <select id="selectFoodByFoodId" resultType="Map">
+        SELECT fo.name name,
+               fo.description description,
+               fo.price price,
+               fo.status status,
+               fo.store_id store_id,
+               fi.name fileUrl,
+               fo.foodId foodId
+        FROM food fo, food_file fi
+        WHERE fo.foodId = fi.food_id
+        AND fo.foodId = #{foodId}
+    </select>
 </mapper>

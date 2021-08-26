@@ -45,4 +45,11 @@ public interface StoreDao {
     Store selectStoreByStoreId(@Param("storeId") Integer storeId);
 
     List<Map<String, Object>> selectAllFoods(@Param("storeId") Integer storeId);
+
+    int updateFood(@Param("foodname") String foodname,
+                   @Param("desc") String desc,
+                   @Param("status") String status,
+                   @Param("foodId") int foodId);
+
+    Map<String, Object> selectFoodByFoodId(@Param("foodId") int foodId);
 }
