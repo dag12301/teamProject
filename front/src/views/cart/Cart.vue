@@ -1,180 +1,266 @@
 <template>
-  <div class="cart">
-    <nav id="navbar-example2" class="navbar navbar-light bg-light px-3">
-      <div>장바구니</div>
-    </nav>
-    <div class="address">
-      <span>주소: 인천 미추홀구 계양동 122-222</span><span style="font-weight: 800;">  (으)로 배달</span>
-      <button style="position: relative; left: 100px">수정</button>
-    </div>
-    <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example" tabindex="0">
-      <ul class="cart-list">
-        <!-- 음식 리스트 -->
-        <li class="chart-item">
-          <div class="container">
-            <div class="row">
-              <div class="col-6 col-sm-4">피자</div>
-              <div class="col-6 col-sm-6"></div>
-              <div class="col-6 col-sm-2">10000원</div>
+  <div>
+    <div class="wrapper m-4 container-fluid p-2">
+      <div class="cart">
+        <h1 class="m-2">장바구니</h1>
+        <hr />
+        <!-- 로딩이 안됬을땐, -->
+        <div v-if="!onloaded">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <div v-else>
+          <!-- 장바구니에 담지 않았을 때 -->
+          <div v-if="!foodList || foodList.length == 0">
+            <div class="foodContainer d-block m-4">
+              <span> 장바구니가 비어있습니다! </span>
+            </div>
+          </div>
+          <!-- 장바구니에 무엇인가를 담아뒀을 때 -->
+          <div v-else-if="foodList.length > 0">
+            <div v-for="(food, index) in foodList" :key="index">
+              <div class="foodContainer d-block m-4">
+                <div class="row">
+                  <img :src="food.fileUrl" class="foodImage col-4" />
+                  <div class="text col-8">
+                    <div class="row">
+                      <div>
+                        <h4 class="d-inline m-3">
+                          {{ food.name }}
+                        </h4>
+                        <span
+                          class="badge bg-success d-inline"
+                          v-if="food.status == 1"
+                          >판매중</span
+                        >
+                        <span
+                          class="badge bg-secondary d-inline"
+                          v-else-if="food.status == 2"
+                          >품절</span
+                        >
+                        <span
+                          class="badge bg-danger d-inline"
+                          v-else-if="food.status == 3"
+                          >판매중지</span
+                        >
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div>
+                        <span>{{ food.price }} 원</span>
+                      </div>
+                      <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                          <li class="page-item">
+                            <a
+                              class="page-link"
+                              @click="decreaseQuantity(food.foodId)"
+                              >-</a
+                            >
+                          </li>
+                          <li class="page-item">
+                            <a class="page-link">{{
+                              foodQuantity(food.foodId)
+                            }}</a>
+                          </li>
 
-              <!-- Force next columns to break to new line at md breakpoint and up -->
-              <div class="w-100 d-none d-md-block" style="padding: 10px 0;"> </div>
-
-              <div class="col-6 col-sm-4">
-                <button type="button" class="btn-close" aria-label="Close"></button>
-              </div>
-              <div class="col-6 col-sm-6"></div>
-              <div class="col-6 col-sm-2 numcount">
-                <button type="button" class="numbox">-</button>
-                <div class="numbox">2</div>
-                <button type="button" class="numbox">+</button>
+                          <li class="page-item">
+                            <a
+                              class="page-link"
+                              @click="increaseQuantity(food.foodId)"
+                              >+</a
+                            >
+                          </li>
+                          <div
+                            class="btn btn-primary"
+                            @click="removeFood(food.foodId)"
+                          >
+                            삭제하기
+                          </div>
+                        </ul>
+                      </nav>
+                      <div>
+                        총액 : {{ totalPrice(food.foodId, food.price) }} 원
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </li>
-        <!-- 끝 -->
-        <li class="chart-item">
-          <div class="container"  >
+          <div class="couponWrapper d-block m-4">
+            <!-- 사용할 수 있는 쿠폰이 있으면 불러오기 -->
+            <div>쿠폰정보가 없습니다</div>
+          </div>
+          <div class="calculatorWrapper d-block m-4">
+            <!-- orderList 에 대한 총액정리 쿠폰 적용 후. -->
+            <div>총액</div>
+          </div>
+          <div class="commandOrderWrapper" v-if="foodList.length > 0">
             <div class="row">
-              <div class="col-6 col-sm-4">피자</div>
-              <div class="col-6 col-sm-6"></div>
-              <div class="col-6 col-sm-2">10000원</div>
-
-              <!-- Force next columns to break to new line at md breakpoint and up -->
-              <div class="w-100 d-none d-md-block" style="padding: 10px 0;"> </div>
-
-              <div class="col-6 col-sm-4">
-                <button type="button" class="btn-close" aria-label="Close"></button>
-              </div>
-              <div class="col-6 col-sm-6"></div>
-              <div class="col-6 col-sm-2 numcount">
-                <button type="button" class="numbox">-</button>
-                <div class="numbox">2</div>
-                <button type="button" class="numbox">+</button>
-              </div>
+              <div class="col commandOrder" @click="putOrder">주문하기</div>
+              <div class="col commandCancel" @click="clearOrder">취소하기</div>
             </div>
           </div>
-        </li>
-        
-        
-      </ul>
+        </div>
+      </div>
     </div>
-    <!-- 메뉴 푸가-->
-    <div style="color: #006cb7; font-weight: 800; margin-bottom: 10px;">+ 메뉴추가</div>
-    <nav id="navbar-example2" class="navbar navbar-light bg-light px-3">
-      <div>할인쿠폰</div>
-    </nav>
-    <!-- 쿠폰-->
-    <div style="border:2px solid red; margin: 10px 0">
-      <div>쿠폰</div>
-      <input type="text" readonly value="쿠폰번호" />
-      <!-- Example single primary button -->
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        Action
-      </button>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">첫 가입 할인</a></li>
-        <li><a class="dropdown-item" href="#">가게 할인</a></li>
-        <li><a class="dropdown-item" href="#">1등 쿠폰</a></li>
-        
-      </ul>
-    </div>
-    </div>
-    <!-- 주문 및 결재-->
-    <div class="container">
-  <div class="row" style="border-bottom: 1px solid red; margin-bottom: 10px; padding-bottom: 10px">
-    <div class="col">
-      주문금액
-    </div>
-    <div class="col">
-      10000원
-    </div>
-  </div>
-  <!-- 쿠폰 사용 태그-->
-  <div class="row" style="border-bottom: 1px solid red;
-                           margin-bottom: 10px;
-                            padding-bottom: 10px;
-                             color: red;
-                              font-weight: 800;">
-    <div class="col">
-      쿠폰
-    </div>
-    <div class="col">
-      -5000원
-    </div>
-  </div>
-
-  <div class="row" style="color: #333; font-weight: 800;">
-    <div class="col">
-      총 결재금액
-    </div>
-    <div class="col">
-      5000원
-    </div>
-    
-  </div>
-</div>
-    
-    <button type="button" class="btn btn-outline-primary">결재하기</button>
-
-
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations } from "vuex";
+import http from "@/api/http";
 export default {
-
-}
+  data() {
+    return {
+      foodList: [],
+      onloaded: false,
+      orderList: new Map(),
+    };
+  },
+  computed: {
+    ...mapGetters(["checkCart"]),
+  },
+  mounted() {
+    if (this.checkCart != null) {
+      this.getFoodList(this.checkCart);
+    } else {
+      this.onloaded = true;
+    }
+  },
+  methods: {
+    ...mapMutations(["delCart", "clearCart"]),
+    getFoodList(foodIdSet) {
+      const foodIdList = Array.from(foodIdSet);
+      http
+        .post("/order/getFoodList", {
+          foodIdList,
+        })
+        .then((res) => {
+          if (res.status === 200) {
+            this.foodList = res.data;
+            let orderList = new Map();
+            for (let food of res.data) {
+              orderList.set(food.foodId, food.quantity);
+            }
+            this.orderList = orderList;
+          }
+        })
+        .catch((e) => console.log(e));
+      this.onloaded = true;
+    },
+    increaseQuantity(foodId) {
+      let q = this.orderList.get(foodId);
+      this.orderList.set(foodId, ++q);
+    },
+    decreaseQuantity(foodId) {
+      let q = this.orderList.get(foodId);
+      if (q == 0) {
+        return;
+      }
+      this.orderList.set(foodId, --q);
+    },
+    test() {
+      console.log(this.orderList);
+    },
+    foodQuantity(foodId) {
+      return this.orderList.get(foodId);
+    },
+    totalPrice(foodId, price) {
+      return this.orderList.get(foodId) * price;
+    },
+    putOrder() {
+      // 계산 진행, 만약 회원이면 정보로 하고, 로그인 아니면 필요정보입력
+    },
+    clearOrder() {
+      let willClear = confirm("정말 장바구니를 비우시겠습니까?");
+      if (willClear === true) {
+        this.clearCart();
+        this.foodList = [];
+        this.orderList.clear();
+      }
+    },
+    removeFood(foodId) {
+      let filteredFoodList = this.foodList.filter(
+        (food) => food.foodId !== foodId
+      );
+      this.foodList = filteredFoodList;
+      if (this.orderList.has(foodId)) {
+        this.orderList.delete(foodId);
+      }
+      this.delCart(foodId);
+    },
+  },
+};
 </script>
 
-<style>
-.cart{
- 
-  
-  width: 70vw;
-  left: 300px;
+<style scoped>
+.wrapper {
+  height: 100%;
+  width: 100%;
+}
+.cart {
+  border: 2px solid tomato;
+}
+.foodContainer {
+  height: 9rem;
+  overflow: hidden;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+}
+.calculatorWrapper {
+  overflow: hidden;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  padding: 50px;
+}
+.couponWrapper {
+  overflow: hidden;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  padding: 50px;
+}
+.foodContainer span {
   position: relative;
 }
-
-.address{
-  text-align: center;
-  margin: 30px 0;
-  border-bottom: 1px solid red;
-  padding-bottom: 10px;
+.foodImage {
+  margin: 1rem;
+  width: 8rem;
+  height: 6.8rem;
 }
-.navbar-brand{
-  text-align: center;
+.text {
+  padding: 4px;
 }
-.cart-list{
-  display: block;
-  list-style: none;
-  
+.desc {
+  display: -webkit-box;
+  font-weight: lighter;
+  color: grey;
+  font-size: 12px;
+  padding: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.2;
+  height: 3.6rem;
 }
-.cart-list .chart-item{
-  border-bottom: 1px solid red;
-  margin: 5px 0;
-  padding: 20px;
-  text-align: left;
-  
-  color: #333;
+.commandOrderWrapper {
+  height: 8rem;
+  padding: 2rem;
 }
-.shop-link{
-  
+.commandOrder {
+  height: 50px;
+  cursor: pointer;
+  border: 1px solid gainsboro;
 }
-.numcount{
-  display: flex; 
-  flex-wrap: wrap;
-  float: right;
-  
+.commandCancel {
+  cursor: pointer;
+  border: 1px solid gainsboro;
 }
-.numcount .numbox{
-  height: 30px;
-  width: 30px;
-  text-align: center;
-  margin:  auto 0 ;
-  
-}
-
-
 </style>

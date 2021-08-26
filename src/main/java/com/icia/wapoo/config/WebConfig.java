@@ -29,8 +29,9 @@ public class WebConfig implements WebMvcConfigurer {
             "/store/getStoreListByLocation",
             "/store/getStoreFiles",
             "/store/getStoreInfos",
-            "/article/**",
-            
+            "/order/**",
+            "/**",
+            "/article/**"
     };
 
     @Override
