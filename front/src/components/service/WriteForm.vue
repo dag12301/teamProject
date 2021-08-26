@@ -32,59 +32,37 @@
   </div>
 
   <!-- 첨부파일 -->
-
-  <div class="room-deal-information-container">
-    <div class="room-deal-information-title">사진 등록</div>
-    <div class="room-file-upload-wrapper">
-      <div v-if="!files.length" class="room-file-upload-example-container">
-        <div class="room-file-upload-example">
-          <div class="room-file-image-example-wrapper">이미지</div>
-          <div class="room-file-notice-item room-file-upload-button">
-            <div class="image-box">
-              <label for="file">사진 등록</label>
-              <input
-                type="file"
-                id="file"
-                ref="files"
-                @change="imageUpload"
-                multiple
-              />
+    <div class="room-deal-information-container">
+        <div class="room-file-upload-wrapper">
+          <div v-if="!files.length" class="room-file-upload-example-container">
+            <div class="room-file-upload-example">
+              <div class="room-file-notice-item room-file-upload-button">
+                <div class="image-box">
+                  <label for="file">사진 등록</label>
+                  <input type="file" id="file" ref="files" @change="imageAddUpload" multiple />
+                </div>
+              </div>
             </div>
+            
           </div>
+            <div v-else class="file-preview-content-container" >
+              <div class="file-preview-container" >
+                <div v-for="(file, index) in this.files" :key="index" class="file-preview-wrapper">
+                  <div class="file-close-button" @click="fileDeleteButton(index)" >
+                    x
+                  </div>
+                  <img :src="file.name" />
+                </div>
+                <div class="file-preview-wrapper-upload">
+                  <div class="image-box" >
+                    <label for="file">추가 사진 등록</label>
+                    <input type="file" id="file" ref="files" @change="imageAddUpload" multiple />
+                  </div>       
+                </div>
+              </div>
+            </div>
         </div>
       </div>
-      <div v-else class="file-preview-content-container">
-        <div class="file-preview-container">
-          <div
-            v-for="(file, index) in this.files"
-            :key="index"
-            class="file-preview-wrapper"
-          >
-            <div
-              class="file-close-button"
-              @click="fileDeleteButton"
-              :name="file.number"
-            >
-              x
-            </div>
-            <img :src="file.preview" />
-          </div>
-          <div class="file-preview-wrapper-upload">
-            <div class="image-box" v-if="filesPreview.length < 3">
-              <label for="file">추가 사진 등록</label>
-              <input
-                type="file"
-                id="file"
-                ref="files"
-                @change="imageAddUpload"
-                multiple
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- 제출/취소 버튼 -->
   <div class="col-md-12 text-center">
@@ -92,8 +70,8 @@
       작성
     </button>
     <router-link class="btn btn-primary" :to="{ name: 'Q&A' }"
-      >취소</router-link
-    >
+      >취소</router-link>
+      
   </div>
 </template>
 
@@ -109,9 +87,6 @@ export default {
       body: null,
       status: "Y",
       files: [], //업로드용 파일
-      filesPreview: [], //보낼 파일
-      uploadImageIndex: 0, // 이미지 업로드를 위한 변수
-      images: null,
     };
   },
   methods: {
@@ -123,149 +98,104 @@ export default {
         this.statusMessage = "공개";
       }
     },
-
-    imageUpload() {
-      let num = -1;
-      for (let i = 0; i < this.$refs.files.files.length; i++) {
-        this.filesPreview.push(this.$refs.files.files[i]);
-
-        this.files = [
-          ...this.files,
-          //이미지 업로드
-          {
-            //실제 파일
-            file: this.$refs.files.files[i],
-            //이미지 프리뷰
-            preview: URL.createObjectURL(this.$refs.files.files[i]),
-            //삭제및 관리를 위한 number
-            number: i,
-          },
-        ];
-        num = i;
-      }
-      this.uploadImageIndex = num + 1; //이미지 index의 마지막 값 + 1 저장
-      console.log("222222222222222222222길이 :" + this.filesPreview.length);
-    },
     imageAddUpload() {
-      console.log(this.$refs.files.files);
-
-      let num = -1;
-      for (let i = 0; i < this.$refs.files.files.length; i++) {
-        //보낼 파일 데이터 넣기
-        this.filesPreview.push(this.$refs.files.files[i]);
-        console.log("증가" + this.filesPreview);
-        console.log("222222222222222222222길이 :" + this.filesPreview.length);
-
-        this.files = [
-          ...this.files,
+      this.files.push (
           //이미지 업로드
-          {
-            //실제 파일
-            file: this.$refs.files.files[i],
-            //이미지 프리뷰
-            preview: URL.createObjectURL(this.$refs.files.files[i]),
-            //삭제및 관리를 위한 number
-            number: i + this.uploadImageIndex,
-          },
-        ];
-        num = i;
-      }
-      this.uploadImageIndex = this.uploadImageIndex + num + 1;
-
-      console.log(this.files);
-      // console.log(this.filesPreview);
+          {   //실제 파일
+              file: this.$refs.files.files[0],
+              //이미지 프리뷰
+              name: URL.createObjectURL(this.$refs.files.files[0]),
+              //삭제및 관리를 위한 number
+          }
+      )
     },
-    fileDeleteButton(e) {
-      const name = e.target.getAttribute("name");
-      console.log("111111길이 :=---------------------");
-      //보낼 파일에서 데이터 삭제
-      this.filesPreview.pop(name);
-      console.log("제거" + this.filesPreview);
-      console.log("222222222222222222222길이 :" + this.filesPreview.length);
-
-      this.files = this.files.filter((data) => data.number !== Number(name));
-      // console.log(this.files);
+    fileDeleteButton(index) {
+        //보낼 파일에서 데이터 삭제
+        this.files.pop(index)
+        // console.log(this.files);
     },
 
     //보내기 통신
-    async writeRequest() {
-      let params = {
-        title: this.title,
-        body: this.body,
-        status: this.status,
-        boardId: "2", //Q&A 개시판 2,
-      };
-
-      //이미지 있는지 확인
-      console.log("이미지 확인");
-      if (this.filesPreview.length > 0) {
-        //이미지
-        let form = new FormData();
-        let image;
-        console.log("이미지 확인 중");
-        for (let i = 0; i < this.filesPreview.length; i++) {
-          console.log("이미지 확인 중" + i);
-          image = this.filesPreview[i];
-          //이미지 업로드
-          form.append("image", image);
-        }
-
-        console.log("이미지 확인 끝");
-        console.log("이미지 : " + this.images);
-
-        //파일 보내기
-        await authAPI
-          .imageupload(form)
-          .then((res) => {
-            this.images = res.data;
-            console.log("1111111111111111111111111111111");
-            console.log(this.images);
-            console.log(res.data);
-          })
-          .catch((err) => console.log(err));
-      }
-
+    async  writeRequest() {
+      
       if (this.statusMessage == "공개") {
         this.status = "Y";
       } else {
         this.status = "N";
       }
-
       if (this.title === "" || this.title == null) {
         return alert("제목을 입력하세요");
       }
       if (this.body === "" || this.body == null) {
         return alert("내용을 입력하세요");
       }
-      //이미지 데이터 저장
 
-      if (this.images != null) {
-        for (let i = 0; i < this.images.length; i++) {
-          params["image" + i] = this.images[i];
-        }
+      let params = {
+        title: this.title,
+        body: this.body,
+        status: this.status,
+        boardId: "2", //Q&A 개시판 2,
       }
-
-      authAPI
+      let articleId = 0
+      
+        //파일 올리기
+      await  authAPI
         .writeProc(params) //axios 이동
         .then((res) => {
-          console.log(res);
-          if (res.data == "100") {
-            alert("등록되었습니다.");
-            location.href = "/qna"; //페이지 이동
-          } else if (res.data == "200") {
-            alert("비회원은 글작성이 안됩니다.");
-            this.SET_MODAL_LOGIN(true);
-          } else {
-            alert("오류");
+          console.log(res)
+          if(res.data > 0){
+            articleId = res.data
           }
-          console.log(res);
+          if(res.data == "no"){
+            
+            return this.SET_MODAL_LOGIN(true), alert("비회원은 권한이 없습니다.")
+          }else if(res.data == 0){
+            return alert("다시 로그인 해주세요")
+          }
         })
         .catch((err) => {
           console.log(err);
         });
-    },
-  },
-};
+         //이미지 있는지 확인
+      if(articleId > 0 && this.files.length > 0){
+
+        let form = new FormData()
+        let image
+        
+        for(let i = 0 ; i < this.files.length; i++)
+        {
+          image = this.files[i].file
+          
+          //이미지 업로드
+          form.append('image', image)
+        }
+        //파일 보내기
+        authAPI
+        .write12(form, articleId)
+        .then( res => {
+          if(res.data == 100){
+             alert("글을 작성하였습니다")
+            return location.href = "/qna";
+          }else if(res.data == 300){
+            return alert("글 작성 중 오류가 발생습니다")
+          }else if(res.data == 400){
+            return alert("글 작성을 실패했습니다")
+          }else{  
+            return alert("글 오류")
+          }
+        })
+        .catch( err => {
+          console.log(err)
+          console.log("에러")
+          })
+      }else{
+        //이지미 없을 때
+        alert("글을 작성하였습니다")
+            location.href = "/qna" ;
+      }
+    }
+  }
+}
 </script>
 
 <style scoped>

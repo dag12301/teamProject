@@ -48,21 +48,12 @@ public class ArticleController {
     
     @Autowired
 	private final S3Service s3Service = null;
-
-	/**
-	 * 작성자 : 김건우
-	 * @param boardId 1: 공지사항, 2: ... 여기에 값을 넣으면 그 카테고리에있는 게시물을 다 가져옴
-	 * @return
-	 */
-    //본인 확인
-    @PostMapping("/articleVerify")
-    public ResponseEntity  verify(@RequestBody Map<String, Object> writeForm,HttpServletRequest request)
-    {
-    	System.out.println("본인 확인");
-		
-		//System.out.println("글 multipartFile" + multipartFile);
-		long memberId = 0;
-		try
+    
+    //멤버 아이디 
+    private long getMemberIdByRequest(HttpServletRequest request) {
+        System.out.println("받은 토큰으로 멤버를 검색합니다");
+        long memberId = 0;
+        try
 		{
 			//JWT 토큰값
 			String JWT = jwtService.resolveToken(request);
@@ -76,6 +67,22 @@ public class ArticleController {
 		{
 			System.out.println("memberId 없음");
 		}
+        return memberId;
+    }
+
+	/**
+	 * 작성자 : 김건우
+	 * @param boardId 1: 공지사항, 2: ... 여기에 값을 넣으면 그 카테고리에있는 게시물을 다 가져옴
+	 * @return
+	 */
+    //본인 확인
+    @PostMapping("/articleVerify")
+    public ResponseEntity  verify(@RequestBody Map<String, Object> writeForm,HttpServletRequest request)
+    {
+    	System.out.println("본인 확인");
+		
+		long memberId = getMemberIdByRequest(request);
+		
 		
 		Map<String, Object> params = (Map<String, Object>) writeForm.get("params");
 		System.out.println(params);
@@ -119,50 +126,7 @@ public class ArticleController {
     }
     
     
-  //이미지 업로드
-    @PostMapping("/imageUpload")
-    public List<ImageFile> imageFile(@RequestPart(value="image", required=false) List<MultipartFile> image)
-    {
-    	System.out.println("이미지 업로드");
-    	System.out.println(image);
-    	
-    	List<ImageFile> files = new ArrayList<>();
-         
-    	 for(MultipartFile file: image)
-    	 {
-    		 ImageFile articleImageFile = new ImageFile();
-        	 String fileURL = null;
-    		 
-    		 try 
-             {
-                fileURL = s3Service.upload(file, "image_article_");
-             } 
-             catch (IOException e) 
-             {
-                 throw new RuntimeException("S3 업로드중 오류발생!");
-             }
-    		 
-    		 articleImageFile.setFilesize(file.getSize());				//파일 사이즈
-             articleImageFile.setFiletype(file.getContentType());		//파일 타입
-             articleImageFile.setName(fileURL);							//파일 경로
-             articleImageFile.setOrgName(file.getName());				//원래 이름
-             
-             files.add(articleImageFile);
-             
-             
-             
-    	 }
-    		 
-    	 System.out.println(files);
-    	 
-    	 
-         
-         
-    	
-    	
-    	return files;
-    }
-	
+
 	//테스트
 	@GetMapping(value="/test")
     public String testA(@RequestParam Map<String, Object> userData)
@@ -171,30 +135,11 @@ public class ArticleController {
     	return "테스트요청";
     }
 	
-	
-	//글 업로드  @RequestPart(value="file", required=true)
+	//글 업로드
 	@PostMapping("/board/writeProc")
-	public ResponseEntity write( @RequestBody Map<String, Object> writeForm, HttpServletRequest request)
+	public ResponseEntity writeProc( @RequestBody Map<String, Object> writeForm, HttpServletRequest request)
 	{
-		System.out.println("글 업로드");
-		
-		//System.out.println("글 multipartFile" + multipartFile);
-		long memberId = 0;
-		try
-		{
-			//JWT 토큰값
-			String JWT = jwtService.resolveToken(request);
-			System.out.println(JWT);
-			
-			Map<String, Object> token = jwtService.getUserInfo(JWT);
-			// token에서 memberId 값 가져오기
-			 memberId = (long)((Integer) token.get("memberId")).intValue();
-		}
-		catch(Exception e)
-		{
-			System.out.println("memberId 없음");
-		}
-		System.out.println("memberId : " + memberId);
+		long memberId = getMemberIdByRequest(request);
 		
 		if(memberId > 0)
 		{
@@ -207,7 +152,6 @@ public class ArticleController {
 			
 			Article article = new Article();
 			
-			
 			article.setTitle((String)writeData.get("title"));
 
 			article.setBody((String)writeData.get("body"));
@@ -218,75 +162,62 @@ public class ArticleController {
 			
 			article.setWriterId(memberId);
 			
-			count = articleService.listInsert(article, memberId);
+			count = articleService.listInsert(article);
 			
 			if(count > 0)
 			{
-				System.out.println("글 업로드");
-				
-				
-					//이미지 체크
-					if(writeData.size() -4 > 0)
-					{
-						System.out.println("이미지 업로드");
-						
-						for(int i = 0; i < writeData.size() -4; i++)
-						{
-							Map<String, String> map = (Map<String, String>) writeData.get("image" + i);
-					
-							ImageFile image = new ImageFile();
-							
-							image.setOrgName(map.get("orgName"));
-							
-							image.setName(map.get("name"));
-							
-							image.setFiletype(map.get("filetype"));
-							
-							String filesize = String.valueOf(map.get("filesize"));
-							
-							int score = Integer.parseInt(String.valueOf(map.get("filesize")));
-
-							image.setFilesize(score );
-							
-							image.setRef_id((int)article.getArticleId());
-							
-							
-							articleService.registerStore(image);
-							
-						}
-						
-						
-						System.out.println("글작성, 이미지 성공 \n");
-						return new ResponseEntity("100", HttpStatus.OK);
-						
-					}
-					else
-					{
-						System.out.println("글작성, 이미지 없음 \n");
-						return new ResponseEntity("100", HttpStatus.OK);
-					}
-				
-				
-				
-				
-			}
-			else
-			{
-				System.out.println("글작성 실패 \n");
-				return new ResponseEntity("500", HttpStatus.OK);
+				return new ResponseEntity(article.getArticleId(), HttpStatus.OK);
 			}
 		}
 		else
 		{
-			System.out.println("비회원 실패 \n");
-			return new ResponseEntity("200", HttpStatus.OK);
+			return new ResponseEntity("no", HttpStatus.OK);
 		}
+		//글 업로드 실패
+		return new ResponseEntity("0", HttpStatus.OK);
 	}
+	
+	//이미지 업로드  
+		@PostMapping("/board/imageUpload")
+	public ResponseEntity imageUpload( long articleId,@RequestPart(value="image", required = false) List<MultipartFile> image, HttpServletRequest request)
+		{
+			System.out.println("글 업로드");
 
-	private long parseInt(String string) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+			long memberId = this.getMemberIdByRequest(request);
+			
+			System.out.println("memberId : " + memberId);
+			
+			if(articleId > 0)
+			{
+				Article article = null;
+				
+				article = articleService.boardList(articleId);
+				
+				if(article != null)
+				{
+					
+					if(articleService.registerFile(articleId, image) == image.size())
+					{
+						return new ResponseEntity("100", HttpStatus.OK);
+					}
+					else
+					{
+						return new ResponseEntity("300", HttpStatus.OK);
+					}
+				}
+				else
+				{
+					return new ResponseEntity("400", HttpStatus.OK);
+				}
+			}
+			else
+			{
+				return new ResponseEntity("400", HttpStatus.OK);
+			}
+		}
+
+
+	
 
 
 	//댓글 업로드
@@ -462,11 +393,6 @@ public class ArticleController {
 		
 		long articleId = (long)(((Integer) params.get("articleId")).intValue());
 		
-		System.out.println("writerId : " +writerId);
-		System.out.println("articleId : " +articleId);
-		System.out.println("memberId : " + memberId);
-		
-		
 		if(memberId != 0)
 		{
 			if(writerId == memberId)
@@ -545,26 +471,8 @@ public class ArticleController {
 	public ResponseEntity boardUpdate(@RequestBody Map<String, Object> ListData, HttpServletRequest request)
 	{
 		System.out.println("개시글 수정");
-		long memberId = 0;
+		long memberId = getMemberIdByRequest(request);
 
-		try
-		{
-			//JWT 토큰값
-			String JWT = jwtService.resolveToken(request);
-			System.out.println(JWT);
-			
-			Map<String, Object> token = jwtService.getUserInfo(JWT);
-			// token에서 memberId 값 가져오기
-			 memberId = (long)((Integer) token.get("memberId")).intValue();
-			 System.out.println("memberId 있음");
-			//memberId = 1;
-		}
-		catch(Exception e)
-		{
-			System.out.println("memberId 없음");
-		}
-		
-		
 		//업데이트 글 정보
 		Map<String, Object> params = (Map<String, Object>) ListData.get("params");
 		System.out.println(params);
@@ -572,60 +480,59 @@ public class ArticleController {
 		String title = (String)params.get("title");
 		String body = (String)params.get("body");
 		
+		ArrayList<Integer> fileIds = (ArrayList<Integer>) params.get("imageDelete");
 		
 		long articleId = (long) ((Integer) params.get("articleId")).intValue();
+		long writerId = (long) ((Integer) params.get("writerId")).intValue();
 		
 		System.out.println("articleId : " +articleId);
 		
-		Article article = null;
+		Article article = new Article();
 		
-		if(memberId == 0)
+		if(memberId != 0)
 		{
 			if(articleId > 0)
 			{
-				article = articleService.boardList(articleId);
-				
-				if(article != null)
+				if(memberId == writerId)
 				{
-					if(memberId == article.getWriterId())
+					article.setTitle(title);
+					article.setBody(body);
+					article.setArticleId(articleId);
+			
+					if(articleService.boardUpadte(article) > 0)
 					{
-						article.setTitle(title);
-						article.setBody(body);
-						
-						if(articleService.boardUpadte(article) > 0)
+						if(fileIds.size() > 0)
 						{
-							System.out.println("성공");
-							return new ResponseEntity("100", HttpStatus.OK);
+							for(int fileId : fileIds)
+							{
+								System.out.println(fileId);
+								articleService.imageDelete( (int)fileId);
+							}
+							System.out.println("이미지 성공");
+							return new ResponseEntity(articleId, HttpStatus.OK);
+							
 						}
 						else
 						{
-							System.out.println("시스템 오류");
-							return new ResponseEntity("500", HttpStatus.OK);
+							System.out.println("이미지 파일 없음");
+							return new ResponseEntity(articleId, HttpStatus.OK);
 						}
 					}
 					else
 					{
-						System.out.println("작성자 아님");
-						return new ResponseEntity("250", HttpStatus.OK);
+						System.out.println("글 수정 성공");
+						return new ResponseEntity("ok", HttpStatus.OK);
 					}
 				}
-				else
-				{
-					System.out.println("DB오류");
-					return new ResponseEntity("300", HttpStatus.OK);
-				}
-			}
-			else
-			{
-				System.out.println("글없음");
-				return new ResponseEntity("400", HttpStatus.OK);
-			}
+			}	
 		}
 		else
 		{
 			System.out.println("비회원");
-			return new ResponseEntity("200", HttpStatus.OK);
+			return new ResponseEntity(0, HttpStatus.OK);
 		}
+		System.out.println("비회원");
+		return new ResponseEntity("no", HttpStatus.OK);
 	}
 	
 	
@@ -635,14 +542,21 @@ public class ArticleController {
 										    @RequestParam(required = false, defaultValue = "1") int range,		//버튼 prev,next클릭시 페이지 위치
 										    @RequestParam(required = false, defaultValue = "10") int listSize,		//리스트 수
 										    @RequestParam(required = false, defaultValue = "5") int rangeSize,	//페이지 수
-										    @RequestParam long boardId) throws Exception
+										    @RequestParam long boardId,
+										    @RequestParam(required = false) String search
+										    
+										    
+										    ) throws Exception
 	{	
 		System.out.println("페이징 처리중");
+		
+		System.out.println("search: " + search);
+		
 		
 		Map<String, Object> map = new HashMap<>();
 		
 		//전체 게시글 개수
-		int total = articleService.getBoardListCnt(boardId);
+		int total = articleService.getBoardListCnt(boardId, search);
 
 	    //Pagination 객체생성
 		PagingA paging = new PagingA();
@@ -651,7 +565,7 @@ public class ArticleController {
 		//페이지 리스트 수가 rangeSize보다 작을 때
 		if(range == 1 && paging.getTotalpage() <= paging.getEndPage())
 		{
-			System.out.println("작아 \n\n ");
+			
 			paging.setEndPage(paging.getTotalpage());
 			
 			range = 1;
@@ -660,24 +574,34 @@ public class ArticleController {
 			paging.setPrev(false);
 		}
 		
-		System.out.println("total : " + total);
-		System.out.println("page : " + page );
-		System.out.println("StartList : " + paging.getStartList());
-		System.out.println("range : " + range );
-		System.out.println("pageCnt : " + paging.getTotalpage());
-		System.out.println(paging.getStartList());
-		System.out.println("startPage: " + paging.getStartPage());
-		System.out.println("endPage: " + paging.getEndPage());
-		
-		List<Article>  list =  articleService.getBoardList(paging, boardId);
+		List<Article>  list =  articleService.getBoardList(paging, boardId, search);
 		
 		map.put("paging", paging);
 		map.put("list", list);
+		map.put("search", search);
+		
+		
 		
 		return map;
 	}
 	
-	
+	//내글 보기
+	@GetMapping(value="/pagingMyBoard")
+	public Map<String, Object> getMyList(@RequestParam long boardId, HttpServletRequest request)
+	{
+		System.out.println("내글 보기");
+		
+		long memberId = getMemberIdByRequest(request);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		List<Article> list = articleService.myList(memberId, boardId);
+		
+		map.put("list", list);
+		
+		
+		return map;
+	}
 	
 	
 }

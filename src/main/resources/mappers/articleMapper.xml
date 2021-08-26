@@ -21,7 +21,14 @@ VALUES (NOW(),
 </insert>
 <!-- 게시물 이미지 조회 -->
 <select id="imageFileList" resultType="ImageFile">
-SELECT *
+SELECT 
+	`articlefileId` AS fileId,
+	`regDate`,
+	`org_name`,
+	`name`,
+	`filetype`,
+	`filesize`,
+	`article_id` AS ref_id
 FROM article_file
 WHERE article_id = #{articleId}
 
@@ -59,6 +66,12 @@ UPDATE article
 	SET STATUS = 'S'
 WHERE parant_id = #{value}
 </delete>
+
+<delete id="imageDelete" parameterType="ImageFile">
+DELETE FROM article_file
+WHERE articlefileId = #{value}
+</delete>
+
 
 <!-- 게시물 보기 -->
 <select id="boardList" parameterType="long" resultType="Article">
@@ -162,8 +175,11 @@ FROM    `article` A INNER JOIN `member` B
 ON A.writer_id = B.memberId
 
 WHERE	board_id = #{boardId}
-OR	A.status = 'Y'
-OR	B.status = 'N'
+AND	A.status != 'S'
+<if test="search != null">
+AND	title LIKE CONCAT('%', #{search} ,'%')
+</if>
+
 
 ORDER BY A.articleId DESC
 
@@ -173,13 +189,15 @@ LIMIT #{paging.startList}, #{paging.listSize}
 <!-- 전체 페이지 수 -->
 <select id="getBoardListCnt" resultType="int">
 SELECT
-
 	COUNT(*) AS totalPage
-
 FROM
 	article
-WHERE	
-	board_id = #{boardId}
+WHERE	board_id = #{boardId}
+AND		status != 'S'
+<if test="search != null">
+AND	title LIKE CONCAT('%', #{search} ,'%')
+</if>
+
 
 </select>
 
@@ -219,6 +237,28 @@ ORDER BY articleId DESC
 </select>
 
 
+<!-- 낸글 모두 보기 -->
+<select id="myList" resultType="Article">
+SELECT A.articleId,
+	A.regDate,
+	A.updateDate,
+	A.title,
+	A.BODY,
+	A.hit,
+	A.STATUS,
+	A.children,
+	A.parant_id AS patantId,
+	A.board_id AS boardId,
+	A.writer_id AS writerId,
+	B.nickname
+	
+FROM    `article` A INNER JOIN `member` B
+ON A.writer_id = B.memberId
+
+WHERE board_id = #{boardId}
+AND	writer_id = #{memberId}
+
+</select>
 
 	
 	

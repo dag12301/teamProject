@@ -10,7 +10,7 @@
             <!--지도 -->
             <div class="col-xl-7">
               <div class="card mb-4">
-                <kakao style="z-index: 0"></kakao>
+                <kakao style="z-index: 0" :shopList="nearShopList"></kakao>
               </div>
             </div>
             <!--가게 리스트 -->
@@ -93,7 +93,9 @@ export default {
         .then((res) => {
           console.log(res.data);
           this.nearShopList = res.data;
+          console.log(this.nearShopList);
           this.showList = true;
+          console.log("가게 메뉴들 불러온다");
         })
         .catch((e) => {
           console.log(e);
@@ -101,7 +103,7 @@ export default {
     },
     test() {
       http.get("/api/test").then((res) => {
-        console.log(res);
+        console.log("res임 : " + res);
       });
     },
     showShopDetail(storeId) {
