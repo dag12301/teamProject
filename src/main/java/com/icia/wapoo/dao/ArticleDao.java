@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.icia.wapoo.model.Article;
 import com.icia.wapoo.model.ImageFile;
+import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.paging.PagingA;
 
 import java.util.List;
@@ -48,6 +49,9 @@ public interface ArticleDao {
 	public List<Article> commentList(long parantId);
 	//내글 모두 보기
 	public List<Article> myList(long memberId, long boardId);
+	
+	//member 확인
+	LoginInfo memberVerify(long memberId);
 	
 
 

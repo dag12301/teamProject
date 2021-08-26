@@ -12,7 +12,7 @@
         @click="listPage(notice.articleId)"
       >
         <span class="position-absolute" style="left: 1vw"
-          >[{{ notice.nickname }}]</span
+          >{{ notice.nickname }}</span
         >
         <span class="position-absolute" style="left: 8vw">
           <span>

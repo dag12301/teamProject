@@ -24,9 +24,9 @@
     
     <!-- 글쓰기 -->
     <div class="">
-      <button type="button" class="btn btn-primary " @click="myPage">내글조회</button>
-      <router-link class="btn btn-primary position-relative left-30 write" :to="{ name: 'WriteForm' }"
-        >글쓰기</router-link
+      <button type="button" class="btn btn-primary  mb-2 mr-3" @click="myPage">내글조회</button>
+      <button class="btn btn-primary left-30 write mb-2 mx-3" @click="memberCheck" 
+        >글쓰기</button
       >
     </div>
 
@@ -35,7 +35,7 @@
     <table class="table table-striped">
       <tbody>
         <tr>
-          <th>닉네임</th>
+          <th>번호</th>
           <th>제목</th>
           <th>내용</th>
           <th>날짜</th>
@@ -134,7 +134,26 @@ export default {
       nullPagingpagingQueAn: "serviceCenter/nullPagingpagingQueAn",
       nullCenterQueAn: "serviceCenter/nullCenterQueAn",
       setPagingQueAn: "serviceCenter/setPagingQueAn",
+      SET_MODAL_LOGIN: "SET_MODAL_LOGIN"
     }),
+    //글쓰기전 본인 확인
+    memberCheck() {
+      authAPI
+      .memberCheck()
+      .then(res => {
+        console.log(res)
+        if(res.data){
+          location.href="/writeForm"
+        }else{
+          alert("회원 권한입니다.")
+          return this.SET_MODAL_LOGIN(true)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+
     listPage(articleId) {
       //페이지 이동
       let params = {
