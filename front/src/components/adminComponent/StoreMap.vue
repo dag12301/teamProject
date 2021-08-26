@@ -3,6 +3,9 @@
     <div class="col-md-10 gray mt-2">
       <div id="staticMap"></div>
     </div>
+    <div>
+      하하
+    </div>
   </div>
 </template>
 

@@ -118,7 +118,7 @@
             <div class="orderText">
               <p>결제수단 선택</p>
             </div>
-            <div class="orderPay">
+            <div class="orderPay" style="margin-bottom: 10px;">
               <div>
                 <span style="font-weight: 550; font-size: 18px; margin-top: 10px;">WAHT POO에서 결제</span><span style="font-size: 14px; color: lightgray;">웹에서 미리 결제</span><br/>
                 <div class="payKakao">
@@ -127,8 +127,8 @@
               </div>
               <div>
                 <span style="font-weight: 550; font-size: 18px;">현장 결제</span><span style="font-size: 14px; color: lightgray;">음식받고 직접 결제</span>
-                <div style="margin-left: 33%;">
-                  <div style="margin-top: 10px; width: 50%;">
+                <div >
+                  <div style="margin-top: 10px;">
                     <div class="payLeft" >
                       <div class="Pay leftPay" style="line-height: 60px;">
                         <label style="vertical-align: middle;">신용카드</label>
@@ -144,22 +144,22 @@
               </div>
             </div>
           </div>
-          <div class="calculatorWrapper d-block" style="padding-top: 0px;">
+          <div class="calculatorWrapper d-block" style="padding-top: 0px; margin-top: 100px;">
             <div class="orderText">
               <p>주문내역</p>
             </div>
             <div class="orderList">
-              <div v-for="(food, index) in foodList" :key="index">
-                <div class="col-8" style="float: left; background-color: orange;">
+              <div v-for="(food, index) in foodList" :key="index" style="margin-top: 15px;">
+                <div class="col-8" style="float: left; font-size: 20px;">
                   {{food.name}} X {{foodQuantity(food.foodId)}} 개
                 </div>
-                <div class="col-4" style="float: right; background-color: yellow;">
+                <div class="col-4" style="float: right; font-size: 20px;">
                   {{ totalPrice(food.foodId, food.price) }} 원
                 </div> 
               </div>
-              <hr />
+              <hr style="padding: 1px;"/>
               <div class="col-8" style="float: left;">
-                <span>총 결제 금액</span>
+                <span style="font-weight: 600; font-size: 20px;">총 결제 금액</span>
               </div>
               <div class="col-4" style="float: right;">
                 <span>총액</span>

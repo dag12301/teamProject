@@ -1,7 +1,7 @@
 <template>
   <div class="review">
     <div class="review-left">
-      4.9
+      <span style="font-weight: 600; font-size: 35px;">4.9</span><span style="color: lightgray; font-size: 28px;"> / 5</span>
       <div style="font-size: 13px; margin-top: 0px">
         <i class="fas fa-star"></i><i class="fas fa-star"></i
         ><i class="fas fa-star"></i><i class="fas fa-star"></i
@@ -10,19 +10,28 @@
     </div>
   </div>
   <div class="review2">
-    <p class="review2-p">리뷰 100개 · 사장님 댓글 48개</p>
+    <div style="float: left; width: 70%;">
+      <p class="review2-p">리뷰 <span style="font-weight: 600;">100</span>개 · 사장님 댓글 <span style="font-weight: 600;">48</span>개</p>
+    </div>
+    <div style="float: right; width: 20%; margin-top: 5px; margin-right: 20px;">
+      <div class="review2-div" style="height: 40px;"><div><i class="fas fa-pencil-alt"></i><span style="margin-left: 10px;">리뷰쓰기</span></div></div>
+    </div>
   </div>
   <div class="review3">
-    <div class="review3-text">
-      <span class="review3-span1">소희님</span>
-      <span class="review3-span2">8시간 전</span>
-      <a href="#" class="review3-a">신고</a>
+    <div style="width: 100%;">
+      <div class="review3-text">
+        <span class="review3-span1">소희님</span>
+        <span class="review3-span2">8시간 전</span>
+      </div>
+      <div class="review3-div">
+        <a href="#" class="review3-a" >신고</a>
+      </div>
     </div>
-    <div class="review3-star">
+    <div class="review3-star" style="width: 200px;">
       <div class="star-1">
         <i class="fas fa-star"></i><i class="fas fa-star"></i
         ><i class="fas fa-star"></i><i class="fas fa-star"></i
-        ><i class="fas fa-star"></i>
+        ><i class="fas fa-star"></i>&nbsp;&nbsp;<span>5.0</span>
       </div>
     </div>
     <div>
@@ -50,31 +59,25 @@
     </div>
   </div>
   <div class="review3">
-    <div class="review3-text">
-      <span class="review3-span1">소희님</span>
-      <span class="review3-span2">8시간 전</span>
-      <a href="#" class="review3-a">신고</a>
+    <div style="width: 100%;">
+      <div class="review3-text">
+        <span class="review3-span1">소희님</span>
+        <span class="review3-span2">8시간 전</span>
+      </div>
+      <div class="review3-div">
+        <a href="#" class="review3-a" >신고</a>
+      </div>
     </div>
-    <div class="review3-star">
+    <div class="review3-star" style="width: 200px;">
       <div class="star-1">
         <i class="fas fa-star"></i><i class="fas fa-star"></i
         ><i class="fas fa-star"></i><i class="fas fa-star"></i
-        ><i class="fas fa-star"></i>
+        ><i class="fas fa-star"></i>&nbsp;&nbsp;<span>4.8</span>
       </div>
     </div>
-    <div
-      class="review3-img"
-      style="
-        width: 250px;
-        height: 250px;
-        border: 1px solid red;
-        margin-left: 10px;
-      "
-    >
-      이미지 부분
-    </div>
+    
     <div class="review3-menu">
-      <p>메뉴 뭐시켰는지 시킨음식</p>
+      <p>미소라멘 X 1개, 가라아게 X 1개</p>
     </div>
     <div class="review3-view">
       <p>
@@ -104,20 +107,24 @@
   text-align: left;
   background-color: lightgray;
   height: 50px;
+  line-height: 50px;
+  padding-left: 20px;
 }
 .review2-p {
-  width: 100%;
-  margin-top: 20px;
+  line-height: middle;
+  
 }
 
 .review3 {
   width: 100%;
   border: 1px solid black;
   text-align: left;
-  padding-top: 15px;
+  padding: 15px;
+  padding-left: 20px;
 }
 .review3-text {
-  width: 100%;
+  float: left;
+  width: 80%;
 }
 .review3-span1 {
   font-size: 20px;
@@ -126,11 +133,11 @@
 .review3-span2 {
   color: lightgray;
   margin-left: 10px;
+
 }
 .review3-a {
   text-decoration: none;
   color: gray;
-  margin-left: 50%;
   font-weight: bold;
 }
 
@@ -150,5 +157,21 @@
 
 .fa-star {
   color: burlywood;
+}
+
+
+.review3-div {
+  text-align: right;
+  padding-right: 40px;
+  float: right;
+  width: 20%;
+}
+
+
+.review2-div {
+  border: 2px solid rgb(170, 170, 170);
+  background-color: #FAFAFA;
+  text-align: center;
+  border-radius: 25px;
 }
 </style>

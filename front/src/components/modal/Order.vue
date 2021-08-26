@@ -9,19 +9,6 @@
       <span style="font-size: 20px;">{{ data.price }} 원</span><br />
       {{ data.description }}
 
-      <hr style="margin-bottom: 0px;"/> 
-      <div style="width: 100%; margin-bottom: 10px;">
-        <div style="float: left; margin-top: 10px;">
-          <span style="left: 0; font-size: 18px;">수량 &nbsp;&nbsp; {{ counter }}</span>
-        </div>
-        <div style="float: right;">
-          <a v-if="counter !== 1" v-on:click="counter -= 1" style="font-size: 30px; margin-right: 20px;">-</a>
-          <a  v-on:click="counter += 1" style="font-size: 30px;">+</a>
-        </div>
-      </div >
-
-      <div class="btn btn-primary" @click="check">확인</div>
-
     </template>
     <template v-slot:footer>
       <div class="btn btn-success" @click="addToCart(data.foodId)">
