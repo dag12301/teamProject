@@ -8,27 +8,29 @@
       />
       <!-- 프로필 -->
       <div v-if="userInfo[0]">
-        <div style="text-align:center">
-          <div class="user" style="padding-bottom:10%">
-            <img src="https://image.news1.kr/system/hp/2019/11/29/3943620/dims/optimize" class="profile"/>
-            <span style="color:black;"><span style="font-weight:bold;">{{ userNickname }}</span> 님 <br /> 안녕하세요.</span>
+        <div style="text-align: center">
+          <div class="user" style="padding-bottom: 10%">
+            <img
+              src="https://image.news1.kr/system/hp/2019/11/29/3943620/dims/optimize"
+              class="profile"
+            />
+            <span style="color: black"
+              ><span style="font-weight: bold">{{ userNickname }}</span> 님
+              <br />
+              안녕하세요.</span
+            >
           </div>
         </div>
         <div class="login">
-          <router-link to="/myProfile">
-            <button
-              type="button"
-              class="btn btn-success"
-            >
-              프로필
-            </button>
+          <router-link to="/myPage">
+            <button type="button" class="btn btn-success">프로필</button>
           </router-link>
-            <button
-              type="button"
-              class="btn btn-success"
-              @click="this.$store.dispatch('auth/logout')"
-            >
-              로그아웃
+          <button
+            type="button"
+            class="btn btn-success"
+            @click="this.$store.dispatch('auth/logout')"
+          >
+            로그아웃
           </button>
         </div>
       </div>
@@ -121,9 +123,9 @@ export default {
   opacity: 0;
 }
 .profile {
-  width:70px;
-  height:70px;
-  border-radius:50%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
 }
 .user {
   display: flex;

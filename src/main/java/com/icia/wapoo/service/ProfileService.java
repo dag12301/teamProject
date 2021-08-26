@@ -18,13 +18,7 @@ public class ProfileService {
 	//프로필 조회 profileDao에서 가져옴
 	public Profile profileSelect(int memberId)
 	{
-		System.out.println("프로필 서비스");
-		
-		System.out.println("프로필 서비스(멤버아이디) : " + memberId);
 		Profile profile = profileDao.checkProfile(memberId);
-		
-		System.out.println("프로필 서비스(프로필) : " + profile);
-		
 		return profile;
 	}
 	

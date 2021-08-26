@@ -30,8 +30,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/profile")
 @RequiredArgsConstructor
 public class ProfileController {
-	
-	//JWT 값 받기
+
 	@Autowired
     private JwtService jwtService;
     @Autowired
@@ -44,37 +43,16 @@ public class ProfileController {
         return ((Integer) claims.get("memberId")).intValue();
     }
     
-	//게시글 조회
-	@PostMapping("/myProfile")
-	public Profile profileSelect(HttpServletRequest request,int memberId)
+	// 프로필 조회
+	@GetMapping("/myProfile")
+	public ResponseEntity profileSelect(HttpServletRequest request)
 	{
-		System.out.println("request임 : " + request);
-        String token = jwtService.resolveToken(request);
-        System.out.println("토큰 : " + token);
-        Map<String, Object> claims = jwtService.getUserInfo(token);
-        System.out.println("claims임 : " + claims);
-        
-		System.out.println("컨트롤러(멤버아이디) : " + memberId);
+		int memberId = getMemberIdByRequest(request);
 		Profile profile = profileService.profileSelect(memberId);
-		System.out.println("컨트롤러(프로필) : " + profile);
-		
-        return profile;
-	}
-	
-	/*
-	 * 
-	@PostMapping("/myProfile")
-	public ResponseEntity myProfile(HttpServletRequest request)
-	{
-		Integer memberId = null;
-        memberId = getMemberIdByRequest(request);
-		Profile profile = null;
-		profile = profileService.profileSelect(memberId);
-	      
+		if(profile == null) {
+		    return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 		return new ResponseEntity(profile, HttpStatus.OK);
 	}
-	 */
-	
-	
 	
 }
