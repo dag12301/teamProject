@@ -55,7 +55,6 @@ expand-leave-active {
 }
 .item-img {
   float: right;
-  border: 1px solid black;
   width: 90px;
   height: 90px;
   margin-top: 4px;
