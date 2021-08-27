@@ -14,5 +14,6 @@ public class Profile{
 	private String tel;			// 전화번호
 	private String email;			// 이메일
 	private String nickname;	// 닉네임
+	private String status;
 
 }

@@ -9,10 +9,12 @@
 		m.`name` AS name, 
 		m.`phone` AS tel, 
 		m.`email` AS email, 
-		m.`nickname` AS nickname
+		m.`nickname` AS nickname,
+		m.`status` AS status
    FROM `loginInfo` l, `member` m 
   WHERE m.memberId = l.member_id 
-    AND m.memberId = #{memberId};
+    AND m.memberId = #{memberId}
+    AND m.status = "Y";
 </select>
 
 </mapper>

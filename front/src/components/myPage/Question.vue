@@ -1,4 +1,5 @@
 <template>
+<div class="container" style="width: 800px; border-style: solid; border-width: 1px 1px 0px 1px;">
   <div class="row">
     <div class="col Q">
       <div class="Q-title">
@@ -69,6 +70,7 @@
       <div class="Q-text">가나다라마바사아자차카타파하</div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
