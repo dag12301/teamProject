@@ -41,12 +41,19 @@ export default {
   components: { myProfile, myCoupon, myOrderHistory, myReview, myQuestion },
   data() {
     return {
-      currentView: "myProfile",
+      view: "myProfile",
     };
+  },
+  computed:{
+    currentView: function() {
+      console.log(this.view);
+      console.log("넘어옴");
+      return this.view;
+    }
   },
   methods: {
     changeView(request) {
-      this.currentView = request;
+      this.view = request;
     },
   },
 };

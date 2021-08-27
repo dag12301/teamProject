@@ -1,8 +1,9 @@
 <template>
+<div class="container" style="width: 800px;">
   <div style="height: 660px">
-    <div v-if="correction == false">
+    <div v-if="correction == true">
       <div v-if="profile != null">
-        <div class="row" style="padding: 20px">
+        <div class="row" style="padding: 20px; border: 1px solid black;">
           <div class="img" style="padding-bottom: 20px">
             <img
               src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
@@ -41,26 +42,26 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-4 profile-1" style="border-bottom: 1px solid black">
+          <div class="col-4 profile-1">
             이메일 :
           </div>
-          <div class="col-8 profile-2" style="border-bottom: 1px solid black">
+          <div class="col-8 profile-2">
             {{ profile.email }}
           </div>
         </div>
       </div>
     </div>
-    <div v-if="correction == true">
+    <div v-if="correction == false">
       <EditProfile></EditProfile>
     </div>
     <div class="button">
-      <div v-if="correction == false">
-        <button type="button"  @Click="edit(true)" class="btn btn-secondary">
+      <div v-if="correction == true">
+        <button type="button"  @Click="edit(false)" class="btn btn-secondary">
           <span style="font-size: 20px">수정하기</span>
         </button>
       </div>
-      <div v-if="correction == true">
-        <button type="button" @Click="edit(false)" class="btn btn-secondary">
+      <div v-if="correction == false">
+        <button type="button" @Click="edit(true)" class="btn btn-secondary">
           <span style="font-size: 20px">수정완료</span>
         </button>
       </div>
@@ -69,6 +70,7 @@
       </button>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -80,7 +82,7 @@ export default {
   components: { EditProfile },
   data() {
     return {
-      correction : false,
+      correction : null,
     };
   },
   methods: {
@@ -107,8 +109,18 @@ export default {
         if (response.status === 200) {
           this.profile = response.data;
           if (this.profile != null) {
-            success("프로필을 불러왔습니다.", this);
-            return;
+
+            if (this.profile.status == "Y")
+            {
+              success("프로필을 불러왔습니다.", this);
+              this.correction = true;
+              return;
+            }
+            else
+            {
+              error("정지된 아이디입니다.", this);
+              this.$store.dispatch("auth/logout");
+            }
           }
           // 로직상 이쪽에 올리가 없음. 만약 오게된다면 통신장애.
           error("통신중 오류가 발생했습니다.", this);
@@ -122,9 +134,10 @@ export default {
       .catch((err) => {
         // 에러 내용을 보려면 err.response
         // err 와 error 는 다른것이기에 이렇게 작성한것은 잘했음.
-        console.log(err.response);
+        console.log(err.response.status);
         error("오류가 발생했습니다. 다시 시도해주세요", this);
         // 만약 500 오류가 나면 어떻게 처리할것인가?
+        this.$store.dispatch("auth/logout");
       });
   },
 };
@@ -139,7 +152,7 @@ export default {
   justify-content: center;
   align-items: center;
   border-style: solid;
-  border-width: 1px 1px 0px 0px;
+  border-width: 0px 0px 1px 1px;
 }
 .profile-2 {
   font-weight: 400;
@@ -148,7 +161,7 @@ export default {
   flex-direction: column;
   align-items: center;
   border-style: solid;
-  border-width: 1px 0px 0px;
+  border-width: 0px 1px 1px;
 }
 .button {
   padding: 20px;
