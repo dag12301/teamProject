@@ -125,15 +125,6 @@ public class ArticleController {
     	
     }
     
-    
-
-	//테스트
-	@GetMapping(value="/test")
-    public String testA(@RequestParam Map<String, Object> userData)
-    {
-        System.out.println();
-    	return "테스트요청";
-    }
 	
 	//글 업로드
 	@PostMapping("/board/writeProc")
@@ -215,10 +206,6 @@ public class ArticleController {
 				return new ResponseEntity("400", HttpStatus.OK);
 			}
 		}
-
-
-	
-
 
 	//댓글 업로드
 	@PostMapping("/board/commentProc")
@@ -603,7 +590,40 @@ public class ArticleController {
 		return map;
 	}
 	
-	
+	//글쓰기 고객확인
+	@PostMapping("/memberCheck")
+	public ResponseEntity memberVerify( HttpServletRequest request)
+	{
+		System.out.println("글 쓰기 본인 확인");
+		boolean check = false;
+		
+		long memberId = getMemberIdByRequest(request);
+		System.out.println("memberId : " + memberId);
+		
+		if(memberId >= 0)
+		{
+			System.out.println("111111111111111111111111");
+			check = articleService.memberVerify(memberId);
+			
+			if(check)
+			{
+				System.out.println("2222222222222222222222222");
+				return new ResponseEntity(check, HttpStatus.OK);
+			}
+			else
+			{
+				return new ResponseEntity(check, HttpStatus.OK);
+			}
+			
+		}
+		else
+		{
+			System.out.println("2222222222222222222222222");
+			return new ResponseEntity(check, HttpStatus.OK);
+		}
+		
+		
+	}
 }
 
 

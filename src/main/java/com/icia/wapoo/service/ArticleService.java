@@ -2,6 +2,7 @@ package com.icia.wapoo.service;
 
 import com.icia.wapoo.model.Article;
 import com.icia.wapoo.model.ImageFile;
+import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.model.Store;
 import com.icia.wapoo.paging.PagingA;
 
@@ -339,7 +340,27 @@ public class ArticleService {
 		}
 		return list;
 	}
-
+	//회원 확인
+	public boolean memberVerify(long memberId)
+	{
+		boolean check = false;
+		LoginInfo login = null;
+		
+		try
+		{
+			login = articleDao.memberVerify(memberId);
+			if(login != null)
+			{
+				check = true;
+			}
+		}
+		catch(Exception e)
+		{
+			System.out.println("memberVerify 오류: " + e);
+		}
+		
+		return check;
+	}
 
 	
 	

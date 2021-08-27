@@ -17,6 +17,7 @@
         type="button"
         id="button-addon2"
         @click="searching"
+        style="z-index: 0;"
       >
         검색
       </button>
@@ -24,9 +25,9 @@
     
     <!-- 글쓰기 -->
     <div class="">
-      <button type="button" class="btn btn-primary " @click="myPage">내글조회</button>
-      <router-link class="btn btn-primary position-relative left-30 write" :to="{ name: 'WriteForm' }"
-        >글쓰기</router-link
+      <button type="button" class="btn btn-primary  mb-2 mr-3" @click="myPage">내글조회</button>
+      <button class="btn btn-primary left-30 write mb-2 mx-3" @click="memberCheck" 
+        >글쓰기</button
       >
     </div>
 
@@ -35,7 +36,7 @@
     <table class="table table-striped">
       <tbody>
         <tr>
-          <th>닉네임</th>
+          <th>번호</th>
           <th>제목</th>
           <th>내용</th>
           <th>날짜</th>
@@ -43,6 +44,7 @@
           <th>공개 여부</th>
         </tr>
         <tr
+          style="cursor: pointer;"
           v-for="(qn, index) in this.$store.state.serviceCenter.queAn"
           :key="index"
           @click="listPage(qn.articleId)"
@@ -134,7 +136,27 @@ export default {
       nullPagingpagingQueAn: "serviceCenter/nullPagingpagingQueAn",
       nullCenterQueAn: "serviceCenter/nullCenterQueAn",
       setPagingQueAn: "serviceCenter/setPagingQueAn",
+      SET_MODAL_LOGIN: "SET_MODAL_LOGIN"
     }),
+    //글쓰기전 본인 확인
+    memberCheck() {
+      authAPI
+      .memberCheck()
+      .then(res => {
+        console.log(res)
+        if(res.data){
+          return this.$router.push({name: 'WriteForm'})
+          
+        }else{
+          alert("회원 권한입니다.")
+          return this.SET_MODAL_LOGIN(true)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    },
+
     listPage(articleId) {
       //페이지 이동
       let params = {
@@ -146,8 +168,8 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data == 100) {
-            return (location.href =
-              "/boardList?board=qna&articleId=" + articleId);
+            return (this.$router.push({name: 'BoardList', query: { "board": "qna", "articleId": articleId}}))
+              //location.href ="/boardList?board=qna&articleId=" + articleId);
           } else if (res.data == 250) {
             return alert("비공개 입니다");
           } else if (res.data == 400) {
