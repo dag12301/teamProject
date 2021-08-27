@@ -178,7 +178,7 @@ export default {
         .then( res => {
           if(res.data == 100){
              alert("글을 작성하였습니다")
-            return location.href = "/qna";
+            return this.$router.push({name: 'Q&A'})
           }else if(res.data == 300){
             return alert("글 작성 중 오류가 발생습니다")
           }else if(res.data == 400){
@@ -194,7 +194,8 @@ export default {
       }else{
         //이지미 없을 때
         alert("글을 작성하였습니다")
-            location.href = "/qna" ;
+        return this.$router.push({name: 'Q&A'})
+          
       }
     }
   }

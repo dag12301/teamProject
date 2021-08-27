@@ -17,6 +17,7 @@
         type="button"
         id="button-addon2"
         @click="searching"
+        style="z-index: 0;"
       >
         검색
       </button>
@@ -43,6 +44,7 @@
           <th>공개 여부</th>
         </tr>
         <tr
+          style="cursor: pointer;"
           v-for="(qn, index) in this.$store.state.serviceCenter.queAn"
           :key="index"
           @click="listPage(qn.articleId)"
@@ -143,7 +145,8 @@ export default {
       .then(res => {
         console.log(res)
         if(res.data){
-          location.href="/writeForm"
+          return this.$router.push({name: 'WriteForm'})
+          
         }else{
           alert("회원 권한입니다.")
           return this.SET_MODAL_LOGIN(true)
@@ -165,8 +168,8 @@ export default {
         .then((res) => {
           console.log(res);
           if (res.data == 100) {
-            return (location.href =
-              "/boardList?board=qna&articleId=" + articleId);
+            return (this.$router.push({name: 'BoardList', query: { "board": "qna", "articleId": articleId}}))
+              //location.href ="/boardList?board=qna&articleId=" + articleId);
           } else if (res.data == 250) {
             return alert("비공개 입니다");
           } else if (res.data == 400) {

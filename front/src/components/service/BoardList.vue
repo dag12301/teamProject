@@ -118,7 +118,7 @@
         v-model.trim="commentTitle"
         style="background-color: rgba(176, 201, 183, 0.219); text-align: center"
       />
-      <button class="btn btn-dark" @click="commentProc">댓글입력</button>
+      <button class="btn btn-dark" @click="commentProc1">댓글입력</button>
     </div>
     <br /><br /><br />
 
@@ -167,7 +167,7 @@ export default {
 
       imageDelete: [],  //삭제 이미지
       files: [], //업로드용 파일
-   
+    
       uploadImageIndex: 0, // 이미지 업로드를 위한 변수
       
       //댓글 보내기
@@ -175,32 +175,36 @@ export default {
     };
   },
   created() {
-    //게시물 불러오기
-    let query = this.$route.query.articleId; //articleId받기
-    this.board = this.$route.query.board; //게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)
-    if(this.board == "notice"){
-      this.SET_serviceCenters(1)
-    }else if(this.board == "qna"){
-      this.SET_serviceCenters(2)
-    }else if(this.board == "fqa"){
-      this.SET_serviceCenters(3)
-    }
-  
-
-    authAPI //통신코드
-      .list(query)
-      .then((res) => {
-        console.log(res.data.articleImageFile);
-        this.list = res.data.article; //list에  DB데이터 박기
-        this.MYPAGE = res.data.MYPAGE;
-        this.comments = res.data.list;
-        this.images = res.data.articleImageFile; //이미지
-      });
+    this.boardListPage()
   },
+  
   methods: {
     ...mapMutations(["SET_MODAL_LOGIN", "SET_serviceCenters"]),
+    //화면 통신
+    boardListPage() {
+    //게시물 불러오기
+      let query = this.$route.query.articleId; //articleId받기
+      this.board = this.$route.query.board; //게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)
+      if(this.board == "notice"){
+        this.SET_serviceCenters(1)
+      }else if(this.board == "qna"){
+        this.SET_serviceCenters(2)
+      }else if(this.board == "fqa"){
+        this.SET_serviceCenters(3)
+      }
+    
+      authAPI //통신코드
+        .list(query)
+        .then((res) => {
+          console.log(res.data.articleImageFile);
+          this.list = res.data.article; //list에  DB데이터 박기
+          this.MYPAGE = res.data.MYPAGE;
+          this.comments = res.data.list;
+          this.images = res.data.articleImageFile; //이미지
+        });
+    },
     //댓글 달기 통신
-    commentProc() {
+    commentProc1() {
       if (this.commentTitle === "" || this.commentTitle == null) {
         return alert("글을 입력하세요");
       }
@@ -211,15 +215,12 @@ export default {
       authAPI
         .commentProc(params)
         .then((res) => {
-          console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
           console.log(res);
           if (res.data == 100) {
             alert("입력되었습니다.");
-            location.href =
-              "/boardList?board=" +
-              this.$route.query.board +
-              "&articleId=" +
-              this.$route.query.articleId;
+              this.boardListPage
+              return this.commentTitle=''
+              
           } else if (res.data == 200) {
             alert("비회원은 권한이 없습니다.");
             this.SET_MODAL_LOGIN(true);
@@ -352,10 +353,10 @@ export default {
           console.log(params)
         })
 
-
+        
         //이미지 있는지 확인
       if( this.files.length > 0){
-
+         
         let form = new FormData()
         let image
         
@@ -391,7 +392,7 @@ export default {
       }else{
         //이지미 없을 때
         alert("글을 작성하였습니다")
-            location.href = "/" + this.board;
+            this.boardListPage()
       }
 
     },

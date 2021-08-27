@@ -1,5 +1,5 @@
 <template>
-  <div class="service-center mt-5">
+  <div class="service-center m-5">
     <div class="service-group mb-5 ">
         <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" @click="clickPages(1)" v-if="this.$store.state.serviceCenters == 1">공지사항</router-link>
         <router-link class="btn btn-warning me-5 col-2" :to="{ name: 'Notice' }" @click="clickPages(1)" v-else>공지사항</router-link>
@@ -12,7 +12,7 @@
     </div>
 
     <router-view ></router-view>
-    <div v-if="this.$store.state.serviceCenters == 0">위 메뉴를 누르세용</div>
+    
 
   </div>  
 </template>
@@ -131,11 +131,13 @@ export default {
     this.getCountNotice(1),
     this.getCountQueAn(2),
     this.getCountFQA(3)
+    this.SET_serviceCenters(2)
+    this.$router.push({path:'/qna'})
     
   },
   beforeUnmount() {   //component 종료전 데이터 삭제
     this.deleteAll()
-    console.log("111111111111111111")
+   
   }
 }
 </script>
