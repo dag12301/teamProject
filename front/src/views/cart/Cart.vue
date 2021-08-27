@@ -15,11 +15,48 @@
                   <span>주소</span>
                 </td>
                 <td style="padding-left: 10px">
-                  <span>인천 미추홀구 계양동 122-222</span>
+                  <!-- 주소가 맞지 않을 수 있으니 수정할수있도록 할것 -->
+                  <span
+                    >{{ GET_LOCAL.address_name }}
+                    <span
+                      class="badge bg-info text-dark m-1"
+                      style="cursor: pointer"
+                      >주소수정</span
+                    ></span
+                  >
                   <input
                     type="text"
                     placeholder="(필수) 상세주소 입력"
                     style="width: 100%"
+                    v-model="addressDetail"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 25%; text-align: center">
+                  <span class="mt-2">전화번호</span>
+                </td>
+                <td style="padding-left: 10px">
+                  <input
+                    class="mt-2"
+                    type="text"
+                    placeholder="예) 010-2274-4895"
+                    style="width: 100%"
+                    v-model="phone"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 25%; text-align: center">
+                  <span class="mt-2">요청사항</span>
+                </td>
+                <td style="padding-left: 10px">
+                  <textarea
+                    class="mt-2"
+                    type="text"
+                    placeholder="경비실에 맡겨주세요"
+                    style="width: 100%"
+                    v-model="orderRequest"
                   />
                 </td>
               </tr>
@@ -127,13 +164,12 @@
             <div class="orderText">
               <p>결제수단 선택</p>
             </div>
-            <div class="orderPay">
+            <div class="orderPay mt-2">
               <div>
-                <span
-                  style="font-weight: 550; font-size: 18px; margin-top: 10px"
-                  >WAHT POO에서 결제</span
-                ><span style="font-size: 14px; color: lightgray"
-                  >웹에서 미리 결제</span
+                <span style="font-weight: 550; font-size: 18px"
+                  >카카오페이로 결제</span
+                ><br /><span style="font-size: 14px; color: lightgray">
+                  현재 카카오페이 결제밖에 지원되지 않습니다.</span
                 ><br />
                 <div class="payKakao">
                   <img
@@ -142,53 +178,27 @@
                   />
                 </div>
               </div>
-              <div>
-                <span style="font-weight: 550; font-size: 18px">현장 결제</span
-                ><span style="font-size: 14px; color: lightgray"
-                  >음식받고 직접 결제</span
-                >
-                <div style="margin-left: 33%">
-                  <div style="margin-top: 10px; width: 50%">
-                    <div class="payLeft">
-                      <div class="Pay leftPay" style="line-height: 60px">
-                        <label style="vertical-align: middle">신용카드</label>
-                      </div>
-                    </div>
-                    <div class="payRight">
-                      <div class="Pay rightPay" style="line-height: 60px">
-                        <label style="verticla-align: middle">현금</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           <div class="calculatorWrapper d-block" style="padding-top: 0px">
             <div class="orderText">
-              <p>주문내역</p>
+              <h4>주문내역</h4>
             </div>
-            <div class="orderList">
+            <div class="orderList mt-1">
               <div v-for="(food, index) in foodList" :key="index">
-                <div
-                  class="col-8"
-                  style="float: left; background-color: orange"
-                >
+                <div class="col-8" style="float: left">
                   {{ food.name }} X {{ foodQuantity(food.foodId) }} 개
                 </div>
-                <div
-                  class="col-4"
-                  style="float: right; background-color: yellow"
-                >
+                <div class="col-4" style="float: right">
                   {{ pricePerFood(food.foodId, food.price) }} 원
                 </div>
               </div>
               <hr />
-              <div class="col-8" style="float: left">
-                <span>총 결제 금액</span>
+              <div class="col-8 mt-2" style="float: left">
+                <strong>총 결제 금액</strong>
               </div>
-              <div class="col-4" style="float: right">
-                <span>총액</span>
+              <div class="col-4 mt-2" style="float: right">
+                <span>{{ totalPrice }}</span>
               </div>
             </div>
             <!-- orderList 에 대한 총액정리 쿠폰 적용 후. -->
@@ -208,16 +218,30 @@
 <script>
 import { mapGetters, mapMutations } from "vuex";
 import http from "@/api/http";
+import axios from "axios";
+
 export default {
   data() {
     return {
       foodList: [],
       onloaded: false,
       orderList: new Map(),
+      orderRequest: "",
+      addressDetail: "",
+      phone: "",
     };
   },
   computed: {
-    ...mapGetters(["checkCart"]),
+    ...mapGetters(["checkCart", "GET_LOCAL"]),
+    totalPrice: function () {
+      let result = 0;
+      for (let food of this.foodList) {
+        let foodPrice = food.price;
+        let qantity = this.orderList.get(food.foodId);
+        result += foodPrice * qantity;
+      }
+      return result;
+    },
   },
   mounted() {
     if (this.checkCart != null) {
@@ -268,7 +292,65 @@ export default {
       return this.orderList.get(foodId) * price;
     },
     putOrder() {
+      // 클릭했을 때 재 클릭을 방지해야함.
+      // validation 필요하다
+
       // 계산 진행, 만약 회원이면 정보로 하고, 로그인 아니면 필요정보입력
+      const address = this.GET_LOCAL.address_name + ", " + this.addressDetail;
+      const phone = this.phone;
+      const orderRequest = this.orderRequest;
+      const totalPrice = this.totalPrice;
+      const orderList = this.orderList;
+      // 쿠폰정보 쿠폰사용가능 정보 확인
+      const couponId = 0;
+
+      // 데이터 정렬
+      const orderData = {
+        address,
+        phone,
+        orderRequest,
+        totalPrice,
+        couponId,
+      };
+      // DB에 오더 넣기.
+      axios
+        .create({ baseURL: "http://localhost:8083" })
+        .post("/order/putOrder", orderData)
+        .then((res) => {
+          if (res.status === 200) {
+            console.log("오더정보 삽입완료");
+            let orderId = res.data;
+            const orderMap = this.orderList;
+            // 각 오더상품을 오더인포로 넣기. 수량이 0개면 뺀다.
+            let orderList = Array.from(orderMap);
+            let filteredOrderList = orderList.filter((arr) => {
+              return arr[1] > 0;
+            });
+            console.log(filteredOrderList);
+            const postOrderInfo = (foodInfo) =>
+              axios
+                .create({
+                  baseURL: "http://localhost:8083",
+                  headers: {
+                    "Content-type": "application/json",
+                  },
+                })
+                .post("/order/putOrderInfo", foodInfo);
+
+            filteredOrderList
+              .reduce((prevProm, list) => {
+                list.push(orderId);
+                return prevProm.then(() => postOrderInfo(JSON.stringify(list)));
+              }, Promise.resolve())
+              .then((res) => {
+                // 실행되면 할일.
+                console.log("완료?");
+                console.log(res.data);
+              });
+          } else {
+            return console.log("다시시도해주새요");
+          }
+        });
     },
     clearOrder() {
       let willClear = confirm("정말 장바구니를 비우시겠습니까?");
@@ -294,7 +376,7 @@ export default {
 
 <style scoped>
 .orderText {
-  background-color: lightslategray;
+  background-color: aliceblue;
   padding: 10px;
 }
 .orderText p {

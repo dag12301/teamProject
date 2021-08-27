@@ -1,76 +1,79 @@
 <template>
-<div class="container" style="width: 800px;">
-  <div style="height: 660px">
-    <div v-if="correction == true">
-      <div v-if="profile != null">
-        <div class="row" style="padding: 20px; border: 1px solid black;">
-          <div class="img" style="padding-bottom: 20px">
-            <img
-              src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
-              style="width: 150px; height: 150px; border-radius: 50%"
-            />
-          </div>
-          <div class="filebox">
-            <label for="ex_file">업로드</label>
-            <input type="file" id="ex_file" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">이름 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.name }}
-            <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">닉네임 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.nickname }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">아이디 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.loginId }}
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">핸드폰번호 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.tel }}
-            <!-- tel 로 받아놓게했는데 DB에선 phone 으로 했음. 헷갈릴수있음 -->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">
-            이메일 :
-          </div>
-          <div class="col-8 profile-2">
-            {{ profile.email }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div v-if="correction == false">
-      <EditProfile></EditProfile>
-    </div>
-    <div class="button">
+  <div class="container" style="width: 800px">
+    <div style="height: 660px">
       <div v-if="correction == true">
-        <button type="button"  @Click="edit(false)" class="btn btn-secondary">
-          <span style="font-size: 20px">수정하기</span>
-        </button>
+        <div v-if="profile != null">
+          <div class="row" style="padding: 20px; border: 1px solid black">
+            <div class="img" style="padding-bottom: 20px">
+              <img
+                src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
+                style="width: 150px; height: 150px; border-radius: 50%"
+              />
+            </div>
+            <div class="filebox">
+              <label for="ex_file">업로드</label>
+              <input type="file" id="ex_file" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 profile-1">이름 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.name }}
+              <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 profile-1">닉네임 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.nickname }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 profile-1">아이디 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.loginId }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 profile-1">핸드폰번호 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.tel }}
+              <!-- tel 로 받아놓게했는데 DB에선 phone 으로 했음. 헷갈릴수있음 -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 profile-1">이메일 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.email }}
+            </div>
+          </div>
+        </div>
       </div>
       <div v-if="correction == false">
-        <button type="button" @Click="edit(true)" class="btn btn-secondary">
-          <span style="font-size: 20px">수정완료</span>
+        <EditProfile></EditProfile>
+      </div>
+      <div class="button">
+        <div v-if="correction == true">
+          <button type="button" @Click="edit(false)" class="btn btn-secondary">
+            <span style="font-size: 20px">수정하기</span>
+          </button>
+        </div>
+        <div v-if="correction == false">
+          <button type="button" @Click="edit(true)" class="btn btn-secondary">
+            <span style="font-size: 20px">수정완료</span>
+          </button>
+        </div>
+        <button
+          type="button"
+          @Click="secession()"
+          class="btn btn-secondary"
+          style="margin-left: 50px"
+        >
+          <span style="font-size: 20px">탈퇴하기</span>
         </button>
       </div>
-      <button type="button" @Click="secession()" class="btn btn-secondary" style="margin-left: 50px;">
-        <span style="font-size: 20px">탈퇴하기</span>
-      </button>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -82,18 +85,15 @@ export default {
   components: { EditProfile },
   data() {
     return {
-      correction : null,
+      correction: null,
     };
   },
   methods: {
     edit(request) {
       this.correction = request;
-      if(this.correction == false)
-      {
+      if (this.correction == false) {
         console.log("프로필 수정을 완료했습니다.");
-      }
-      else
-      {
+      } else {
         console.log("프로필 수정창으로 이동합니다.");
       }
     },
@@ -109,15 +109,11 @@ export default {
         if (response.status === 200) {
           this.profile = response.data;
           if (this.profile != null) {
-
-            if (this.profile.status == "Y")
-            {
+            if (this.profile.status == "Y") {
               success("프로필을 불러왔습니다.", this);
               this.correction = true;
               return;
-            }
-            else
-            {
+            } else {
               error("정지된 아이디입니다.", this);
               this.$store.dispatch("auth/logout");
             }
