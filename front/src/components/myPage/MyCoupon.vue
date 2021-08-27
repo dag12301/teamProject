@@ -1,4 +1,5 @@
 <template>
+<div class="container" style="width: 800px; border: 1px solid black">
   <div class="row" style="overflow: auto; height: 660px">
     <div class="col coupon">
       <div class="card coupon-card">
@@ -61,6 +62,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <style scoped>

@@ -7,6 +7,7 @@
     <ul class="list-group list-group-flush">
       <li
         class="list-group-item"
+        style="cursor: pointer;"
         @click="listPage(notice.articleId)"
         v-for="notice in this.$store.state.serviceCenter.notices"
         :key="notice.id"
@@ -97,7 +98,8 @@ export default {
     listPage(articleId) {
       //페이지 이동
       console.log(articleId);
-      location.href = "/boardList?board=notice&articleId=" + articleId;
+      return (this.$router.push({name: 'BoardList', query: { "board": "notice", "articleId": articleId}}))
+      //location.href = "/boardList?board=notice&articleId=" + articleId;
     },
     prevBotton(range1, rangeSize, listSize) {
       var page = (range1 - 2) * rangeSize + 1;

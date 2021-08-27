@@ -4,9 +4,9 @@ import http from "@/api/http";
 export async function allList(query) {
   return http.get("/article/board?boardId=" + query);
 }
-//테스트용
-export async function test() {
-  return http.get("/article/test");
+//memberCheck
+export function memberCheck() {
+  return http.post("/article/memberCheck");
 }
 //게시글 죄회
 export function list(query) {

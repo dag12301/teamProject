@@ -1,4 +1,5 @@
 <template>
+<div class="container" style="width: 800px; border-style: solid; border-width: 1px 1px 0px 1px;">
   <div class="row" style="height: 130px">
     <div class="col-4 orderMenu-img">
       <router-link to="/food">
@@ -33,6 +34,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>

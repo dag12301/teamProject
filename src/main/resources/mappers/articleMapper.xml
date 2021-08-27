@@ -159,29 +159,28 @@ WHERE articleId = #{articleId}
 
 <!-- 페이징 처리 -->
 <select id="getBoardList" resultType="Article">
-SELECT A.articleId,
-	A.regDate,
-	A.updateDate,
-	A.title,
-	A.BODY,
-	A.hit,
-	A.STATUS,
-	A.children,
-	A.board_id AS boardId,
-	A.writer_id AS writerId,
-	B.nickname
+SELECT @rownum:=@rownum+1 AS nickname,
+	articleId,
+	regDate,
+	title,
+	BODY,
+	hit,
+	STATUS,
+	children,
+	board_id AS boardId,
+	writer_id AS writerId
 	
-FROM    `article` A INNER JOIN `member` B
-ON A.writer_id = B.memberId
+FROM article    , (SELECT @rownum:=0) TMP
+WHERE (@rownum:=0)=0
+AND board_id = #{boardId}
+AND	STATUS != 'S'
 
-WHERE	board_id = #{boardId}
-AND	A.status != 'S'
 <if test="search != null">
 AND	title LIKE CONCAT('%', #{search} ,'%')
 </if>
 
 
-ORDER BY A.articleId DESC
+ORDER BY articleId DESC
 
 LIMIT #{paging.startList}, #{paging.listSize}
 
@@ -237,7 +236,7 @@ ORDER BY articleId DESC
 </select>
 
 
-<!-- 낸글 모두 보기 -->
+<!-- 내글 모두 보기 -->
 <select id="myList" resultType="Article">
 SELECT A.articleId,
 	A.regDate,
@@ -260,6 +259,27 @@ AND	writer_id = #{memberId}
 
 </select>
 
+<!-- member 확인 -->
+<select id="memberVerify"   resultType="LoginInfo">
+SELECT *
+        FROM loginInfo
+        WHERE member_id = #{memberId}
+
+</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

@@ -1,4 +1,5 @@
 <template>
+<div class="container" style="width: 800px; border: 1px solid black">
   <div class="row">
     <div class="col reviewCount">
       <h4>내가 쓴 리뷰 수 : 3</h4>
@@ -96,6 +97,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
