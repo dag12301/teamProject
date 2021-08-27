@@ -106,7 +106,7 @@
                         </ul>
                       </nav>
                       <div>
-                        총액 : {{ totalPrice(food.foodId, food.price) }} 원
+                        총액 : {{ pricePerFood(food.foodId, food.price) }} 원
                       </div>
                     </div>
                   </div>
@@ -180,7 +180,7 @@
                   class="col-4"
                   style="float: right; background-color: yellow"
                 >
-                  {{ totalPrice(food.foodId, food.price) }} 원
+                  {{ pricePerFood(food.foodId, food.price) }} 원
                 </div>
               </div>
               <hr />
@@ -264,7 +264,7 @@ export default {
     foodQuantity(foodId) {
       return this.orderList.get(foodId);
     },
-    totalPrice(foodId, price) {
+    pricePerFood(foodId, price) {
       return this.orderList.get(foodId) * price;
     },
     putOrder() {
