@@ -1,17 +1,18 @@
 <template>
   <div class="service-center mt-5">
     <div class="service-group mb-5 ">
-        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" @click="clickPages(1)" v-if="clickNumber == 1">공지사항</router-link>
+        <router-link class="btn btn-success me-5 col-2" :to="{ name: 'Notice' }" @click="clickPages(1)" v-if="this.$store.state.serviceCenters == 1">공지사항</router-link>
         <router-link class="btn btn-warning me-5 col-2" :to="{ name: 'Notice' }" @click="clickPages(1)" v-else>공지사항</router-link>
 
-        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }" @click="clickPages(2)" v-if="clickNumber == 2">Q&A</router-link>
+        <router-link class="btn btn-success mx-5 col-2" :to="{ name: 'Q&A' }" @click="clickPages(2)" v-if="this.$store.state.serviceCenters == 2">Q&A</router-link>
         <router-link class="btn btn-warning mx-5 col-2" :to="{ name: 'Q&A' }" @click="clickPages(2)" v-else>Q&A</router-link>
         
-        <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }" @click="clickPages(3)" v-if="clickNumber == 3">FQA</router-link>
+        <router-link class="btn btn-success ms-5 col-2" :to="{ name: 'FQA' }" @click="clickPages(3)" v-if="this.$store.state.serviceCenters == 3">FQA</router-link>
         <router-link class="btn btn-warning ms-5 col-2" :to="{ name: 'FQA' }" @click="clickPages(3)" v-else>FQA</router-link>
     </div>
 
     <router-view ></router-view>
+    <div v-if="this.$store.state.serviceCenters == 0">위 메뉴를 누르세용</div>
 
   </div>  
 </template>
@@ -23,7 +24,7 @@ import { mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      clickNumber: null
+      
     }
     
   },
@@ -50,11 +51,14 @@ export default {
       //페이징 삭제
       nullPagingpagingQueAn: "serviceCenter/nullPagingpagingQueAn",
       nullPagingNotice: "serviceCenter/nullPagingNotice",
-      nullPagingFQA: "serviceCenter/nullPagingFQA"
+      nullPagingFQA: "serviceCenter/nullPagingFQA",
+
+      //serviceCenter 상태
+      SET_serviceCenters: "SET_serviceCenters"
 
     }),
     clickPages(num) {
-      this.clickNumber = num
+      this.SET_serviceCenters(num)
     },
     
     getCountNotice(boardId) {     // notice 서버 통신 
@@ -127,10 +131,11 @@ export default {
     this.getCountNotice(1),
     this.getCountQueAn(2),
     this.getCountFQA(3)
+    
   },
   beforeUnmount() {   //component 종료전 데이터 삭제
     this.deleteAll()
-      
+    console.log("111111111111111111")
   }
 }
 </script>

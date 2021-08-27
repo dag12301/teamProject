@@ -1,23 +1,23 @@
 <template>
-  <h2 style="text-align: center">게시물</h2>
+
   <br /><br /><br />
   <!-- 신고버튼 -->
-  <button
-    style="float: right; margin: 10px"
-    type="button"
-    class="btn btn-warning"
-  >
-    신고하기
-  </button>
+  
   <!-- 타이틀 -->
 
   <table border="2" class="table">
     <thead id="title" style="text-align: center">
+      <tr>
+        <th>닉네임</th>
+        <th>제목</th>
+        <th>등록일</th>
+        <th>조회수</th>
+      </tr>
       <tr v-if="update == true">
         <th class="col-md-2">{{ list.nickname }}</th>
-        <th class="col-md-6">제목: {{ list.title }}</th>
-        <th class="col-md-2">등록일:{{ list.regDate }}</th>
-        <th class="col-md-2">조회수:{{ list.hit }}</th>
+        <th class="col-md-6">{{ list.title }}</th>
+        <th class="col-md-2">{{ list.regDate }}</th>
+        <th class="col-md-2">{{ list.hit }}</th>
       </tr>
       <tr v-else>
         <th class="col-md-2">{{ list.writerId }}</th>
@@ -178,6 +178,14 @@ export default {
     //게시물 불러오기
     let query = this.$route.query.articleId; //articleId받기
     this.board = this.$route.query.board; //게시판 종류  (1.공지사항, 2.Q&A, 3.FQA)
+    if(this.board == "notice"){
+      this.SET_serviceCenters(1)
+    }else if(this.board == "qna"){
+      this.SET_serviceCenters(2)
+    }else if(this.board == "fqa"){
+      this.SET_serviceCenters(3)
+    }
+  
 
     authAPI //통신코드
       .list(query)
@@ -190,7 +198,7 @@ export default {
       });
   },
   methods: {
-    ...mapMutations(["SET_MODAL_LOGIN"]),
+    ...mapMutations(["SET_MODAL_LOGIN", "SET_serviceCenters"]),
     //댓글 달기 통신
     commentProc() {
       if (this.commentTitle === "" || this.commentTitle == null) {

@@ -28,6 +28,7 @@ export default createStore({
     countNotice: true, //notice 상태
     countQueAn: true, //Q&A 상태
     countFAQ: true, //FQA 상태
+    serviceCenters: 0,//서비스 센터 위치
 
     selectedPlace: "주소찾기를 눌러주세요...", // 주소찾기에서 선택한 주소
     selectedAddressDetail: "", // 주소찾기에서 선택한 상세주소
@@ -104,6 +105,10 @@ export default createStore({
     SET_OBSERVE(state, boolean) {
       state.isObserved = boolean;
     },
+    SET_serviceCenters(state, payload){
+      console.log("serviceCenter:   " +state.serviceCenters)
+      state.serviceCenters = payload
+    }
   },
   modules: {
     auth,

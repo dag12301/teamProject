@@ -89,6 +89,9 @@ export default {
       files: [], //업로드용 파일
     };
   },
+  created(){
+    this.$store.commit('SET_serviceCenters', 2)
+  },
   methods: {
     ...mapMutations(["SET_MODAL_LOGIN"]),
     privateStatus() {
