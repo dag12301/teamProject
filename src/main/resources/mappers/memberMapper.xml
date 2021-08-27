@@ -33,4 +33,31 @@
         FROM `member`
         WHERE phone = #{phone};
     </select>
+    
+    
+    
+    <select id="selectMemberList" resultType="Member">
+        SELECT *
+        FROM member
+        <if test="!option.equals('ALL')">
+        WHERE 
+            status = #{option}
+        </if>
+        ORDER BY memberId DESC
+            LIMIT #{startLimit}, #{endLimit}
+    </select>
+    
+    <select id="selectMemberListCount" resultType="int">
+        SELECT COUNT(*) AS result
+        FROM member
+        <if test="!option.equals('ALL')">
+            WHERE status = #{option}
+        </if>
+    </select>
+    
+    <update id="updateMemberStatus">
+        UPDATE member
+		SET STATUS = #{status}
+		WHERE memberId = #{memberId}
+    </update>
 </mapper>

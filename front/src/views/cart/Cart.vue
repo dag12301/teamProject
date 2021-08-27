@@ -143,7 +143,6 @@
                 </div>
               </div>
               <div>
-<<<<<<< HEAD
                 <span style="font-weight: 550; font-size: 18px;">현장 결제</span><span style="font-size: 14px; color: lightgray;">음식받고 직접 결제</span>
                 <div >
                   <div style="margin-top: 10px;">
@@ -151,18 +150,6 @@
                       <div class="Pay leftPay" style="line-height: 60px;">
                         <label style="vertical-align: middle;">신용카드</label>
                       </div>  
-=======
-                <span style="font-weight: 550; font-size: 18px">현장 결제</span
-                ><span style="font-size: 14px; color: lightgray"
-                  >음식받고 직접 결제</span
-                >
-                <div style="margin-left: 33%">
-                  <div style="margin-top: 10px; width: 50%">
-                    <div class="payLeft">
-                      <div class="Pay leftPay" style="line-height: 60px">
-                        <label style="vertical-align: middle">신용카드</label>
-                      </div>
->>>>>>> 8a4a44ddedb14f6501d316fd8ed85824bccb2dbd
                     </div>
                     <div class="payRight">
                       <div class="Pay rightPay" style="line-height: 60px">
@@ -174,46 +161,22 @@
               </div>
             </div>
           </div>
-<<<<<<< HEAD
           <div class="calculatorWrapper d-block" style="padding-top: 0px; margin-top: 100px;">
-=======
-          <div class="calculatorWrapper d-block" style="padding-top: 0px">
->>>>>>> 8a4a44ddedb14f6501d316fd8ed85824bccb2dbd
             <div class="orderText">
               <p>주문내역</p>
             </div>
             <div class="orderList">
-<<<<<<< HEAD
               <div v-for="(food, index) in foodList" :key="index" style="margin-top: 15px;">
                 <div class="col-8" style="float: left; font-size: 20px;">
                   {{food.name}} X {{foodQuantity(food.foodId)}} 개
                 </div>
                 <div class="col-4" style="float: right; font-size: 20px;">
-=======
-              <div v-for="(food, index) in foodList" :key="index">
-                <div
-                  class="col-8"
-                  style="float: left; background-color: orange"
-                >
-                  {{ food.name }} X {{ foodQuantity(food.foodId) }} 개
-                </div>
-                <div
-                  class="col-4"
-                  style="float: right; background-color: yellow"
-                >
->>>>>>> 8a4a44ddedb14f6501d316fd8ed85824bccb2dbd
                   {{ totalPrice(food.foodId, food.price) }} 원
                 </div>
               </div>
-<<<<<<< HEAD
               <hr style="padding: 1px;"/>
               <div class="col-8" style="float: left;">
                 <span style="font-weight: 600; font-size: 20px;">총 결제 금액</span>
-=======
-              <hr />
-              <div class="col-8" style="float: left">
-                <span>총 결제 금액</span>
->>>>>>> 8a4a44ddedb14f6501d316fd8ed85824bccb2dbd
               </div>
               <div class="col-4" style="float: right">
                 <span>총액</span>

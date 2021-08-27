@@ -153,6 +153,11 @@ const routes = [
     name: "addMenu",
     component: () => import("../views/store/StoreAddMenu.vue"),
   },
+  {
+    path: "/member",
+    name: "Member",
+    component: () => import("../views/admin/Member.vue"),
+  }
 ];
 
 const router = createRouter({

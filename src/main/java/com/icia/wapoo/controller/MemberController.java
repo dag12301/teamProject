@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -149,5 +151,48 @@ public class MemberController {
     public Boolean validPhone(String value){
         boolean result = memberService.checkPhone(value);
         return result;
+    }
+    
+    
+    
+    /**
+     * 회원관리페이지 - 박소희
+     */
+    @PostMapping("/member/getmemberList")
+    public ResponseEntity getMemberList(@RequestBody Map<String, Object> data) {
+        int listPerPage = ((Integer) data.get("listPerPage")).intValue();
+        int currentPage = ((Integer) data.get("currentPage")).intValue();
+        String option = (String) data.get("statusOption");
+        System.out.println("첫번째 "+listPerPage);
+        System.out.println("두번째 "+currentPage);
+        System.out.println("세번째 "+option);
+        if(listPerPage <= 0 || currentPage <=0){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        System.out.println("요청페이지 : " + currentPage + ", 요청게시물 수 : "+listPerPage);
+        // 가게페이지를 가져옵니다.
+        System.out.println(option);
+
+        List<Map<String, Object>> result = memberService.getMemberList(listPerPage, currentPage, option);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+    
+    @GetMapping("/member/getmemberListCount")
+    public ResponseEntity getMemberListCount(@RequestParam("option") String option) {
+        int result = memberService.getMemberListCount(option);
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+    
+    @PostMapping("/member/updatememberStatus")
+    public ResponseEntity updateMemberStatus(@RequestBody Map<String, Object> data) {
+        int memberId = ((Integer) data.get("memberId")).intValue();
+        String status = ((String) data.get("status")).toString();
+        System.out.println("status를 변경합니다.");
+        if(status == null || memberId < 1){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        System.out.println("updateMemberStatus로 들어갑니다.");
+        memberService.updateMemberStatus(memberId, status);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

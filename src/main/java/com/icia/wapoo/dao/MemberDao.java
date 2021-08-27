@@ -1,6 +1,11 @@
 package com.icia.wapoo.dao;
 
+import com.icia.wapoo.model.Coupon;
 import com.icia.wapoo.model.Member;
+
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,4 +21,11 @@ public interface MemberDao {
     int checkEmail(@Param("email") String email);
     int checkNickname(@Param("nickname") String nickname);
     int checkPhone(@Param("phone") String phone);
+    
+    
+    List<Map<String, Object>> selectMemberList(@Param("startLimit") int startLimit, @Param("endLimit") int endLimit, @Param("option") String option);
+
+    int selectMemberListCount(@Param("option") String option);
+    
+    void updateMemberStatus(@Param("memberId") int memberId, @Param("status") String status);
 }
