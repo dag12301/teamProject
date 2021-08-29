@@ -300,7 +300,6 @@ export default {
       const phone = this.phone;
       const orderRequest = this.orderRequest;
       const totalPrice = this.totalPrice;
-      const orderList = this.orderList;
       // 쿠폰정보 쿠폰사용가능 정보 확인
       const couponId = 0;
 
@@ -343,9 +342,21 @@ export default {
                 return prevProm.then(() => postOrderInfo(JSON.stringify(list)));
               }, Promise.resolve())
               .then((res) => {
-                // 실행되면 할일.
-                console.log("완료?");
-                console.log(res.data);
+                if (res.status === 200) {
+                  axios
+                    .get("http://localhost:8083/order/kakaoPay")
+                    .then((res) => {
+                      console.log(res.data);
+                      // 카카오페이 팝업 띄우기
+                      window.open(
+                        res.data,
+                        "kakaoPopUp",
+                        "toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=540,height=700,left=100,top=100"
+                      );
+                    });
+                } else {
+                  // orderInfo 만들다가 실패함.
+                }
               });
           } else {
             return console.log("다시시도해주새요");

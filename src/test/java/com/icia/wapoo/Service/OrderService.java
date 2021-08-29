@@ -1,2 +1,4 @@
-package com.icia.wapoo.Service;public class OrderService {
+package com.icia.wapoo.Service;
+
+public class OrderService {
 }

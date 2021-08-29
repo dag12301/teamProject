@@ -10,6 +10,11 @@ module.exports = {
         ws: true,
         changeOrigin: true,
       },
+      "^/v1/payment/ready": {
+        target: "http://kapi.kakao.com",
+        ws: true,
+        changeOrigin: true,
+      },
     },
   },
 };
