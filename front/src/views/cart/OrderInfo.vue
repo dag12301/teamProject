@@ -1,12 +1,17 @@
 <template>
   <div>
     <div class="m-4">
-      <h1>주문내역</h1>
+      <h1>주문상세정보페이지</h1>
       <hr />
-      <div v-if="loaded == false">로딩중</div>
+      <div v-if="loaded == false">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
       <div v-else>
         <!-- 로딩완료 -->
-        로딩완료, {{}}
+        로딩완료, {{ order }}
+        {{ foodList }}
       </div>
     </div>
   </div>
@@ -19,6 +24,8 @@ export default {
     return {
       orderId: null,
       loaded: false,
+      order: null,
+      foodList: null,
     };
   },
   mounted() {
@@ -30,7 +37,8 @@ export default {
         },
       })
       .then((res) => {
-        console.log(res.data);
+        this.order = res.data.order;
+        this.foodList = res.data.foodList;
         this.loaded = true;
       });
   },

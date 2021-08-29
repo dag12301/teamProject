@@ -96,17 +96,20 @@ public class OrderService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
         params.add("cid", "TC0ONETIME");
-        System.out.println("오더아아디 : "+orderId.toString());
         params.add("partner_order_id", orderId.toString());
         // orderId로 가게아이디 구해와야하지만 테스트이므로 고정값
-        System.out.println("스토어 네임 : "+storeName);
         params.add("partner_user_id", storeName);
-        // 아이템리스트
-        System.out.println("아이템리스트 : "+ foodList.toString());
-        params.add("item_name", foodList.toString());
-        System.out.println("총수량 : "+ String.valueOf(totalQuantity));
+
+        // 결제 성공시 받을 카카오 메세지 내용중 '상품명'
+        int firstFood = foodList.get(0);
+        String foodname = orderDao.selectFoodnameByFoodId(firstFood);
+        if(foodList.size() > 2) {
+            params.add("item_name", foodname +"외 "+(foodList.size()-1)+"건");
+        } else {
+            params.add("item_name", foodname);
+        }
+
         params.add("quantity", String.valueOf(totalQuantity));
-        System.out.println("총가격 : "+ String.valueOf(totalPrice));
         params.add("total_amount", String.valueOf(totalPrice));
         params.add("tax_free_amount", "0");
         params.add("approval_url", "http://localhost:8080/kakaoPaySuccess");
