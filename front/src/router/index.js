@@ -35,24 +35,6 @@ const routes = [
     path: "/event",
     name: "Event",
     component: () => import("../views/event/Event.vue"),
-
-    children: [
-      {
-        path: "/all",
-        name: "coupon-all",
-        component: () => import("../components/event/coupon.vue"),
-      },
-      {
-        path: "/on",
-        name: "coupon-on",
-        component: () => import("../components/event/couponon.vue"),
-      },
-      {
-        path: "/end",
-        name: "coupon-end",
-        component: () => import("../components/event/couponend.vue"),
-      },
-    ],
   },
   {
     path: "/eventadd",
@@ -154,9 +136,9 @@ const routes = [
     component: () => import("../views/store/StoreAddMenu.vue"),
   },
   {
-    path: "/member",
-    name: "Member",
-    component: () => import("../views/admin/Member.vue"),
+    path: "/manageMember",
+    name: "ManageMember",
+    component: () => import("../views/admin/ManageMember.vue"),
   },
   {
     path: "/kakaoPaySuccess",
