@@ -67,7 +67,7 @@ export default {
 
 <style scoped>
 .col-xs-8 .list-group-item {
-  border: 2px solid lightskyblue;
+  border: 2px solid lightgray;
 }
 .menu-img {
   width: 80px;

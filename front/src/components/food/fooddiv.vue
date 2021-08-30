@@ -37,7 +37,7 @@ export default {};
   margin: 5px;
   text-align: left;
 
-  background-color: lightyellow;
+  background-color: #FAFAFA;
 }
 .food-a {
   position: relative;
@@ -60,7 +60,7 @@ export default {};
 }
 .food-div {
   overflow: hidden;
-  border: 2px solid lightblue;
+  border: 2px solid lightgray;
 }
 .first {
   width: 220px;

@@ -143,7 +143,7 @@ export default {
 
 .review {
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid lightgray;
 }
 .review-left {
   font-size: 40px;
@@ -168,7 +168,7 @@ export default {
 
 .review3 {
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid lightgray;
   text-align: left;
   padding: 15px;
   padding-left: 20px;

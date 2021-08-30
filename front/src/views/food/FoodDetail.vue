@@ -3,12 +3,11 @@
     <div class="storeBox" style="background-color: #fafafa">
       <div
         class="storeName"
-        style="font-weight: 800; font-size: 30px; margin-top: 30px"
+        style="font-weight: 800; font-size: 30px; padding-top: 20px"
       >
         {{ shopInfo.storeInfo.name }}
       </div>
-      <hr style="width: 100%" />
-      <div class="storeText" style="width: 100%; height: 300px">
+      <div class="storeText" style="width: 100%; height: 300px; margin-top: 15px;">
         <div
           class="storeImg"
           style="float: left; width: 45%; text-align: right"
@@ -28,7 +27,7 @@
             {{ shopInfo.storeInfo.storeKind }}
           </p>
           <span style="font-weight: 600; font-size: 17px">업체정보</span>
-          <hr style="margin-top: 5px; width: 95%;" />
+          <hr style="margin-top: 5px; width: 90%;" />
           <table>
             <tr>
               <td class="td1" style="color: gray"><i class="fas fa-phone"></i><span class="i-text">전화번호</span></td>
