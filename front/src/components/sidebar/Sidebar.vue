@@ -18,21 +18,18 @@
     <Location icon="fas fa-compass" />
     <div v-if="userRole != null && userRole == 'ADMIN'">
       <!-- 관리자로 로그인 했을때 보이는 메뉴들 -->
-      <SidebarLink to="/member" icon="fas fa-home">회원관리페이지</SidebarLink>
-      <SidebarLink to="/admin" icon="fas fa-home">가게관리페이지</SidebarLink>
+      <SidebarLink to="/member" icon="fas fa-home">회원관리</SidebarLink>
+      <SidebarLink to="/manageStore" icon="fas fa-home">가게관리</SidebarLink>
       <SidebarLink to="/admincoupon" icon="fas fa-ticket-alt"
-        >쿠폰관리페이지</SidebarLink
+        >쿠폰관리</SidebarLink
       >
       <SidebarLink to="/eventadd" icon="fas fa-ticket-alt"
         >이벤트등록</SidebarLink
       >
-      
     </div>
     <div v-else-if="userRole != null && userRole == 'SELLER'">
       <!-- 판매자로 로그인 했을때 보이는 메뉴들 -->
-      <SidebarLink to="/store" icon="fas fa-store">
-        내 가게</SidebarLink
-      >
+      <SidebarLink to="/store" icon="fas fa-store"> 내 가게</SidebarLink>
       <SidebarLink
         to="/storeMenus"
         icon="fas fa-bars"
@@ -53,7 +50,6 @@
       >
       <SidebarLink to="/shops" icon="fas fa-utensils">음식/가게</SidebarLink>
       <SidebarLink to="/all" icon="fas fa-utensils">이벤트</SidebarLink>
-
     </div>
     <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
     <span class="burger" @click="toggleSidebar">
@@ -86,13 +82,14 @@ export default {
       "SET_COUNT_QUEAN",
       "SET_COUNT_FQA",
     ]),
-    serviceCenter() {//serviceCenter 토글 true
-      this.SET_COUNT_NOTICE(true)
-      this.SET_COUNT_QUEAN(true)
-      this.SET_COUNT_FQA(true)
-      this.$store.commit('SET_serviceCenters', 0)
-    }
-  }
+    serviceCenter() {
+      //serviceCenter 토글 true
+      this.SET_COUNT_NOTICE(true);
+      this.SET_COUNT_QUEAN(true);
+      this.SET_COUNT_FQA(true);
+      this.$store.commit("SET_serviceCenters", 0);
+    },
+  },
 };
 </script>
 

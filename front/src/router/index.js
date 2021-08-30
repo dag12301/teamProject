@@ -129,9 +129,9 @@ const routes = [
     ],
   },
   {
-    path: "/admin",
-    name: "AdminHome",
-    component: () => import("../views/admin/AdminHome.vue"),
+    path: "/manageStore",
+    name: "ManageStore",
+    component: () => import("../views/admin/ManageStore.vue"),
   },
   {
     path: "/admincouponadd",
