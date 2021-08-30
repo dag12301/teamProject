@@ -11,7 +11,7 @@
         <div style="text-align: center">
           <div class="user" style="padding-bottom: 10%">
             <img
-              src="https://image.news1.kr/system/hp/2019/11/29/3943620/dims/optimize"
+              src="https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2"
               class="profile"
             />
             <span style="color: black"

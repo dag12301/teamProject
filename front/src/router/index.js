@@ -75,9 +75,9 @@ const routes = [
         component: () => import("../components/service/Q&A.vue"),
       },
       {
-        path: "/fqa",
-        name: "FQA",
-        component: () => import("../components/service/FQA.vue"),
+        path: "/faq",
+        name: "FAQ",
+        component: () => import("../components/service/FAQ.vue"),
       },
       {
         path: "/writeForm",

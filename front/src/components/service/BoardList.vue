@@ -1,145 +1,84 @@
 <template>
-
-  <br /><br /><br />
+<div class="container" style="width: 1000px;">
+  <br /><br />
   <!-- 신고버튼 -->
-  
-  <!-- 타이틀 -->
-
-  <table border="2" class="table">
-    <thead id="title" style="text-align: center">
-      <tr>
-        <th>닉네임</th>
-        <th>제목</th>
-        <th>등록일</th>
-        <th>조회수</th>
-      </tr>
-      <tr v-if="update == true">
-        <th class="col-md-2">{{ list.nickname }}</th>
-        <th class="col-md-6">{{ list.title }}</th>
-        <th class="col-md-2">{{ list.regDate }}</th>
-        <th class="col-md-2">{{ list.hit }}</th>
-      </tr>
-      <tr v-else>
-        <th class="col-md-2">{{ list.writerId }}</th>
-        <th class="col-md-6">제목: <input type="text" v-model="title" /></th>
-        <th class="col-md-2">등록일:{{ list.regDate }}</th>
-        <th class="col-md-2">조회수:{{ list.hit }}</th>
-      </tr>
-    </thead>
-  </table>
-  <!-- 본문 -->
-  <div id="textarea" class="input-group" v-if="update == true">
-    <div
-      style="text-align: center"
-      class="form-control"
-      aria-label="With textarea"
-    >
-      {{ list.body }}
-    </div>
-  </div>
-  <textarea id="textarea" class="input-group" v-model="body" v-else> </textarea>
-  <!-- 이미지 -->
-  <div class="w-32 h-32 border-2 border-dotted border-blue-500" v-if="update == true">
-    <div v-if="images != null" class="w-full h-full flex items-center" >
-      <div v-for="image in images" :key="image.articlefileId">
-        <img :src="image.name" alt="image.orgName">
-      </div>
-    </div>
-  </div>
-  
-  <!-- 첨부파일 -->
-    <div class="room-deal-information-container" v-else>
-        <div class="room-file-upload-wrapper">
-          <div v-if="!files.length" class="room-file-upload-example-container">
-            <div class="room-file-upload-example">
-              <div class="room-file-notice-item room-file-upload-button">
-                <div class="image-box">
-                  <label for="file">사진 등록</label>
-                  <input type="file" id="file" ref="files" @change="imageAddUpload" multiple />
-                </div>
-              </div>
-            </div>
-          </div>
-            <div v-else class="file-preview-content-container" >
-              <div class="file-preview-container" >
-                <div v-for="(file, index) in this.files" :key="index" class="file-preview-wrapper">
-                  <div class="file-close-button" @click="fileDeleteButton(index)" >
-                    x
-                  </div>
-                  <img :src="file.name" />
-                </div>
-                <div class="file-preview-wrapper-upload">
-                  <div class="image-box" >
-                    <label for="file">추가 사진 등록</label>
-                    <input type="file" id="file" ref="files" @change="imageAddUpload" multiple />
-                  </div>       
-                </div>
-              </div>
-            </div>
-        </div>
-      </div>
-
-  <!-- 수정및목록이동 버튼 -->
-  <div class="col-md-12 text-center">
-    <span v-if="MYPAGE == true">
+  <div class="boardDelButtom">
+    <button type="button" class="btn btn-danger" style="margin-left:10px;">신고</button>
+    <div v-if="MYPAGE == true">
+      <button type="button" class="btn btn-primary" style="margin-right:20px;">수정</button>
       <button
         id="btn"
         type="button"
-        class="btn btn-success"
-        @click="test"
-        v-if="update == true"
-      >
-        수정
-      </button>
-      <button class="btn btn-primary" v-else @click="boardUpdate">
-        보내기
-      </button>
-
-      <button
-        id="btn"
-        type="button"
-        class="btn btn-success"
+        class="btn btn-danger"
         @click="listdelete"
       >
         삭제
       </button>
-    </span>
-
-    <router-link class="btn btn-danger" :to="{ path: this.board }"
-      >목록</router-link
-    >
+    </div>
   </div>
+  <br />
+  <!-- 타이틀 -->
+  <table style="border: 2px solid gray;">
+    <thead id="title" style="text-align: center">
+      <tr style="border-bottom: 1px solid gainsboro;">
+        <th class="boardTitle" colspan='3' style="text-align: left; padding: 20px;">
+          <span>구분</span><span style="padding-left:50px; font-size: 25px;">{{ list.title }}</span>
+        </th>
+      </tr>
+      <tr style="height:40px;">
+        <th class="col-md-5" style="text-align: left; padding-left: 20px;">{{ list.nickname }}</th>
+        <th class="col-md-2"><i class="far fa-clock"></i>&nbsp;&nbsp;{{ list.regDate }}</th>
+        <th class="col-md-1"><i class="far fa-eye"></i>&nbsp;&nbsp;{{ list.hit }}</th>
+      </tr>
+    </thead>
+  </table>
+  <!-- 본문 -->
+  <div id="textarea" class="input-group" style="text-align: left;">
+    <div class="form-control" style="padding:30px;">
+    <!-- 이미지 -->
+      <div v-if="images != null" class="w-full h-full flex items-center">
+        <div v-for="image in images" :key="image.articlefileId"  style="padding-bottom:30px;">
+          <img :src="image.name" alt="image.orgName">
+        </div>
+      </div>
+    <!-- 이미지 끝 -->
+      {{ list.body }}
+    </div>
+  </div>
+  <br />
+  <!-- 목록이동 버튼 -->
+  <router-link class="btn btn-primary" :to="{ path: this.board }">
+    목록
+  </router-link>
   <br /><br />
   <!-- 댓글 -->
-  <div id="comment" class="col-md-8 text-right">
-    <div>
-      <input
-        type="text"
-        v-model.trim="commentTitle"
-        style="background-color: rgba(176, 201, 183, 0.219); text-align: center"
-      />
-      <button class="btn btn-dark" @click="commentProc1">댓글입력</button>
-    </div>
-    <br /><br /><br />
-
-    <ul style="list-style: none">
-      <li v-for="comment in comments" :key="comment.articleId">
-        <div id="title">
-          <span>{{ comment.nickname }} : </span>
-          <span> {{ comment.title }}</span>
-          <button
-            id="commentdel"
-            type="button"
-            class="btn btn-light"
-            @click="commentDelete(comment.writerId, comment.articleId)"
-          >
-            삭제
-          </button>
+  <div>
+    <ul class="list-group" style="list-style: none">
+      <li class="list-group-item commentList" v-for="comment in comments" :key="comment.articleId">
+        <div class="commentListTitle">
+          <div>
+            <strong style="padding-right: 10px; font-size:18px;">{{ comment.nickname }}</strong>
+            ({{ comment.regDate }})
+          </div>
+          <div>
+            <span v-if="MYPAGE == true">
+              <button type="button" class="btn btn-outline-dark" style="padding:1px; margin-right:10px; font-size:15px;">수정</button>
+              <button type="button" class="btn btn-outline-dark" style="padding:1px; margin-right:10px; font-size:15px;">삭제</button>
+            </span>
+            <button type="button" class="btn btn-outline-dark" style="padding:1px; font-size:15px;">신고</button>
+          </div>
+        </div>
+        <div style="text-align: left;">
+          {{ comment.title }}
         </div>
       </li>
+      <li class="list-group-item commentInput" style="background-color:gainsboro;">
+        <textarea class="form-control" v-model.trim="commentTitle" id="floatingTextarea2" style="resize: none; width:800px; height:80px;"></textarea>
+        <button class="btn btn-light" style="width:100px; height:80px;" @click="commentProc1">댓글입력</button>
+      </li>
     </ul>
-    
   </div>
+</div>
 </template>
 
 <script>
@@ -432,352 +371,34 @@ export default {
         })
         .catch(err => {
           console.log(err)
-        })
-
-      
-      
-      
-        
-      
+        }) 
     },
   },
 };
 </script>
 
 <style scoped>
-#textarea {
-  height: 500px;
-  margin: 5px;
-  resize: none;
+.boardTitle{
+  display: flex;
+  align-items: center;
 }
-#title {
-  background-color: rgba(176, 201, 183, 0.219);
+.boardDelButtom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-#btn {
-  margin: 15px;
+.commentList {
+  display: flex;
+  flex-direction: column;
 }
-#comment {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.commentListTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-#title {
-  height: 46px;
-  border-style: solid;
+.commentInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
-li {
-  margin: 10px;
-}
-#commentBtn {
-  position: absolute;
-  left: 93%;
-  transform: translateX(-50%);
-}
-#commentdel {
-  width: 80px;
-  float: right;
-}
-
-/* https://loy124.tistory.com/203        */
-.main-container {
-            width: 1200px;
-            height: 400px;
-            margin: 0 auto;
-        }
-        
-        .room-deal-information-container {
-            margin-top: 50px;
-            color: #222222;
-            border: 1px solid #dddddd;
-        }
-        
-        .room-deal-information-title {
-            text-align: center;
-            font-size: 18px;
-            line-height: 60px;
-            border-bottom: 1px solid #dddddd;
-        }
-        
-        .room-deal-information-content-wrapper {
-            min-height: 50px;
-            display: flex;
-        }
-        
-        .room-deal-informtaion-content-title {
-            font-size: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 150px;
-            background-color: #f9f9f9;
-        }
-        
-        .room-deal-information-content {
-            width: 100%;
-            font-size: 14px;
-        }
-        
-        .room-deal-option-selector {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-        }
-        
-        .room-deal-option-item {
-            width: 100px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .room-deal-option-item:last-child {
-            margin-left: 10px;
-        }
-        
-        .room-deal-option-notice {
-            margin-left: auto;
-            font-size: 14px;
-            color: #888888;
-        }
-        
-        .room-deal-option-item-deposit {
-            margin-left: 10px;
-        }
-        
-        .room-deal-information-wrapper {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .room-deal-information-option {
-            padding: 10px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .room-deal-information-option:last-child {
-            border-bottom: 1px solid #dddddd;
-        }
-        
-        .room-deal-information-item-type {
-            font-size: 13px;
-            color: #fff;
-            background-color: #61b6e5;
-            min-width: 50px;
-            height: 26px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 3px;
-        }
-        
-        .room-deal-information-item-wrapper {
-            display: flex;
-            align-items: center;
-            margin-left: 10px;
-            height: 46px;
-            width: 100%;
-        }
-        
-        .room-deal-information-item-wrapper>input {
-            border: 1px solid #dddddd;
-            width: 140px;
-            height: 100%;
-            padding: 0 15px;
-            font-size: 15px;
-        }
-        
-        .room-deal-inforamtion-won {
-            margin: 0 10px;
-        }
-        
-        .room-deal-information-example {
-            color: #888888;
-        }
-        
-        .room-deal-information-option:not(:first-child) {
-            margin-top: 10px;
-        }
-        
-        .room-deal-inforamtion-divide {
-            font-size: 22px;
-            margin: 0 8px;
-            color: #222222;
-            font-weight: 100;
-        }
-        
-        .room-deal-close-button-wrapper {
-            margin-left: auto;
-            cursor: pointer;
-        }
-        
-        .room-deal-close-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            background-color: #666666;
-            color: rgb(220, 220, 220);
-        }
-        
-        .room-deal-cliked {
-            background-color: rgb(235, 235, 235);
-            color: rgb(170, 170, 170);
-        }
-        
-        .room-file-upload-example {
-            height: 100%;
-        }
-        
-        .room-write-content-container {
-            border-top: 1px solid #dddddd;
-            min-height: 260px;
-        }
-        
-        .room-picture-notice {
-            margin: 20px;
-            padding: 20px 40px;
-            border: 1px solid #dddddd;
-        }
-        
-        .file-preview-content-container {
-            height: 100%;
-        }
-        
-        .room-file-upload-wrapper {
-            margin: 20px;
-            border: 1px solid #dddddd;
-            background-color: #f4f4f4;
-            min-height: 350px;
-            font-size: 15px;
-            color: #888888;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-        
-        .room-file-upload-example-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* height: 100%;
-  width: 100%; */
-        }
-        
-        .room-file-image-example-wrapper {
-            text-align: center;
-        }
-        
-        .room-file-notice-item {
-            margin-top: 5px;
-            text-align: center;
-        }
-        
-        .room-file-notice-item-red {
-            color: #ef4351;
-        }
-        
-        .image-box {
-            margin-top: 30px;
-            padding-bottom: 20px;
-            text-align: center;
-        }
-        
-        .image-box input[type='file'] {
-            position: absolute;
-            width: 0;
-            height: 0;
-            padding: 0;
-            overflow: hidden;
-            border: 0;
-        }
-        
-        .image-box label {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #232d4a;
-            color: #fff;
-            vertical-align: middle;
-            font-size: 15px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        
-        .file-preview-wrapper {
-            padding: 10px;
-            position: relative;
-        }
-        
-        .file-preview-wrapper>img {
-            position: relative;
-            width: 190px;
-            height: 130px;
-            z-index: 10;
-        }
-        
-        .file-close-button {
-            position: absolute;
-            /* align-items: center; */
-            line-height: 18px;
-            z-index: 99;
-            font-size: 18px;
-            right: 5px;
-            top: 10px;
-            color: #fff;
-            font-weight: bold;
-            background-color: #666666;
-            width: 20px;
-            height: 20px;
-            text-align: center;
-            cursor: pointer;
-        }
-        
-        .file-preview-container {
-            height: 100%;
-            display: flex;
-            flex-wrap: wrap;
-        }
-        
-        .file-preview-wrapper-upload {
-            margin: 10px;
-            padding-top: 20px;
-            background-color: #888888;
-            width: 190px;
-            height: 130px;
-        }
-        
-        .room-write-button-wrapper {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #222222;
-        }
-        
-        .room-write-button-wrapper>div {
-            width: 160px;
-            height: 50px;
-            border: 1px solid #dddddd;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 15px;
-            cursor: pointer;
-        }
-        
-        .room-write-button {
-            margin-left: 15px;
-            color: #fff;
-            background-color: #1564f9;
-        }
-        
-        .room-write-button:hover {
-            opacity: 0.8;
-        }
 </style>
