@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.model.MemberCoupon;
+import com.icia.wapoo.model.Order;
 import com.icia.wapoo.model.Profile;
 import com.icia.wapoo.model.Store;
 
@@ -31,4 +32,6 @@ public interface ProfileDao {
 	int deleteProfile(int member_id);
 	//쿠폰 정보가져오기
 	List<MemberCoupon> getCoupon(int memberId);
+	//주문정보 가저오기
+	List<Order> getOrder(String phone);
 }

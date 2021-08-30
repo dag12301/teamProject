@@ -47,7 +47,27 @@ SET	STATUS = 'N'
 WHERE	memberId = #{member_id}
 </insert>
 
+<!-- 주문 조회 -->
+<select id="getOrder" resultType="Order">
+SELECT	A.orderId,
+	A.orderDate AS 'orderDate',
+	A.status AS 'status',
+	E.name AS 'storeName',
+	A.phone AS 'phone',
+	C.name AS 'foodName',
+	B.quantity AS 'quantity',
+	D.name AS 'image'
+FROM	`order` A INNER JOIN  `orderInfo` B INNER JOIN `food` C INNER JOIN `store_file` D INNER JOIN `store` E
+ON	A.orderId = B.orderInfoId
+AND	B.food_id = C.foodId
+AND	C.store_id = D.store_id
+AND	C.store_id = E.storeId
 
+WHERE	A.status != 'S'
+AND	A.phone= #{phone}
+
+
+</select>
 
 
 

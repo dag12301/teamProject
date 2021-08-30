@@ -24,6 +24,7 @@ import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.model.Member;
 import com.icia.wapoo.model.MemberCoupon;
+import com.icia.wapoo.model.Order;
 import com.icia.wapoo.model.Profile;
 import com.icia.wapoo.service.MemberService;
 import com.icia.wapoo.service.ProfileService;
@@ -202,14 +203,43 @@ public class ProfileController {
 
 	//주문내용
 	@PostMapping(value = "/getOrder")
-	public ResponseEntity getOrder(HttpServletRequest request)
+	public ResponseEntity getOrder(@RequestBody(required = false) String phone,HttpServletRequest request)
 	{
 		System.out.println("주문 정보 가져옵니다");
-		int memberId = 25;//getMemberIdByRequest(request);
-		
-		Member member = profileService.getMember(memberId);
-		
-		System.out.println(member);
+		int memberId = getMemberIdByRequest(request);
+	
+		if(memberId > 0)
+		{
+			System.out.println("회원입니다.");
+			
+			Member member = profileService.getMember(memberId);
+			
+			if(member != null)
+			{	
+				List<Order> list = profileService.getOrder(member.getPhone());
+				
+				if(list != null)
+				{
+					System.out.println("정보 있음");
+					return new ResponseEntity(list, HttpStatus.OK);
+				}
+			}
+		}
+		else
+		{
+			System.out.println("비회원입니다.");
+			
+			System.out.println("phone: "+ phone);
+			List<Order> list = profileService.getOrder(phone);
+			
+			System.out.println("list: "+ list);
+			
+			if(list != null)
+			{
+				System.out.println("정보 있음");
+				return new ResponseEntity(list, HttpStatus.OK);
+			}
+		}
 		
 		
 		return new ResponseEntity("no", HttpStatus.OK);

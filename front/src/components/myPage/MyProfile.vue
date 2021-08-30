@@ -1,25 +1,25 @@
 <template>
-<div class="container" style="width: 800px;">
-  <div style="height: 660px">
-    <div v-if="correction == true">
-      <div v-if="profile != null">
-        <div class="row" style="padding: 20px; border: 1px solid black;">
-          <div class="img" style="padding-bottom: 20px">
-            <img
-              src="https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2"
-              style="width: 150px; height: 150px; border-radius: 50%"
-            />
+  <div class="container" style="width: 800px">
+    <div style="height: 660px">
+      <div v-if="correction == true">
+        <div v-if="profile != null">
+          <div class="row" style="padding: 20px; border: 1px solid black">
+            <div class="img" style="padding-bottom: 20px">
+              <img
+                src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
+                style="width: 150px; height: 150px; border-radius: 50%"
+              />
+            </div>
+            <div class="filebox">
+              <label for="ex_file">업로드</label>
+              <input type="file" id="ex_file" />
+            </div>
           </div>
-          <div class="filebox">
-            <label for="ex_file">업로드</label>
-            <input type="file" id="ex_file" />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">이름 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.name }}
-            <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
+          <div class="row">
+            <div class="col-4 profile-1">이름 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.name }}
+              <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
             </div>
           </div>
           <div class="row">
@@ -48,9 +48,14 @@
             </div>
           </div>
         </div>
+
       </div>
 
-      <div v-else>
+      <div v-if="correction == false">
+        <EditProfile @trueEdit="edit" :message="profile"  ></EditProfile>
+      </div>
+
+      <div v-if="profile == null">
         <div>정말 탈퇴 하시겠습니까?</div>4
         <br>
         <div>탈퇴하려면 비밀번호가 필요합니다.</div>
@@ -60,9 +65,7 @@
     
     </div>
 
-    <div v-if="correction == false">
-      <EditProfile @trueEdit="edit" :message="profile"  ></EditProfile>
-    </div>
+    
 
     <div class="button" v-if="profileDelete == false">
       <div v-if="correction == true">
@@ -92,7 +95,6 @@
 import http from "@/api/http";
 import { error, success, normal } from "@/api/notification";
 import EditProfile from "@/components/myPage/EditProfile.vue";
-
 export default {
   components: { EditProfile },
   data() {
@@ -100,7 +102,7 @@ export default {
       correction : null,
       profile: '',       //프로필 null이면 삭제화면
       profileDelete: false,//삭제 토글
-      deletePassword: null
+      deletePassword: ""
     };
   },
   methods: {
@@ -132,6 +134,9 @@ export default {
     },
     //삭제하기
     reallyDelete(){
+      if( this.deletePassword == ""){
+        return alert("비밀번호를 입력하세요")
+      }
 
       http.post("/profile/deleteprofile",  this.deletePassword)
       .then(res => {
@@ -153,11 +158,11 @@ export default {
       http
         .get("/profile/myProfile")
         .then((response) => {
+          console.log(response.data)
           if (response.status === 200) {
             console.log(response.data)
             this.profile = response.data;
             if (this.profile != null) {
-
               if (this.profile.status == "Y")
               {
                 success("프로필을 불러왔습니다.", this);

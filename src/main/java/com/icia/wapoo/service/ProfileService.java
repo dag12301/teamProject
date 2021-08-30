@@ -11,6 +11,7 @@ import com.icia.wapoo.dao.ProfileDao;
 import com.icia.wapoo.model.LoginInfo;
 import com.icia.wapoo.model.Member;
 import com.icia.wapoo.model.MemberCoupon;
+import com.icia.wapoo.model.Order;
 import com.icia.wapoo.model.Profile;
 
 @Service
@@ -113,8 +114,7 @@ public class ProfileService {
 		return memberCoupon;
 	}
 	
-	
-	//멤버 정보 가ㅏ져오기
+	//멤버 정보 가져오기
 	public Member getMember(int memberId)
 	{
 		Member member = null;
@@ -132,6 +132,23 @@ public class ProfileService {
 		return member;
 	}
 	
+	//주문내용 가져오기
+	public List<Order> getOrder(String phone)
+	{
+		List<Order> list = null;
+		
+		try
+		{
+			list = profileDao.getOrder(phone);
+		}
+		catch(Exception e)
+		{
+			System.out.println("쿠폰정보가 없습니다.");
+			System.out.println("getOrder 오류: " + e);
+		}
+		
+		return list;
+	}
 	
 	
 	
