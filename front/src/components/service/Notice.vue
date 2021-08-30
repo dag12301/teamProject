@@ -1,34 +1,36 @@
 <template>
+<div class="container" style="width: 1000px;">
   <div class="notice col-12 h-50">
-    <h2 class="mb-5 font-weight-bold">공지사항</h2>
-
-    <div class="p-1 bg-dark text-white"></div>
+    <ul class="list-group list-group-horizontal" style="border-top: 2px solid gray;">
+      <li class="list-group-item noticeTitle" style="width: 100px;"><strong>No.</strong></li>
+      <li class="list-group-item noticeTitle" style="width: 700px;"><strong>제목</strong></li>
+      <li class="list-group-item noticeTitle" style="width: 200px;"><strong>시간</strong></li>
+    </ul>
     <!-- 리스트 시작 -->
-    <ul class="list-group list-group-flush" style="cursor: pointer;  list-style:none;">
-      <li
-        class="list-group-item"
+    <ul class="list-group list-group-horizontal" 
+        style="cursor: pointer; border-top: 2px solid gray;"
         @click="listPage(notice.articleId)"
-        v-for="notice in this.$store.state.serviceCenter.notices"
-        :key="notice.id"
-      >
-        <span class="position-absolute" style="left: 1vw">[공지]</span>
-        <span class="position-absolute" style="left: 6vw"
-          >{{ notice.title }}[{{ notice.children }}]</span
-        >
-        <span class="position-absolute" style="right: 6vw">{{
-          notice.regDate
-        }}</span>
-        <span class="position-absolute" style="right: 4vw">
-          <i class="fas fa-eye"></i>
+        v-for="(notice, index) in this.$store.state.serviceCenter.notices"
+        :key="notice.id">
+      <li class="list-group-item noticeList" style="border: 0px; width: 100px; justify-content: center;">
+        <span>
+          {{ ++index }}.
         </span>
-        <span class="position-absolute" style="right: 1vw">{{
-          notice.hit
-        }}</span>
       </li>
-      <li v-if="this.getNoticeTotal == 0" style="font-weight: 700; font-size: 2vh"> 글이 없습니다.</li>
+      <li class="list-group-item noticeList" style="border: 0px; width: 700px;">
+        <strong style="font-size: 18px;">
+          {{ notice.title }}
+        </strong>
+      </li>
+      <li class="list-group-item noticeList" style="border: 0px; width: 200px; justify-content: center;">
+        <span>
+          {{ notice.regDate }}
+        </span>
+      </li>
+      <li v-if="this.getNoticeTotal == 0" style="font-weight: 700; font-size: 2vh;"> 글이 없습니다.</li>
     </ul>
     <!-- 끝 -->
-    <div class="p-1 bg-dark text-white"></div>
+    <div style="border-top: 2px solid gray;"></div>
     <!-- 순서 버튼 -->
     <nav
       aria-label="Page navigation example"
@@ -66,6 +68,7 @@
     </nav>
     <!-- 끝 -->
   </div>
+</div>
 </template>
 
 <script>
@@ -148,10 +151,16 @@ export default {
 </script>
 
 <style scoped>
-.notice ul li {
-  height: 7vh;
-  padding-top: 2vh;
-  padding-bottom: 2vh;
-  font-size: 2vh;
+.noticeList {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  display: flex;
+  align-items: center;
+}
+.noticeTitle {
+  border: 0px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  font-size: 18px;
 }
 </style>
