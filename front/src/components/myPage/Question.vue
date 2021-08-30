@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     throwQNA(articleId){
-      this.$store.commit("SET_serviceCenters", 0)
+      
       this.$router.push({name: 'BoardList' ,query: { "board": "qna", "articleId": articleId}})
     },
     QDel(writerId, articleId) {

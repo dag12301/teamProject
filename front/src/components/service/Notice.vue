@@ -107,14 +107,10 @@ export default {
       this.numPage(page, range, listSize, rangeSize);
     },
     nextBotton(range1, rangeSize, listSize) {
-      console.log("next---------------------------");
+
       let page = parseInt(range1 * rangeSize) + 1;
       let range = range1 + 1;
-      console.log("range1: " + range1);
-      console.log(page);
-      console.log("range: " + range);
-
-      console.log("---------------------------");
+ 
       this.numPage(page, range, listSize, rangeSize);
     },
 
@@ -123,19 +119,8 @@ export default {
       authAPI.getBoardList(1, page, range, listSize, rangeSize).then((res) => {
         this.nullCenterNotices(); //테이터 삭제
         this.nullPagingNotice(); //페이징 삭제
-        console.log("삭제---------------------------");
-        console.log(
-          "setPagingQueAn : " + this.$store.state.serviceCenter.pagingNotices
-        );
-        console.log("---------------------------");
-
         this.setPagingNotices(res.data.paging);
-        console.log("저장---------------------------");
-        console.log(
-          "setPagingQueAn : " + this.$store.state.serviceCenter.pagingNotices
-        );
-        console.log("---------------------------");
-
+  
         res.data.list.forEach((element) => {
           //vuex에 데이터 넣기
           this.setCenternotices(element);
@@ -157,7 +142,7 @@ export default {
   beforeUnmount() {   // 종료전 데이터 삭제
     this.$store.commit("serviceCenter/nullCenterNotices")
     this.$store.commit("serviceCenter/nullPagingNotice")
-   
+    
   }
 };
 </script>

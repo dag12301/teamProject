@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.LoginInfo;
+import com.icia.wapoo.model.Member;
 import com.icia.wapoo.model.MemberCoupon;
 import com.icia.wapoo.model.Profile;
 import com.icia.wapoo.service.MemberService;
@@ -199,7 +200,20 @@ public class ProfileController {
 	}
 	
 
-	
+	//주문내용
+	@PostMapping(value = "/getOrder")
+	public ResponseEntity getOrder(HttpServletRequest request)
+	{
+		System.out.println("주문 정보 가져옵니다");
+		int memberId = 25;//getMemberIdByRequest(request);
+		
+		Member member = profileService.getMember(memberId);
+		
+		System.out.println(member);
+		
+		
+		return new ResponseEntity("no", HttpStatus.OK);
+	}
 	
 	
 	

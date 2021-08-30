@@ -79,7 +79,6 @@ export default {
       return  state.pagingFQA = payload
     },
     nullCenterNotices (state) {                             //notices페이지 삭제
-      console.log(state.notices)
       return state.notices = []
     },
     nullCenterQueAn(state) {                             //QueAn페이지 삭제

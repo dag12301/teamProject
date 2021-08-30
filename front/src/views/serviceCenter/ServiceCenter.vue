@@ -60,6 +60,7 @@ export default {
     clickPages(num) {   //클릭시
       this.SET_serviceCenters(num)
       if(num === 1){
+        
         this.getCountNotice(1)
         
 
@@ -71,7 +72,7 @@ export default {
         this.getCountFQA(num)
         
       }
-      this.pageNumber = num
+
     },
     
     getCountNotice(boardId) {     // notice 서버 통신 
@@ -98,7 +99,6 @@ export default {
         this.nullCenterFQA()
         this.nullPagingFQA()
         return this.downAllList(boardId, 1, 1), this.SET_COUNT_FQA(false)
-        
       }else{
         return this.SET_COUNT_FQA(true)
       }
@@ -141,7 +141,6 @@ export default {
       this.nullPagingpagingQueAn()
       this.nullPagingNotice()
       this.nullPagingFQA()
-      
     }
     
   },
@@ -150,24 +149,13 @@ export default {
     this.getCountNotice(1),
     this.getCountQueAn(2),
     this.getCountFQA(3)
-    if(this.$store.state.serviceCenters != 0){
-      this.SET_serviceCenters(1)
+    if(this.$store.state.serviceCenters == 1){
       this.$router.push({name: 'Notice'})
     }
-    
   },
   updated(){
     this.clickPages(this.$store.state.serviceCenters)
-    // if(this.$store.state.serviceCenters == 1){
-    //   if(this.$store.state.countNotice == true){
-    //     console.log("1")
-    //   }else{
-    //     this.SET_serviceCenters(1)
-    //     this.$router.push({name: 'Notice'})
-    //   }
-    // }else{
-    //   this.clickPages(this.$store.state.serviceCenters)
-    // }
+    
   },
   beforeUnmount() {   //component 종료전 데이터 삭제  
     this.deleteAll()

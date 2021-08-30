@@ -6,8 +6,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.icia.wapoo.dao.MemberDao;
 import com.icia.wapoo.dao.ProfileDao;
 import com.icia.wapoo.model.LoginInfo;
+import com.icia.wapoo.model.Member;
 import com.icia.wapoo.model.MemberCoupon;
 import com.icia.wapoo.model.Profile;
 
@@ -16,6 +18,9 @@ public class ProfileService {
 	
 	@Autowired
 	private ProfileDao profileDao;
+	
+	@Autowired
+	private MemberDao memberDao;
 	
 	//프로필 조회 profileDao에서 가져옴
 	public Profile profileSelect(int memberId)
@@ -109,7 +114,23 @@ public class ProfileService {
 	}
 	
 	
-	
+	//멤버 정보 가ㅏ져오기
+	public Member getMember(int memberId)
+	{
+		Member member = null;
+		
+		try
+		{
+			member = memberDao.selectMemberById(memberId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("쿠폰정보가 없습니다.");
+			System.out.println("getCoupon 오류: " + e);
+		}
+		
+		return member;
+	}
 	
 	
 	
