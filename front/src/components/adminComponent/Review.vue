@@ -13,8 +13,13 @@
     <div style="float: left; width: 70%;">
       <p class="review2-p">리뷰 <span style="font-weight: 600;">100</span>개 · 사장님 댓글 <span style="font-weight: 600;">48</span>개</p>
     </div>
-    <div style="float: right; width: 20%; margin-top: 5px; margin-right: 20px;">
-      <div class="review2-div" style="height: 40px;"><div><i class="fas fa-pencil-alt"></i><span style="margin-left: 10px;">리뷰쓰기</span></div></div>
+    <div style="float: right; width: 20%; margin-top: 5px; margin-right: 20px;" @click="popReviewModal(food)">
+      <div class="review2-div" style="height: 40px;">
+        <div>
+          <i class="fas fa-pencil-alt"></i>
+          <span style="margin-left: 10px;">리뷰쓰기</span>
+        </div>
+      </div>
     </div>
   </div>
   <div class="review3">
@@ -87,9 +92,55 @@
       </p>
     </div>
   </div>
+  <review-modal
+    :data="reviewModalData"
+    v-if="this.$store.state.reviewModal == true"
+  ></review-modal>
 </template>
 
+<script>
+import ReviewModal from "@/components/modal/Review.vue";
+
+import { mapMutations } from "vuex";
+export default {
+  props: ["foodList"],
+  components: {
+    ReviewModal,
+  },
+  data() {
+    return {
+      reviewModalData: null,
+    };
+  },
+  methods: {
+    ...mapMutations(["SET_MODAL_REVIEW"]),
+    popReviewModal(food) {
+      this.reviewModalData = food;
+      this.SET_MODAL_REVIEW(true);
+    },
+  },
+};
+</script>
+
 <style scoped>
+.modal-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
+.modal-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+
+
 .review {
   width: 100%;
   border: 1px solid black;

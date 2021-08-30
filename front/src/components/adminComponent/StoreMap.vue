@@ -4,7 +4,6 @@
       <div id="staticMap"></div>
     </div>
     <div>
-      하하
     </div>
   </div>
 </template>

@@ -43,7 +43,7 @@
         WHERE 
             status = #{option}
         </if>
-        ORDER BY memberId DESC
+        ORDER BY role, memberId
             LIMIT #{startLimit}, #{endLimit}
     </select>
     
