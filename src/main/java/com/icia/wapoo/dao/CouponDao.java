@@ -20,4 +20,9 @@ public interface CouponDao {
     int selectCouponListCount(@Param("option") String option);
     
     int updateCouponStatus(@Param("couponId") int couponId, @Param("status") String status);
+
+    Map<String, Object> selectCouponByEventId(@Param("eventId") Integer eventId);
+
+    int insertMemberCoupon(@Param("memberId") Integer memberId,
+                           @Param("couponId") Integer couponId);
 }

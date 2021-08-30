@@ -56,4 +56,12 @@ public class CouponService {
     	System.out.println(couponId+"를 "+status+"로 변경합니다.");
         couponDao.updateCouponStatus(couponId, status);
     }
+
+    public Map<String, Object> getCouponInfoByEventId(Integer eventId) {
+        return couponDao.selectCouponByEventId(eventId);
+    }
+
+    public int getCouponInstance(Integer memberId, Integer couponId) {
+        return couponDao.insertMemberCoupon(memberId, couponId);
+    }
 }
