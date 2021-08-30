@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.wapoo.dao.OrderDao">
+    <insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId" parameterType="Map">
+        INSERT INTO `order`
+        SET `orderDate` = NOW(),
+            requests = #{orderRequest},
+            totalPrice = #{totalPrice},
+            discount = #{discount},
+            payment = 0,
+            address= #{address},
+            phone = #{phone}
+    </insert>
+    <insert id="insertOrderInfo">
+        INSERT INTO `orderInfo`
+        SET `order_id` = #{orderId},
+            `food_id` = #{foodId},
+            `quantity` = #{quantity}
+    </insert>
+
+    <select id="selectPriceByFoodId" resultType="int">
+        SELECT price
+        FROM food
+        WHERE foodId = #{foodId};
+    </select>
+
+    <insert id="insertPayment" parameterType="Payment">
+        INSERT INTO payment
+        SET payDate = NOW(),
+            payMethod = #{payMethod},
+            payAmount = #{payAmount},
+            aid = #{aid},
+            tid = #{tid},
+            order_id = #{order_id}
+    </insert>
+
+    <update id="updateOrderState">
+        UPDATE `order`
+        SET `status` = #{status}
+        WHERE orderId = #{orderId};
+    </update>
+
+    <update id="updateOrderInfosStatus">
+        UPDATE `orderInfo`
+        SET `status` = #{status}
+        WHERE order_id = #{order_id};
+    </update>
+
+    <select id="selectOrderByOrderId" resultType="Map">
+        SELECT *
+        FROM `order`
+        WHERE orderId = #{orderId}
+    </select>
+
+    <select id="selectAllOrderedFoodByOrderId" resultType="Map">
+        SELECT
+            i.food_id foodId,
+            i.quantity,
+            i.status paySuccess,
+            f.name,
+            f.description,
+            f.status foodStatus,
+            f.store_id,
+            ff.name fileUrl
+        FROM `orderInfo` i, food f, food_file ff
+        WHERE i.food_id= f.foodId
+          AND ff.food_id = f.foodId
+          AND i.order_id = #{order_id}
+    </select>
+
+    <select id="selectFoodnameByFoodId" resultType="String">
+        SELECT name
+        FROM food
+        where foodId=#{foodId}
+    </select>
+</mapper>

@@ -56,7 +56,6 @@
 
     </div>
     <SidebarLink to="/test" icon="fas fa-question">Test</SidebarLink>
-    <SidebarLink to="/writeReview" icon="fas fa-question">리뷰</SidebarLink>
     <span class="burger" @click="toggleSidebar">
       <BurgerButton />
     </span>

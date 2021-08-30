@@ -159,10 +159,15 @@ const routes = [
     component: () => import("../views/admin/Member.vue"),
   },
   {
-    path: "/writeReview",
-    name: "WriteReview",
-    component: () => import("../views/food/WriteReview.vue"),
-  }
+    path: "/kakaoPaySuccess",
+    name: "KakaoPaySuccess",
+    component: () => import("../views/cart/KakaoPay.vue"),
+  },
+  {
+    path: "/orderInfo",
+    name: "OrderInfo",
+    component: () => import("../views/cart/OrderInfo.vue"),
+  },
 ];
 
 const router = createRouter({
