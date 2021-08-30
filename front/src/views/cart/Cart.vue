@@ -8,7 +8,7 @@
           <div class="orderText">
             <p>배달정보</p>
           </div>
-          <div class="orderAddress">
+          <div class="orderAddress row p-4">
             <table>
               <tr>
                 <td style="width: 25%; text-align: center">
@@ -17,10 +17,15 @@
                 <td style="padding-left: 10px">
                   <!-- 주소가 맞지 않을 수 있으니 수정할수있도록 할것 -->
                   <span
-                    >{{ GET_LOCAL.address_name }}
+                    ><div v-if="currentPlace">
+                      {{ currentPlace.address_name }}
+                    </div>
+
                     <span
                       class="badge bg-info text-dark m-1"
                       style="cursor: pointer"
+                      @click="SET_MODAL_MAP(true)"
+                      @close="SET_MODAL_MAP(false)"
                       >주소수정</span
                     ></span
                   >
@@ -259,7 +264,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 import http from "@/api/http";
 import axios from "axios";
 
@@ -278,11 +283,21 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      mapModal: "mapModal",
+      address: "selectedPlace",
+    }),
     ...mapGetters({
       checkCart: "checkCart",
       GET_LOCAL: "GET_LOCAL",
       getUserId: "auth/getUserId",
     }),
+    currentPlace() {
+      if (this.GET_LOCAL == null || this.GET_LOCAL.address_name == null) {
+        this.refreshLocation();
+      }
+      return this.GET_LOCAL;
+    },
     totalPrice: function () {
       let result = 0;
       for (let food of this.foodList) {
@@ -306,10 +321,8 @@ export default {
     },
   },
   mounted() {
-    if (this.GET_LOCAL.address_name == null) {
-      console.log("주소정보 갱신에 문제가있습니다..");
-      this.$router.push({ path: "/" });
-      return;
+    if (this.GET_LOCAL == null) {
+      this.refreshLocation();
     }
     if (this.checkCart != null) {
       this.getFoodList(this.checkCart);
@@ -473,6 +486,22 @@ export default {
       });
       return poo[0].total_discountPrice;
     },
+    refreshLocation() {
+      return navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setLocation(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.log("위치정보를 갱신할 수 없습니다" + error);
+        }
+      );
+    },
+    setLocation(latitude, longitude) {
+      this.$store.commit("SET_LAT", latitude);
+      this.$store.commit("SET_LON", longitude);
+      console.log("사용자 위치 추적: " + latitude + ", " + longitude);
+      this.$store.commit("SET_OBSERVE", true);
+    },
   },
 };
 </script>
@@ -491,6 +520,7 @@ export default {
 }
 .orderAddress span {
   font-weight: 550;
+  align-items: center;
 }
 
 .Pay {
