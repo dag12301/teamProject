@@ -31,22 +31,22 @@
           <hr style="margin-top: 5px; width: 95%;" />
           <table>
             <tr>
-              <td class="td1" style="color: gray">전화번호</td>
+              <td class="td1" style="color: gray"><i class="fas fa-phone"></i><span class="i-text">전화번호</span></td>
               <td class="td2" style="padding-left: 20px">{{ shopInfo.storeInfo.phone }}</td>
             </tr>
             <tr>
-              <td class="td1" style="color: gray; margin-top: 20px">주소</td>
+              <td class="td1" style="color: gray; margin-top: 20px"><i class="fas fa-map-marked-alt"></i><span class="i-text">주소</span></td>
               <td class="td2" style="padding-left: 20px">
                 {{ shopInfo.storeInfo.address }}
                 {{ shopInfo.storeInfo.addressDetail }}
               </td>
             </tr>
             <tr>
-              <td class="td1" style="color: gray; margin-top: 20px">리뷰점수</td>
+              <td class="td1" style="color: gray; margin-top: 20px"><i class="fas fa-thumbs-up"></i><span class="i-text">리뷰점수</span></td>
               <td class="td2" style="padding-left: 20px">4.9</td>
             </tr>
             <tr>
-              <td class="td1" style="color: gray; margin-top: 20px">결제</td>
+              <td class="td1" style="color: gray; margin-top: 20px"><i class="fas fa-credit-card"></i><span class="i-text">결제</span></td>
               <td class="td2" style="padding-left: 20px">KakaoPay</td>
             </tr>
           </table>
@@ -203,5 +203,8 @@ export default {
 }
 .btn {
   padding: 10px;
+}
+.i-text {
+  margin-left: 10px;
 }
 </style>
