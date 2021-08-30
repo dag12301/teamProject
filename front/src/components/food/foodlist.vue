@@ -18,7 +18,7 @@
         v-for="(shop, index) in shopList"
         :key="index"
       >
-        <div class="list-group-item" style="height: 100px">
+        <div class="list-group-item" style="height: 100px; margin-top: 10px;">
           <div @click="showShopDetail(shop.store_id)">
             <div class=".col-md-3 .col-md-pull-9 f-left">
               <img class="menu-img" :src="shop.fileUrl" />

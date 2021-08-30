@@ -1,4 +1,4 @@
-<template style="background-color: #fafafa">
+<template style="background-color: #fafafa;">
   <div v-if="dataLoaded">
     <div class="storeBox" style="background-color: #fafafa">
       <div
@@ -24,26 +24,30 @@
           class="storeInf"
           style="float: right; width: 50%; text-align: left"
         >
-          <p style="color: gray; margin-bottom: 35px">
+          <p style="color: gray; margin-bottom: 35px; text-align: center;">
             {{ shopInfo.storeInfo.storeKind }}
           </p>
           <span style="font-weight: 600; font-size: 17px">업체정보</span>
           <hr style="margin-top: 5px; width: 95%;" />
           <table>
             <tr>
-              <td style="color: gray">전화번호</td>
-              <td style="padding-left: 20px">{{ shopInfo.storeInfo.phone }}</td>
+              <td class="td1" style="color: gray">전화번호</td>
+              <td class="td2" style="padding-left: 20px">{{ shopInfo.storeInfo.phone }}</td>
             </tr>
             <tr>
-              <td style="color: gray; margin-top: 20px">주소</td>
-              <td style="padding-left: 20px">
+              <td class="td1" style="color: gray; margin-top: 20px">주소</td>
+              <td class="td2" style="padding-left: 20px">
                 {{ shopInfo.storeInfo.address }}
                 {{ shopInfo.storeInfo.addressDetail }}
               </td>
             </tr>
             <tr>
-              <td style="color: gray; margin-top: 20px">별점</td>
-              <td style="padding-left: 20px"></td>
+              <td class="td1" style="color: gray; margin-top: 20px">리뷰점수</td>
+              <td class="td2" style="padding-left: 20px">4.9</td>
+            </tr>
+            <tr>
+              <td class="td1" style="color: gray; margin-top: 20px">결제</td>
+              <td class="td2" style="padding-left: 20px">KakaoPay</td>
             </tr>
           </table>
         </div>
@@ -107,7 +111,7 @@
       
     </div>
 
-    <div style="border: 1px solid black"></div>
+    
   </div>
   <div v-else-if="!dataLoaded">
     <div class="spinner-border" role="status">
@@ -158,6 +162,9 @@ export default {
 </script>
 
 <style scoped>
+.storeBox {
+  width: 80%;
+}
   input {
     background-color: gray;
   }
@@ -167,4 +174,34 @@ export default {
   .btn-outline-primary {
     border-radius: 0px;
   }
+  /* (메뉴, 지도보기, 후기)버튼 클릭했을 때 */
+  .btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
+    color: rgb(255, 194, 115);
+    background-color: white;
+    border-color: lightgray;
+    font-weight: bold;
+    border-bottom: 5px solid rgb(255, 205, 139);
+    box-shadow: none;
+}
+.btn-outline-primary {
+    border-color: lightgray;
+    color: black;
+}
+  /* 마우스커서가 올라갔을 때 */
+.btn-outline-primary:hover {
+    color: black;
+    background-color: white;
+    border-color: lightgray;
+    border: 2px solid lightgray;
+}
+.td1 {
+  font-size: 14px;
+  padding: 3px;
+}
+.td2 {
+  font-size: 14px;
+}
+.btn {
+  padding: 10px;
+}
 </style>
