@@ -22,6 +22,7 @@ export default createStore({
     mapModal: false, // 맵 모달
     orderModal: false, // 주문 모달
     selectRegister: "BUYER",
+    reviewModal: false,
 
     akinator: false, // 아키네이터 상태
 
@@ -108,6 +109,9 @@ export default createStore({
     SET_serviceCenters(state, payload){
       console.log("serviceCenter:   " +payload)
       state.serviceCenters = payload
+    },
+    SET_MODAL_REVIEW(state, boolean) {
+      state.reviewModal = boolean;
     }
   },
   modules: {

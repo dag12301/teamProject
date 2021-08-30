@@ -153,6 +153,21 @@ const routes = [
     name: "addMenu",
     component: () => import("../views/store/StoreAddMenu.vue"),
   },
+  {
+    path: "/member",
+    name: "Member",
+    component: () => import("../views/admin/Member.vue"),
+  },
+  {
+    path: "/kakaoPaySuccess",
+    name: "KakaoPaySuccess",
+    component: () => import("../views/cart/KakaoPay.vue"),
+  },
+  {
+    path: "/orderInfo",
+    name: "OrderInfo",
+    component: () => import("../views/cart/OrderInfo.vue"),
+  },
 ];
 
 const router = createRouter({

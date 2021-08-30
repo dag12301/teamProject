@@ -60,10 +60,17 @@
         
           <div v-if="this.tel ===  '' " class="msg">번화번호를 입력하요</div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-4 edit-1" style="border-bottom: 1px solid black">
-          이메일 :
+        <div class="row">
+          <div class="col-4 edit-1">핸드폰번호 :</div>
+          <div class="col-8 edit-2">
+            <input
+              v-model="edit.number"
+              type="text"
+              placeholder="-없이 적어주세요"
+              maxlength="11"
+            />
+            <div v-if="!numberValid" class="msg">번호 이상함</div>
+          </div>
         </div>
         <div class="col-8 edit-2" style="border-bottom: 1px solid black">
           <input
@@ -86,8 +93,7 @@
       
       </div>
     </div>
-  </div>
-</center>
+  </center>
 </template>
 
 <script>

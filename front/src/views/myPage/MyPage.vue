@@ -1,22 +1,22 @@
 <template>
-<center>
-  <div id="profileMenu">
-    <ul>
-      <li>
-        <a @click="changeView('myProfile')">내정보</a>
-      </li>
+  <center>
+    <div id="profileMenu">
+      <ul>
+        <li>
+          <a @click="changeView('myProfile')">내정보</a>
+        </li>
 
-      <li>
-        <a @click="changeView('myCoupon')">쿠폰</a>
-      </li>
+        <li>
+          <a @click="changeView('myCoupon')">쿠폰</a>
+        </li>
 
-      <li>
-        <a @click="changeView('myOrderHistory')">주문내역</a>
-      </li>
+        <li>
+          <a @click="changeView('myOrderHistory')">주문내역</a>
+        </li>
 
-      <li>
-        <a @click="changeView('myReview')">리뷰관리</a>
-      </li>
+        <li>
+          <a @click="changeView('myReview')">리뷰관리</a>
+        </li>
 
       <li>
         <a @click="changeView('myQuestion')">질문내역</a>
@@ -44,12 +44,12 @@ export default {
       view: "myProfile",
     };
   },
-  computed:{
-    currentView: function() {
+  computed: {
+    currentView: function () {
       console.log(this.view);
       console.log("넘어옴");
       return this.view;
-    }
+    },
   },
   methods: {
     changeView(request) {
@@ -73,24 +73,24 @@ export default {
   text-align: center;
   border: 1px solid black;
   overflow: hidden;
-  cursor:pointer;
+  cursor: pointer;
 }
 #profileMenu ul li a {
   display: block;
 }
 #profileMenu ul li a:hover {
   background: gray;
-  color:#fff;
+  color: #fff;
 }
 a {
-  text-decoration:none;
-  color:#404040;
+  text-decoration: none;
+  color: #404040;
 }
 ul {
   padding: 0px;
 }
 li {
-  list-style:none;
+  list-style: none;
 }
 .side-row {
   border-bottom: 1px solid black;
@@ -98,5 +98,4 @@ li {
 .item {
   padding: 20px;
 }
-
 </style>

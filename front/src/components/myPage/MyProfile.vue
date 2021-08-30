@@ -1,52 +1,51 @@
 <template>
-<div class="container" style="width: 800px;">
-  <div style="height: 660px">
-    <div v-if="correction == true">
-      <div v-if="profile != null">
-        <div class="row" style="padding: 20px; border: 1px solid black;">
-          <div class="img" style="padding-bottom: 20px">
-            <img
-              src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
-              style="width: 150px; height: 150px; border-radius: 50%"
-            />
+  <div class="container" style="width: 800px">
+    <div style="height: 660px">
+      <div v-if="correction == true">
+        <div v-if="profile != null">
+          <div class="row" style="padding: 20px; border: 1px solid black">
+            <div class="img" style="padding-bottom: 20px">
+              <img
+                src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
+                style="width: 150px; height: 150px; border-radius: 50%"
+              />
+            </div>
+            <div class="filebox">
+              <label for="ex_file">업로드</label>
+              <input type="file" id="ex_file" />
+            </div>
           </div>
-          <div class="filebox">
-            <label for="ex_file">업로드</label>
-            <input type="file" id="ex_file" />
+          <div class="row">
+            <div class="col-4 profile-1">이름 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.name }}
+              <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">이름 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.name }}
-            <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
+          <div class="row">
+            <div class="col-4 profile-1">닉네임 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.nickname }}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">닉네임 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.nickname }}
+          <div class="row">
+            <div class="col-4 profile-1">아이디 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.loginId }}
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">아이디 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.loginId }}
+          <div class="row">
+            <div class="col-4 profile-1">핸드폰번호 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.tel }}
+              <!-- tel 로 받아놓게했는데 DB에선 phone 으로 했음. 헷갈릴수있음 -->
+            </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">핸드폰번호 :</div>
-          <div class="col-8 profile-2">
-            {{ profile.tel }}
-            <!-- tel 로 받아놓게했는데 DB에선 phone 으로 했음. 헷갈릴수있음 -->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 profile-1">
-            이메일 :
-          </div>
-          <div class="col-8 profile-2">
-            {{ profile.email }}
+          <div class="row">
+            <div class="col-4 profile-1">이메일 :</div>
+            <div class="col-8 profile-2">
+              {{ profile.email }}
+            </div>
           </div>
         </div>
       </div>
@@ -87,7 +86,6 @@
         </button>
     </div>
   </div>
-</div>
 </template>
 
 <script>

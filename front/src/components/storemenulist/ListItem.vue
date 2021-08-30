@@ -1,12 +1,12 @@
 <template>
   <ul v-show="list" class="list-item" @click="SET_MODAL_ORDER(true)">
     <div class="item-box">
-      <div class="item-text">
+      <div class="item-text" style="margin-left: 20px;">
         <div class="menu-name">
           <!--가게 음식메뉴 이름-->
           {{ list.name }}
         </div>
-        <div class="menu-price">{{ list.price }}원</div>
+        <div class="menu-price" style="text-align: left;">{{ list.price }}원</div>
       </div>
       <div class="item-img">
         <img :src="list.fileUrl" class="item-img" />
