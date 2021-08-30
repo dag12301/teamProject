@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service("memberService")
@@ -113,4 +114,25 @@ public class MemberServiceImpl implements MemberService{
         }
         return true;
     }
+    
+    
+    public List<Map<String, Object>> getMemberList(int listPerPage, int requestPage, String option) {
+        int StartLimit = (requestPage-1)* listPerPage;
+        int EndLimit = listPerPage;
+        System.out.println((StartLimit+1) + "번째 부터 시작하여 "+EndLimit +"개를 가져옵니다.");
+        List<Map<String, Object>> list = memberDao.selectMemberList(StartLimit, EndLimit, option);// 여기서에러
+        System.out.println("가져온 게시물 수 : " + list.size());
+        return list;
+    }
+    
+    public int getMemberListCount(String option) {
+    	return memberDao.selectMemberListCount(option);
+    }
+    
+    public void updateMemberStatus(int memberId, String status) {
+    	System.out.println("updateMemberStatus로 들어왔습니다.");
+    	System.out.println(memberId+"를 "+status+"로 변경합니다.");
+        memberDao.updateMemberStatus(memberId, status);
+    }
+    
 }

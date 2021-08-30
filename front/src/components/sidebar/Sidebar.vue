@@ -18,6 +18,7 @@
     <Location icon="fas fa-compass" />
     <div v-if="userRole != null && userRole == 'ADMIN'">
       <!-- 관리자로 로그인 했을때 보이는 메뉴들 -->
+      <SidebarLink to="/member" icon="fas fa-home">회원관리페이지</SidebarLink>
       <SidebarLink to="/admin" icon="fas fa-home">가게관리페이지</SidebarLink>
       <SidebarLink to="/admincoupon" icon="fas fa-ticket-alt"
         >쿠폰관리페이지</SidebarLink

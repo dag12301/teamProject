@@ -154,6 +154,11 @@ const routes = [
     component: () => import("../views/store/StoreAddMenu.vue"),
   },
   {
+    path: "/member",
+    name: "Member",
+    component: () => import("../views/admin/Member.vue"),
+  },
+  {
     path: "/kakaoPaySuccess",
     name: "KakaoPaySuccess",
     component: () => import("../views/cart/KakaoPay.vue"),

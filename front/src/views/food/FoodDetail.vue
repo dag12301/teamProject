@@ -28,7 +28,7 @@
             {{ shopInfo.storeInfo.storeKind }}
           </p>
           <span style="font-weight: 600; font-size: 17px">업체정보</span>
-          <hr style="margin-top: 5px" />
+          <hr style="margin-top: 5px; width: 95%;" />
           <table>
             <tr>
               <td style="color: gray">전화번호</td>
@@ -104,42 +104,7 @@
         </div>
       </div>
 
-      <div class="storeBtn" style="width: 100%; height: 80px">
-        <div
-          class="storeShopping"
-          style="float: left; width: 40%; padding: 10px; height: 100%"
-        >
-          <button
-            style="
-              border: 0;
-              width: 100%;
-              height: 100%;
-              background-color: yellow;
-              font-weight: 600;
-              font-size: 20px;
-            "
-          >
-            장바구니
-          </button>
-        </div>
-        <div
-          class="storeOrder"
-          style="float: right; width: 60%; padding: 10px; height: 100%"
-        >
-          <button
-            style="
-              border: 0;
-              width: 100%;
-              height: 100%;
-              background-color: skyblue;
-              font-weight: 600;
-              font-size: 20px;
-            "
-          >
-            주문하기
-          </button>
-        </div>
-      </div>
+      
     </div>
 
     <div style="border: 1px solid black"></div>
@@ -191,3 +156,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+  input {
+    background-color: gray;
+  }
+  .btn-group {
+    background-color: white;
+  }
+  .btn-outline-primary {
+    border-radius: 0px;
+  }
+</style>

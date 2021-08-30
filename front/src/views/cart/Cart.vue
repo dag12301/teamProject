@@ -180,7 +180,7 @@
               </div>
             </div>
           </div>
-          <div class="calculatorWrapper d-block" style="padding-top: 0px">
+          <div class="calculatorWrapper d-block" style="padding-top: 0px; margin-top: 100px;">
             <div class="orderText">
               <h4>주문내역</h4>
             </div>
