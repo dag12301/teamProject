@@ -167,7 +167,7 @@ export default {
 
       imageDelete: [],  //삭제 이미지
       files: [], //업로드용 파일
-    
+
       uploadImageIndex: 0, // 이미지 업로드를 위한 변수
       
       //댓글 보내기
@@ -196,7 +196,6 @@ export default {
       authAPI //통신코드
         .list(query)
         .then((res) => {
-          console.log(res.data.articleImageFile);
           this.list = res.data.article; //list에  DB데이터 박기
           this.MYPAGE = res.data.MYPAGE;
           this.comments = res.data.list;
@@ -269,8 +268,7 @@ export default {
         writerId: writerId,
         articleId: articleId,
       };
-      console.log("2222222222222222222222222222222");
-      console.log(params);
+      
       authAPI //삭제 통신
         .listDelete(params)
         .then((res) => {
@@ -353,12 +351,9 @@ export default {
           console.log(params)
         })
 
-        
-        //이미지 있는지 확인
-      if( this.files.length > 0){
-         
         let form = new FormData()
         let image
+        let num = 0
         
         for(let i = 0 ; i < this.files.length; i++)
         {
@@ -367,16 +362,20 @@ export default {
           //이미지 업로드 articleId = res.data
           if(!(image > 0)){
             form.append('image', image)
+            num++
           }
         }
-
+        
+        //이미지 있는지 확인
+      if( num > 0){
+         
         //파일 보내기
         authAPI
         .write12(form, articleId)
         .then( res => {
           if(res.data == 100){
             alert("글을 작성하였습니다")
-            location.href = "/" + this.board;
+            this.$router.push({name: 'BoardList', query: { "board": this.board, "articleId": articleId}})
           }else if(res.data == 300){
             alert("글 작성 중 오류가 발생습니다")
           }else if(res.data == 400){
@@ -391,8 +390,10 @@ export default {
           })
       }else{
         //이지미 없을 때
+        
         alert("글을 작성하였습니다")
-            this.boardListPage()
+        
+            this.$router.push({name: 'BoardList', query: { "board": this.board, "articleId": articleId}})
       }
 
     },

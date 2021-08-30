@@ -4,10 +4,9 @@
 
     <div class="p-1 bg-dark text-white"></div>
     <!-- 리스트 시작 -->
-    <ul class="list-group list-group-flush">
+    <ul class="list-group list-group-flush" style="cursor: pointer;  list-style:none;">
       <li
         class="list-group-item cursor-pointer"
-        style="cursor: pointer;"
         v-for="notice in this.$store.state.serviceCenter.FQA"
         :key="notice.id"
         @click="listPage(notice.articleId)"
@@ -148,6 +147,11 @@ export default {
     (this.listSize = this.paging.listSize),
       (this.rangeSize = this.paging.rangeSize);
   },
+  beforeUnmount() {   // 종료전 데이터 삭제
+    this.$store.commit("serviceCenter/nullCenterFQA")
+    this.$store.commit("serviceCenter/nullPagingFQA")
+   
+  }
 };
 </script>
 

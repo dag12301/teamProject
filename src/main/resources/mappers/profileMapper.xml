@@ -14,7 +14,47 @@
    FROM `loginInfo` l, `member` m 
   WHERE m.memberId = l.member_id 
     AND m.memberId = #{memberId}
-    AND m.status = "Y";
+    AND m.status = "Y"
 </select>
+
+<update id="insertProfile" >
+
+UPDATE `member`
+SET	nickname = #{nickname},
+	phone = #{tel},
+	email = #{email}
+WHERE	memberId = #{memberId}
+</update>
+
+<!-- 비밀번호 수정 -->
+<update id="insertPassWord" >
+UPDATE loginInfo
+SET	PASSWORD = #{password}
+WHERE	member_id = #{member_id}
+</update>
+
+<!-- 회원 확인 -->
+<select id="deleteProfileCheck" resultType="LoginInfo">
+SELECT	*
+FROM	`loginInfo`
+WHERE	member_id = #{member_id}
+AND	PASSWORD = #{password}
+</select>
+<!-- 탈퇴하기 -->
+<insert id="deleteProfile">
+UPDATE `member`
+SET	STATUS = 'N'
+WHERE	memberId = #{member_id}
+</insert>
+
+
+
+
+
+
+
+
+
+
 
 </mapper>

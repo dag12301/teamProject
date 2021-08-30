@@ -60,7 +60,7 @@ WHERE articleId = #{value}
 
 </delete>
 
-<!-- 댓글 삭제 parant_id: 모든 댓글 삭제 -->
+<!-- 댓글 삭제  모든 댓글 삭제 -->
 <delete id="commentDelete" parameterType="Article">
 UPDATE article
 	SET STATUS = 'S'
@@ -256,6 +256,8 @@ ON A.writer_id = B.memberId
 
 WHERE board_id = #{boardId}
 AND	writer_id = #{memberId}
+AND A.status != 'S'
+ORDER BY articleId DESC
 
 </select>
 

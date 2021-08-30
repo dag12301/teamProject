@@ -27,7 +27,7 @@
   <my-coupon v-if="currentView == 'myCoupon'" />
   <my-order-history v-if="currentView == 'myOrderHistory'" />
   <my-review v-if="currentView == 'myReview'" />
-  <my-question v-if="currentView == 'myQuestion'" />
+  <my-Question  v-if="currentView == 'myQuestion'" @updateView = "changeView" />
 </center>
 </template>
 <script>

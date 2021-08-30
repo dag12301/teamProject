@@ -15,7 +15,7 @@
               class="profile"
             />
             <span style="color: black"
-              ><span style="font-weight: bold">{{ userNickname }}</span> 님
+              ><span style="font-weight: bold">{{userInfo[2]}}</span> 님
               <br />
               안녕하세요.</span
             >
@@ -56,10 +56,16 @@ import LoginModal from "@/components/modal/Login.vue";
 import RegisterModal from "@/components/modal/Register.vue";
 import { success } from "@/api/notification";
 
+
 export default {
   props: {},
   setup() {
     return { collapsed };
+  },
+  data() {
+    return {
+      profile: ''
+    }
   },
   computed: {
     ...mapGetters({
@@ -75,6 +81,8 @@ export default {
       }, 500);
       success("성공적으로 로그아웃 하였습니다!", this);
     },
+   
+    
   },
   components: {
     LoginModal,

@@ -237,14 +237,21 @@ export default {
 
       })
     }
+    
   },
   //고객센터통해 접근할 경우
   mounted() {
     this.paging = this.getQueAnPaging;
+    
   },
   //버튼 클릭시
   updated() {
     this.paging = this.getQueAnPaging
+  },
+  beforeUnmount() {   // 종료전 데이터 삭제
+    this.$store.commit("serviceCenter/nullCenterQueAn")
+    this.$store.commit("serviceCenter/nullPagingpagingQueAn")
+   
   }
 }
 </script>

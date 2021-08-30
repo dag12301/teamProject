@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.icia.wapoo.dao.ProfileDao;
+import com.icia.wapoo.model.LoginInfo;
+import com.icia.wapoo.model.MemberCoupon;
 import com.icia.wapoo.model.Profile;
 
 @Service
@@ -22,17 +24,98 @@ public class ProfileService {
 		return profile;
 	}
 	
-	/*
-	//프로필 조회
-	public Profile profileSelect(int memberId) 
+	//프로필 수정하기
+	public int insertProfile(Profile profile)
 	{
-		List<Profile> profile = profileDao.profileSelect(memberId);
+		int count = 0;
 		
-		
-		System.out.println("프로필 : " + profile);
-		
-		
-		return new Profile();
+		try
+		{
+			count = profileDao.insertProfile(profile);
+		}
+		catch(Exception e)
+		{
+			System.out.println("insertProfile 오류: " + e);
+		}
+		return count;
 	}
-	 */
+	
+	//비밀번호 수정하기
+	public int insertPassWord(LoginInfo loginInfo)
+	{
+		int count = 0;
+		
+		try
+		{
+			System.out.println("loginInfo:   " + loginInfo);
+			count = profileDao.insertPassWord(loginInfo);
+		}
+		catch(Exception e)
+		{
+			System.out.println("insertPassWord 오류: " + e);
+		}
+		return count;
+	}
+	
+	//회원 확인
+	public LoginInfo deleteProfileCheck(int member_id,String password)
+	{
+		LoginInfo loginInfo = null;
+		
+		try
+		{
+			loginInfo = profileDao.deleteProfileCheck(member_id, password);
+		}
+		catch(Exception e)
+		{
+			System.out.println("deleteProfileCheck 오류: " + e);
+		}
+		
+		return loginInfo;
+	}
+	
+	//탈퇴하기
+	public int deleteProfile(int member_id)
+	{
+		int count = 0;
+		
+		try
+		{
+			count = profileDao.deleteProfile(member_id);
+		}
+		catch(Exception e)
+		{
+			System.out.println("deleteProfile 오류: " + e);
+		}
+		
+		return count;
+	}
+	
+	//쿠폰정보 가져오기
+	public List<MemberCoupon> getCoupon (int memberId)
+	{
+		List<MemberCoupon>  memberCoupon = null;
+		
+		try
+		{
+			memberCoupon = profileDao.getCoupon(memberId);
+		}
+		catch(Exception e)
+		{
+			System.out.println("쿠폰정보가 없습니다.");
+			System.out.println("getCoupon 오류: " + e);
+		}
+		return memberCoupon;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

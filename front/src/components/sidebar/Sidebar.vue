@@ -89,7 +89,7 @@ export default {
       this.SET_COUNT_NOTICE(true)
       this.SET_COUNT_QUEAN(true)
       this.SET_COUNT_FQA(true)
-      this.$store.commit('SET_serviceCenters', 0)
+      this.$store.commit("SET_serviceCenters", 1)
     }
   }
 };

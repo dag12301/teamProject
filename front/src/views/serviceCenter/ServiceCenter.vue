@@ -24,7 +24,7 @@ import { mapMutations } from 'vuex';
 export default {
   data() {
     return {
-      
+      pageNumber: 0
     }
     
   },
@@ -57,31 +57,50 @@ export default {
       SET_serviceCenters: "SET_serviceCenters"
 
     }),
-    clickPages(num) {
+    clickPages(num) {   //클릭시
       this.SET_serviceCenters(num)
+      if(num === 1){
+        this.getCountNotice(1)
+        
+
+      }else if(num === 2){
+        this.getCountQueAn(num)
+       
+
+      }else if(num === 3){
+        this.getCountFQA(num)
+        
+      }
+      this.pageNumber = num
     },
     
     getCountNotice(boardId) {     // notice 서버 통신 
 
       if(this.$store.state.countNotice){
+        this.nullCenterNotices()
+        this.nullPagingpagingQueAn()
         return this.downAllList(boardId, 1, 1), this.SET_COUNT_NOTICE(false)
       }else{
-        return console.log("else 일때" +this.$store.state.countNotice)
+        return this.SET_COUNT_NOTICE(true)
       }
     },
     getCountQueAn(boardId) {       // Q&A 서버 통신 
       if(this.$store.state.countQueAn){
+        this.nullCenterQueAn()
+         this.nullPagingNotice()
         return this.downAllList(boardId, 1, 1), this.SET_COUNT_QUEAN(false)
       }else{
-        return console.log("Q&A")
+        return  this.SET_COUNT_QUEAN(true)
       }
     },
     getCountFQA(boardId) {         // FAQ 서버 통신 
       if(this.$store.state.countFAQ){
+        this.nullCenterFQA()
+        this.nullPagingFQA()
         return this.downAllList(boardId, 1, 1), this.SET_COUNT_FQA(false)
         
       }else{
-        return console.log("FAQ")
+        return this.SET_COUNT_FQA(true)
       }
     },
 
@@ -131,13 +150,27 @@ export default {
     this.getCountNotice(1),
     this.getCountQueAn(2),
     this.getCountFQA(3)
-    this.SET_serviceCenters(2)
-    this.$router.push({path:'/qna'})
+    if(this.$store.state.serviceCenters != 0){
+      this.SET_serviceCenters(1)
+      this.$router.push({name: 'Notice'})
+    }
     
   },
-  beforeUnmount() {   //component 종료전 데이터 삭제
+  updated(){
+    this.clickPages(this.$store.state.serviceCenters)
+    // if(this.$store.state.serviceCenters == 1){
+    //   if(this.$store.state.countNotice == true){
+    //     console.log("1")
+    //   }else{
+    //     this.SET_serviceCenters(1)
+    //     this.$router.push({name: 'Notice'})
+    //   }
+    // }else{
+    //   this.clickPages(this.$store.state.serviceCenters)
+    // }
+  },
+  beforeUnmount() {   //component 종료전 데이터 삭제  
     this.deleteAll()
-   
   }
 }
 </script>

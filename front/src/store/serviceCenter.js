@@ -88,7 +88,7 @@ export default {
     nullCenterFQA(state) {                              //FQA페이지 삭제
       return state.FQA = []
     },
-    nullPagingpagingQueAn(state) {                      //FQA페이징 삭제 
+    nullPagingpagingQueAn(state) {                      //Q&A페이징 삭제 
       return state.pagingQueAn = []
     },
     nullPagingNotice(state){                        //notice페이징 삭제
