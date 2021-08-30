@@ -135,4 +135,10 @@ public class CouponController {
 		}
 	 	return new ResponseEntity(HttpStatus.OK);
 	}
+
+	@GetMapping("/getMemberCoupon")
+	public ResponseEntity getMemberCoupon(@RequestParam("memberId") Integer memberId, @RequestParam("foodId") Integer foodId) {
+		Map<String, Object> couponInstance = couponService.getMemberCoupon(memberId, foodId);
+	 	return new ResponseEntity(couponInstance, HttpStatus.OK);
+	}
 }

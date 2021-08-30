@@ -25,4 +25,8 @@ public interface CouponDao {
 
     int insertMemberCoupon(@Param("memberId") Integer memberId,
                            @Param("couponId") Integer couponId);
+
+    Map<String, Object> selectMemberCoupon(
+            @Param("memberId") Integer memberId,
+            @Param("foodId") Integer foodId);
 }

@@ -79,4 +79,21 @@
                     WHERE c.couponId = #{couponId}
                     AND c.food_id = f.foodId)
     </insert>
+
+    <select id="selectMemberCoupon" resultType="Map">
+        SELECT
+            m.id,
+            m.coupon_used,
+            m.total_discountPrice,
+            c.couponName,
+            c.status,
+            c.couponEnd,
+            f.name
+        FROM member_coupon m, coupon c, food f
+        WHERE m.coupon_id = c.couponId
+          AND c.food_id = f.foodId
+          AND m.coupon_holder = #{memberId}
+          AND c.food_id = #{foodId}
+        LIMIT 1;
+    </select>
 </mapper>

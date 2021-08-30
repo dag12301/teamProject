@@ -64,4 +64,8 @@ public class CouponService {
     public int getCouponInstance(Integer memberId, Integer couponId) {
         return couponDao.insertMemberCoupon(memberId, couponId);
     }
+
+    public Map<String, Object> getMemberCoupon(Integer memberId, Integer foodId) {
+        return couponDao.selectMemberCoupon(memberId, foodId);
+    }
 }
