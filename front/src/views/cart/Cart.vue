@@ -165,7 +165,25 @@
               쿠폰정보가 없습니다
             </div>
             <div v-else-if="couponLoaded">
-              {{ couponList }}
+              <div
+                class="form-check"
+                v-for="(item, index) in couponList"
+                :key="index"
+              >
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  :value="item.id"
+                  :id="item.id"
+                  v-model="checkedCoupon"
+                />
+                <label class="form-check-label" :for="item.id">
+                  {{ item.couponName }}: {{ item.name }} 할인 쿠폰,
+                  {{ item.total_discountPrice }} 원 할인, 만료기간
+                  {{ item.couponEnd[0] }} 년 {{ item.couponEnd[1] }} 월
+                  {{ item.couponEnd[2] }} 일까지
+                </label>
+              </div>
             </div>
           </div>
           <!-- 결제수단 선택 -->
@@ -205,12 +223,25 @@
                   {{ pricePerFood(food.foodId, food.price) }} 원
                 </div>
               </div>
+              <!-- 쿠폰할인 -->
+              <hr />
+              <div v-if="checkedCoupon.length > 0">
+                <div class="col-8 mt-2" style="float: left">
+                  <strong>쿠폰할인</strong>
+                </div>
+                <div v-for="(couponId, index) in checkedCoupon" :key="index">
+                  <div class="col-4 mt-2" style="float: right">
+                    <span>-{{ getCouponDiscountPrice(couponId) }} 원</span>
+                  </div>
+                </div>
+              </div>
+              <!-- 총액 -->
               <hr />
               <div class="col-8 mt-2" style="float: left">
                 <strong>총 결제 금액</strong>
               </div>
               <div class="col-4 mt-2" style="float: right">
-                <span>{{ totalPrice }}</span>
+                <span>{{ totalPriceAppliedCoupons }}</span>
               </div>
             </div>
             <!-- orderList 에 대한 총액정리 쿠폰 적용 후. -->
@@ -243,6 +274,7 @@ export default {
       phone: "",
       couponList: [],
       couponLoaded: false,
+      checkedCoupon: [],
     };
   },
   computed: {
@@ -260,8 +292,25 @@ export default {
       }
       return result;
     },
+    totalPriceAppliedCoupons: function () {
+      let result = 0;
+      for (let food of this.foodList) {
+        let foodPrice = food.price;
+        let qantity = this.orderList.get(food.foodId);
+        result += foodPrice * qantity;
+      }
+      for (let checkedFoodId of this.checkedCoupon) {
+        result -= this.getCouponDiscountPrice(checkedFoodId);
+      }
+      return result;
+    },
   },
   mounted() {
+    if (this.GET_LOCAL.address_name == null) {
+      console.log("주소정보 갱신에 문제가있습니다..");
+      this.$router.push({ path: "/" });
+      return;
+    }
     if (this.checkCart != null) {
       this.getFoodList(this.checkCart);
     } else {
@@ -294,6 +343,7 @@ export default {
                 })
                 .then((res) => {
                   if (res.status === 200) {
+                    console.log("쿠폰정보들을 가져옵니다.");
                     this.couponList.push(res.data);
                   }
                 });
@@ -330,20 +380,21 @@ export default {
       // validation 필요하다
 
       // 계산 진행, 만약 회원이면 정보로 하고, 로그인 아니면 필요정보입력
+      // 정보들은 백단에서 한번 더 재확인해야한다.
       const address = this.GET_LOCAL.address_name + ", " + this.addressDetail;
       const phone = this.phone;
       const orderRequest = this.orderRequest;
       const totalPrice = this.totalPrice;
       // 쿠폰정보 쿠폰사용가능 정보 확인
-      const couponId = 0;
-
+      const couponIdList = this.checkedCoupon;
+      console.log("총 가격이 얼마냐?" + this.totalPrice);
       // 데이터 정렬
       const orderData = {
         address,
         phone,
         orderRequest,
         totalPrice,
-        couponId,
+        couponIdList,
       };
       // DB에 오더 넣기.
       axios
@@ -414,6 +465,13 @@ export default {
         this.orderList.delete(foodId);
       }
       this.delCart(foodId);
+    },
+    getCouponDiscountPrice(input) {
+      let couponId = +input;
+      let poo = this.couponList.filter((item) => {
+        return item.id == couponId;
+      });
+      return poo[0].total_discountPrice;
     },
   },
 };

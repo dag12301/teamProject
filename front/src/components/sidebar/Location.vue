@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     refreshLocation() {
-      return navigator.geolocation.watchPosition(
+      return navigator.geolocation.getCurrentPosition(
         (position) => {
           this.setLocation(position.coords.latitude, position.coords.longitude);
         },
