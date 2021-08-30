@@ -1,35 +1,45 @@
 <template>
-  <h2 class="text-center">게시물작성</h2>
-  <br /><br /><br /><br />
+<div class="container" style="width: 1000px;">
+  <br /><br />
   <!-- 타이틀 -->
-  <div class="input-group">
-    <button
-      class="btn btn-outline-secondary"
-      type="button"
-      aria-expanded="false"
-      @click="privateStatus"
-    >
-      {{ statusMessage }}
-    </button>
-
-    <input
+    <div class="writeBoardBtn">
+      <div style="font-size:20px; text-align: left;">구분</div>
+      <div style="font-size:20px; text-align: left;">글 공개</div>
+    </div>
+    <div class="writeBoardBtn" style="margin-bottom:20px;">
+      <select style="width:150px; height:40px;">
+        <option value disabled selected>선택해주세요</option>
+        <option>가게</option>
+        <option>딜리버리 주문</option>
+        <option>제품/품질/서비스</option>
+        <option>기타</option>
+      </select>
+      <button style="height:40px;"
+        class="btn btn-outline-secondary"
+        type="button"
+        aria-expanded="false"
+        @click="privateStatus"
+      >
+        {{ statusMessage }}
+      </button>
+    </div>
+    <div class="writeBoard">
+    <div style="font-size:20px; text-align: left;">제목</div>
+    <input  style="margin-bottom:20px;"
       type="text"
       class="form-control"
       aria-label="Text input with dropdown button"
       placeholder="제목을 입력해 주세요."
       v-model="title"
     />
-  </div>
-
   <!-- 문의 본문작성 -->
-  <div id="textarea" class="input-group">
-    <span class="input-group-text">상세내용</span>
-    <textarea
-      class="form-control"
-      aria-label="With textarea"
-      v-model="body"
-    ></textarea>
-  </div>
+    <div style="font-size:20px; text-align: left;">내용</div>
+      <textarea style="height:400px;"
+        class="form-control"
+        aria-label="With textarea"
+        v-model="body"
+      ></textarea>
+    </div>
 
   <!-- 첨부파일 -->
     <div class="room-deal-information-container">
@@ -73,6 +83,7 @@
       >취소</router-link>
       
   </div>
+</div>
 </template>
 
 <script>
@@ -203,6 +214,14 @@ export default {
 </script>
 
 <style scoped>
+.writeBoard {
+  display: flex;
+  flex-direction: column;
+}
+.writeBoardBtn {
+  display: flex;
+  justify-content: space-between;
+}
 #textTitle {
   height: 30px;
   width: 1000px;
