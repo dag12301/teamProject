@@ -6,7 +6,7 @@
         <div class="row" style="padding: 20px; border: 1px solid black;">
           <div class="img" style="padding-bottom: 20px">
             <img
-              src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
+              src="https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2"
               style="width: 150px; height: 150px; border-radius: 50%"
             />
           </div>

@@ -21,6 +21,7 @@
     "jsonwebtoken": "^8.5.1",
     "vee-validate": "^4.4.9",
     "vue": "^3.0.0",
+    "vue-faq-accordion": "^1.6.2",
     "vue-kakao-sdk": "^0.2.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0",

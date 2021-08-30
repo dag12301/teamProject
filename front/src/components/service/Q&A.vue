@@ -1,7 +1,6 @@
 <template>
-  <div>
-    <h2 class="mb-3">Q&A</h2>
-
+<div class="container" style="width: 1000px;">
+  <div class="notice col-12 h-50">
     <!-- 검색 -->
     <div id="Search" class="input-group mt-3">
       <input
@@ -37,8 +36,8 @@
       <tbody>
         <tr>
           <th>번호</th>
+          <th>구분</th>
           <th>제목</th>
-          <th>내용</th>
           <th>날짜</th>
           <th>조회수</th>
           <th>공개 여부</th>
@@ -49,11 +48,11 @@
           :key="index"
           @click="listPage(qn.articleId)"
         >
-          <td class="col-1">{{ qn.nickname }}</td>
-          <td class="col-1">{{ qn.title }}</td>
+          <td class="col-1">{{ ++index }}</td>
+          <td class="col-1">주문</td>
           <td class="col-5 text-left">
             <span>
-              {{ qn.body }}
+              {{ qn.title }}
             </span>
             <span v-if="qn.children > 0"> [{{ qn.children }}] </span>
           </td>
@@ -102,9 +101,9 @@
           </a>
         </li>
       </ul>
-    </nav>
-    
+    </nav>  
   </div>
+</div>
 </template>
 
 <script>
