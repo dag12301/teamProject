@@ -16,6 +16,7 @@ public class Order {
 	String foodName;		//음식이름
 	int quantity;			//음식 수량
 	String image;			//가게 이미지
+	String orgName;			//이미지 본이름
 	
 	int member_coupon_id;	
 

@@ -180,22 +180,9 @@ public class ProfileController {
 			memberCoupon = profileService.getCoupon(memberId);
 		}
 		
-		MemberCoupon aa = new MemberCoupon();
-		
-		aa.setId(1);
-		aa.setCouponId(1);
-		aa.setCouponHolder(25);
-		aa.setCouponUsed('Y');
-		aa.setTotalDiscountPrice(5000);
-		aa.setCouponName("치킨의 날");
-		aa.setCouponEnd("2021 09 10");
-		
-		memberCoupon = new ArrayList<MemberCoupon>();
-		
-		memberCoupon.add(aa);
-		memberCoupon.add(aa);
-		memberCoupon.add(aa);
-		memberCoupon.add(aa);
+		System.out.println("member: " + memberCoupon);
+
+
 		
 		return new ResponseEntity( memberCoupon , HttpStatus.OK);
 	}

@@ -1,13 +1,13 @@
 <template>
 <div class="container" style="width: 800px; border-style: solid; border-width: 1px 1px 0px 1px;">
   
-  <div class="row" style="height: 130px" v-for="(orderList, index) in orderLists" :key="index">
-    <div class="col-4 orderMenu-img">
+  <div class="row" style="height: 130px; cursor: pointer;"  v-for="(orderList, index) in orderLists" :key="index" @click="changePage(orderList.orderId)">
+    <div class="col-4 orderMenu-img" >
       <router-link to="/food">
         <img
           class="shopImg"
           :src="orderList.image"
-          alt="..."
+          :alt='orderList.orgName'
         />
       </router-link>
     </div>
@@ -53,10 +53,14 @@ export default {
     orderDel() {
       alert("삭제되었습니다!");
     },
+    //주문 상세 페이지
+    changePage(orderId) {
+      this.$router.push({name: 'OrderInfo', query: {orderId: orderId}})
+    },
     orderList() {
       http.post("/profile/getOrder", {phone: this.phone })
       .then(res => {
-        
+        console.log(res.data)
         this.orderLists = res.data
         
       })

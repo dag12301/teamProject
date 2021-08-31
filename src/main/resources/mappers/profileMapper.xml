@@ -56,7 +56,8 @@ SELECT	A.orderId,
 	A.phone AS 'phone',
 	C.name AS 'foodName',
 	B.quantity AS 'quantity',
-	D.name AS 'image'
+	D.name AS 'image',
+	D.orgName AS 'orgName'
 FROM	`order` A INNER JOIN  `orderInfo` B INNER JOIN `food` C INNER JOIN `store_file` D INNER JOIN `store` E
 ON	A.orderId = B.orderInfoId
 AND	B.food_id = C.foodId
@@ -69,7 +70,21 @@ AND	A.phone= #{phone}
 
 </select>
 
+<select id="getCoupon" resultType="MemberCoupon">
+SELECT	B.id,
+	A.couponNumber,
+	A.couponName,
+	B.coupon_used AS 'couponUsed',
+	A.couponPrice,
+	A.discountRate,
+	A.couponEnd
+FROM	`coupon` A INNER JOIN `member_coupon` B
+ON	A.couponId = B.coupon_id
 
+WHERE B.coupon_used != 'S'
+AND B.coupon_holder = #{memberId}
+
+</select>
 
 
 

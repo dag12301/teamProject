@@ -10,7 +10,7 @@
     <ul class="list-group list-group-horizontal" 
         style="cursor: pointer; border-top: 2px solid gray;"
         @click="listPage(notice.articleId)"
-        v-for="(notice, index) in this.$store.state.serviceCenter.notices"
+        v-for="(notice, index) in this.notices"
         :key="notice.id">
       <li class="list-group-item noticeList" style="border: 0px; width: 100px; justify-content: center;">
         <span>
@@ -27,7 +27,7 @@
           {{ notice.regDate }}
         </span>
       </li>
-      <li v-if="this.getNoticeTotal == 0" style="font-weight: 700; font-size: 2vh;"> 글이 없습니다.</li>
+      <li v-if="notice.length < 0" style="font-weight: 700; font-size: 2vh;"> 글이 없습니다.</li>
     </ul>
     <!-- 끝 -->
     <div style="border-top: 2px solid gray;"></div>
@@ -49,7 +49,7 @@
           </a>
         </li>
         <!-- 숫자 순서 버튼 -->
-        <li class="page-item" v-for="num in this.getnumNoticeSize" :key="num">        
+        <li class="page-item" v-for="num in this.pageList" :key="num">
           <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" v-if="paging.page != num">{{num}}</a>
           <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" style="background-color: #0d6efd; color: #fff;" v-else>{{num}}</a>
         </li>
@@ -73,30 +73,23 @@
 
 <script>
 import * as authAPI from "@/api/article.js";
-import { mapMutations, mapGetters } from "vuex";
+
 
 export default {
   data() {
     return {
       paging: [],
+      notices:[],
+
+      pageList:[],
+
       listSize: 10, //리스트 수
       rangeSize: 5, //버튼 수
     };
   },
-  computed: {
-    ...mapGetters({
-      getnumNoticeSize: "serviceCenter/getnumNoticeSize",
-      getNoticePaging: "serviceCenter/getNoticePaging",
-      getNoticeTotal: "serviceCenter/getNoticeTotal"
-    }),
-  },
+  
   methods: {
-    ...mapMutations({
-      setCenternotices: "serviceCenter/setCenternotices",
-      nullCenterNotices: "serviceCenter/nullCenterNotices",
-      nullPagingNotice: "serviceCenter/nullPagingNotice",
-      setPagingNotices: "serviceCenter/setPagingNotices",
-    }),
+    
     listPage(articleId) {
       //페이지 이동
       console.log(articleId);
@@ -117,36 +110,53 @@ export default {
       this.numPage(page, range, listSize, rangeSize);
     },
 
+    //페이지 번호로 이동 axios
     numPage(page, range, listSize, rangeSize) {
-      //페이지 번호로 이동 axios
+      
       authAPI.getBoardList(1, page, range, listSize, rangeSize).then((res) => {
-        this.nullCenterNotices(); //테이터 삭제
-        this.nullPagingNotice(); //페이징 삭제
-        this.setPagingNotices(res.data.paging);
-  
-        res.data.list.forEach((element) => {
-          //vuex에 데이터 넣기
-          this.setCenternotices(element);
-        });
+        this.paging = res.data.paging
+
+        this.notices = res.data.list
       });
     },
+
+    //Q&A 리스트 불러오기
+    async downAllList(boardId, page, range) {
+      //리스트 axios 통신 query = boardId  page:페이지  range: 범위  boardId
+      await authAPI
+        .getBoardList(boardId, page, range)
+        .then((res) => {
+          console.log(res)
+          //페이징
+          this.paging = res.data.paging
+          //리스트
+          this.notices = res.data.list
+           //페이징 리스트
+          this.pageLists()
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    //페이지 리스트
+    pageLists() {
+      for(let i = this.paging.startPage; i <= this.paging.endPage; i++){
+        this.pageList.push(i)
+      }
+    }
+
   },
   //고객센터통해 접근할 경우
   mounted() {
-    this.paging = this.getNoticePaging; //this.$store.state.serviceCenter.pagingQueAn
+    this.downAllList(1,1,1)
     
   },
   //버튼 클릭시
   updated() {
-    this.paging = this.getNoticePaging;
-    (this.listSize = this.paging.listSize),
-      (this.rangeSize = this.paging.rangeSize);
-  },
-  beforeUnmount() {   // 종료전 데이터 삭제
-    this.$store.commit("serviceCenter/nullCenterNotices")
-    this.$store.commit("serviceCenter/nullPagingNotice")
     
-  }
+  },
+  
 };
 </script>
 
