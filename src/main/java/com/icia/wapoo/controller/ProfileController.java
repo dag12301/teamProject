@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.LoginInfo;
@@ -232,6 +234,31 @@ public class ProfileController {
 		return new ResponseEntity("no", HttpStatus.OK);
 	}
 	
+	//이미지 변경
+	@PostMapping(value = "/insertImage")
+	public ResponseEntity updateIamge(@RequestPart(value="image", required = false) MultipartFile image,HttpServletRequest request)
+	{
+		System.out.println("프로필 이미지를 업로드 합니다");
+		int memberId = getMemberIdByRequest(request);
+		
+		System.out.println("image: " + image);
+		if(memberId > 0 && image != null)
+		{
+			Member member = profileService.getMember(memberId);
+			
+			if(member != null)
+			{
+				if(profileService.insertImage(image, memberId) > 0)
+				{
+					System.out.println("프로필 이미지 업로드 성공");
+					return new ResponseEntity("ok", HttpStatus.OK);
+				}
+			}
+		}
+		
+		System.out.println("프로필 이미지 업로드 실패");
+		return new ResponseEntity("no", HttpStatus.OK);
+	}
 	
 	
 	
