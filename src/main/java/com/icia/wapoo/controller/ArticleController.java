@@ -602,12 +602,12 @@ public class ArticleController {
 		
 		if(memberId >= 0)
 		{
-			System.out.println("111111111111111111111111");
+			
 			check = articleService.memberVerify(memberId);
 			
 			if(check)
 			{
-				System.out.println("2222222222222222222222222");
+				
 				return new ResponseEntity(check, HttpStatus.OK);
 			}
 			else
@@ -618,7 +618,7 @@ public class ArticleController {
 		}
 		else
 		{
-			System.out.println("2222222222222222222222222");
+			
 			return new ResponseEntity(check, HttpStatus.OK);
 		}
 		

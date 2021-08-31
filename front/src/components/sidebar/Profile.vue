@@ -57,10 +57,16 @@ import LoginModal from "@/components/modal/Login.vue";
 import RegisterModal from "@/components/modal/Register.vue";
 import { success } from "@/api/notification";
 
+
 export default {
   props: {},
   setup() {
     return { collapsed };
+  },
+  data() {
+    return {
+      profile: ''
+    }
   },
   computed: {
     ...mapGetters({
@@ -76,6 +82,8 @@ export default {
       }, 500);
       success("성공적으로 로그아웃 하였습니다!", this);
     },
+   
+    
   },
   components: {
     LoginModal,
