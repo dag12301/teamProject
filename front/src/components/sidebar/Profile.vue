@@ -11,7 +11,8 @@
         <div style="text-align: center">
           <div class="user m-2">
             <img
-              src="https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2"
+              :src="loadedProfilePic"
+              alt="https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2"
               class="profilePic"
             />
           </div>
@@ -57,6 +58,7 @@ import { mapGetters, mapMutations } from "vuex";
 import LoginModal from "@/components/modal/Login.vue";
 import RegisterModal from "@/components/modal/Register.vue";
 import { success } from "@/api/notification";
+import http from "@/api/http";
 
 export default {
   props: {},
@@ -65,12 +67,16 @@ export default {
   },
   data() {
     return {
-      profile: "",
+      loadedProfilePic: "",
     };
+  },
+  mounted() {
+    // http.get("/profile")
   },
   computed: {
     ...mapGetters({
       getNickname: "auth/getUserNickname",
+      getUserId: "auth/getUserId",
     }),
   },
   methods: {

@@ -439,6 +439,8 @@ export default {
       const totalPrice = this.totalPrice;
       // 쿠폰정보 쿠폰사용가능 정보 확인
       const couponIdList = this.checkedCoupon;
+      // member Id 얻어오기
+      const memberId = this.getUserId ? this.memberId : 0;
       // 데이터 정렬
       const orderData = {
         address,
@@ -446,6 +448,7 @@ export default {
         orderRequest,
         totalPrice,
         couponIdList,
+        memberId,
       };
       // DB에 오더 넣기.
       axios
