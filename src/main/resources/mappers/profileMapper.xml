@@ -10,7 +10,8 @@
 		m.`phone` AS tel, 
 		m.`email` AS email, 
 		m.`nickname` AS nickname,
-		m.`status` AS status
+		m.`status` AS status,
+		m.profileUrl AS profileUrl
    FROM `loginInfo` l, `member` m 
   WHERE m.memberId = l.member_id 
     AND m.memberId = #{memberId}
@@ -86,7 +87,16 @@ AND B.coupon_holder = #{memberId}
 
 </select>
 
+<!-- 이미지 업로드 -->
+<update id="insertImage">
+UPDATE `member`
+SET	profileUrl = #{fileURL}
+	
+WHERE	memberId = #{memberId}
 
+
+
+</update>
 
 
 

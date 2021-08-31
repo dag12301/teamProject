@@ -34,4 +34,6 @@ public interface ProfileDao {
 	List<MemberCoupon> getCoupon(int memberId);
 	//주문정보 가저오기
 	List<Order> getOrder(String phone);
+	//이미지 업로드
+	int insertImage(String fileURL, int memberId);
 }
