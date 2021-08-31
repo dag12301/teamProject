@@ -7,41 +7,42 @@
         style="margin-right: 30vh"
       />
       <!-- 프로필 -->
-      <div v-if="userInfo[0]">
+      <div v-if="getNickname != 'unknown'">
         <div style="text-align: center">
-          <div class="user" style="padding-bottom: 10%">
+          <div class="user m-2">
             <img
               src="https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2"
-              class="profile"
+              class="profilePic"
             />
-            <span style="color: black"
-              ><span style="font-weight: bold">{{ userNickname }}</span> 님
-              <br />
-              안녕하세요.</span
-            >
           </div>
+          {{ getNickname }}
+          <hr />
         </div>
         <div class="login">
-          <router-link to="/myPage">
-            <button type="button" class="btn btn-success">프로필</button>
+          <router-link to="/myPage" class="col-12">
+            <button type="button" class="btn btn-outline-success col-12">
+              마이페이지
+            </button>
           </router-link>
-          <button
+          <div
             type="button"
-            class="btn btn-success"
+            class="btn btn-outline-danger d-block col-12 mt-1"
             @click="this.$store.dispatch('auth/logout')"
           >
             로그아웃
-          </button>
+          </div>
         </div>
       </div>
       <div v-else>
-        <button
+        <div class="p-2">보다 다양한 WAPOO를 즐기려면 로그인하세요!</div>
+        <hr />
+        <div
           type="button"
-          class="btn btn-success"
+          class="btn btn-success d-inline col-12"
           @click="SET_MODAL_LOGIN(true)"
         >
           로그인
-        </button>
+        </div>
       </div>
     </div>
   </transition>
@@ -56,14 +57,20 @@ import LoginModal from "@/components/modal/Login.vue";
 import RegisterModal from "@/components/modal/Register.vue";
 import { success } from "@/api/notification";
 
+
 export default {
   props: {},
   setup() {
     return { collapsed };
   },
+  data() {
+    return {
+      profile: ''
+    }
+  },
   computed: {
     ...mapGetters({
-      userInfo: "auth/getUserInfo",
+      getNickname: "auth/getUserNickname",
     }),
   },
   methods: {
@@ -75,6 +82,8 @@ export default {
       }, 500);
       success("성공적으로 로그아웃 하였습니다!", this);
     },
+   
+    
   },
   components: {
     LoginModal,
@@ -84,6 +93,9 @@ export default {
 </script>
 
 <style scoped>
+.card {
+  color: black;
+}
 #profile {
   display: flex;
 
@@ -104,7 +116,6 @@ export default {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 100px;
 }
 .noLogin {
   display: flex;
@@ -122,10 +133,12 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
-.profile {
-  width: 70px;
-  height: 70px;
+.profilePic {
+  width: 100%;
+  height: 155px;
   border-radius: 50%;
+  padding: 5px;
+  margin-bottom: 10px;
 }
 .user {
   display: flex;

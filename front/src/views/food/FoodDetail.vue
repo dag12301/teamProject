@@ -7,7 +7,10 @@
       >
         {{ shopInfo.storeInfo.name }}
       </div>
-      <div class="storeText" style="width: 100%; height: 300px; margin-top: 15px;">
+      <div
+        class="storeText"
+        style="width: 100%; height: 300px; margin-top: 15px"
+      >
         <div
           class="storeImg"
           style="float: left; width: 45%; text-align: right"
@@ -23,35 +26,48 @@
           class="storeInf"
           style="float: right; width: 50%; text-align: left"
         >
-          <p style="color: gray; margin-bottom: 35px; text-align: center;">
+          <p style="color: gray; margin-bottom: 35px; text-align: center">
             {{ shopInfo.storeInfo.storeKind }}
           </p>
           <span style="font-weight: 600; font-size: 17px">업체정보</span>
-          <hr style="margin-top: 5px; width: 90%;" />
+          <hr style="margin-top: 5px; width: 90%" />
           <table>
             <tr>
-              <td class="td1" style="color: gray"><i class="fas fa-phone"></i><span class="i-text">전화번호</span></td>
-              <td class="td2" style="padding-left: 20px">{{ shopInfo.storeInfo.phone }}</td>
+              <td class="td1" style="color: gray">
+                <i class="fas fa-phone"></i><span class="i-text">전화번호</span>
+              </td>
+              <td class="td2" style="padding-left: 20px">
+                {{ shopInfo.storeInfo.phone }}
+              </td>
             </tr>
             <tr>
-              <td class="td1" style="color: gray; margin-top: 20px"><i class="fas fa-map-marked-alt"></i><span class="i-text">주소</span></td>
+              <td class="td1" style="color: gray; margin-top: 20px">
+                <i class="fas fa-map-marked-alt"></i
+                ><span class="i-text">주소</span>
+              </td>
               <td class="td2" style="padding-left: 20px">
                 {{ shopInfo.storeInfo.address }}
                 {{ shopInfo.storeInfo.addressDetail }}
               </td>
             </tr>
             <tr>
-              <td class="td1" style="color: gray; margin-top: 20px"><i class="fas fa-thumbs-up"></i><span class="i-text">리뷰점수</span></td>
+              <td class="td1" style="color: gray; margin-top: 20px">
+                <i class="fas fa-thumbs-up"></i
+                ><span class="i-text">리뷰점수</span>
+              </td>
               <td class="td2" style="padding-left: 20px">4.9</td>
             </tr>
             <tr>
-              <td class="td1" style="color: gray; margin-top: 20px"><i class="fas fa-credit-card"></i><span class="i-text">결제</span></td>
+              <td class="td1" style="color: gray; margin-top: 20px">
+                <i class="fas fa-credit-card"></i
+                ><span class="i-text">결제</span>
+              </td>
               <td class="td2" style="padding-left: 20px">KakaoPay</td>
             </tr>
           </table>
         </div>
       </div>
-      
+
       <div
         class="btn-group"
         role="group"
@@ -106,18 +122,13 @@
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-
-      
     </div>
-
-    
   </div>
   <div v-else-if="!dataLoaded">
     <div class="spinner-border" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -164,34 +175,38 @@ export default {
 .storeBox {
   width: 80%;
 }
-  input {
-    background-color: gray;
-  }
-  .btn-group {
-    background-color: white;
-  }
-  .btn-outline-primary {
-    border-radius: 0px;
-  }
-  /* (메뉴, 지도보기, 후기)버튼 클릭했을 때 */
-  .btn-check:active+.btn-outline-primary, .btn-check:checked+.btn-outline-primary, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
-    color: rgb(255, 194, 115);
-    background-color: white;
-    border-color: lightgray;
-    font-weight: bold;
-    border-bottom: 5px solid rgb(255, 205, 139);
-    box-shadow: none;
+input {
+  background-color: gray;
+}
+.btn-group {
+  background-color: white;
 }
 .btn-outline-primary {
-    border-color: lightgray;
-    color: black;
+  border-radius: 0px;
 }
-  /* 마우스커서가 올라갔을 때 */
+/* (메뉴, 지도보기, 후기)버튼 클릭했을 때 */
+.btn-check:active + .btn-outline-primary,
+.btn-check:checked + .btn-outline-primary,
+.btn-outline-primary.active,
+.btn-outline-primary.dropdown-toggle.show,
+.btn-outline-primary:active {
+  color: rgb(255, 194, 115);
+  background-color: white;
+  border-color: lightgray;
+  font-weight: bold;
+  border-bottom: 5px solid rgb(255, 205, 139);
+  box-shadow: none;
+}
+.btn-outline-primary {
+  border-color: lightgray;
+  color: black;
+}
+/* 마우스커서가 올라갔을 때 */
 .btn-outline-primary:hover {
-    color: black;
-    background-color: white;
-    border-color: lightgray;
-    border: 2px solid lightgray;
+  color: black;
+  background-color: white;
+  border-color: lightgray;
+  border: 2px solid lightgray;
 }
 .td1 {
   font-size: 14px;

@@ -18,17 +18,17 @@
           <a @click="changeView('myReview')">리뷰관리</a>
         </li>
 
-        <li>
-          <a @click="changeView('myQuestion')">질문내역</a>
-        </li>
-      </ul>
-    </div>
-    <my-profile v-if="currentView == 'myProfile'" />
-    <my-coupon v-if="currentView == 'myCoupon'" />
-    <my-order-history v-if="currentView == 'myOrderHistory'" />
-    <my-review v-if="currentView == 'myReview'" />
-    <my-question v-if="currentView == 'myQuestion'" />
-  </center>
+      <li>
+        <a @click="changeView('myQuestion')">질문내역</a>
+      </li>
+    </ul>
+  </div>
+  <my-profile v-if="currentView == 'myProfile'" />
+  <my-coupon v-if="currentView == 'myCoupon'" />
+  <my-order-history v-if="currentView == 'myOrderHistory'" />
+  <my-review v-if="currentView == 'myReview'" />
+  <my-Question  v-if="currentView == 'myQuestion'" @updateView = "changeView" />
+</center>
 </template>
 <script>
 import myProfile from "@/components/myPage/MyProfile.vue";
