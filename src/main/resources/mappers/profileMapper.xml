@@ -65,7 +65,7 @@ AND	B.food_id = C.foodId
 AND	C.store_id = D.store_id
 AND	C.store_id = E.storeId
 
-WHERE	A.status != 'S'
+WHERE	A.status != 'N'
 AND	A.phone= #{phone}
 
 
@@ -82,7 +82,7 @@ SELECT	B.id,
 FROM	`coupon` A INNER JOIN `member_coupon` B
 ON	A.couponId = B.coupon_id
 
-WHERE B.coupon_used != 'S'
+WHERE B.coupon_used != 'N'
 AND B.coupon_holder = #{memberId}
 
 </select>
