@@ -1,6 +1,11 @@
 <template>
   <transition name="fade">
-    <div class="card" id="profile" v-if="!collapsed">
+    <div
+      class="card"
+      id="profile"
+      v-if="!collapsed"
+      :class="[collapsed ? 'isCollap' : '']"
+    >
       <notifications
         group="notifyApp"
         position="bottom right"
@@ -173,6 +178,9 @@ export default {
   background-color: white;
   text-decoration: none;
 }
+.isCollap {
+  width: 0px;
+}
 .login {
   display: flex;
   flex-direction: column;
@@ -188,7 +196,7 @@ export default {
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: 0.3s ease;
+  transition: all ease 0.2s 0s;
 }
 
 .fade-enter,
