@@ -152,6 +152,7 @@ export default {
   margin: auto; 
   margin-top: 30px; 
   margin-bottom: 15px;
+  cursor: pointer;
 }
 .btn-div {
   float: left; 
@@ -173,6 +174,7 @@ export default {
   height: 60px; 
   line-height: 60px; 
   float: right;
+  cursor: pointer;
 }
 .order-span {
   color: white; 
