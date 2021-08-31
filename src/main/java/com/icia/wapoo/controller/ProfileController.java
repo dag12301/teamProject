@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.icia.wapoo.jwt.service.JwtService;
 import com.icia.wapoo.model.LoginInfo;
@@ -173,7 +175,7 @@ public class ProfileController {
 		System.out.println("프로필 쿠폰 정보 가져옵니다");
 		int memberId = getMemberIdByRequest(request);
 		
-		List<MemberCoupon> memberCoupon = null;
+		List<Map<String, Object>> memberCoupon = null;
 		
 		if(memberId > 0)
 		{
@@ -189,52 +191,56 @@ public class ProfileController {
 	
 
 	//주문내용
-	@PostMapping(value = "/getOrder")
-	public ResponseEntity getOrder(@RequestBody(required = false) String phone,HttpServletRequest request)
+	@GetMapping(value = "/getOrder")
+	public ResponseEntity getOrder(@RequestParam("memberId") Integer memberId, HttpServletRequest request)
 	{
 		System.out.println("주문 정보 가져옵니다");
-		int memberId = getMemberIdByRequest(request);
-	
+		int memberIdCheck = getMemberIdByRequest(request);
+		if(memberIdCheck != memberId) {
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
+		}
 		if(memberId > 0)
 		{
-			System.out.println("회원입니다.");
-			
-			Member member = profileService.getMember(memberId);
-			
-			if(member != null)
-			{	
-				List<Order> list = profileService.getOrder(member.getPhone());
-				
-				if(list != null)
-				{
-					System.out.println("정보 있음");
-					return new ResponseEntity(list, HttpStatus.OK);
-				}
-			}
+			List<Order> list = profileService.getOrder(memberId);
+			return new ResponseEntity(list, HttpStatus.OK);
 		}
 		else
 		{
-			System.out.println("비회원입니다.");
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	//이미지 변경
+	@PostMapping(value = "/insertImage")
+	public ResponseEntity updateIamge(@RequestPart(value="image", required = false) MultipartFile image,HttpServletRequest request)
+	{
+		System.out.println("프로필 이미지를 업로드 합니다");
+		int memberId = getMemberIdByRequest(request);
+		
+		System.out.println("image: " + image);
+		if(memberId > 0 && image != null)
+		{
+			Member member = profileService.getMember(memberId);
 			
-			System.out.println("phone: "+ phone);
-			List<Order> list = profileService.getOrder(phone);
-			
-			System.out.println("list: "+ list);
-			
-			if(list != null)
+			if(member != null)
 			{
-				System.out.println("정보 있음");
-				return new ResponseEntity(list, HttpStatus.OK);
+				if(profileService.insertImage(image, memberId) > 0)
+				{
+					System.out.println("프로필 이미지 업로드 성공");
+					return new ResponseEntity("ok", HttpStatus.OK);
+				}
 			}
 		}
 		
-		
+		System.out.println("프로필 이미지 업로드 실패");
 		return new ResponseEntity("no", HttpStatus.OK);
 	}
 	
-	
-	
-	
+	@GetMapping("/getMemberProfilePicture")
+	public ResponseEntity getMemberProfilePicture(@RequestParam("memberId") Integer memberId) {
+    	String url = profileService.getProfileUrl(memberId);
+    	return new ResponseEntity(url, HttpStatus.OK);
+	}
 	
 	
 	

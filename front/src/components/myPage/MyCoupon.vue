@@ -1,64 +1,113 @@
 <template>
-<div class="container" style="width: 800px; border: 1px solid black">
-  <div class="row" style="overflow: auto; height: 660px" v-if=" couponToggle == true">
-    <!--쿠폰시작 -->
-    <div class="col coupon" v-for="coupon in coupons" :key="coupon.couponId" >
-      <div class="card coupon-card">
-        <div class="coupon-main">
-          <div class="content">
-            <h2>{{coupon.couponName}}</h2>
-            <span>{{coupon.totalDiscountPrice}} 할인권</span>
-            <p>~ {{coupon.couponEnd}}</p>
-          </div>
-          <div class="vertical"></div>
-          <div class="copy-button">
-            <button onclick="copyIt()" class="copybtn">사용</button>
+  <div class="container" style="width: 800px; border: 1px solid black">
+    <div
+      class="row"
+      style="overflow: auto; height: 660px"
+      v-if="couponToggle == true"
+    >
+      <!--쿠폰시작 -->
+      <div class="col coupon" v-for="coupon in coupons" :key="coupon.couponId">
+        <div class="card coupon-card">
+          <div class="coupon-main">
+            <div class="content">
+              <div class="row">
+                <span class="d-inline m-1"
+                  >{{ coupon.couponName }}
+                  <span class="badge bg-success m-1" v-if="coupon.status == 'Y'"
+                    >사용가능</span
+                  >
+                  <span
+                    class="badge bg-danger m-1"
+                    v-else-if="coupon.status == 'N'"
+                    >사용불가</span
+                  ></span
+                >
+              </div>
+
+              <span>{{ coupon.total_discountPrice }} 원 할인권</span>
+              <p>~ {{ coupon.couponEnd }} 까지</p>
+              <p>쿠폰번호 : {{ coupon.couponNumber }}</p>
+            </div>
+            <div class="vertical"></div>
+            <div class="copy-button">
+              <button
+                type="button"
+                class="copybtn btn btn-primary position-relative"
+                :class="[coupon.status == 'Y' ? '' : 'disabled']"
+                @click="moveToStoreInfo(coupon.store_id)"
+              >
+                사용
+                <span
+                  class="
+                    position-absolute
+                    top-0
+                    start-100
+                    translate-middle
+                    badge
+                    rounded-pill
+                    bg-danger
+                  "
+                >
+                  {{ dayLeft(coupon.couponEnd) }}
+                  <span class="visually-hidden">unread messages</span>
+                </span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
+      <!--쿠폰종료 -->
     </div>
-    <!--쿠폰종료 -->
-    
 
-
-    
+    <div class="col coupon" style="overflow: auto; height: 660px" v-else>
+      쿠폰이 없습니다.
+    </div>
   </div>
-  <div class="col coupon" style="overflow: auto; height: 660px" v-else >쿠폰이 없습니다.</div>
-</div>
 </template>
 <script>
 import http from "@/api/http";
 
-export default ({
+export default {
   data() {
     return {
       couponToggle: false,
-      coupons: []
-    }
+      coupons: [],
+    };
   },
   methods: {
     getCoupon() {
-      http.post("/profile/getCoupon")
-      .then(res => {
-        console.log(res.data.length)
-        if(res.data.length > 0){
-          this.couponToggle = true
-          this.coupons = res.data
-          console.log(this.coupons)
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
-
-    }
+      http
+        .post("/profile/getCoupon")
+        .then((res) => {
+          console.log(res.data.length);
+          if (res.data.length > 0) {
+            this.couponToggle = true;
+            this.coupons = res.data;
+            console.log(this.coupons);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    dayLeft(time) {
+      let now = new Date();
+      var day = ("0" + now.getDate()).slice(-2);
+      let leftday = day - time[2];
+      if (leftday < 0) {
+        return "X";
+      }
+      return leftday + " 일";
+    },
+    moveToStoreInfo(storeId) {
+      this.$router.push({ path: "/shopDetail", query: { shopInfo: storeId } });
+    },
   },
   mounted() {
-    this.getCoupon()
-  }
-})
+    this.getCoupon();
+  },
+};
 </script>
-
 
 <style scoped>
 .coupon {
@@ -128,7 +177,7 @@ export default ({
 .content h1 {
   font-size: 35px;
   margin-left: -20px;
-  color: #565656;
+  color: #ffffff;
 }
 
 .content h1 span {
@@ -137,13 +186,13 @@ export default ({
 .content h2 {
   font-size: 18px;
   margin-left: -20px;
-  color: #565656;
+  color: #ffffff;
   text-transform: uppercase;
 }
 
 .content p {
   font-size: 16px;
-  color: #696969;
+  color: #ffffff;
   margin-left: -20px;
 }
 
@@ -154,7 +203,7 @@ export default ({
 .copy-button button {
   padding: 5px 20px;
   background-color: darkgray;
-  color: gray;
+  color: rgb(255, 255, 255);
   border: 1px solid transparent;
 }
 .title {

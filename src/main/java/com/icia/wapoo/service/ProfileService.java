@@ -1,11 +1,14 @@
 package com.icia.wapoo.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.icia.wapoo.S3.S3Service;
 import com.icia.wapoo.dao.MemberDao;
 import com.icia.wapoo.dao.ProfileDao;
 import com.icia.wapoo.model.LoginInfo;
@@ -22,6 +25,9 @@ public class ProfileService {
 	
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private final S3Service s3Service = null;
 	
 	//프로필 조회 profileDao에서 가져옴
 	public Profile profileSelect(int memberId)
@@ -98,9 +104,9 @@ public class ProfileService {
 	}
 	
 	//쿠폰정보 가져오기
-	public List<MemberCoupon> getCoupon (int memberId)
+	public List<Map<String, Object>> getCoupon (int memberId)
 	{
-		List<MemberCoupon>  memberCoupon = null;
+		List<Map<String, Object>>  memberCoupon = null;
 		
 		try
 		{
@@ -133,13 +139,13 @@ public class ProfileService {
 	}
 	
 	//주문내용 가져오기
-	public List<Order> getOrder(String phone)
+	public List<Order> getOrder(Integer memberId)
 	{
 		List<Order> list = null;
 		
 		try
 		{
-			list = profileDao.getOrder(phone);
+			list = profileDao.selectAllOrders(memberId);
 		}
 		catch(Exception e)
 		{
@@ -150,10 +156,37 @@ public class ProfileService {
 		return list;
 	}
 	
-	
-	
-	
-	
-	
-	
+	//이미지 업로드
+	public int insertImage(MultipartFile image, int memberId)
+	{
+		int count = 0;
+		String fileURL = null;
+        try {
+            fileURL = s3Service.upload(image, "profile_image_" + memberId);
+        }
+        catch (IOException e) 
+        {
+            throw new RuntimeException("S3 업로드중 오류발생!");
+        }
+        
+        if(fileURL != null)
+        {
+        	try
+        	{
+        		count = profileDao.insertImage(fileURL, memberId);
+        	}
+        	catch(Exception e)
+    		{
+    			System.out.println("insertImage 오류: " + e);
+    		}
+        }
+		
+		
+		return count;
+	}
+
+
+    public String getProfileUrl(Integer memberId) {
+		return profileDao.selectFileUrl(memberId);
+    }
 }

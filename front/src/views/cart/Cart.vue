@@ -440,7 +440,7 @@ export default {
       // 쿠폰정보 쿠폰사용가능 정보 확인
       const couponIdList = this.checkedCoupon;
       // member Id 얻어오기
-      const memberId = this.getUserId ? this.memberId : 0;
+      const memberId = this.getUserId;
       // 데이터 정렬
       const orderData = {
         address,
@@ -450,6 +450,7 @@ export default {
         couponIdList,
         memberId,
       };
+      console.log("==== 생성되어 들어가는 memeberId = " + memberId);
       // DB에 오더 넣기.
       axios
         .create({ baseURL: "http://localhost:8083" })
