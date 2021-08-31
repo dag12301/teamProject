@@ -24,17 +24,28 @@
           <strong>로그인정보</strong>
           <p class="profile-comm">WHAT POO에서 로그인에 사용되는 정보입니다.</p>
           <a class="profile-img">
-            <div>
-              <div class="profile-imgdiv" style="margin-right: 10px;">
-                <img
-                :src='profile.profileUrl'
-              />
-              </div>
-              <span class="img-text">
-                {{ profile.nickname }}
-              </span>
-            </div>
+            <strong class="login-tit">아이디</strong>
+            <span class="login-txt">{{ profile.loginId }}</span>
           </a>
+          <hr style="padding: 0px;"/>
+
+          <a class="profile-img">
+            <strong class="login-tit">이메일</strong>
+            <span class="login-txt">{{ profile.email }}</span>
+          </a>
+          <hr style="padding: 0px;"/>
+        
+          <a class="profile-img">
+            <strong class="login-tit">이름</strong>
+            <span class="login-txt">{{ profile.name }}</span>
+          </a>
+          <hr style="padding: 0px;"/>
+
+          <a class="profile-img">
+            <strong class="login-tit">핸드폰번호</strong>
+            <span class="login-txt">{{ profile.tel }}</span>
+          </a>
+          <hr style="padding: 0px;"/>
         </div>
       </div>
     </div>
@@ -324,11 +335,18 @@ export default {
   padding: 7px 0 9px;
   overflow: hidden;
   display: block;
-  font-size: 24px;
+  font-size: 20px;
   height: 80px;
   line-height: middle;
 }
-
+.login-tit {
+  font-size: 20px;
+}
+.login-txt {
+  float: right;
+  color: #5066aa;
+  font-size: 20px;
+}
 
 
 
