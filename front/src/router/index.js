@@ -71,7 +71,7 @@ const routes = [
   {
     path: "/myPage",
     name: "MyPage",
-    component: () => import("../views/myPage/MyPage"),
+    component: () => import("../views/myPage/MyPageTest.vue"),
   },
   {
     path: "/storeregister",

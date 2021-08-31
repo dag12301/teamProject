@@ -1,4 +1,46 @@
 <template>
+  <div class="manage-div">
+    <div class="manage-div2">
+      <h3 class="manage-text">내정보 관리</h3>
+      <div class="profile-manage">
+        <div class="manage-box">
+          <strong>프로필</strong>
+          <p class="profile-comm">WHAT POO에서 등록한 프로필입니다.</p>
+          <a class="profile-img">
+            <div>
+              <div class="profile-imgdiv" style="margin-right: 10px;">
+                <img
+                :src='profile.profileUrl'
+              />
+              </div>
+              <span class="img-text">
+                {{ profile.nickname }}
+              </span>
+            </div>
+          </a>
+        </div>
+        <hr style="padding: 0px;"/>
+        <div class="manage-box">
+          <strong>로그인정보</strong>
+          <p class="profile-comm">WHAT POO에서 로그인에 사용되는 정보입니다.</p>
+          <a class="profile-img">
+            <div>
+              <div class="profile-imgdiv" style="margin-right: 10px;">
+                <img
+                :src='profile.profileUrl'
+              />
+              </div>
+              <span class="img-text">
+                {{ profile.nickname }}
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <div class="container" style="width: 800px">
     <div style="height: 660px">
       <div v-if="correction == true">
@@ -237,7 +279,61 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.manage-div {
+  max-width: 560px;
+  margin: 50px auto 0;
+  display: block;
+}
+.manage-div2 {
+  display: block;
+}
+.manage-text {
+  font-weight: normal;
+  font-size: 20px;
+}
+.profile-manage {
+  margin-top: 10px;
+  border-top: 1px solid #7c7c7c;
+}
+.manage-box {
+  margin-top: 40px;
+  text-align: left;
+}
+.profile-comm {
+  margin-top: 4px;
+  color: gray;
+}
+.profile-img {
+  margin-top: 10px;
+}
+.profile-imgdiv {
+  float: left;
+  width: 80px;
+  height: 80px;
+  padding: auto 0;
+  position: relative;
+}
+.profile-imgdiv img {
+  display: block; 
+  width: 80px; 
+  height: 80px; 
+  border-radius: 50%;
+}
+.img-text {
+  padding: 7px 0 9px;
+  overflow: hidden;
+  display: block;
+  font-size: 24px;
+  height: 80px;
+  line-height: middle;
+}
+
+
+
+
+
+
 .profile-1 {
   font-weight: 400;
   padding: 20px;
