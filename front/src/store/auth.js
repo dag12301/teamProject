@@ -63,6 +63,15 @@ export default {
       }
       return "unknown";
     },
+    getUserImage(state) {
+      const jwt = require("jsonwebtoken");
+      const decodeAccessToken = jwt.decode(state.token.accessToken);
+      if (decodeAccessToken != null) {
+        console.log(decodeAccessToken);
+        return decodeAccessToken.profileUrl;
+      }
+      return "unknown";
+    },
   },
   mutations: {
     setToken(state, payload) {

@@ -6,13 +6,14 @@
           <div class="row" style="padding: 20px; border: 1px solid black">
             <div class="img" style="padding-bottom: 20px">
               <img
-                src="https://pbs.twimg.com/profile_images/1381919597884936196/qPT_Lcw__400x400.jpg"
+                :src='profile.profileUrl'
                 style="width: 150px; height: 150px; border-radius: 50%"
               />
             </div>
             <div class="filebox">
-              <label for="ex_file">업로드</label>
-              <input type="file" id="ex_file" />
+              <label for="ex_file" >업로드</label>
+              <input type="file" id="ex_file" ref="files" @change="changeImage"/>
+              <span class="m-2" v-if="profileImage != null" @click="updateIamge">수정</span>
             </div>
           </div>
           <div class="row">
@@ -102,7 +103,9 @@ export default {
       correction : null,
       profile: '',       //프로필 null이면 삭제화면
       profileDelete: false,//삭제 토글
-      deletePassword: ""
+      deletePassword: "", //삭제시 필요한 비밀번호
+      profileImage:null
+
     };
   },
   methods: {
@@ -153,6 +156,40 @@ export default {
         }
       })
     },
+
+    //이미지 change
+    changeImage() {
+      console.log(this.$refs)
+      console.log(this.$refs.files)
+       console.log(this.$refs.files.files[0])
+      this.profileImage = {   //실제 파일
+              file: this.$refs.files.files[0],
+      }
+      //이미지 프리뷰
+      this.profile.profileUrl = URL.createObjectURL(this.$refs.files.files[0])
+    },
+    //이미지 DB수정
+    updateIamge() {
+      let image = this.profileImage.file
+
+      var form = new FormData()
+      form.append("image", image)
+
+      http
+      .post("/profile/insertImage", form, {headers: {'Content-Type': 'multipart/form-data'},
+       
+      })
+      .then(res => {
+        console.log(res)
+        if(res.data == 'ok'){
+          return alert("변경되었습니다."), location.href="/myPage"
+        }else if(res.data == 'no'){
+          return alert("변경안됨")
+        }else{
+           return alert("문제")
+        }
+      })
+    },
     //프로필 가져오기
     upload() {
       http
@@ -160,7 +197,7 @@ export default {
         .then((response) => {
           console.log(response.data)
           if (response.status === 200) {
-            console.log(response.data)
+            
             this.profile = response.data;
             if (this.profile != null) {
               if (this.profile.status == "Y")

@@ -71,6 +71,7 @@ export default {
   computed: {
     ...mapGetters({
       getNickname: "auth/getUserNickname",
+      getUserImage: "auth/getUserImage"
     }),
   },
   methods: {

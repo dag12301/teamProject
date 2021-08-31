@@ -1,5 +1,12 @@
 <template>
 <center>
+  <div>
+    비밀번호 변경하기
+    <br>
+    ON<input type="radio" @change="changePwd" name="pwd">
+    OFF<input type="radio" @change="changeNotPwd" name="pwd" checked>
+    <br>
+  </div>
   <div class="container" style="width: 800px; margin-right: 10px">
     <div>
       <div class="row" style="border-top: 1px solid black">
@@ -23,30 +30,7 @@
         <div class="col-4 edit-1">아이디 </div>
         <div class="col-8 edit-2">{{loginId}}</div>
       </div>
-      <div class="row">
-        <div class="col-4 edit-1">비밀번호 :</div>
-        <div class="col-8 edit-2">
-          <input
-            v-model="pwd"
-            type="password"
-            placeholder="숫자,대문자,소문자 8~16자리"
-            maxlength="16"
-          />
-    
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-4 edit-1">비밀번호 확인 :</div>
-        <div class="col-8 edit-2">
-          <input
-            v-model="pwdCheck"
-            type="password"
-            placeholder="위 비밀번호랑 똑같이 적으셈"
-            maxlength="16"
-          />
-        
-        </div>
-      </div>
+      
       <div class="row">
         <div class="col-4 edit-1">핸드폰번호 :</div>
         <div class="col-8 edit-2">
@@ -74,12 +58,39 @@
           <div v-if="this.email === '' " class="msg"></div>
         </div>
 
-        <div >
+      </div>
+
+      <div class="row" v-if="pwdToggle == true">
+        <div class="col-4 edit-1">비밀번호 :</div>
+        <div class="col-8 edit-2">
+          <input
+            v-model="pwd"
+            type="password"
+            placeholder="숫자,대문자,소문자 8~16자리"
+            maxlength="16"
+          />
+    
+        </div>
+      </div>
+      <div class="row" v-if="pwdToggle == true">
+        <div class="col-4 edit-1">비밀번호 확인 :</div>
+        <div class="col-8 edit-2">
+          <input
+            v-model="pwdCheck"
+            type="password"
+            placeholder="위 비밀번호랑 똑같이 적으셈"
+            maxlength="16"
+          />
+        
+        </div>
+      </div>
+      <br>
+      <div >
         <button type="button" @Click="editProfile" class="btn btn-secondary">
           <span style="font-size: 20px">수정완료</span>
         </button>
-        </div>
       </div>
+
     </div>
   </div>
 </center>
@@ -92,7 +103,8 @@ export default {
   
   data() {
     return {
-      
+      pwdToggle: false,//비밀번호 토글
+
         name: null,
         nickname: null,
         loginId: null,
@@ -115,7 +127,15 @@ export default {
   computed: {
     
   },
-  methods: {//닉네임 검사
+  methods: {
+    changePwd() {
+      this.pwdToggle = true
+    },
+    changeNotPwd() {
+      this.pwdToggle = false
+    },
+    
+    //닉네임 검사
     nicknameValid() {
       return /^([a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]).{1,10}$/.test(this.nickname)
     },
@@ -171,6 +191,8 @@ export default {
         console.log(res)
         if(res.data == 'ok'){
           alert("수정되었습니다!")
+          location.href="/myPage"
+          //this.$store.dispatch("auth/getInfo")
           return this.$emit('trueEdit', true)
         }else{
           alert("문제가 발생했습니다.")
