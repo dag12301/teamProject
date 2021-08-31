@@ -178,7 +178,7 @@ export default {
     //공개 비공개 검사
     privateToggle(status) {
 
-      if (status === "Y") {
+      if (status === "Y" || status === "S") {
         return true;
       }
     },

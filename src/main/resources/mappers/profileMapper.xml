@@ -65,9 +65,9 @@ AND	B.food_id = C.foodId
 AND	C.store_id = D.store_id
 AND	C.store_id = E.storeId
 
+
 WHERE	A.status != 'S'
 AND	A.member_id= #{memberId}
-
 
 </select>
 
