@@ -116,8 +116,10 @@ export default {
             // 토큰을 저장한다.
             context.commit("setToken", res.headers.authorization);
             // 토큰을 이용해서 유저정보 불러오기
-            
+
             return Promise.resolve(res);
+          } else if (res.status === 500) {
+            alert("아이디와 암호를 확인해주세요!");
           }
         })
         .catch((error) => {

@@ -175,7 +175,7 @@ public class ProfileController {
 		System.out.println("프로필 쿠폰 정보 가져옵니다");
 		int memberId = getMemberIdByRequest(request);
 		
-		List<MemberCoupon> memberCoupon = null;
+		List<Map<String, Object>> memberCoupon = null;
 		
 		if(memberId > 0)
 		{
@@ -191,47 +191,23 @@ public class ProfileController {
 	
 
 	//주문내용
-	@PostMapping(value = "/getOrder")
-	public ResponseEntity getOrder(@RequestBody(required = false) String phone,HttpServletRequest request)
+	@GetMapping(value = "/getOrder")
+	public ResponseEntity getOrder(@RequestParam("memberId") Integer memberId, HttpServletRequest request)
 	{
 		System.out.println("주문 정보 가져옵니다");
-		int memberId = getMemberIdByRequest(request);
-	
+		int memberIdCheck = getMemberIdByRequest(request);
+		if(memberIdCheck != memberId) {
+			return new ResponseEntity(HttpStatus.FORBIDDEN);
+		}
 		if(memberId > 0)
 		{
-			System.out.println("회원입니다.");
-			
-			Member member = profileService.getMember(memberId);
-			
-			if(member != null)
-			{	
-				List<Order> list = profileService.getOrder(member.getPhone());
-				
-				if(list != null)
-				{
-					System.out.println("정보 있음");
-					return new ResponseEntity(list, HttpStatus.OK);
-				}
-			}
+			List<Order> list = profileService.getOrder(memberId);
+			return new ResponseEntity(list, HttpStatus.OK);
 		}
 		else
 		{
-			System.out.println("비회원입니다.");
-			
-			System.out.println("phone: "+ phone);
-			List<Order> list = profileService.getOrder(phone);
-			
-			System.out.println("list: "+ list);
-			
-			if(list != null)
-			{
-				System.out.println("정보 있음");
-				return new ResponseEntity(list, HttpStatus.OK);
-			}
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-		
-		return new ResponseEntity("no", HttpStatus.OK);
 	}
 	
 	//이미지 변경
@@ -260,8 +236,11 @@ public class ProfileController {
 		return new ResponseEntity("no", HttpStatus.OK);
 	}
 	
-	
-	
+	@GetMapping("/getMemberProfilePicture")
+	public ResponseEntity getMemberProfilePicture(@RequestParam("memberId") Integer memberId) {
+    	String url = profileService.getProfileUrl(memberId);
+    	return new ResponseEntity(url, HttpStatus.OK);
+	}
 	
 	
 	

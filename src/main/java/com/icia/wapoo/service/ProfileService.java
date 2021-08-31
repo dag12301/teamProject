@@ -104,9 +104,9 @@ public class ProfileService {
 	}
 	
 	//쿠폰정보 가져오기
-	public List<MemberCoupon> getCoupon (int memberId)
+	public List<Map<String, Object>> getCoupon (int memberId)
 	{
-		List<MemberCoupon>  memberCoupon = null;
+		List<Map<String, Object>>  memberCoupon = null;
 		
 		try
 		{
@@ -139,13 +139,13 @@ public class ProfileService {
 	}
 	
 	//주문내용 가져오기
-	public List<Order> getOrder(String phone)
+	public List<Order> getOrder(Integer memberId)
 	{
 		List<Order> list = null;
 		
 		try
 		{
-			list = profileDao.getOrder(phone);
+			list = profileDao.selectAllOrders(memberId);
 		}
 		catch(Exception e)
 		{
@@ -184,9 +184,9 @@ public class ProfileService {
 		
 		return count;
 	}
-	
-	
-	
-	
-	
+
+
+    public String getProfileUrl(Integer memberId) {
+		return profileDao.selectFileUrl(memberId);
+    }
 }

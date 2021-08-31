@@ -49,7 +49,7 @@ WHERE	memberId = #{member_id}
 </insert>
 
 <!-- 주문 조회 -->
-<select id="getOrder" resultType="Order">
+<select id="selectAllOrders" resultType="Order">
 SELECT	A.orderId,
 	A.orderDate AS 'orderDate',
 	A.status AS 'status',
@@ -65,26 +65,25 @@ AND	B.food_id = C.foodId
 AND	C.store_id = D.store_id
 AND	C.store_id = E.storeId
 
-WHERE	A.status != 'N'
-AND	A.phone= #{phone}
 
+WHERE	A.status != 'S'
+AND	A.member_id= #{memberId}
 
 </select>
 
-<select id="getCoupon" resultType="MemberCoupon">
-SELECT	B.id,
-	A.couponNumber,
-	A.couponName,
-	B.coupon_used AS 'couponUsed',
-	A.couponPrice,
-	A.discountRate,
-	A.couponEnd
-FROM	`coupon` A INNER JOIN `member_coupon` B
-ON	A.couponId = B.coupon_id
-
-WHERE B.coupon_used != 'N'
-AND B.coupon_holder = #{memberId}
-
+<select id="getCoupon" resultType="Map">
+	SELECT
+		A.couponNumber,
+		A.couponName,
+		B.coupon_used AS 'couponUsed',
+			A.couponEnd,
+		B.total_discountPrice,
+		A.status,
+		f.store_id
+	FROM	`coupon` A, `member_coupon` B, food f
+	WHERE	A.couponId = B.coupon_id
+	  AND A.food_id = f.foodId
+	  AND B.coupon_holder = #{memberId}
 </select>
 
 <!-- 이미지 업로드 -->
@@ -98,6 +97,11 @@ WHERE	memberId = #{memberId}
 
 </update>
 
+	<select id="selectFileUrl" resultType="String">
+		SELECT profileUrl
+		FROM `member`
+		WHERE memberId = #{memberId};
+	</select>
 
 
 
