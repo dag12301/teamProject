@@ -11,8 +11,10 @@
         <div style="text-align: center">
           <div class="user m-2">
             <img
-              src="https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2"
+              :src="profilePicUrl"
+              :title="profilePicUrl"
               class="profilePic"
+              @click="test"
             />
           </div>
           {{ getNickname }}
@@ -35,6 +37,37 @@
       </div>
       <div v-else>
         <div class="p-2">보다 다양한 WAPOO를 즐기려면 로그인하세요!</div>
+        <a
+          class="searchOrder"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseExample"
+          aria-expanded="false"
+          aria-controls="collapseExample"
+          >주문조회..</a
+        >
+        <div class="collapse mt-2" id="collapseExample">
+          <div class="card card-body">
+            <p class="card-text">주문번호를 입력하세요</p>
+            <div class="input-group mb-1">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="주문번호"
+                v-model="inputOrderNumber"
+                aria-label="Recipient's username"
+                aria-describedby="button-addon2"
+              />
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                @click="checkOrderInfo"
+              >
+                조회
+              </button>
+            </div>
+          </div>
+        </div>
         <hr />
         <div
           type="button"
@@ -56,7 +89,7 @@ import { mapGetters, mapMutations } from "vuex";
 import LoginModal from "@/components/modal/Login.vue";
 import RegisterModal from "@/components/modal/Register.vue";
 import { success } from "@/api/notification";
-
+import http from "@/api/http";
 
 export default {
   props: {},
@@ -65,14 +98,37 @@ export default {
   },
   data() {
     return {
-      profile: ''
+      loadedProfilePic: null,
+      inputOrderNumber: null,
+    };
+  },
+  mounted() {
+    console.log("불러온 userId" + this.getUserId);
+    if (this.getUserId != 0 && this.getUserId != null) {
+      http
+        .get("/profile/getMemberProfilePicture", {
+          params: {
+            memberId: this.getUserId,
+          },
+        })
+        .then((res) => {
+          this.loadedProfilePic = res.data;
+          console.log("불러온 프로필 파일 URL" + res.data);
+        });
     }
   },
   computed: {
     ...mapGetters({
       getNickname: "auth/getUserNickname",
-      getUserImage: "auth/getUserImage"
+      getUserId: "auth/getUserId",
     }),
+    profilePicUrl() {
+      if (this.loadedProfilePic != null) {
+        return this.loadedProfilePic;
+      } else {
+        return "https://mblogthumb-phinf.pstatic.net/20140606_111/sjinwon2_1402052862659ofnU1_PNG/130917_224626.png?type=w2";
+      }
+    },
   },
   methods: {
     ...mapMutations(["SET_MODAL_LOGIN", "SET_MODAL_REGISTER"]),
@@ -83,8 +139,13 @@ export default {
       }, 500);
       success("성공적으로 로그아웃 하였습니다!", this);
     },
-   
-    
+    checkOrderInfo() {
+      this.$router.push({
+        path: "/orderInfo",
+        query: { orderId: this.inputOrderNumber },
+      });
+      this.inputOrderNumber = null;
+    },
   },
   components: {
     LoginModal,
@@ -146,5 +207,14 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+.searchOrder {
+  color: grey;
+}
+.searchOrder:hover {
+  color: blue;
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-underline-position: under;
 }
 </style>

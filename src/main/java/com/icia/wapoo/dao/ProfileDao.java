@@ -31,9 +31,11 @@ public interface ProfileDao {
 	//탈퇴하기
 	int deleteProfile(int member_id);
 	//쿠폰 정보가져오기
-	List<MemberCoupon> getCoupon(int memberId);
+	List<Map<String, Object>> getCoupon(int memberId);
 	//주문정보 가저오기
-	List<Order> getOrder(String phone);
+	List<Order> selectAllOrders(@Param("memberId") Integer memberId);
 	//이미지 업로드
 	int insertImage(String fileURL, int memberId);
+
+    String selectFileUrl(@Param("memberId") Integer memberId);
 }
