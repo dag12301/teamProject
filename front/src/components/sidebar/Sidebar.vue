@@ -91,20 +91,12 @@ export default {
     ...mapGetters({ userRole: "auth/getUserRole" }),
   },
   methods: {
-    ...mapMutations([
-      //serviceCenter 토글
-      "SET_COUNT_NOTICE",
-      "SET_COUNT_QUEAN",
-      "SET_COUNT_FQA",
-    ]),
-    serviceCenter() {
-      //serviceCenter 토글 true
-      this.SET_COUNT_NOTICE(true);
-      this.SET_COUNT_QUEAN(true);
-      this.SET_COUNT_FQA(true);
-      this.$store.commit("SET_serviceCenters", 0);
-    },
-  },
+   
+    serviceCenter() {//serviceCenter 토글 true
+      this.$store.commit("SET_serviceCenters", 1)//serviceCenter 안 버튼 상태
+      this.$store.commit("SET_serviceCenterToggle", false)  //sidebar에서 serviceCenter 클릭시
+    }
+  }
 };
 </script>
 

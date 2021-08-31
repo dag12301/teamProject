@@ -1,69 +1,64 @@
 <template>
 <div class="container" style="width: 800px; border: 1px solid black">
-  <div class="row" style="overflow: auto; height: 660px">
-    <div class="col coupon">
+  <div class="row" style="overflow: auto; height: 660px" v-if=" couponToggle == true">
+    <!--쿠폰시작 -->
+    <div class="col coupon" v-for="coupon in coupons" :key="coupon.couponId" >
       <div class="card coupon-card">
         <div class="coupon-main">
           <div class="content">
-            <h2>쿠폰 이름</h2>
-            <h1>쿠폰 내용 <span>Coupon</span></h1>
-            <p>~ 2021.08.21</p>
+            <h2>{{coupon.couponName}}</h2>
+            <span>{{coupon.totalDiscountPrice}} 할인권</span>
+            <p>~ {{coupon.couponEnd}}</p>
           </div>
           <div class="vertical"></div>
           <div class="copy-button">
-            <button onclick="copyIt()" class="copybtn">종료</button>
+            <button onclick="copyIt()" class="copybtn">사용</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="col coupon">
-      <div class="card coupon-card">
-        <div class="coupon-main">
-          <div class="content">
-            <h2>쿠폰 이름</h2>
-            <h1>쿠폰 내용 <span>Coupon</span></h1>
-            <p>~ 2021.08.21</p>
-          </div>
-          <div class="vertical"></div>
-          <div class="copy-button">
-            <button onclick="copyIt()" class="copybtn">종료</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col coupon">
-      <div class="card coupon-card">
-        <div class="coupon-main">
-          <div class="content">
-            <h2>쿠폰 이름</h2>
-            <h1>쿠폰 내용 <span>Coupon</span></h1>
-            <p>~ 2021.08.21</p>
-          </div>
-          <div class="vertical"></div>
-          <div class="copy-button">
-            <button onclick="copyIt()" class="copybtn">종료</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col coupon">
-      <div class="card coupon-card">
-        <div class="coupon-main">
-          <div class="content">
-            <h2>쿠폰 이름</h2>
-            <h1>쿠폰 내용 <span>Coupon</span></h1>
-            <p>~ 2021.08.21</p>
-          </div>
-          <div class="vertical"></div>
-          <div class="copy-button">
-            <button onclick="copyIt()" class="copybtn">종료</button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!--쿠폰종료 -->
+    
+
+
+    
   </div>
+  <div class="col coupon" style="overflow: auto; height: 660px" v-else >쿠폰이 없습니다.</div>
 </div>
 </template>
+<script>
+import http from "@/api/http";
+
+export default ({
+  data() {
+    return {
+      couponToggle: false,
+      coupons: []
+    }
+  },
+  methods: {
+    getCoupon() {
+      http.post("/profile/getCoupon")
+      .then(res => {
+        console.log(res.data.length)
+        if(res.data.length > 0){
+          this.couponToggle = true
+          this.coupons = res.data
+          console.log(this.coupons)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+    }
+  },
+  mounted() {
+    this.getCoupon()
+  }
+})
+</script>
+
 
 <style scoped>
 .coupon {
