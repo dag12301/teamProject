@@ -35,6 +35,7 @@
       </div>
       <div v-else>
         <div class="p-2">보다 다양한 WAPOO를 즐기려면 로그인하세요!</div>
+        <a class="searchOrder">주문조회..</a>
         <hr />
         <div
           type="button"
@@ -57,7 +58,6 @@ import LoginModal from "@/components/modal/Login.vue";
 import RegisterModal from "@/components/modal/Register.vue";
 import { success } from "@/api/notification";
 
-
 export default {
   props: {},
   setup() {
@@ -65,8 +65,8 @@ export default {
   },
   data() {
     return {
-      profile: ''
-    }
+      profile: "",
+    };
   },
   computed: {
     ...mapGetters({
@@ -82,8 +82,6 @@ export default {
       }, 500);
       success("성공적으로 로그아웃 하였습니다!", this);
     },
-   
-    
   },
   components: {
     LoginModal,
@@ -145,5 +143,8 @@ export default {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+.searchOrder {
+  color: grey;
 }
 </style>
