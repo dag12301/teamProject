@@ -3,10 +3,6 @@ import { createStore } from "vuex";
 import auth from "@/store/auth";
 import cart from "@/store/cart";
 import Akinator from "@/store/akinator";
-import fooddiv from "./foodDiv/foodDiv.js";
-import foodlist from "./foodDiv/foodList.js";
-import shopList from "./shopList/shopList.js";
-import menu from "./menu/menu.js";
 import createPersistedState from "vuex-persistedstate";
 import serviceCenter from "./serviceCenter";
 
@@ -28,6 +24,7 @@ export default createStore({
 
     serviceCenters: 1,//서비스 센터 위치
     serviceCenterToggle: false, //사이드바 클릭
+
 
     selectedPlace: "주소찾기를 눌러주세요...", // 주소찾기에서 선택한 주소
     selectedAddressDetail: "", // 주소찾기에서 선택한 상세주소
@@ -95,22 +92,19 @@ export default createStore({
     },
     SET_serviceCenters(state, payload){       //serviceCenter 에서 버튼 위치
       state.serviceCenters = payload
+
     },
     SET_serviceCenterToggle(state, payload){  //sidebar에서 serviceCenter 클릭시
       state.serviceCenterToggle = payload
     },
     SET_MODAL_REVIEW(state, boolean) {
       state.reviewModal = boolean;
-    }
+    },
   },
   modules: {
     auth,
     Akinator,
-    shopList,
     serviceCenter,
-    menu,
-    fooddiv,
-    foodlist,
     couponon,
     couponend,
     cart,
