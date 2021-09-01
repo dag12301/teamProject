@@ -65,7 +65,7 @@
   </div>
 
       <div v-if="profile == null">
-        <div>정말 탈퇴 하시겠습니까?</div>4
+        <div>정말 탈퇴 하시겠습니까?</div>
         <br>
         <div>탈퇴하려면 비밀번호가 필요합니다.</div>
         <input class="m-5 " type="password" v-model="deletePassword" placeholder="비밀번호를 입력하세요" />
@@ -96,12 +96,12 @@
     </div>
     <!-- 탈퇴 버튼-->
     <div v-else>
-      <button  type="button" @click="reallyDelete" class="btn btn-secondary" style="margin-left: 50px;">
+      <button  type="button" @click="reallyDelete" class="btn btn-secondary" style="position: fixed">
         <span style="font-size: 20px">탈퇴하기</span>
       </button>
 
-      <button type="button" @click="secession()" class="btn btn-secondary">
-          <span style="font-size: 20px">뒤로가기</span>
+      <button type="button" @click="secession()" class="btn btn-secondary" style="margin-left: 150px;">
+          <span style="font-size: 20px">취소</span>
         </button>
     </div>
   </div>
@@ -165,7 +165,7 @@ export default {
           
           //위치
         }else if(res.data == "no"){
-          alert("문제있습니다.")
+          alert("비번이 다릅니다.")
         }else{
           alert("서버문제입니다.")
         }
