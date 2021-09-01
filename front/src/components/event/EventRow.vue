@@ -1,51 +1,5 @@
 <template>
   <div class="eventWapper m-1 p-4">
-<<<<<<< HEAD
-    <div v-if="couponLoaded">
-      <img src="../../assets/banner.png" style=" width: 100%;"/>
-      <hr />
-      <div class="data-title">
-        {{data.title}}
-      </div>
-      <div>
-        <span class="data-date">{{data.updateDate[0]}}년 {{data.updateDate[1]}}월 {{data.updateDate[2]}}일 ~ {{data.dueDate[0]}}년 {{data.dueDate[1]}}월 {{data.dueDate[2]}}일까지</span> 
-      </div>
-      <div>
-        <span class="data-span">WHAT POO 회원을 대상으로 {{data.body}}</span>
-      </div>
-      <div>
-
-      </div>
-      <a>
-        <div class="event-btn"
-        @click="applyEvent"
-      :class="{ disabled: !eventavailable }">
-          <div class="btn-div">
-            <span class="btn-span1">{{couponInfo.name}} 할인쿠폰</span><br/>
-            <span class="btn-span2">{{couponInfo.couponPrice}}원 할인</span>
-          </div>
-          <div style="float: right">
-            <img :src="couponInfo.fileUrl" style="height: 100px;"/>
-          </div>
-        </div>
-      </a>
-      <br/>
-      <div>
-        <a>
-          <div class="order-div">
-            <span class="order-span">주문하러 가기 &nbsp;></span>
-          </div>
-        </a>
-      </div>      
-
-
-
-      <hr style="clear: both;"/>
-      이벤트 등록일 : {{ data.updateDate }} 이벤트 만료일 : {{ data.dueDate }}
-      할인내용 : {{ couponInfo }} 할인금액 : {{ totalDiscountPrice }}
-      <img :src="couponInfo.fileUrl" />
-      {{data}}
-=======
     <div class="data-title">
       {{ data.title }}
     </div>
@@ -98,7 +52,6 @@
           {{ couponInfo.couponEnd[3] }}시 까지 사용가능
         </div>
       </div>
->>>>>>> 0accfd3d05b21f8af1e360b23b72f5395a6efd52
     </div>
   </div>
 </template>
@@ -180,11 +133,7 @@ export default {
 </script>
 
 <style scoped>
-<<<<<<< HEAD
-@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap');
-=======
 @import url("https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap");
->>>>>>> 0accfd3d05b21f8af1e360b23b72f5395a6efd52
 .eventWapper {
   border: 1px solid gray;
 }
@@ -192,11 +141,7 @@ export default {
   background-color: gray;
 }
 .data-title {
-<<<<<<< HEAD
-  font-family: 'Black Han Sans', sans-serif; 
-=======
   font-family: "Black Han Sans", sans-serif;
->>>>>>> 0accfd3d05b21f8af1e360b23b72f5395a6efd52
   font-size: 60px;
 }
 .data-date {
@@ -206,16 +151,6 @@ export default {
   font-size: 20px;
 }
 .event-btn {
-<<<<<<< HEAD
-  border: 1px solid rgb(255, 194, 115); 
-  padding: 10px; 
-  background-color: rgb(255, 194, 115); 
-  border-radius: 15px; 
-  width: 360px; 
-  height: 120px; 
-  margin: auto; 
-  margin-top: 30px; 
-=======
   border: 1px solid rgb(255, 194, 115);
   padding: 10px;
   background-color: rgb(255, 194, 115);
@@ -224,35 +159,17 @@ export default {
   height: 120px;
   margin: auto;
   margin-top: 30px;
->>>>>>> 0accfd3d05b21f8af1e360b23b72f5395a6efd52
   margin-bottom: 15px;
   cursor: pointer;
 }
 .btn-div {
-<<<<<<< HEAD
-  float: left; 
-=======
   float: left;
->>>>>>> 0accfd3d05b21f8af1e360b23b72f5395a6efd52
   padding-top: 10px;
 }
 .btn-span1 {
   font-size: 20px;
 }
 .btn-span2 {
-<<<<<<< HEAD
-  font-size: 30px; 
-  font-family: 'Black Han Sans', sans-serif;
-}
-
-.order-div {
-  border: 1px solid black; 
-  background-color: black; 
-  border-radius: 15px; 
-  width: 200px; 
-  height: 60px; 
-  line-height: 60px; 
-=======
   font-size: 30px;
   font-family: "Black Han Sans", sans-serif;
 }
@@ -264,18 +181,10 @@ export default {
   width: 200px;
   height: 60px;
   line-height: 60px;
->>>>>>> 0accfd3d05b21f8af1e360b23b72f5395a6efd52
   float: right;
   cursor: pointer;
 }
 .order-span {
-<<<<<<< HEAD
-  color: white; 
-  font-family: 'Black Han Sans', sans-serif; 
-  font-size: 25px; 
-  line-height: middle;
-}
-=======
   color: white;
   font-family: "Black Han Sans", sans-serif;
   font-size: 25px;
@@ -285,5 +194,4 @@ export default {
   background-color: darkred;
   transition: 0.2s;
 }
->>>>>>> 0accfd3d05b21f8af1e360b23b72f5395a6efd52
 </style>

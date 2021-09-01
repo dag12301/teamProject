@@ -8,14 +8,21 @@
           <p class="profile-comm">WHAT POO에서 등록한 프로필입니다.</p>
           <a class="profile-img">
             <div>
-              <div class="profile-imgdiv" style="margin-right: 10px;">
-                <img
-                :src='profile.profileUrl'
-              />
+              <div class="nicknamebox">
+                <div class="profile-imgdiv" style="margin-right: 10px;">
+                  <img
+                  :src='profile.profileUrl'
+                  />
+                </div>
+                <span class="img-text">
+                  {{ profile.nickname }}
+                </span>
               </div>
-              <span class="img-text">
-                {{ profile.nickname }}
-              </span>
+              <div class="filebox">
+                <label for="ex_file" >업로드</label>
+                <input type="file" id="ex_file" ref="files" @change="changeImage"/>
+                <span class="m-2" v-if="profileImage != null" @click="updateIamge">수정</span>
+              </div>
             </div>
           </a>
         </div>
@@ -63,11 +70,7 @@
                 style="width: 150px; height: 150px; border-radius: 50%"
               />
             </div>
-            <div class="filebox">
-              <label for="ex_file" >업로드</label>
-              <input type="file" id="ex_file" ref="files" @change="changeImage"/>
-              <span class="m-2" v-if="profileImage != null" @click="updateIamge">수정</span>
-            </div>
+            
           </div>
           <div class="row">
             <div class="col-4 profile-1">이름 :</div>
@@ -332,12 +335,13 @@ export default {
   border-radius: 50%;
 }
 .img-text {
-  padding: 7px 0 9px;
   overflow: hidden;
   display: block;
-  font-size: 20px;
+  font-size: 22px;
   height: 80px;
   line-height: middle;
+  padding-left: 20px;
+  padding-bottom: 10px;
 }
 .login-tit {
   font-size: 20px;
@@ -346,6 +350,18 @@ export default {
   float: right;
   color: #5066aa;
   font-size: 20px;
+}
+.m-2 {
+  cursor: pointer;
+}
+.nicknamebox {
+  float: left;
+  line-height: 80px;
+}
+.filebox {
+  margin-left: 30%;
+  height: 80px;
+  text-align: right;
 }
 
 
