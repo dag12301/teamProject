@@ -1,4 +1,7 @@
 <template>
+  <div style="width: 100%;">
+    <div v-if="correction == true">
+      <div v-if="profile != null">
   <div class="manage-div">
     <div class="manage-div2">
       <h3 class="manage-text">내정보 관리</h3>
@@ -12,7 +15,9 @@
                 <div class="profile-imgdiv" style="margin-right: 10px;">
                   <img
                   :src='profile.profileUrl'
+                  style="position: relative"
                   />
+                  
                 </div>
                 <span class="img-text">
                   {{ profile.nickname }}
@@ -57,60 +62,7 @@
       </div>
     </div>
   </div>
-
-
-  <div class="container" style="width: 800px">
-    <div style="height: 660px">
-      <div v-if="correction == true">
-        <div v-if="profile != null">
-          <div class="row" style="padding: 20px; border: 1px solid black">
-            <div class="img" style="padding-bottom: 20px">
-              <img
-                :src='profile.profileUrl'
-                style="width: 150px; height: 150px; border-radius: 50%"
-              />
-            </div>
-            
-          </div>
-          <div class="row">
-            <div class="col-4 profile-1">이름 :</div>
-            <div class="col-8 profile-2">
-              {{ profile.name }}
-              <!-- 배열위치는 언제든 바뀔수있음. 그보다 정확한 변수명을 명시해줄것 -->
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4 profile-1">닉네임 :</div>
-            <div class="col-8 profile-2">
-              {{ profile.nickname }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4 profile-1">아이디 :</div>
-            <div class="col-8 profile-2">
-              {{ profile.loginId }}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4 profile-1">핸드폰번호 :</div>
-            <div class="col-8 profile-2">
-              {{ profile.tel }}
-              <!-- tel 로 받아놓게했는데 DB에선 phone 으로 했음. 헷갈릴수있음 -->
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-4 profile-1">이메일 :</div>
-            <div class="col-8 profile-2">
-              {{ profile.email }}
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <div v-if="correction == false">
-        <EditProfile @trueEdit="edit" :message="profile"  ></EditProfile>
-      </div>
+  </div>
 
       <div v-if="profile == null">
         <div>정말 탈퇴 하시겠습니까?</div>4
@@ -121,6 +73,13 @@
       </div>
     
     </div>
+    <div v-if="correction == false">
+        <EditProfile @trueEdit="edit" :message="profile"  ></EditProfile>
+      </div>
+</div>
+
+  <div class="container" style="width: 800px">
+    
 
     
 
@@ -363,7 +322,6 @@ export default {
   height: 80px;
   text-align: right;
 }
-
 
 
 
