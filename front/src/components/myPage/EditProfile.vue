@@ -52,7 +52,7 @@
      
           />
         
-          <div v-if="this.tel ===  '' " class="msg">번화번호를 입력하요</div></span>
+          <div v-if="this.tel ===  '' " class="msg">핸드폰번호를 입력하세요</div></span>
           </a>
           <hr style="padding: 0px;"/>
 
@@ -82,7 +82,7 @@
               <span class="login-txt"><input
               v-model="pwdCheck"
               type="password"
-              placeholder="위 비밀번호랑 똑같이 적으셈"
+              placeholder="위 비밀번호랑 똑같이 적으세요"
               maxlength="16"
             /></span>
             </a>
