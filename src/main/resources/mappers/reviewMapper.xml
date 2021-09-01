@@ -2,36 +2,74 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.icia.wapoo.dao.EventDao">
+<mapper namespace="com.icia.wapoo.dao.ReviewDao">
 	
 
-    <insert id="insertEvent" useGeneratedKeys="true" keyColumn="eventId" keyProperty="eventId" parameterType="Event">
-        INSERT INTO `event`
+    <insert id="insertReview" useGeneratedKeys="true" keyColumn="reviewId" keyProperty="reviewId" parameterType="Review">
+        INSERT INTO `review`
         SET
         regDate = NOW(),
         updateDate = NOW(),
-        dueDate = #{dueDate},
         status = 'Y',
-        `body` = #{body},
-        `title` = #{title},
-        provider_id = #{provider_id}
+        score = #{score},
+        body = #{body},
+        writerid = #{writerid},
+        store_id = #{store_id}
+        <if test="foodPhoto!=null">
+            ,foodPhoto = #{foodPhoto}
+        </if>
+
     </insert>
 
-    <select id="selectEventList" resultType="Map">
-        SELECT *
-        FROM `event` e, `member` m
-        WHERE e.provider_id = m.memberId
-        <if test="!option.equals('ALL')">
-            AND e.`status` = #{option}
+    <select id="selectReviewList" resultType="Map">
+        SELECT r.reviewId
+               ,r.regDate
+            ,r.updateDate
+            ,r.status
+            ,r.score
+            ,r.body
+            ,r.foodPhoto
+            ,r.reply
+             ,r.writerid
+            ,m.nickname
+        FROM review r, `member` m
+        WHERE r.writerid =  m.memberId
+        AND r.status != 'N'
+        AND r.store_id = #{storeId}
+
+        <if test="!option.equals('score')">
+            ORDER BY r.score DESC
         </if>
-        ORDER BY e.regDate DESC
+        <if test="!option.equals('recent')">
+            ORDER BY r.regDate DESC
+        </if>
         LIMIT #{startLimit}, #{endLimit}
     </select>
-    <select id="selectEventListCount" resultType="int">
+    <select id="selectReviewListCount" resultType="int">
         SELECT COUNT(*) AS result
-        FROM event
-        <if test="!option.equals('ALL')">
-            WHERE status = #{option}
-        </if>
+        FROM review
+        WHERE store_id = #{storeId}
     </select>
+    <select id="selectAverageScore" resultType="float">
+        SELECT ROUND(AVG(score),1)
+        FROM review
+        WHERE store_id = #{storeId}
+    </select>
+    <select id="selectReviewListHasReplyCount" resultType="int">
+        SELECT COUNT(*) AS result
+        FROM review
+        WHERE store_id = #{storeId}
+        AND reply IS NOT NULL
+    </select>
+
+    <update id="updateReviewAddReply">
+        update review
+        SET reply = #{reply}
+        where reviewId = #{reviewId}
+    </update>
+    <update id="updateReviewStatus">
+        update review
+        SET status = #{status}
+        where reviewid = #{reviewId}
+    </update>
 </mapper>
