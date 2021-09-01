@@ -117,7 +117,10 @@ export default {
       console.log(this.image);
       formdata.append("imageFile", this.image);
       http.post("/review/writeReview", formdata).then((res) => {
-        console.log(res);
+        this.SET_MODAL_REVIEW(false);
+        alert("리뷰를 남겼습니다!");
+        window.location.href =
+          "http://localhost:8080/shopDetail?shopInfo=" + this.storeId;
       });
     },
   },

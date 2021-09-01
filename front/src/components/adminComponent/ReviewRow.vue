@@ -20,26 +20,25 @@
     <div class="review3-star" style="width: 200px">
       <div class="star-1">
         <i class="fas fa-star" v-for="star of data.score" :key="star"></i
-        >&nbsp;&nbsp;<span>별 {{ data.score }}개</span>
+        >&nbsp;&nbsp;
       </div>
     </div>
     <div>
-      <div
-        class="review3-img"
+      <img
+        class="review3-img m-2"
+        :src="data.foodPhoto"
         style="
           width: 200px;
           height: 200px;
-          border: 1px solid red;
+          border: 1px solid grey;
           margin-left: 10px;
         "
         v-if="data.foodPhoto"
-      >
-        이미지 부분
-      </div>
+      />
     </div>
     <div class="review3-menu">
       <!-- 시킨음식 -->
-      <p @click="test">메뉴 뭐시켰는지 시킨음식</p>
+      <span>{{ data.score }} /5.0</span>
     </div>
     <div class="review3-view">
       <!-- 내용 -->
