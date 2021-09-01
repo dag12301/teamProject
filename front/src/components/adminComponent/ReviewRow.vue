@@ -1,5 +1,5 @@
 <template>
-  <div class="review3">
+  <div class="review3" v-if="available">
     <notifications
       group="notifyApp"
       position="bottom right"
@@ -11,7 +11,10 @@
         <span class="review3-span2">{{ data.regDate }}</span>
       </div>
       <div class="review3-div">
-        <a href="#" class="review3-a">신고</a>
+        <a class="review3-a m-1" v-if="ableToEdit" @click="removeReview"
+          >삭제</a
+        >
+        <a class="review3-a m-1" @click="reportReview">신고</a>
       </div>
     </div>
     <div class="review3-star" style="width: 200px">
@@ -90,6 +93,8 @@
 <script>
 import http from "@/api/http";
 import { normal, error, success } from "@/api/notification";
+import { mapGetters } from "vuex";
+
 export default {
   props: ["data", "isOwner"],
   data() {
@@ -97,7 +102,16 @@ export default {
       replymode: false,
       reply: "",
       replySuccess: false,
+      available: true,
     };
+  },
+  computed: {
+    ...mapGetters({
+      getUserId: "auth/getUserId",
+    }),
+    ableToEdit() {
+      return this.getUserId == this.data.writerid;
+    },
   },
   methods: {
     willReply() {
@@ -133,6 +147,39 @@ export default {
         }
       });
     },
+    removeReview() {
+      if (!this.ableToEdit) {
+        alert("권한이 없습니다!");
+        return;
+      }
+      let sure = confirm("정말 삭제하시겠습니까?");
+      if (!sure) {
+        return;
+      }
+      const data = {
+        reviewId: this.data.reviewId,
+        status: "N",
+      };
+      http.post("/review/modifyReviewStatus", data).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          success("리뷰를 삭제했습니다!", this);
+          this.available = false;
+        }
+      });
+    },
+    reportReview() {
+      const data = {
+        reviewId: this.data.reviewId,
+        status: "S",
+      };
+      http.post("/review/modifyReviewStatus", data).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          normal("리뷰를 신고했습니다!", this);
+        }
+      });
+    },
   },
 };
 </script>
@@ -161,6 +208,10 @@ export default {
   text-decoration: none;
   color: gray;
   font-weight: bold;
+}
+.review3-a:hover {
+  cursor: pointer;
+  color: tomato;
 }
 
 .review3-img {
