@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.icia.wapoo.dao.EventDao">
+	
+
+    <insert id="insertEvent" useGeneratedKeys="true" keyColumn="eventId" keyProperty="eventId" parameterType="Event">
+        INSERT INTO `event`
+        SET
+        regDate = NOW(),
+        updateDate = NOW(),
+        dueDate = #{dueDate},
+        status = 'Y',
+        `body` = #{body},
+        `title` = #{title},
+        provider_id = #{provider_id}
+    </insert>
+
+    <select id="selectEventList" resultType="Map">
+        SELECT *
+        FROM `event` e, `member` m
+        WHERE e.provider_id = m.memberId
+        <if test="!option.equals('ALL')">
+            AND e.`status` = #{option}
+        </if>
+        ORDER BY e.regDate DESC
+        LIMIT #{startLimit}, #{endLimit}
+    </select>
+    <select id="selectEventListCount" resultType="int">
+        SELECT COUNT(*) AS result
+        FROM event
+        <if test="!option.equals('ALL')">
+            WHERE status = #{option}
+        </if>
+    </select>
+</mapper>

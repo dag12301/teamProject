@@ -55,7 +55,7 @@
                 <i class="fas fa-thumbs-up"></i
                 ><span class="i-text">리뷰점수</span>
               </td>
-              <td class="td2" style="padding-left: 20px">4.9</td>
+              <td class="td2" style="padding-left: 20px">{{ averageScore }}</td>
             </tr>
             <tr>
               <td class="td1" style="color: gray; margin-top: 20px">
@@ -116,7 +116,10 @@
         :shopname="shopInfo.storeInfo.name"
         v-else-if="currentComp === 'shopMap'"
       ></shopMap>
-      <review v-else-if="currentComp === 'review'"></review>
+      <review
+        v-else-if="currentComp === 'review'"
+        :storeId="$route.query.shopInfo"
+      ></review>
       <div v-else>
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -142,12 +145,14 @@ export default {
     let storeId = this.$route.query.shopInfo;
     this.getStoreInfo(storeId);
     this.setComponent("shopMenu");
+    this.getAverageScore();
   },
   data() {
     return {
       shopInfo: null,
       dataLoaded: false,
       currentComp: "shopMenu",
+      averageScore: null,
     };
   },
   methods: {
@@ -166,6 +171,21 @@ export default {
     },
     setComponent(comp) {
       this.currentComp = comp;
+    },
+    getAverageScore() {
+      http
+        .get("/review/getAverageScore", {
+          params: {
+            storeId: this.$route.query.shopInfo,
+          },
+        })
+        .then((response) => {
+          this.averageScore = response.data;
+          console.log("점수 평균값 : " + this.averageScore);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };
