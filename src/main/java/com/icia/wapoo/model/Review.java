@@ -15,7 +15,8 @@ public class Review {
     private int score;
     private String body;
     private int writerid;
-    private int store_id;
+    private int storeId;
     private String foodPhoto;
     private String reply;
 }
+
