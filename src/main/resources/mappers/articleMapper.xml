@@ -168,10 +168,11 @@ SELECT @rownum:=@rownum+1 AS nickname,
 	STATUS,
 	children,
 	board_id AS boardId,
+	parant_id AS parantId,
 	writer_id AS writerId,
-	suspend
+	SUSPEND    
 	
-FROM article    , (SELECT @rownum:=0) TMP
+FROM article, (SELECT @rownum:=#{paging.startList}) TMP
 WHERE (@rownum:=0)=0
 AND	STATUS != 'N'
 <choose>
@@ -189,9 +190,13 @@ AND	title LIKE CONCAT('%', #{search} ,'%')
 </if>
 
 
-ORDER BY articleId DESC
+ORDER BY 
+CASE WHEN parant_id IS NULL 
+    THEN articleId 
+    ELSE parant_id END , 
+regDate DESC
 
-LIMIT #{paging.startList}, #{paging.listSize}
+LIMIT #{paging.DBsStart}, #{paging.listSize}
 
 </select>
 <!-- 전체 페이지 수 -->
