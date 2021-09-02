@@ -124,7 +124,6 @@ export default {
         this.status = "Y"
       }
 
-      console.log(this.status)
     },
     imageAddUpload() {
       this.files.push (
@@ -140,7 +139,7 @@ export default {
     fileDeleteButton(index) {
         //보낼 파일에서 데이터 삭제
         this.files.pop(index)
-        // console.log(this.files);
+   
     },
 
     //보내기 통신
@@ -192,7 +191,7 @@ export default {
       await  authAPI
         .writeProc(params) //axios 이동
         .then((res) => {
-          console.log(res)
+        
           if(res.data > 0){
             articleId = res.data
           }
