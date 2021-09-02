@@ -15,11 +15,11 @@
           <!-- 이곳에 태그가 렌더된다. -->
         </div>
         <div style="display: hidden">
-          <splide>
-            <splide-slide>
+          <Splide :options="options">
+            <SplideSlide>
               <img />
-            </splide-slide>
-          </splide>
+            </SplideSlide>
+          </Splide>
         </div>
       </div>
       <!-- 종료 -->
@@ -98,12 +98,13 @@ export default {
   },
   methods: {
     renderSplide() {
-      const splide = document.createElement("splide");
-      splide.setAttribute("options", this.options);
+      const splide = document.createElement("Splide");
+      splide.setAttribute("v-bind:options", this.options);
       for (let i = 0; i < this.fileList.length; i++) {
-        let slide = document.createElement("splide-slide");
+        let slide = document.createElement("SplideSlide");
         let img = document.createElement("img");
-        img.className = "menuImg";
+        // img.className = "menuImg";
+        // img.setAttribute("style", "width:100px; height:100px");
         img.setAttribute("src", this.fileList[i].name);
         slide.appendChild(img);
         splide.appendChild(slide); // 어펜트도 해볼것
@@ -149,6 +150,7 @@ export default {
   .menuImg {
     width: 0px;
     height: 0px;
+    border: 2px solid blue;
   }
   .storeHeader {
     width: 300px;
