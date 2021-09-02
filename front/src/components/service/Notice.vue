@@ -98,7 +98,7 @@ export default {
   },
   //고객센터통해 접근할 경우
   mounted() {
-    this.downAllList(3, 1, 1)
+    this.downAllList(1, 1, 1)
     
   },
   //버튼 클릭시
