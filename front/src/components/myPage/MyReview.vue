@@ -1,63 +1,86 @@
 <template>
-  <div style="width: 100%;">
-  <div class="manage-div">
-    <div class="manage-div2">
-      <h3 class="manage-text">내가 작성한 리뷰 수: {{reviewLists.length}}</h3>
-      <div class="profile-manage">
-        <div class="manage-box">
-          <div v-for="(reviewList, index) in reviewLists" :key="index"> 
-            <p class="profile-comm">{{reviewList.nickname}}님이 등록한 리뷰입니다.</p>
-            <div style="width: 100%">
-              <div class="review3-text">
-                <span class="review3-span1">{{reviewList.store_id}}가게명</span>
-                <span class="review3-span2">{{reviewList.regDate[0]}}.{{reviewList.regDate[1]}}{{reviewList.regDate[2]}}</span>
-              </div>
-              <div class="review3-div">
-                <a class="review3-a m-1" @click="removeReview">삭제</a>
-              </div>
-            </div>
-            <div class="review3-star" style="width: 200px">
-              <div class="star-1">
-                <i class="fas fa-star" v-for="star of reviewList.score" :key="star"></i
-                >&nbsp;&nbsp; <span style="color: burlywood;">{{ reviewList.score }} /5.0</span>
-              </div>
-            </div>
-            <div>
-              <img
-                class="review3-img m-2"
-                :src="reviewList.foodPhoto"
-                style="
-                  width: 180px;
-                  height: 180px;
-                  margin-left: 10px;
-                "
-                v-if="reviewList.foodPhoto"
-              />
-            </div>
-            <div class="review3-menu">
-              <!-- 시킨음식 -->
-              <span>시킨음식</span>
-            </div>
-            <div class="review3-view">
-              <!-- 내용 -->
-              <p v-if="reviewList.body" style="font-size: 18px;">
-                {{reviewList.body}}
+  <div style="width: 100%">
+    <div class="manage-div">
+      <div class="manage-div2">
+        <h3 class="manage-text">
+          내가 작성한 리뷰 수: {{ reviewLists.length }}
+        </h3>
+        <div class="profile-manage">
+          <div class="manage-box">
+            <div v-for="(reviewList, index) in reviewLists" :key="index">
+              <p class="profile-comm">
+                {{ reviewList.nickname }}님이 등록한 리뷰입니다.
               </p>
-              <p v-else>삭제된 리뷰입니다.</p>
-            </div>
-            <!-- 사장님 댓글 -->
-            <div v-if="reviewList.reply" style="border: 1px solid lightgray; background-color: lightgray; margin-bottom: 16px; padding: 10px;">
-              <span>&nbsp;&#10551;&nbsp; 사장님댓글</span>&nbsp;&nbsp;<span style="font-size: 14px; color: gray;"> 날짜</span>
-              <p style="margin: 0px;">사장 리뷰내용</p>
-            </div>
-            <hr style="margin-left: -16px; margin-top: 40px;"/>
-            
+              <div style="width: 100%">
+                <div class="review3-text">
+                  <span class="review3-span1"
+                    >{{ reviewList.store_id }}가게명</span
+                  >
+                  <span class="review3-span2"
+                    >{{ reviewList.regDate[0] }}.{{ reviewList.regDate[1]
+                    }}{{ reviewList.regDate[2] }}</span
+                  >
+                </div>
+                <div class="review3-div">
+                  <a class="review3-a m-1" @click="removeReview">삭제</a>
+                </div>
+              </div>
+              <div class="review3-star" style="width: 200px">
+                <div class="star-1">
+                  <i
+                    class="fas fa-star"
+                    v-for="star of reviewList.score"
+                    :key="star"
+                  ></i
+                  >&nbsp;&nbsp;
+                  <span style="color: burlywood"
+                    >{{ reviewList.score }} /5.0</span
+                  >
+                </div>
+              </div>
+              <div>
+                <img
+                  class="review3-img m-2"
+                  :src="reviewList.foodPhoto"
+                  style="width: 180px; height: 180px; margin-left: 10px"
+                  v-if="reviewList.foodPhoto"
+                />
+              </div>
+              <div class="review3-menu">
+                <!-- 시킨음식 -->
+                <span>시킨음식</span>
+              </div>
+              <div class="review3-view">
+                <!-- 내용 -->
+                <p v-if="reviewList.body" style="font-size: 18px">
+                  {{ reviewList.body }}
+                </p>
+                <p v-else>삭제된 리뷰입니다.</p>
+              </div>
+              <!-- 사장님 댓글 -->
+              <div
+                v-if="reviewList.reply"
+                style="
+                  border: 1px solid lightgray;
+                  background-color: lightgray;
+                  margin-bottom: 16px;
+                  padding: 10px;
+                "
+              >
+                <span>&nbsp;&#10551;&nbsp; 사장님댓글</span>&nbsp;&nbsp;<span
+                  style="font-size: 14px; color: gray"
+                >
+                  날짜</span
+                >
+                <p style="margin: 0px">사장 리뷰내용</p>
+              </div>
+              <hr style="margin-left: -16px; margin-top: 40px" />
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>     
+  </div>
 </template>
 
 <script>
@@ -160,12 +183,6 @@ export default {
   width: 20%;
 }
 
-
-
-
-
-
-
 .manage-div {
   max-width: 560px;
   margin: 50px auto 0;
@@ -201,9 +218,9 @@ export default {
   position: relative;
 }
 .profile-imgdiv img {
-  display: block; 
-  width: 80px; 
-  height: 80px; 
+  display: block;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
 }
 .img-text {
@@ -235,9 +252,6 @@ export default {
   height: 80px;
   text-align: right;
 }
-
-
-
 
 .profile-1 {
   font-weight: 400;
@@ -289,20 +303,6 @@ export default {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .profile-scroll {
   overflow-x: hidden;
