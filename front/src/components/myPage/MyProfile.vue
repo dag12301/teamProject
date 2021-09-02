@@ -57,7 +57,7 @@
       </div>
 
       <div v-if="profile == null">
-        <div>정말 탈퇴 하시겠습니까?</div>4
+        <div>정말 탈퇴 하시겠습니까?</div>
         <br>
         <div>탈퇴하려면 비밀번호가 필요합니다.</div>
         <input class="m-5 " type="password" v-model="deletePassword" placeholder="비밀번호를 입력하세요" />

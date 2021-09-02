@@ -221,7 +221,7 @@ export default {
             location.href = "/" + this.board;
           }
         })
-        .catcherr((err) => {
+        .catch((err) => {
           console.log(err);
         });
     },

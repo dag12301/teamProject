@@ -37,7 +37,7 @@
       class="mt-5 position-relative .center-block"
       style=""
     >
-      <ul class="pagination position-absolute" style="left: 30vw">
+      <ul class="pagination position-absolute" style="left: 20vw">
         <!-- 이전 순서 버튼 -->
         <li
           class="page-item"
@@ -121,22 +121,15 @@ export default {
         this.pageList = []
         this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
 
-        //리스트 페이지 처리
-         let maxnum = res.data.paging.page == 1 ? 10 : 10 *(res.data.paging.page) 
-          if(res.data.paging.total -10*(page) < 0)
-		      {
-			      maxnum =res.data.paging.startList+ 10 - (-(res.data.paging.total-10* (page)))
-		      }
-          let num = 0
+        
+          //리스트 번호처리
+          let num = Math.abs(res.data.paging.total -((page - 1) * 10))
           
-          for(let i = res.data.paging.startList ;i < maxnum ;i++){
+          
+          for(let i = 0 ;i < this.notices.length ;i++){
             
-            if(i < this.notices.length){
-              this.notices[num].nickname = num + 1
-            }else{
-              this.notices[num].nickname = i + 1
-            }
-            num++
+              this.notices[i].nickname = num--
+              console.log(num)
           }
       })
 
@@ -157,22 +150,14 @@ export default {
           this.pageList = []
           this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
 
-          //리스트 페이지 처리
-           let maxnum = res.data.paging.page == 1 ? 10 : 10 *(res.data.paging.page) 
-          if(res.data.paging.total -10*(page) < 0)
-		      {
-			      maxnum =res.data.paging.startList+ 10 - (-(res.data.paging.total-10* (page)))
-		      }
-          let num = 0
+          //리스트 번호처리
+          let num = Math.abs(res.data.paging.total -((page - 1) * 10))
           
-          for(let i = res.data.paging.startList ;i < maxnum ;i++){
+          
+          for(let i = 0 ;i < this.notices.length ;i++){
             
-            if(i < this.notices.length){
-              this.notices[num].nickname = num + 1
-            }else{
-              this.notices[num].nickname = i + 1
-            }
-            num++
+              this.notices[i].nickname = num--
+              console.log(num)
           }
 
         })

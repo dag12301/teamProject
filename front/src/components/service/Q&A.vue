@@ -80,7 +80,7 @@
 
       <!-- 순서 버튼 -->
     <nav aria-label="Page navigation example " class="mt-5 mb-5 position-relative .center-block" v-if="myCount">
-      <ul class="pagination position-absolute" style="left: 30vw" >
+      <ul class="pagination position-absolute" style="left: 20vw" >
         <!-- 이전 순서 버튼 -->
         <li
           class="page-item"
@@ -217,21 +217,14 @@ export default {
         this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
 
 
-        let maxnum = res.data.paging.page == 1 ? 10 : 10 *(res.data.paging.page) 
-          if(res.data.paging.total -10*(page) < 0)
-		      {
-			      maxnum =res.data.paging.startList+ 10 - (-(res.data.paging.total-10* (page)))
-		      }
-          let num = 0
+        //리스트 번호처리
+          let num = Math.abs(res.data.paging.total -((page - 1) * 10))
           
-          for(let i = res.data.paging.startList ;i < maxnum ;i++){
+          
+          for(let i = 0 ;i < this.queAn.length ;i++){
             
-            if(i < this.queAn.length){
-              this.queAn[num].nickname = num + 1
-            }else{
-              this.queAn[num].nickname = i + 1
-            }
-            num++
+              this.queAn[i].nickname = num--
+              console.log(num)
           }
       })
     },
@@ -270,25 +263,19 @@ export default {
           this.queAn = res.data.list.reverse()
           this.pageList = []
           this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
+
+
+
+
+
           //리스트 번호처리
-
+          let num = Math.abs(res.data.paging.total -((page - 1) * 10))
           
-
-          let maxnum = res.data.paging.page == 1 ? 10 : 10 *(res.data.paging.page) 
-          if(res.data.paging.total -10*(page) < 0)
-		      {
-			      maxnum =res.data.paging.startList+ 10 - (-(res.data.paging.total-10* (page)))
-		      }
-          let num = 0
           
-          for(let i = res.data.paging.startList ;i < maxnum ;i++){
+          for(let i = 0 ;i < this.queAn.length ;i++){
             
-            if(i < this.queAn.length){
-              this.queAn[num].nickname = num + 1
-            }else{
-              this.queAn[num].nickname = i + 1
-            }
-            num++
+              this.queAn[i].nickname = num--
+              console.log(num)
           }
           
         })
