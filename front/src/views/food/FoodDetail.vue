@@ -141,24 +141,17 @@ import { mapGetters } from "vuex";
 export default {
   components: { shopMenu, shopMap, review },
   mounted() {
+    this.initStore();
     if (this.myStore.storeId == this.storeId) {
       this.ownStore = true;
     }
+    console.log("몇인데 스토어이디? :" + this.storeId);
     this.getStoreInfo(this.storeId);
     this.setComponent("shopMenu");
     this.getAverageScore();
   },
   computed: {
     ...mapGetters({ myStore: "auth/getMyStore" }),
-    storeId() {
-      let storeId;
-      if (this.$route.query.shopInfo == null) {
-        storeId = this.myStore.storeId;
-      } else {
-        storeId = this.$route.query.shopInfo;
-      }
-      return storeId;
-    },
   },
   data() {
     return {
@@ -167,9 +160,19 @@ export default {
       currentComp: "shopMenu",
       averageScore: null,
       ownStore: false,
+      storeId: null,
     };
   },
   methods: {
+    initStore() {
+      let storeIdt;
+      if (this.$route.query.shopInfo == null) {
+        storeIdt = this.myStore.storeId;
+      } else {
+        storeIdt = this.$route.query.shopInfo;
+      }
+      this.storeId = storeIdt;
+    },
     getStoreInfo(storeId) {
       http
         .get("/store/getStoreInfos", {

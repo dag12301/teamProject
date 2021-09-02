@@ -11,13 +11,7 @@
     <div class="row">
       <!-- 음식사진시작 -->
       <div class="col-12">
-        <div class="slide">
-          <splide :options="options">
-            <splide-slide v-for="file in fileList" :key="file">
-              <img class="menuImg" :src="file.name" />
-            </splide-slide>
-          </splide>
-        </div>
+        {{ fileList }}
       </div>
       <!-- 종료 -->
     </div>
@@ -28,19 +22,13 @@
 </template>
 
 <script>
-import { Splide, SplideSlide } from "@splidejs/vue-splide";
-import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import http from "@/api/http";
 
 export default {
-  components: {
-    Splide,
-    SplideSlide,
-  },
+  components: {},
 
   props: ["shopInfo"],
   mounted() {
-    console.log(this.shopInfo.storeId); // 사진을 불러오기위함
     if (this.shopInfo.storeId != null) {
       http
         .get("/store/getStoreFiles", {
@@ -52,6 +40,7 @@ export default {
           if (res.status === 200) {
             this.fileList = res.data;
             console.log(res.data);
+            this.renderSplide();
           }
         })
         .catch((err) => {
@@ -62,35 +51,6 @@ export default {
   data() {
     return {
       fileList: [],
-      options: {
-        rewind: true, //첫 번째 슬라이드 이전 또는 마지막 슬라이드 이후에 슬라이더를 되감는지 여부.
-        speed: 300, // 밀리초 단위의 전환 속도입니다.
-        rewindSpeed: 300, //되감기 시 전환 속도(밀리초)입니다.
-        focus: "center", //어떤 슬라이드에 초점을 맞춰야 하는지 결정합니다.
-        type: "loop",
-        breakpoints: {
-          1600: {
-            width: 700,
-            perPage: 0,
-          },
-          1200: {
-            width: 700,
-            perPage: 5,
-          },
-          1100: {
-            width: 500,
-            perPage: 3,
-          },
-          900: {
-            width: 400,
-            perPage: 3,
-          },
-          700: {
-            width: 300,
-            perPage: 3,
-          },
-        },
-      },
     };
   },
   methods: {},
@@ -131,6 +91,7 @@ export default {
   .menuImg {
     width: 0px;
     height: 0px;
+    border: 2px solid blue;
   }
   .storeHeader {
     width: 300px;
