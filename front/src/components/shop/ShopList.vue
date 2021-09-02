@@ -11,16 +11,7 @@
     <div class="row">
       <!-- 음식사진시작 -->
       <div class="col-12">
-        <div class="slide" id="slide">
-          <!-- 이곳에 태그가 렌더된다. -->
-        </div>
-        <div style="display: hidden">
-          <Splide :options="options">
-            <SplideSlide>
-              <img />
-            </SplideSlide>
-          </Splide>
-        </div>
+        {{ fileList }}
       </div>
       <!-- 종료 -->
     </div>
@@ -31,15 +22,10 @@
 </template>
 
 <script>
-import { Splide, SplideSlide } from "@splidejs/vue-splide";
-import "@splidejs/splide/dist/css/themes/splide-default.min.css";
 import http from "@/api/http";
 
 export default {
-  components: {
-    Splide,
-    SplideSlide,
-  },
+  components: {},
 
   props: ["shopInfo"],
   mounted() {
@@ -65,54 +51,9 @@ export default {
   data() {
     return {
       fileList: [],
-      options: {
-        rewind: true, //첫 번째 슬라이드 이전 또는 마지막 슬라이드 이후에 슬라이더를 되감는지 여부.
-        speed: 300, // 밀리초 단위의 전환 속도입니다.
-        rewindSpeed: 300, //되감기 시 전환 속도(밀리초)입니다.
-        focus: "center", //어떤 슬라이드에 초점을 맞춰야 하는지 결정합니다.
-        type: "loop",
-        breakpoints: {
-          1600: {
-            width: 700,
-            perPage: 0,
-          },
-          1200: {
-            width: 700,
-            perPage: 5,
-          },
-          1100: {
-            width: 500,
-            perPage: 3,
-          },
-          900: {
-            width: 400,
-            perPage: 3,
-          },
-          700: {
-            width: 300,
-            perPage: 3,
-          },
-        },
-      },
     };
   },
-  methods: {
-    renderSplide() {
-      const splide = document.createElement("Splide");
-      splide.setAttribute("v-bind:options", this.options);
-      for (let i = 0; i < this.fileList.length; i++) {
-        let slide = document.createElement("SplideSlide");
-        let img = document.createElement("img");
-        // img.className = "menuImg";
-        // img.setAttribute("style", "width:100px; height:100px");
-        img.setAttribute("src", this.fileList[i].name);
-        slide.appendChild(img);
-        splide.appendChild(slide); // 어펜트도 해볼것
-      }
-
-      document.getElementById("slide").append(splide);
-    },
-  },
+  methods: {},
   computed: {
     getStoreKind() {
       let arr = this.shopInfo.storeKind.split(",");
