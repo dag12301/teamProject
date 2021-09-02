@@ -17,7 +17,7 @@
         v-for="(shop, index) in shopList"
         :key="index"
       >
-        <div class="list-group-item" style="height: 100px">
+        <div class="list-group-item" style="height: 100px; margin-top: 10px;">
           <div @click="showShopDetail(shop.store_id)">
             <div class=".col-md-3 .col-md-pull-9 f-left">
               <img class="menu-img" :src="shop.fileUrl" />
@@ -66,7 +66,7 @@ export default {
 
 <style scoped>
 .col-xs-8 .list-group-item {
-  border: 2px solid lightskyblue;
+  border: 2px solid lightgray;
 }
 .menu-img {
   width: 80px;

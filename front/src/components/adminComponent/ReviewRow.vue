@@ -8,7 +8,7 @@
     <div style="width: 100%">
       <div class="review3-text">
         <span class="review3-span1">{{ data.nickname }}</span>
-        <span class="review3-span2">{{ data.regDate }}</span>
+        <span class="review3-span2">{{ data.regDate[0] }}.{{ data.regDate[1] }}.{{  data.regDate[2] }}</span>
       </div>
       <div class="review3-div">
         <a class="review3-a m-1" v-if="ableToEdit" @click="removeReview"
@@ -20,7 +20,7 @@
     <div class="review3-star" style="width: 200px">
       <div class="star-1">
         <i class="fas fa-star" v-for="star of data.score" :key="star"></i
-        >&nbsp;&nbsp;
+        >&nbsp;&nbsp; <span style="color: burlywood;">{{ data.score }} /5.0</span>
       </div>
     </div>
     <div>
@@ -38,7 +38,7 @@
     </div>
     <div class="review3-menu">
       <!-- 시킨음식 -->
-      <span>{{ data.score }} /5.0</span>
+      <span>{{data}}</span>
     </div>
     <div class="review3-view">
       <!-- 내용 -->
@@ -215,7 +215,6 @@ export default {
 
 .review3-img {
   width: 100%;
-  background-color: yellow;
   text-align: center;
 }
 
@@ -234,7 +233,7 @@ export default {
 
 .review3-div {
   text-align: right;
-  padding-right: 40px;
+  padding-right: 20px;
   float: right;
   width: 20%;
 }
