@@ -71,7 +71,6 @@ export default {
     return {
       memberId: null,
       reviewLists: [],
-      reviewListLoaded: false,
     };
   },
   methods: {
@@ -89,7 +88,6 @@ export default {
           console.log(res);
           console.log(res.data);
           this.reviewLists = res.data;
-          this.reviewListLoaded = true;
         })
         .catch((err) => {
           console.log(err);
