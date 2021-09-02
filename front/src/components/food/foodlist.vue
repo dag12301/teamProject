@@ -11,13 +11,16 @@
       <div>충분한정보가없습니다!</div>
     </div>
     <!-- 가게가 있을때 -->
-    <div v-else-if="shopList != null || shopList.lenth > 1">
+    <div
+      class="row row-cols-2"
+      v-else-if="shopList != null || shopList.lenth > 1"
+    >
       <div
-        class="col-xs-8 col-sm-6 m-2 shopdiv"
+        class="col-sm-5 m-2 shopdiv"
         v-for="(shop, index) in shopList"
         :key="index"
       >
-        <div class="list-group-item" style="height: 100px; margin-top: 10px;">
+        <div class="list-group-item" style="height: 100px">
           <div @click="showShopDetail(shop.store_id)">
             <div class=".col-md-3 .col-md-pull-9 f-left">
               <img class="menu-img" :src="shop.fileUrl" />
@@ -66,7 +69,7 @@ export default {
 
 <style scoped>
 .col-xs-8 .list-group-item {
-  border: 2px solid lightgray;
+  border: 2px solid lightskyblue;
 }
 .menu-img {
   width: 80px;

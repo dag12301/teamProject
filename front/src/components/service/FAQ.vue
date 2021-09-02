@@ -151,7 +151,7 @@ export default {
     numPage(page, range, rangeSize, listSize) {
       authAPI.getBoardList(2, page, range, rangeSize, listSize).then((res) => {
         this.paging = res.data.paging;
-        this.notices = res.data.list;
+        this.notices = res.data.list.reverse();
 
         this.pageList = [];
         this.pageLists(res.data.paging.startPage, res.data.paging.endPage);
@@ -168,7 +168,7 @@ export default {
           //페이징
           this.paging = res.data.paging;
           //리스트
-          this.notices = res.data.list;
+          this.notices = res.data.list.reverse();
           //페이징 리스트
           this.pageList = [];
           this.pageLists(res.data.paging.startPage, res.data.paging.endPage);

@@ -97,7 +97,7 @@ export default {
           //페이징
           this.paging = res.data.paging;
           //리스트
-          this.FAQ = res.data.list;
+          this.FAQ = res.data.list.reverse();
         })
         .catch((err) => {
           console.log(err);

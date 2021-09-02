@@ -62,7 +62,7 @@
       </span>
     </div>
   </div>
-  <hr style="margin-top: 0px;"/>
+  <hr style="margin-top: 0px" />
   <!-- 리뷰로우 -->
   <div v-if="!pageLoaded">
     <!-- 페이지 로딩되지않았을 때 -->
@@ -71,7 +71,7 @@
     </div>
   </div>
   <div v-else>
-    <div v-for="review of reviewList" :key="review" class="m-2">
+    <div v-for="(review, index) of reviewList" :key="index" class="m-2">
       <review-row :data="review" :isOwner="isOwner"></review-row>
     </div>
   </div>
@@ -218,10 +218,12 @@ export default {
       this.pageLoaded = false;
       console.log("요청페이지 : " + request);
       this.requestListCount();
+      let storeId = parseInt(this.storeId);
+
       const data = {
         listPerPage: this.listPerPage,
         currentPage: request,
-        storeId: this.storeId * 1,
+        storeId: storeId,
         showOption: this.showOption,
       };
       http
@@ -242,10 +244,11 @@ export default {
     },
 
     requestListCount() {
+      const storeId = parseInt(this.storeId);
       http
         .get("/review/getReviewListCount", {
           params: {
-            storeId: this.storeId,
+            storeId: storeId,
           },
         })
         .then((response) => {
@@ -257,10 +260,11 @@ export default {
         });
     },
     requestListHasReplyCount() {
+      const storeId = parseInt(this.storeId);
       http
         .get("/review/getReviewListHasReplyCount", {
           params: {
-            storeId: this.storeId,
+            storeId: storeId,
           },
         })
         .then((response) => {
@@ -278,10 +282,11 @@ export default {
       this.requestPage(1);
     },
     getAverageScore() {
+      const storeId = parseInt(this.storeId);
       http
         .get("/review/getAverageScore", {
           params: {
-            storeId: this.storeId,
+            storeId: storeId,
           },
         })
         .then((response) => {

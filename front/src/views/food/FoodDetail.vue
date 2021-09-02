@@ -1,4 +1,4 @@
-<template style="background-color: #fafafa;">
+<template style="background-color: #fafafa">
   <div v-if="dataLoaded">
     <div class="storeBox" style="background-color: #fafafa">
       <div
@@ -144,7 +144,7 @@ export default {
     if (this.myStore.storeId == this.storeId) {
       this.ownStore = true;
     }
-    this.getStoreInfo(this.storeId);
+    this.getStoreInfo(parseInt(this.storeId));
     this.setComponent("shopMenu");
     this.getAverageScore();
   },
@@ -157,7 +157,7 @@ export default {
       } else {
         storeId = this.$route.query.shopInfo;
       }
-      return storeId;
+      return parseInt(storeId);
     },
   },
   data() {

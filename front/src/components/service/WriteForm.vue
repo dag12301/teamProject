@@ -98,7 +98,7 @@
 
     <!-- 제출/취소 버튼 -->
     <div class="col-md-12 text-center">
-      <button id="btn" class="btn btn-success" @click.prevent="writeRequest">
+      <button id="btn" class="btn btn-success" @click="writeRequest">
         작성
       </button>
       <router-link class="btn btn-primary" :to="{ name: 'Q&A' }"
@@ -116,8 +116,8 @@ export default {
   data() {
     return {
       statusMessage: "공개",
-      title: null,
-      body: null,
+      title: "",
+      body: "",
       status: "Y",
       files: [], //업로드용 파일
       //baordId
@@ -137,9 +137,13 @@ export default {
     privateStatus() {
       if (this.statusMessage === "공개") {
         this.statusMessage = "비공개";
+        this.status = "H";
       } else {
         this.statusMessage = "공개";
+        this.status = "Y";
       }
+
+      console.log(this.status);
     },
     imageAddUpload() {
       this.files.push(
@@ -163,7 +167,7 @@ export default {
     async writeRequest() {
       let pushBoardId = 7;
       //답글이 아니다
-      if (this.parantId == 0) {
+      if (this.parantId == undefined) {
         if (this.boardId == "") {
           return alert("구분을 선택하세요.");
         } else if (this.boardId == "가게") {
@@ -180,11 +184,6 @@ export default {
           return alert(pushBoardId);
         }
 
-        if (this.statusMessage == "공개") {
-          this.status = "Y";
-        } else {
-          this.status = "H";
-        }
         if (this.title === "" || this.title == null) {
           return alert("제목을 입력하세요");
         }
