@@ -28,9 +28,8 @@
         class="review3-img m-2"
         :src="data.foodPhoto"
         style="
-          width: 200px;
-          height: 200px;
-          border: 1px solid grey;
+          width: 180px;
+          height: 180px;
           margin-left: 10px;
         "
         v-if="data.foodPhoto"
@@ -42,12 +41,12 @@
     </div>
     <div class="review3-view">
       <!-- 내용 -->
-      <p v-if="data.body">
+      <p v-if="data.body" style="font-size: 18px;">
         {{ data.body }}
       </p>
       <p v-else>삭제된 리뷰입니다.</p>
     </div>
-    <hr />
+    <hr style="margin-left: -16px;"/>
     <!-- 사장님 댓글 -->
     <div v-if="data.reply">
       <span>사장님댓글</span>
@@ -186,9 +185,7 @@ export default {
 <style scoped>
 .review3 {
   width: 100%;
-  border: 1px solid black;
   text-align: left;
-  padding: 15px;
   padding-left: 20px;
 }
 .review3-text {

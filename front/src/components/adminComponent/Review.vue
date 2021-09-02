@@ -10,7 +10,7 @@
       <!-- 평점 -->
       <span style="font-weight: 600; font-size: 35px">{{ averageScore }}</span
       ><span style="color: lightgray; font-size: 28px"> / 5</span>
-      <div style="font-size: 13px; margin-top: 0px">
+      <div style="font-size: 13px; margin-top: -10px">
         <!-- 별 -->
         <i
           class="fas fa-star"
@@ -389,5 +389,12 @@ export default {
 .reviewWrite:hover {
   cursor: pointer;
   background-color: tomato;
+}
+
+
+.review2-p {
+  margin: 0px;
+  height: 60px;
+  line-height: 50px;
 }
 </style>
