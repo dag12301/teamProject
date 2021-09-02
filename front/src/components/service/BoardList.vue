@@ -30,6 +30,7 @@
           <span v-else-if="list.boardId == 4">주문</span>
           <span v-else-if="list.boardId == 5">딜리버리 주문</span>
           <span v-else-if="list.boardId == 6">제품/품질/서비스</span>
+          <span v-else-if="list.boardId == 7">답글</span>
           <span v-else>작성글</span>
           <span style="padding-left:50px; font-size: 25px;">{{ list.title }}</span>
         </th>

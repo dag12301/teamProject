@@ -52,6 +52,9 @@
           <td class="col-1" v-if="qn.boardId == 4">주문</td>
           <td class="col-1" v-else-if="qn.boardId == 5">딜리버리 주문</td>
           <td class="col-1" v-else-if="qn.boardId == 6">제품/품질/서비스</td>
+          <td class="col-1" v-else-if="qn.boardId == 7">
+            L>
+          </td>
           <td class="col-1" v-else>기타</td>
 
           <td class="col-5 text-left">
@@ -209,7 +212,7 @@ export default {
         this.search = res.data.search
         this.paging =  res.data.paging
         
-        this.queAn = res.data.list
+        this.queAn = res.data.list.reverse()
 
         this.pageList = []
         this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
@@ -245,7 +248,7 @@ export default {
           this.paging = res.data.paging
          
           //리스트
-          this.queAn = res.data.list
+          this.queAn = res.data.list.reverse()
           this.pageList = []
           this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
           
