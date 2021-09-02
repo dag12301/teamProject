@@ -48,12 +48,12 @@
           :key="index"
           @click="listPage(qn.articleId)"
         >
-          <td class="col-1">{{ ++index }}</td>
+          <td class="col-1">{{ qn.nickname }}</td>
           <td class="col-1" v-if="qn.boardId == 4">주문</td>
           <td class="col-1" v-else-if="qn.boardId == 5">딜리버리 주문</td>
           <td class="col-1" v-else-if="qn.boardId == 6">제품/품질/서비스</td>
           <td class="col-1" v-else-if="qn.boardId == 7">
-            L>
+            답글  <i class="fas fa-long-arrow-alt-right"></i>
           </td>
           <td class="col-1" v-else>기타</td>
 
@@ -72,7 +72,7 @@
             <i class="fas fa-lock"></i>
           </td>
         </tr>
-        <tr v-if="queAn.length < 0">
+        <tr v-if="queAn.length == 0">
           <td colspan="6" style="font-weight: 700; font-size: 2vh">글이 없습니다</td>
         </tr>
       </tbody>
@@ -143,7 +143,7 @@ export default {
       authAPI
       .memberCheck()
       .then(res => {
-        console.log(res)
+     
         if(res.data){
           return this.$router.push({name: 'WriteForm'})
           
@@ -166,7 +166,7 @@ export default {
       authAPI
         .articleVerify(params) //페이지 검사
         .then((res) => {
-          console.log(res);
+         
           if (res.data == 100) {
             return (this.$router.push({name: 'BoardList', query: { "board": "qna", "articleId": articleId}}))
               //location.href ="/boardList?board=qna&articleId=" + articleId);
@@ -207,7 +207,6 @@ export default {
       authAPI
       .getBoardList(3, page, range, rangeSize, listSize, search)
       .then(res => {
-        console.log(res)
 
         this.search = res.data.search
         this.paging =  res.data.paging
@@ -216,6 +215,24 @@ export default {
 
         this.pageList = []
         this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
+
+
+        let maxnum = res.data.paging.page == 1 ? 10 : 10 *(res.data.paging.page) 
+          if(res.data.paging.total -10*(page) < 0)
+		      {
+			      maxnum =res.data.paging.startList+ 10 - (-(res.data.paging.total-10* (page)))
+		      }
+          let num = 0
+          
+          for(let i = res.data.paging.startList ;i < maxnum ;i++){
+            
+            if(i < this.queAn.length){
+              this.queAn[num].nickname = num + 1
+            }else{
+              this.queAn[num].nickname = i + 1
+            }
+            num++
+          }
       })
     },
     //검색
@@ -230,9 +247,11 @@ export default {
       authAPI
       .pagingMyBoard(2)
       .then(res => {
-        console.log(res)
+     
        
         this.queAn = res.data.list
+
+        
 
       })
     },
@@ -243,7 +262,7 @@ export default {
       authAPI
         .getBoardList(boardId, page, range)
         .then((res) => {
-          console.log(res.data)
+          
           //페이징
           this.paging = res.data.paging
          
@@ -251,6 +270,26 @@ export default {
           this.queAn = res.data.list.reverse()
           this.pageList = []
           this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
+          //리스트 번호처리
+
+          
+
+          let maxnum = res.data.paging.page == 1 ? 10 : 10 *(res.data.paging.page) 
+          if(res.data.paging.total -10*(page) < 0)
+		      {
+			      maxnum =res.data.paging.startList+ 10 - (-(res.data.paging.total-10* (page)))
+		      }
+          let num = 0
+          
+          for(let i = res.data.paging.startList ;i < maxnum ;i++){
+            
+            if(i < this.queAn.length){
+              this.queAn[num].nickname = num + 1
+            }else{
+              this.queAn[num].nickname = i + 1
+            }
+            num++
+          }
           
         })
         .catch((err) => {
@@ -263,8 +302,9 @@ export default {
       for(let i = start; i <= end; i++){
         this.pageList.push(i)
       }
-      console.log("this.pageList : " + this.pageList)
-    }
+      
+    },
+    
     
   },
 

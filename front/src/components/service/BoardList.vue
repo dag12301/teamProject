@@ -16,7 +16,7 @@
         삭제
       </button>
     </div>
-    <div >
+    <div v-if="list.boardId != 7">
       <button type="button" class="btn btn-primary" style="margin-left:20px;" @click="changeReply">답글</button>
     </div>
   </div>
@@ -156,7 +156,7 @@ export default {
       authAPI //통신코드
         .list(query)
         .then((res) => {
-          console.log(res.data)
+      
           this.list = res.data.article; //list에  DB데이터 박기
           this.MYPAGE = res.data.MYPAGE;
           this.comments = res.data.list;
@@ -171,7 +171,7 @@ export default {
       authAPI
       .memberCheck()
       .then(res => {
-        console.log(res)
+      
         if(res.data){
           return this.$router.push({name: 'WriteForm', params: {articleId: this.articleId}})
           
@@ -198,7 +198,7 @@ export default {
       authAPI
         .commentProc(params)
         .then((res) => {
-          console.log(res);
+          
           if (res.data == 100) {
             alert("입력되었습니다.");
             this.commentTitle=''
@@ -257,7 +257,7 @@ export default {
         authAPI
       .deleteComment(this.list.articleId, commentId)
       .then(res => {
-        console.log(res.data)
+       
         if(res.data == 'ok'){
           this.boardListPage()
           alert("삭제되었습니다.")

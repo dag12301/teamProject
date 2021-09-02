@@ -40,7 +40,6 @@ export default {
     
     listPage(articleId) {
       //페이지 이동
-      console.log(articleId);
       return (this.$router.push({name: 'BoardList', query: { "board": "notice", "articleId": articleId}}))
       //location.href = "/boardList?board=notice&articleId=" + articleId;
     },
@@ -54,9 +53,6 @@ export default {
       
       let page = parseInt(range1 * rangeSize) + 1;
       let range = range1 + 1;
-      console.log("range1: " + range1);
-      console.log(page);
-      console.log("range: " + range);
 
     
       this.numPage(page, range, listSize, rangeSize);
@@ -83,7 +79,7 @@ export default {
       await authAPI
         .getBoardList(boardId, page, range)
         .then((res) => {
-          console.log(res)
+          
           //페이징
           this.paging = res.data.paging
           //리스트
