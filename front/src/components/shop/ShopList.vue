@@ -11,10 +11,13 @@
     <div class="row">
       <!-- 음식사진시작 -->
       <div class="col-12">
-        <div class="slide">
-          <splide :options="options">
-            <splide-slide v-for="file in fileList" :key="file">
-              <img class="menuImg" :src="file.name" />
+        <div class="slide" id="slide">
+          <!-- 이곳에 태그가 렌더된다. -->
+        </div>
+        <div style="display: hidden">
+          <splide>
+            <splide-slide>
+              <img />
             </splide-slide>
           </splide>
         </div>
@@ -40,7 +43,6 @@ export default {
 
   props: ["shopInfo"],
   mounted() {
-    console.log(this.shopInfo.storeId); // 사진을 불러오기위함
     if (this.shopInfo.storeId != null) {
       http
         .get("/store/getStoreFiles", {
@@ -52,6 +54,7 @@ export default {
           if (res.status === 200) {
             this.fileList = res.data;
             console.log(res.data);
+            this.renderSplide();
           }
         })
         .catch((err) => {
@@ -93,7 +96,22 @@ export default {
       },
     };
   },
-  methods: {},
+  methods: {
+    renderSplide() {
+      const splide = document.createElement("splide");
+      splide.setAttribute("options", this.options);
+      for (let i = 0; i < this.fileList.length; i++) {
+        let slide = document.createElement("splide-slide");
+        let img = document.createElement("img");
+        img.className = "menuImg";
+        img.setAttribute("src", this.fileList[i].name);
+        slide.appendChild(img);
+        splide.appendChild(slide); // 어펜트도 해볼것
+      }
+
+      document.getElementById("slide").append(splide);
+    },
+  },
   computed: {
     getStoreKind() {
       let arr = this.shopInfo.storeKind.split(",");

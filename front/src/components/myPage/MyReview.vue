@@ -1,103 +1,103 @@
 <template>
-<div class="container" style="width: 800px; border: 1px solid black">
-  <div class="row">
-    <div class="col reviewCount">
-      <h4>내가 쓴 리뷰 수 : <span>3</span></h4>
+  <div class="container" style="width: 800px; border: 1px solid black">
+    <div class="row">
+      <div class="col reviewCount">
+        <h4>내가 쓴 리뷰 수 : <span>3</span></h4>
+      </div>
+    </div>
+    <div class="row profile-scroll">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6 myReview">
+            <router-link to="/food">
+              <img
+                class="myReview-img"
+                src="https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/450px-Jjajangmyeon.jpg"
+              />
+            </router-link>
+          </div>
+          <div class="col-6 myReview-text">
+            <div class="myReview-Contents">
+              <router-link class="Review-link" to="/food"
+                ><h4>짜장면집</h4></router-link
+              >
+              <div class="RatingStar">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i
+                ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                ><i class="fas fa-star"></i>
+              </div>
+              <div class="myReview-lining">여기 정말 맛있어요</div>
+            </div>
+            <div class="review-del">
+              <button type="button" @Click="reviewDel()" class="btn btn-danger">
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6 myReview">
+            <router-link to="/food">
+              <img
+                class="myReview-img"
+                src="https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/450px-Jjajangmyeon.jpg"
+              />
+            </router-link>
+          </div>
+          <div class="col-6 myReview-text">
+            <div class="myReview-Contents">
+              <router-link class="Review-link" to="/food"
+                ><h4>짜장면집</h4></router-link
+              >
+              <div class="RatingStar">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i
+                ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                ><i class="fas fa-star"></i>
+              </div>
+              <div class="myReview-lining">여기 정말 맛있어요</div>
+            </div>
+            <div class="review-del">
+              <button type="button" @Click="reviewDel()" class="btn btn-danger">
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6 myReview">
+            <router-link to="/food">
+              <img
+                class="myReview-img"
+                src="https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/450px-Jjajangmyeon.jpg"
+              />
+            </router-link>
+          </div>
+          <div class="col-6 myReview-text">
+            <div class="myReview-Contents">
+              <router-link class="Review-link" to="/food"
+                ><h4>짜장면집</h4></router-link
+              >
+              <div class="RatingStar">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i
+                ><i class="fas fa-star"></i><i class="fas fa-star"></i
+                ><i class="fas fa-star"></i>
+              </div>
+              <div class="myReview-lining">여기 정말 맛있어요</div>
+            </div>
+            <div class="review-del">
+              <button type="button" @Click="reviewDel()" class="btn btn-danger">
+                삭제
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="row profile-scroll">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-6 myReview">
-          <router-link to="/food">
-            <img
-              class="myReview-img"
-              src="https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/450px-Jjajangmyeon.jpg"
-            />
-          </router-link>
-        </div>
-        <div class="col-6 myReview-text">
-          <div class="myReview-Contents">
-            <router-link class="Review-link" to="/food"
-              ><h4>짜장면집</h4></router-link
-            >
-            <div class="RatingStar">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i>
-            </div>
-            <div class="myReview-lining">여기 정말 맛있어요</div>
-          </div>
-          <div class="review-del">
-            <button type="button" @Click="reviewDel()" class="btn btn-danger">
-              삭제
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="row">
-        <div class="col-6 myReview">
-          <router-link to="/food">
-            <img
-              class="myReview-img"
-              src="https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/450px-Jjajangmyeon.jpg"
-            />
-          </router-link>
-        </div>
-        <div class="col-6 myReview-text">
-          <div class="myReview-Contents">
-            <router-link class="Review-link" to="/food"
-              ><h4>짜장면집</h4></router-link
-            >
-            <div class="RatingStar">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i>
-            </div>
-            <div class="myReview-lining">여기 정말 맛있어요</div>
-          </div>
-          <div class="review-del">
-            <button type="button" @Click="reviewDel()" class="btn btn-danger">
-              삭제
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="row">
-        <div class="col-6 myReview">
-          <router-link to="/food">
-            <img
-              class="myReview-img"
-              src="https://www.newiki.net/w/images/thumb/d/d9/Jjajangmyeon.jpg/450px-Jjajangmyeon.jpg"
-            />
-          </router-link>
-        </div>
-        <div class="col-6 myReview-text">
-          <div class="myReview-Contents">
-            <router-link class="Review-link" to="/food"
-              ><h4>짜장면집</h4></router-link
-            >
-            <div class="RatingStar">
-              <i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i><i class="fas fa-star"></i
-              ><i class="fas fa-star"></i>
-            </div>
-            <div class="myReview-lining">여기 정말 맛있어요</div>
-          </div>
-          <div class="review-del">
-            <button type="button" @Click="reviewDel()" class="btn btn-danger">
-              삭제
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 </template>
 
 <script>
