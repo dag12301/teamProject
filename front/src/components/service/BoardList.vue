@@ -35,7 +35,7 @@
           삭제
         </button>
       </div>
-      <div>
+      <div v-if="list.boardId != 7">
         <button
           type="button"
           class="btn btn-primary"
@@ -46,62 +46,52 @@
         </button>
       </div>
     </div>
-    <div>
-      <button
-        type="button"
-        class="btn btn-primary"
-        style="margin-left: 20px"
-        @click="changeReply"
-      >
-        답글
-      </button>
-    </div>
-  </div>
-  <br />
-  <!-- 타이틀 -->
-  <table style="border: 2px solid gray">
-    <thead id="title" style="text-align: center">
-      <tr style="border-bottom: 1px solid gainsboro">
-        <th
-          class="boardTitle"
-          colspan="3"
-          style="text-align: left; padding: 20px"
-        >
-          <span v-if="list.boardId == 3">기타</span>
-          <span v-else-if="list.boardId == 4">주문</span>
-          <span v-else-if="list.boardId == 5">딜리버리 주문</span>
-          <span v-else-if="list.boardId == 6">제품/품질/서비스</span>
-          <span v-else-if="list.boardId == 7">답글</span>
-          <span v-else>작성글</span>
-          <span style="padding-left: 50px; font-size: 25px">{{
-            list.title
-          }}</span>
-        </th>
-      </tr>
-      <tr style="height: 40px">
-        <th class="col-md-5" style="text-align: left; padding-left: 20px">
-          {{ list.nickname }}
-        </th>
-        <th class="col-md-2">
-          <i class="far fa-clock"></i>&nbsp;&nbsp;{{ list.regDate }}
-        </th>
-        <th class="col-md-1">
-          <i class="far fa-eye"></i>&nbsp;&nbsp;{{ list.hit }}
-        </th>
-      </tr>
-    </thead>
-  </table>
-  <!-- 본문 -->
-  <div id="textarea" class="input-group" style="text-align: left">
-    <div class="form-control" style="padding: 30px">
-      <!-- 이미지 -->
-      <div v-if="images != null" class="w-full h-full flex items-center">
-        <div
-          v-for="image in images"
-          :key="image.articlefileId"
-          style="padding-bottom: 30px"
-        >
-          <img :src="image.name" alt="image.orgName" />
+    <br />
+    <!-- 타이틀 -->
+    <table style="border: 2px solid gray">
+      <thead id="title" style="text-align: center">
+        <tr style="border-bottom: 1px solid gainsboro">
+          <th
+            class="boardTitle"
+            colspan="3"
+            style="text-align: left; padding: 20px"
+          >
+            <span v-if="list.boardId == 3">기타</span>
+            <span v-else-if="list.boardId == 4">주문</span>
+            <span v-else-if="list.boardId == 5">딜리버리 주문</span>
+            <span v-else-if="list.boardId == 6">제품/품질/서비스</span>
+            <span v-else-if="list.boardId == 7">답글</span>
+            <span v-else>작성글</span>
+            <span style="padding-left: 50px; font-size: 25px">{{
+              list.title
+            }}</span>
+          </th>
+        </tr>
+        <tr style="height: 40px">
+          <th class="col-md-5" style="text-align: left; padding-left: 20px">
+            {{ list.nickname }}
+          </th>
+          <th class="col-md-2">
+            <i class="far fa-clock"></i>&nbsp;&nbsp;{{ list.regDate }}
+          </th>
+          <th class="col-md-1">
+            <i class="far fa-eye"></i>&nbsp;&nbsp;{{ list.hit }}
+          </th>
+        </tr>
+      </thead>
+    </table>
+    <!-- 본문 -->
+    <div id="textarea" class="input-group" style="text-align: left">
+      <div class="form-control" style="padding: 30px">
+        <!-- 이미지 -->
+        <div v-if="images != null" class="w-full h-full flex items-center">
+          <div
+            v-for="image in images"
+            :key="image.articlefileId"
+            style="padding-bottom: 30px"
+          >
+            <img :src="image.name" alt="image.orgName" />
+          </div>
         </div>
         <!-- 이미지 끝 -->
         {{ list.body }}
@@ -200,7 +190,6 @@
 import * as authAPI from "@/api/article.js";
 import EditBoardList from "@/components/service/EditBoardList.vue";
 import { mapMutations } from "vuex";
-
 export default {
   components: { EditBoardList },
   data() {
@@ -216,15 +205,12 @@ export default {
       comments: null, //댓글 리스트
       //수정
       editToggle: false,
-
       imageDelete: [], //삭제 이미지
       files: [], //업로드용 파일
-
       uploadImageIndex: 0, // 이미지 업로드를 위한 변수
 
       //댓글 보내기
       commentTitle: null,
-
       //댓글 수정
       commentEdit: null,
       commentToggle: false,
@@ -253,7 +239,6 @@ export default {
       authAPI //통신코드
         .list(query)
         .then((res) => {
-          console.log(res.data);
           this.list = res.data.article; //list에  DB데이터 박기
           this.MYPAGE = res.data.MYPAGE;
           this.comments = res.data.list;
@@ -265,7 +250,6 @@ export default {
       authAPI
         .memberCheck()
         .then((res) => {
-          console.log(res);
           if (res.data) {
             return this.$router.push({
               name: "WriteForm",
@@ -293,7 +277,6 @@ export default {
       authAPI
         .commentProc(params)
         .then((res) => {
-          console.log(res);
           if (res.data == 100) {
             alert("입력되었습니다.");
             this.commentTitle = "";
@@ -328,7 +311,6 @@ export default {
           writerId: this.list.writerId,
           articleId: this.articleId,
         };
-
         authAPI.listDelete(parmas).then((res) => {
           if (res.data == "ok") {
             return (
@@ -348,7 +330,6 @@ export default {
 
       if (deleteComm) {
         authAPI.deleteComment(this.list.articleId, commentId).then((res) => {
-          console.log(res.data);
           if (res.data == "ok") {
             this.boardListPage();
             alert("삭제되었습니다.");
@@ -400,7 +381,6 @@ export default {
         alert("신고 내용을 입력하세요");
       } else if (suspend != null) {
         let body = commentBody + "///" + suspend;
-
         authAPI.reportComment(commentId, body).then((res) => {
           if (res.data == "ok") {
             return alert("신고되었습니다."), this.boardListPage();

@@ -53,11 +53,13 @@
             :key="index"
             @click="listPage(qn.articleId)"
           >
-            <td class="col-1">{{ ++index }}</td>
+            <td class="col-1">{{ qn.nickname }}</td>
             <td class="col-1" v-if="qn.boardId == 4">주문</td>
             <td class="col-1" v-else-if="qn.boardId == 5">딜리버리 주문</td>
             <td class="col-1" v-else-if="qn.boardId == 6">제품/품질/서비스</td>
-            <td class="col-1" v-else-if="qn.boardId == 7">L></td>
+            <td class="col-1" v-else-if="qn.boardId == 7">
+              답글 <i class="fas fa-long-arrow-alt-right"></i>
+            </td>
             <td class="col-1" v-else>기타</td>
 
             <td class="col-5 text-left">
@@ -75,7 +77,7 @@
               <i class="fas fa-lock"></i>
             </td>
           </tr>
-          <tr v-if="queAn.length < 0">
+          <tr v-if="queAn.length == 0">
             <td colspan="6" style="font-weight: 700; font-size: 2vh">
               글이 없습니다
             </td>
@@ -158,20 +160,15 @@
 
 <script>
 import * as authAPI from "@/api/article.js";
-
 export default {
   data() {
     return {
       paging: [], //페이징
       queAn: [], //Q&A리스트
-
       pageList: [],
-
       listSize: 10, //리스트 수
       rangeSize: 5, //버튼 수,
-
       search: null, //검색
-
       myCount: true, //myCount
     };
   },
@@ -182,7 +179,6 @@ export default {
       authAPI
         .memberCheck()
         .then((res) => {
-          console.log(res);
           if (res.data) {
             return this.$router.push({ name: "WriteForm" });
           } else {
@@ -194,17 +190,14 @@ export default {
           console.log(err);
         });
     },
-
     listPage(articleId) {
       //페이지 이동
       let params = {
         articleId: articleId,
       };
-
       authAPI
         .articleVerify(params) //페이지 검사
         .then((res) => {
-          console.log(res);
           if (res.data == 100) {
             return this.$router.push({
               name: "BoardList",
@@ -232,7 +225,6 @@ export default {
     prevBotton(range1, rangeSize, listSize) {
       var page = (range1 - 2) * rangeSize + 1;
       var range = range1 - 1;
-
       this.numPage(page, range, rangeSize, listSize);
     },
     nextBotton(range1, rangeSize, listSize) {
@@ -241,21 +233,35 @@ export default {
 
       this.numPage(page, range, rangeSize, listSize);
     },
-
     numPage(page, range, rangeSize, listSize, search = null) {
       //페이지 번호로 이동 axios
       authAPI
         .getBoardList(3, page, range, rangeSize, listSize, search)
         .then((res) => {
-          console.log(res);
-
           this.search = res.data.search;
           this.paging = res.data.paging;
 
           this.queAn = res.data.list.reverse();
-
           this.pageList = [];
           this.pageLists(res.data.paging.startPage, res.data.paging.endPage);
+          let maxnum =
+            res.data.paging.page == 1 ? 10 : 10 * res.data.paging.page;
+          if (res.data.paging.total - 10 * page < 0) {
+            maxnum =
+              res.data.paging.startList +
+              10 -
+              -(res.data.paging.total - 10 * page);
+          }
+          let num = 0;
+
+          for (let i = res.data.paging.startList; i < maxnum; i++) {
+            if (i < this.queAn.length) {
+              this.queAn[num].nickname = num + 1;
+            } else {
+              this.queAn[num].nickname = i + 1;
+            }
+            num++;
+          }
         });
     },
     //검색
@@ -272,21 +278,16 @@ export default {
     myPage() {
       this.search = "";
       this.myCount = false;
-
       authAPI.pagingMyBoard(2).then((res) => {
-        console.log(res);
-
         this.queAn = res.data.list;
       });
     },
-
     //Q&A 리스트 불러오기
     downAllList(boardId, page, range) {
       //리스트 axios 통신 query = boardId  page:페이지  range: 범위  boardId
       authAPI
         .getBoardList(boardId, page, range)
         .then((res) => {
-          console.log(res.data);
           //페이징
           this.paging = res.data.paging;
 
@@ -294,18 +295,36 @@ export default {
           this.queAn = res.data.list.reverse();
           this.pageList = [];
           this.pageLists(res.data.paging.startPage, res.data.paging.endPage);
+          //리스트 번호처리
+
+          let maxnum =
+            res.data.paging.page == 1 ? 10 : 10 * res.data.paging.page;
+          if (res.data.paging.total - 10 * page < 0) {
+            maxnum =
+              res.data.paging.startList +
+              10 -
+              -(res.data.paging.total - 10 * page);
+          }
+          let num = 0;
+
+          for (let i = res.data.paging.startList; i < maxnum; i++) {
+            if (i < this.queAn.length) {
+              this.queAn[num].nickname = num + 1;
+            } else {
+              this.queAn[num].nickname = i + 1;
+            }
+            num++;
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     },
-
     //페이지 리스트
     pageLists(start, end) {
       for (let i = start; i <= end; i++) {
         this.pageList.push(i);
       }
-      console.log("this.pageList : " + this.pageList);
     },
   },
 
@@ -323,7 +342,6 @@ export default {
 .write {
   left: 30vw;
 }
-
 #Search {
   width: 35%;
   left: 35%;

@@ -20,14 +20,14 @@
         class="list-group list-group-horizontal"
         style="cursor: pointer; border-top: 2px solid gray"
         @click="listPage(notice.articleId)"
-        v-for="(notice, index) in this.notices"
+        v-for="notice in this.notices"
         :key="notice.id"
       >
         <li
           class="list-group-item noticeList"
           style="border: 0px; width: 100px; justify-content: center"
         >
-          <span> {{ ++index }}. </span>
+          <span> {{ notice.nickname }}. </span>
         </li>
         <li
           class="list-group-item noticeList"
@@ -45,7 +45,7 @@
             {{ notice.regDate }}
           </span>
         </li>
-        <li v-if="notice.length < 0" style="font-weight: 700; font-size: 2vh">
+        <li v-if="notice.length == 0" style="font-weight: 700; font-size: 2vh">
           글이 없습니다.
         </li>
       </ul>
@@ -110,15 +110,12 @@
 
 <script>
 import * as authAPI from "@/api/article.js";
-
 export default {
   data() {
     return {
       paging: [],
       notices: [],
-
       pageList: [],
-
       listSize: 10, //리스트 수
       rangeSize: 5, //버튼 수
     };
@@ -127,7 +124,7 @@ export default {
   methods: {
     listPage(articleId) {
       //페이지 이동
-      console.log(articleId);
+
       return this.$router.push({
         name: "BoardList",
         query: { board: "notice", articleId: articleId },
@@ -137,7 +134,6 @@ export default {
     prevBotton(range1, rangeSize, listSize) {
       var page = (range1 - 2) * rangeSize + 1;
       var range = range1 - 1;
-
       this.numPage(page, range, rangeSize, listSize);
     },
     nextBotton(range1, rangeSize, listSize) {
@@ -146,25 +142,39 @@ export default {
 
       this.numPage(page, range, rangeSize, listSize);
     },
-
     //페이지 번호로 이동 axios
     numPage(page, range, rangeSize, listSize) {
       authAPI.getBoardList(2, page, range, rangeSize, listSize).then((res) => {
         this.paging = res.data.paging;
         this.notices = res.data.list.reverse();
-
         this.pageList = [];
         this.pageLists(res.data.paging.startPage, res.data.paging.endPage);
+        //리스트 페이지 처리
+        let maxnum = res.data.paging.page == 1 ? 10 : 10 * res.data.paging.page;
+        if (res.data.paging.total - 10 * page < 0) {
+          maxnum =
+            res.data.paging.startList +
+            10 -
+            -(res.data.paging.total - 10 * page);
+        }
+        let num = 0;
+
+        for (let i = res.data.paging.startList; i < maxnum; i++) {
+          if (i < this.notices.length) {
+            this.notices[num].nickname = num + 1;
+          } else {
+            this.notices[num].nickname = i + 1;
+          }
+          num++;
+        }
       });
     },
-
     //Q&A 리스트 불러오기
     async downAllList(boardId, page, range) {
       //리스트 axios 통신 query = boardId  page:페이지  range: 범위  boardId
       await authAPI
         .getBoardList(boardId, page, range)
         .then((res) => {
-          console.log(res);
           //페이징
           this.paging = res.data.paging;
           //리스트
@@ -172,18 +182,35 @@ export default {
           //페이징 리스트
           this.pageList = [];
           this.pageLists(res.data.paging.startPage, res.data.paging.endPage);
+          //리스트 페이지 처리
+          let maxnum =
+            res.data.paging.page == 1 ? 10 : 10 * res.data.paging.page;
+          if (res.data.paging.total - 10 * page < 0) {
+            maxnum =
+              res.data.paging.startList +
+              10 -
+              -(res.data.paging.total - 10 * page);
+          }
+          let num = 0;
+
+          for (let i = res.data.paging.startList; i < maxnum; i++) {
+            if (i < this.notices.length) {
+              this.notices[num].nickname = num + 1;
+            } else {
+              this.notices[num].nickname = i + 1;
+            }
+            num++;
+          }
         })
         .catch((err) => {
           console.log(err);
         });
     },
-
     //페이지 리스트
     pageLists(start, end) {
       for (let i = start; i <= end; i++) {
         this.pageList.push(i);
       }
-      console.log("this.pageList : " + this.pageList);
     },
   },
   //고객센터통해 접근할 경우
