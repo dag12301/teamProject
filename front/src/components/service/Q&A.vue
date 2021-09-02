@@ -49,7 +49,14 @@
           @click="listPage(qn.articleId)"
         >
           <td class="col-1">{{ ++index }}</td>
-          <td class="col-1">주문</td>
+          <td class="col-1" v-if="qn.boardId == 4">주문</td>
+          <td class="col-1" v-else-if="qn.boardId == 5">딜리버리 주문</td>
+          <td class="col-1" v-else-if="qn.boardId == 6">제품/품질/서비스</td>
+          <td class="col-1" v-else-if="qn.boardId == 7">
+            L>
+          </td>
+          <td class="col-1" v-else>기타</td>
+
           <td class="col-5 text-left">
             <span>
               {{ qn.title }}
@@ -78,7 +85,7 @@
         <li
           class="page-item"
           v-if="this.paging.prev == true"
-          @click="prevBotton(paging.range, paging.rangeSize, this.listSize)"
+          @click="prevBotton(paging.range, rangeSize, listSize)"
         >
           <a class="page-link" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
@@ -86,15 +93,15 @@
         </li>
         <!-- 숫자 순서 버튼 -->
         <li class="page-item" v-for="num in this.pageList" :key="num"  :style="{ontSize: '20px'}">        
-          <a class="page-link"  href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize, this.search)" v-if="paging.page != num">{{num}}</a>
-          <a class="page-link"  href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize, this.search)" style="background-color: #0d6efd; color: #fff;" v-else >{{num}}</a>
+          <a class="page-link"  href="#" @click="numPage(num, this.paging.range, this.rangeSize, this.listSize, this.search)" v-if="paging.page != num">{{num}}</a>
+          <a class="page-link"  href="#" @click="numPage(num, this.paging.range, this.rangeSize, this.listSize, this.search)" style="background-color: #0d6efd; color: #fff;" v-else >{{num}}</a>
         </li>
 
         <!-- 다음 순서 버튼 -->
         <li
           class="page-item"
           v-if="this.paging.next == true"
-          @click="nextBotton(paging.range, paging.rangeSize, this.listSize)"
+          @click="nextBotton(paging.range, rangeSize, listSize)"
         >
           <a class="page-link" href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
@@ -196,21 +203,24 @@ export default {
       this.numPage(page, range, rangeSize, listSize)
     },
 
-    numPage(page, range, listSize, rangeSize, search=null) {           //페이지 번호로 이동 axios
+    numPage(page, range, rangeSize, listSize, search=null) {           //페이지 번호로 이동 axios
       authAPI
-      .getBoardList(2, page, range, listSize, rangeSize, search)
+      .getBoardList(3, page, range, rangeSize, listSize, search)
       .then(res => {
         console.log(res)
 
         this.search = res.data.search
         this.paging =  res.data.paging
         
-        this.queAn = res.data.list
+        this.queAn = res.data.list.reverse()
+
+        this.pageList = []
+        this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
       })
     },
     //검색
     searching() {
-      this.numPage(1, this.paging.range, this.listSize,this.rangeSize, this.search)
+      this.numPage(1, this.paging.range, this.rangeSize, this.listSize, this.search)
     },
     // 내글 보기
     myPage() {
@@ -238,10 +248,9 @@ export default {
           this.paging = res.data.paging
          
           //리스트
-          this.queAn = res.data.list
-
-          //페이징 리스트
-          this.pageLists()
+          this.queAn = res.data.list.reverse()
+          this.pageList = []
+          this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
           
         })
         .catch((err) => {
@@ -250,10 +259,11 @@ export default {
     },
 
     //페이지 리스트
-    pageLists() {
-      for(let i = this.paging.startPage; i <= this.paging.endPage; i++){
+    pageLists(start, end) {
+      for(let i = start; i <= end; i++){
         this.pageList.push(i)
       }
+      console.log("this.pageList : " + this.pageList)
     }
     
   },
@@ -262,12 +272,14 @@ export default {
   
   //고객센터통해 접근할 경우
   async mounted() {
-    await this.downAllList(2, 1, 1)
+    await this.downAllList(3, 1, 1)
+    //페이징 리스트
     
     
   },
   //버튼 클릭시
   updated() {
+    
     
   },
  

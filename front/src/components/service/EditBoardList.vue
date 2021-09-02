@@ -207,7 +207,7 @@ export default {
         .then( res => {
           if(res.data == 100){
             alert("글을 작성하였습니다")
-            this.$router.push({name: 'BoardList', query: { "board": this.board, "articleId": articleId}})
+            return this.$emit('returnEdit')
           }else if(res.data == 300){
             alert("글 작성 중 오류가 발생습니다")
           }else if(res.data == 400){

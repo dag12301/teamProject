@@ -42,7 +42,7 @@
         <li
           class="page-item"
           v-if="this.paging.prev == true"
-          @click="prevBotton(paging.range, paging.rangeSize, this.listSize)"
+          @click="prevBotton(paging.range, this.rangeSize, this.listSize)"
         >
           <a class="page-link" href="#" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
@@ -50,15 +50,15 @@
         </li>
         <!-- 숫자 순서 버튼 -->
         <li class="page-item" v-for="num in this.pageList" :key="num">
-          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" v-if="paging.page != num">{{num}}</a>
-          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.listSize,this.rangeSize)" style="background-color: #0d6efd; color: #fff;" v-else>{{num}}</a>
+          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.rangeSize, this.listSize)" v-if="paging.page != num">{{num}}</a>
+          <a class="page-link" href="#" @click="numPage(num, this.paging.range, this.rangeSize, this.listSize)" style="background-color: #0d6efd; color: #fff;" v-else>{{num}}</a>
         </li>
 
         <!-- 다음 순서 버튼 -->
         <li
           class="page-item"
           v-if="this.paging.next == true"
-          @click="nextBotton(paging.range, paging.rangeSize, this.listSize)"
+          @click="nextBotton(paging.range, this.rangeSize, this.listSize)"
         >
           <a class="page-link" href="#" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
@@ -100,23 +100,26 @@ export default {
       var page = (range1 - 2) * rangeSize + 1;
       var range = range1 - 1;
 
-      this.numPage(page, range, listSize, rangeSize);
+      this.numPage(page, range, rangeSize, listSize);
     },
     nextBotton(range1, rangeSize, listSize) {
 
       let page = parseInt(range1 * rangeSize) + 1;
       let range = range1 + 1;
  
-      this.numPage(page, range, listSize, rangeSize);
+      this.numPage(page, range, rangeSize, listSize);
     },
 
     //페이지 번호로 이동 axios
-    numPage(page, range, listSize, rangeSize) {
+    numPage(page, range, rangeSize, listSize) {
       
-      authAPI.getBoardList(1, page, range, listSize, rangeSize).then((res) => {
+      authAPI.getBoardList(2, page, range, rangeSize, listSize).then((res) => {
+       
         this.paging = res.data.paging
+        this.notices = res.data.list.reverse()
 
-        this.notices = res.data.list
+        this.pageList = []
+        this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
       });
     },
 
@@ -130,9 +133,10 @@ export default {
           //페이징
           this.paging = res.data.paging
           //리스트
-          this.notices = res.data.list
+          this.notices = res.data.list.reverse()
            //페이징 리스트
-          this.pageLists()
+          this.pageList = []
+          this.pageLists(res.data.paging.startPage,res.data.paging.endPage)
         })
         .catch((err) => {
           console.log(err);
@@ -140,16 +144,17 @@ export default {
     },
 
     //페이지 리스트
-    pageLists() {
-      for(let i = this.paging.startPage; i <= this.paging.endPage; i++){
+    pageLists(start, end) {
+      for(let i = start; i <= end; i++){
         this.pageList.push(i)
       }
+      console.log("this.pageList : " + this.pageList)
     }
 
   },
   //고객센터통해 접근할 경우
   mounted() {
-    this.downAllList(1,1,1)
+    this.downAllList(2,1,1)
     
   },
   //버튼 클릭시
