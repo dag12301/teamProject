@@ -1,4 +1,4 @@
-<template style="background-color: #fafafa">
+<template style="background-color: #fafafa;">
   <div v-if="dataLoaded">
     <div class="storeBox" style="background-color: #fafafa">
       <div

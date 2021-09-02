@@ -62,7 +62,7 @@
       </span>
     </div>
   </div>
-  <hr />
+  <hr style="margin-top: 0px;"/>
   <!-- 리뷰로우 -->
   <div v-if="!pageLoaded">
     <!-- 페이지 로딩되지않았을 때 -->
@@ -221,7 +221,7 @@ export default {
       const data = {
         listPerPage: this.listPerPage,
         currentPage: request,
-        storeId: this.storeId,
+        storeId: this.storeId * 1,
         showOption: this.showOption,
       };
       http
@@ -327,7 +327,7 @@ export default {
 
 .review {
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid lightgray;
 }
 .review-left {
   font-size: 40px;
@@ -342,7 +342,7 @@ export default {
   text-align: left;
   background-color: lightgray;
   height: 50px;
-  line-height: 50px;
+  line-height: 40px;
   padding-left: 20px;
 }
 .review2-p {

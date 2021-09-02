@@ -10,11 +10,7 @@
     </template>
     <template v-slot:header>
       <!-- 사진 미리보기 -->
-      <img
-        class="popupImageItem"
-        :src="uploadImageFile"
-        style="width: 100px; height: 100px; background-color: grey"
-      />
+      <span></span>
     </template>
     <template v-slot:body>
       <!-- alt 에 이미지 없을때 비상용 이미지 추가? -->
@@ -42,6 +38,11 @@
           ref="reviewImage"
         />
       </div>
+      <img
+        class="popupImageItem"
+        :src="uploadImageFile"
+        style="width: 100px; height: 100px; background-color: grey"
+      />
     </template>
     <template v-slot:footer>
       <div class="btn btn-success" @click="uploadReview">리뷰 등록하기</div>
@@ -128,7 +129,7 @@ export default {
         this.SET_MODAL_REVIEW(false);
         alert("리뷰를 남겼습니다!");
         window.location.href =
-          "http://localhost:8080/shopDetail?shopInfo=" + this.storeId;
+          "http://localhost:8081/shopDetail?shopInfo=" + this.storeId;
       });
     },
   },
