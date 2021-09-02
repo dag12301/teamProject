@@ -1,21 +1,25 @@
 <template>
-<div class="container" style="width: 1000px;">
-  <br />{{parantId}}<br />
-  <!-- 타이틀 -->
+  <div class="container" style="width: 1000px">
+    <br />{{ parantId }}<br />
+    <!-- 타이틀 -->
     <div class="writeBoardBtn" v-if="parantId == null">
-      <div style="font-size:20px; text-align: left;">구분</div>
-      <div style="font-size:20px; text-align: left;">글 공개</div>
+      <div style="font-size: 20px; text-align: left">구분</div>
+      <div style="font-size: 20px; text-align: left">글 공개</div>
     </div>
-    <div class="writeBoardBtn" style="margin-bottom:20px;" v-if="parantId == null">
-      <select style="width:150px; height:40px;" v-model="boardId">
+    <div
+      class="writeBoardBtn"
+      style="margin-bottom: 20px"
+      v-if="parantId == null"
+    >
+      <select style="width: 150px; height: 40px" v-model="boardId">
         <option value disabled selected>선택해주세요</option>
         <option>가게</option>
         <option>딜리버리 주문</option>
         <option>제품/품질/서비스</option>
         <option>기타</option>
-        
       </select>
-      <button style="height:40px;"
+      <button
+        style="height: 40px"
         class="btn btn-outline-secondary"
         type="button"
         aria-expanded="false"
@@ -25,66 +29,83 @@
       </button>
     </div>
     <div class="writeBoard">
-    <div style="font-size:20px; text-align: left;">제목</div>
-    <input  style="margin-bottom:20px;"
-      type="text"
-      class="form-control"
-      aria-label="Text input with dropdown button"
-      placeholder="제목을 입력해 주세요."
-      v-model="title"
-    />
-  <!-- 문의 본문작성 -->
-    <div style="font-size:20px; text-align: left;">내용</div>
-      <textarea style="height:400px;"
+      <div style="font-size: 20px; text-align: left">제목</div>
+      <input
+        style="margin-bottom: 20px"
+        type="text"
+        class="form-control"
+        aria-label="Text input with dropdown button"
+        placeholder="제목을 입력해 주세요."
+        v-model="title"
+      />
+      <!-- 문의 본문작성 -->
+      <div style="font-size: 20px; text-align: left">내용</div>
+      <textarea
+        style="height: 400px"
         class="form-control"
         aria-label="With textarea"
         v-model="body"
       ></textarea>
     </div>
 
-  <!-- 첨부파일 -->
+    <!-- 첨부파일 -->
     <div class="room-deal-information-container">
-        <div class="room-file-upload-wrapper">
-          <div v-if="!files.length" class="room-file-upload-example-container">
-            <div class="room-file-upload-example">
-              <div class="room-file-notice-item room-file-upload-button">
-                <div class="image-box">
-                  <label for="file">사진 등록</label>
-                  <input type="file" id="file" ref="files" @change="imageAddUpload" multiple />
-                </div>
+      <div class="room-file-upload-wrapper">
+        <div v-if="!files.length" class="room-file-upload-example-container">
+          <div class="room-file-upload-example">
+            <div class="room-file-notice-item room-file-upload-button">
+              <div class="image-box">
+                <label for="file">사진 등록</label>
+                <input
+                  type="file"
+                  id="file"
+                  ref="files"
+                  @change="imageAddUpload"
+                  multiple
+                />
               </div>
             </div>
-            
           </div>
-            <div v-else class="file-preview-content-container" >
-              <div class="file-preview-container" >
-                <div v-for="(file, index) in this.files" :key="index" class="file-preview-wrapper">
-                  <div class="file-close-button" @click="fileDeleteButton(index)" >
-                    x
-                  </div>
-                  <img :src="file.name" />
-                </div>
-                <div class="file-preview-wrapper-upload">
-                  <div class="image-box" >
-                    <label for="file">추가 사진 등록</label>
-                    <input type="file" id="file" ref="files" @change="imageAddUpload" multiple />
-                  </div>       
-                </div>
+        </div>
+        <div v-else class="file-preview-content-container">
+          <div class="file-preview-container">
+            <div
+              v-for="(file, index) in this.files"
+              :key="index"
+              class="file-preview-wrapper"
+            >
+              <div class="file-close-button" @click="fileDeleteButton(index)">
+                x
+              </div>
+              <img :src="file.name" />
+            </div>
+            <div class="file-preview-wrapper-upload">
+              <div class="image-box">
+                <label for="file">추가 사진 등록</label>
+                <input
+                  type="file"
+                  id="file"
+                  ref="files"
+                  @change="imageAddUpload"
+                  multiple
+                />
               </div>
             </div>
+          </div>
         </div>
       </div>
+    </div>
 
-  <!-- 제출/취소 버튼 -->
-  <div class="col-md-12 text-center">
-    <button id="btn" class="btn btn-success" @click.prevent="writeRequest">
-      작성
-    </button>
-    <router-link class="btn btn-primary" :to="{ name: 'Q&A' }"
-      >취소</router-link>
-      
+    <!-- 제출/취소 버튼 -->
+    <div class="col-md-12 text-center">
+      <button id="btn" class="btn btn-success" @click.prevent="writeRequest">
+        작성
+      </button>
+      <router-link class="btn btn-primary" :to="{ name: 'Q&A' }"
+        >취소</router-link
+      >
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -100,18 +121,16 @@ export default {
       status: "Y",
       files: [], //업로드용 파일
       //baordId
-      boardId:'',
+      boardId: "",
 
       //답글필요
-      parantId : 0
-
-      
+      parantId: 0,
     };
   },
-  created(){
-    this.$store.commit('SET_serviceCenters', 2)
+  created() {
+    this.$store.commit("SET_serviceCenters", 2);
 
-    this.parantId = this.$route.params.articleId
+    this.parantId = this.$route.params.articleId;
   },
   methods: {
     ...mapMutations(["SET_MODAL_LOGIN"]),
@@ -123,45 +142,42 @@ export default {
       }
     },
     imageAddUpload() {
-      this.files.push (
-          //이미지 업로드
-          {   //실제 파일
-              file: this.$refs.files.files[0],
-              //이미지 프리뷰
-              name: URL.createObjectURL(this.$refs.files.files[0]),
-              //삭제및 관리를 위한 number
-          }
-      )
+      this.files.push(
+        //이미지 업로드
+        {
+          //실제 파일
+          file: this.$refs.files.files[0],
+          //이미지 프리뷰
+          name: URL.createObjectURL(this.$refs.files.files[0]),
+          //삭제및 관리를 위한 number
+        }
+      );
     },
     fileDeleteButton(index) {
-        //보낼 파일에서 데이터 삭제
-        this.files.pop(index)
-        // console.log(this.files);
+      //보낼 파일에서 데이터 삭제
+      this.files.pop(index);
+      // console.log(this.files);
     },
 
     //보내기 통신
-    async  writeRequest() {
-
-      let pushBoardId = 7
+    async writeRequest() {
+      let pushBoardId = 7;
       //답글이 아니다
-      if(this.parantId == 0)
-      {
-        
-
-        if(this.boardId == ''){
-          return alert("구분을 선택하세요.")
-        }else if(this.boardId == '가게'){
-          pushBoardId = 4
-        }else if(this.boardId == '딜리버리 주문'){
-          pushBoardId = 5
-        }else if(this.boardId == '제품/품질/서비스'){
-          pushBoardId = 6
-        }else if(this.boardId == '기타'){
-          pushBoardId = 3
+      if (this.parantId == 0) {
+        if (this.boardId == "") {
+          return alert("구분을 선택하세요.");
+        } else if (this.boardId == "가게") {
+          pushBoardId = 4;
+        } else if (this.boardId == "딜리버리 주문") {
+          pushBoardId = 5;
+        } else if (this.boardId == "제품/품질/서비스") {
+          pushBoardId = 6;
+        } else if (this.boardId == "기타") {
+          pushBoardId = 3;
         }
-        
-        if(pushBoardId == 0){
-          return alert(pushBoardId)
+
+        if (pushBoardId == 0) {
+          return alert(pushBoardId);
         }
 
         if (this.statusMessage == "공개") {
@@ -177,75 +193,72 @@ export default {
         }
       }
 
-      
       let params = {
         title: this.title,
         body: this.body,
         status: this.status,
         boardId: pushBoardId, //Q&A 개시판 3이상, 7은 답글
-        parantId: this.parantId
-      }
-      let articleId = 0
-      
-        //파일 올리기
-      await  authAPI
+        parantId: this.parantId,
+      };
+      let articleId = 0;
+
+      //파일 올리기
+      await authAPI
         .writeProc(params) //axios 이동
         .then((res) => {
-          console.log(res)
-          if(res.data > 0){
-            articleId = res.data
+          console.log(res);
+          if (res.data > 0) {
+            articleId = res.data;
           }
-          if(res.data == "no"){
-            
-            return this.SET_MODAL_LOGIN(true), alert("비회원은 권한이 없습니다.")
-          }else if(res.data == 0){
-            return alert("다시 로그인 해주세요")
+          if (res.data == "no") {
+            return (
+              this.SET_MODAL_LOGIN(true), alert("비회원은 권한이 없습니다.")
+            );
+          } else if (res.data == 0) {
+            return alert("다시 로그인 해주세요");
           }
         })
         .catch((err) => {
           console.log(err);
         });
-         //이미지 있는지 확인
-      if(articleId > 0 && this.files.length > 0){
+      //이미지 있는지 확인
+      if (articleId > 0 && this.files.length > 0) {
+        let form = new FormData();
+        let image;
 
-        let form = new FormData()
-        let image
-        
-        for(let i = 0 ; i < this.files.length; i++)
-        {
-          image = this.files[i].file
-          
+        for (let i = 0; i < this.files.length; i++) {
+          image = this.files[i].file;
+
           //이미지 업로드
-          form.append('image', image)
+          form.append("image", image);
         }
         //파일 보내기
         authAPI
-        .write12(form, articleId)
-        .then( res => {
-          if(res.data == 100){
-             alert("글을 작성하였습니다")
-            return this.$router.push({name: 'Q&A'})
-          }else if(res.data == 300){
-            return alert("글 작성 중 오류가 발생습니다")
-          }else if(res.data == 400){
-            return alert("글 작성을 실패했습니다")
-          }else{  
-            return alert("글 오류")
-          }
-        })
-        .catch( err => {
-          console.log(err)
-          console.log("에러")
+          .write12(form, articleId)
+          .then((res) => {
+            if (res.data == 100) {
+              alert("글을 작성하였습니다");
+              return this.$router.push({ name: "Q&A" });
+            } else if (res.data == 300) {
+              return alert("글 작성 중 오류가 발생습니다");
+            } else if (res.data == 400) {
+              return alert("글 작성을 실패했습니다");
+            } else {
+              return alert("글 오류");
+            }
           })
-      }else{
+          .catch((err) => {
+            console.log(err);
+            console.log("에러");
+          });
+      } else {
         //이지미 없을 때
-        alert("글을 작성하였습니다")
-        return this.$router.push({name: 'Q&A'})
-          
+        alert("글을 작성하였습니다");
+        return this.$router.push({ name: "Q&A" });
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>
