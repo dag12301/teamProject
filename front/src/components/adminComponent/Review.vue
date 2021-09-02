@@ -221,7 +221,7 @@ export default {
       const data = {
         listPerPage: this.listPerPage,
         currentPage: request,
-        storeId: this.storeId,
+        storeId: this.storeId * 1,
         showOption: this.showOption,
       };
       http
