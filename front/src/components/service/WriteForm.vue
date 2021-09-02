@@ -1,18 +1,19 @@
 <template>
 <div class="container" style="width: 1000px;">
-  <br /><br />
+  <br />{{parantId}}<br />
   <!-- 타이틀 -->
-    <div class="writeBoardBtn">
+    <div class="writeBoardBtn" v-if="parantId == null">
       <div style="font-size:20px; text-align: left;">구분</div>
       <div style="font-size:20px; text-align: left;">글 공개</div>
     </div>
-    <div class="writeBoardBtn" style="margin-bottom:20px;">
-      <select style="width:150px; height:40px;">
+    <div class="writeBoardBtn" style="margin-bottom:20px;" v-if="parantId == null">
+      <select style="width:150px; height:40px;" v-model="boardId">
         <option value disabled selected>선택해주세요</option>
         <option>가게</option>
         <option>딜리버리 주문</option>
         <option>제품/품질/서비스</option>
         <option>기타</option>
+        
       </select>
       <button style="height:40px;"
         class="btn btn-outline-secondary"
@@ -98,10 +99,19 @@ export default {
       body: null,
       status: "Y",
       files: [], //업로드용 파일
+      //baordId
+      boardId:'',
+
+      //답글필요
+      parantId : 0
+
+      
     };
   },
   created(){
     this.$store.commit('SET_serviceCenters', 2)
+
+    this.parantId = this.$route.params.articleId
   },
   methods: {
     ...mapMutations(["SET_MODAL_LOGIN"]),
@@ -131,24 +141,49 @@ export default {
 
     //보내기 통신
     async  writeRequest() {
-      
-      if (this.statusMessage == "공개") {
-        this.status = "Y";
-      } else {
-        this.status = "N";
-      }
-      if (this.title === "" || this.title == null) {
-        return alert("제목을 입력하세요");
-      }
-      if (this.body === "" || this.body == null) {
-        return alert("내용을 입력하세요");
+
+      let pushBoardId = 7
+      //답글이 아니다
+      if(this.parantId == 0)
+      {
+        
+
+        if(this.boardId == ''){
+          return alert("구분을 선택하세요.")
+        }else if(this.boardId == '가게'){
+          pushBoardId = 4
+        }else if(this.boardId == '딜리버리 주문'){
+          pushBoardId = 5
+        }else if(this.boardId == '제품/품질/서비스'){
+          pushBoardId = 6
+        }else if(this.boardId == '기타'){
+          pushBoardId = 3
+        }
+        
+        if(pushBoardId == 0){
+          return alert(pushBoardId)
+        }
+
+        if (this.statusMessage == "공개") {
+          this.status = "Y";
+        } else {
+          this.status = "H";
+        }
+        if (this.title === "" || this.title == null) {
+          return alert("제목을 입력하세요");
+        }
+        if (this.body === "" || this.body == null) {
+          return alert("내용을 입력하세요");
+        }
       }
 
+      
       let params = {
         title: this.title,
         body: this.body,
         status: this.status,
-        boardId: "2", //Q&A 개시판 2,
+        boardId: pushBoardId, //Q&A 개시판 3이상, 7은 답글
+        parantId: this.parantId
       }
       let articleId = 0
       

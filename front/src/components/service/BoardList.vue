@@ -11,10 +11,13 @@
         id="btn"
         type="button"
         class="btn btn-danger"
-        @click="listdelete"
+        @click="deleteArticle"
       >
         삭제
       </button>
+    </div>
+    <div >
+      <button type="button" class="btn btn-primary" style="margin-left:20px;" @click="changeReply">답글</button>
     </div>
   </div>
   <br />
@@ -23,7 +26,12 @@
     <thead id="title" style="text-align: center">
       <tr style="border-bottom: 1px solid gainsboro;">
         <th class="boardTitle" colspan='3' style="text-align: left; padding: 20px;">
-          <span>구분</span><span style="padding-left:50px; font-size: 25px;">{{ list.title }}</span>
+          <span v-if="list.boardId == 3">기타</span>
+          <span v-else-if="list.boardId == 4">주문</span>
+          <span v-else-if="list.boardId == 5">딜리버리 주문</span>
+          <span v-else-if="list.boardId == 6">제품/품질/서비스</span>
+          <span v-else>작성글</span>
+          <span style="padding-left:50px; font-size: 25px;">{{ list.title }}</span>
         </th>
       </tr>
       <tr style="height:40px;">
@@ -57,7 +65,7 @@
     <ul class="list-group" style="list-style: none">
       <li class="list-group-item commentList" v-for="(comment,index) in comments" :key="comment.articleId">
 
-        <div v-if="comment.status != 'S'">
+        <div >
           <div class="commentListTitle">
             <div>
               <strong style="padding-right: 10px; font-size:18px;">{{ comment.nickname }}</strong>
@@ -69,16 +77,14 @@
             <button type="button" class="btn btn-outline-dark" style="padding:1px; margin-right:10px; font-size:15px;" v-else @click="changeComment(comment.commentId)">완료</button>
             <button type="button" class="btn btn-outline-dark" style="padding:1px; margin-right:10px; font-size:15px;" @click="deleteComment(comment.commentId)">삭제</button>
           </span>
-          <button type="button" class="btn btn-outline-dark" style="padding:1px; font-size:15px;" @click="reportComment(comment.commentId)">신고</button>
+          <button type="button" class="btn btn-outline-dark" style="padding:1px; font-size:15px;" @click="reportComment(comment.commentId, comment.suspend)">신고</button>
           </div>
           </div>
           <div style="text-align: left;" :class=index >
             {{ comment.body }}
           </div>
         </div>
-        <div v-else>
-          이 글이 신고되었습니다
-        </div>
+        
         
         
   
@@ -102,8 +108,7 @@ export default {
   data() {
     return {
       articleId: null,
-      //삭제
-      modalToggle: false,
+      
       //조회
       board: null,
       list: {},
@@ -155,9 +160,30 @@ export default {
           this.MYPAGE = res.data.MYPAGE;
           this.comments = res.data.list;
           this.images = res.data.articleImageFile; //이미지
+
+          
+
         });
     },
-    //댓글 수정
+    //답글 통신
+    changeReply() {
+      authAPI
+      .memberCheck()
+      .then(res => {
+        console.log(res)
+        if(res.data){
+          return this.$router.push({name: 'WriteForm', params: {articleId: this.articleId}})
+          
+        }else{
+          alert("회원 권한입니다.")
+          return this.SET_MODAL_LOGIN(true)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      
+    },
    
     //댓글 달기 통신
     commentProc1() {
@@ -198,10 +224,36 @@ export default {
           console.log(err);
         });
     },
+    //게시글 삭제
+    deleteArticle() {
+      let deleteComm = confirm("게시글을 삭제하시겠습니까?")
+      
+      if(deleteComm){
+        let parmas = {
+          writerId: this.list.writerId,
+          articleId: this.articleId
+        }
+
+        authAPI
+        .listDelete(parmas)
+        .then(res =>{
+          if(res.data == "ok"){
+            return alert("삭제되었습니다."), this.$router.push({path: this.board})
+          }else if(res.data == 'no'){
+          alert("DB에 문제 있습니다.")
+        }else{
+          alert("문제있습니다.")
+        }
+        })
+
+      }
+    },
     //댓글 삭제
     deleteComment(commentId) {
+      let deleteComm = confirm("댓글을 삭제하시겠습니까?")
       
-      authAPI
+      if(deleteComm){
+        authAPI
       .deleteComment(this.list.articleId, commentId)
       .then(res => {
         console.log(res.data)
@@ -214,6 +266,8 @@ export default {
           alert("문제있습니다.")
         }
       })
+      }
+      
     },
     //수정 페이지 이동
     changeEdit() {
@@ -228,30 +282,53 @@ export default {
    
     //신고하기!!!!!!!!!!!!!!!!!!!!!!111
     reportArticle(articleId) {
-      authAPI
-      .reportArticle(articleId)
-      .then(res=> {
-        if(res.data == "ok"){
-          return alert("신고되었습니다."), this.$router.push({path: this.board})
-        }else if(res.data == "no"){
-          return alert("문제있습니다.")
-        }else{
-          return alert("다시한번 시도하세요.")
-        }
-      })
+      let suspend = prompt("신고 내용", '')
+      
+      if(suspend == ''){
+        alert("신고 내용을 입력하세요")
+      }else if(suspend != null){
+        let body = this.list.suspend + "///"+ suspend
+
+        
+        authAPI
+        .reportArticle(articleId, body)
+        .then(res=> {
+          if(res.data == "ok"){
+            return alert("신고되었습니다."), this.$router.push({path: this.board})
+          }else if(res.data == "no"){
+            return alert("문제있습니다.")
+          }else if(res.data == "noMember"){
+            return alert("회원만 신고 가능합니다.")
+          }else{
+            return alert("다시한번 시도하세요.")
+          }
+        })
+      }
+      
+      
     },
-    reportComment(commentId) {
-      authAPI
-      .reportComment(commentId)
-      .then(res=> {
-        if(res.data == "ok"){
-          return alert("신고되었습니다."), this.boardListPage()
-        }else if(res.data == "no"){
-          return alert("문제있습니다.")
-        }else{
-          return alert("다시한번 시도하세요.")
-        } 
-      })
+    reportComment(commentId, commentBody) {
+      let suspend = prompt("신고 내용", '')
+      
+      if(suspend == ''){
+        alert("신고 내용을 입력하세요")
+      }else if(suspend!= null){
+        let body = commentBody + "///"+ suspend
+
+        authAPI
+        .reportComment(commentId, body)
+        .then(res=> {
+          if(res.data == "ok"){
+            return alert("신고되었습니다."), this.boardListPage()
+          }else if(res.data == "no"){
+            return alert("문제있습니다.")
+          }else if(res.data == "noMember"){
+            return alert("회원만 신고 가능합니다.")
+          }else{
+            return alert("다시한번 시도하세요.")
+          } 
+        })
+      }
     }
   },
 };
