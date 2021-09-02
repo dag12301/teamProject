@@ -54,6 +54,7 @@
 import Modal from "./Modal_review.vue";
 import { mapMutations, mapGetters } from "vuex";
 import http from "@/api/http";
+import { error } from "@/api/notification";
 
 export default {
   props: ["data", "storeId"],
@@ -106,7 +107,14 @@ export default {
     },
     uploadReview() {
       // 회원인지, validation check
-
+      if (!this.getUserId) {
+        alert("회원만 후기를 남길 수 있습니다");
+        return;
+      }
+      if (!this.content) {
+        error("내용을 입력해 주세요!", this);
+        return;
+      }
       // 구현
       let formdata = new FormData();
       formdata.append("score", this.totalScore);

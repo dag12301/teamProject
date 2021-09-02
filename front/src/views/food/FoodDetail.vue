@@ -116,10 +116,7 @@
         :shopname="shopInfo.storeInfo.name"
         v-else-if="currentComp === 'shopMap'"
       ></shopMap>
-      <review
-        v-else-if="currentComp === 'review'"
-        :storeId="$route.query.shopInfo"
-      ></review>
+      <review v-else-if="currentComp === 'review'" :storeId="storeId"></review>
       <div v-else>
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -139,13 +136,29 @@ import http from "@/api/http";
 import shopMenu from "@/components/adminComponent/StoreMenu.vue";
 import shopMap from "@/components/adminComponent/StoreMap.vue";
 import review from "@/components/adminComponent/Review.vue";
+import { mapGetters } from "vuex";
+
 export default {
   components: { shopMenu, shopMap, review },
   mounted() {
-    let storeId = this.$route.query.shopInfo;
-    this.getStoreInfo(storeId);
+    if (this.myStore.storeId == this.storeId) {
+      this.ownStore = true;
+    }
+    this.getStoreInfo(this.storeId);
     this.setComponent("shopMenu");
     this.getAverageScore();
+  },
+  computed: {
+    ...mapGetters({ myStore: "auth/getMyStore" }),
+    storeId() {
+      let storeId;
+      if (this.$route.query.shopInfo == null) {
+        storeId = this.myStore.storeId;
+      } else {
+        storeId = this.$route.query.shopInfo;
+      }
+      return storeId;
+    },
   },
   data() {
     return {
@@ -153,6 +166,7 @@ export default {
       dataLoaded: false,
       currentComp: "shopMenu",
       averageScore: null,
+      ownStore: false,
     };
   },
   methods: {
@@ -176,7 +190,7 @@ export default {
       http
         .get("/review/getAverageScore", {
           params: {
-            storeId: this.$route.query.shopInfo,
+            storeId: this.storeId,
           },
         })
         .then((response) => {

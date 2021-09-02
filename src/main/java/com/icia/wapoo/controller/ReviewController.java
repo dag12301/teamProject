@@ -33,7 +33,7 @@ public class ReviewController {
     public ResponseEntity getReviewList(@RequestBody Map<String, Object> data) {
         int listPerPage = ((Integer) data.get("listPerPage")).intValue();
         int currentPage = ((Integer) data.get("currentPage")).intValue();
-        int storeId = Integer.parseInt((String) data.get("storeId"));
+        int storeId = (int) data.get("storeId");
         String option = (String) data.get("showOption");
         if(listPerPage <= 0 || currentPage <=0){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
