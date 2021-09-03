@@ -18,5 +18,7 @@ public interface AkinatorDao {
                        @Param("question_id") int question_id,
                        @Param("answerValue") int answerValue);
 
-    List<Map<String, Object>> SelectFoodIdListByAnswers(@Param("answers") List<Map<String, Object>> answers);
+    List<Map<String, Integer>> selectAllAkinator();
+
+    List<Map<String, Object>> getAllFoodByFoodId(@Param("foodIdList") List<Integer> foodIdList);
 }

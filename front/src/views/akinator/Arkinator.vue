@@ -14,7 +14,6 @@
         v-else-if="this.stageAkinator.length != 0"
       >
         {{ question }}
-        <span>리스트양: {{ akinatorList.length }}</span>
       </div>
       <div class="chatWrapper m-1 p-2" id="log">
         <!-- 답변들 -->
@@ -45,6 +44,7 @@
           @click="choiceAkinator(alternative)"
         >
           {{ alternative.answerText }}
+          <span>{{ local }}</span>
         </div>
       </div>
     </div>
@@ -57,6 +57,7 @@
             class="form-control"
             placeholder="검색"
             aria-describedby="food-filter"
+            v-model="foodFilter"
           />
           <span
             class="input-group-text btn btn-outline-primary"
@@ -75,13 +76,14 @@
           v-else-if="foodDataLoaded && foodList.length === 0"
           class="foodListContainer m-1"
         >
-          음식정보가 없습니다
+          <span v-if="filteredFoodList"> 검색 결과가 없습니다 </span>
+          <span v-else> 음식정보가 없습니다 </span>
         </div>
         <!-- 음식목록탭 -->
         <div
           v-else
           class="foodListContainer m-1"
-          v-for="(food, index) of foodList"
+          v-for="(food, index) of filteredFoodList"
           :key="index"
         >
           {{ food }}
@@ -111,6 +113,7 @@
 <script>
 import { collapsed } from "@/components/sidebar/state";
 import http from "@/api/http";
+import { mapGetters } from "vuex";
 
 export default {
   methods: {
@@ -121,8 +124,44 @@ export default {
       }
       this.foodDataLoaded = false;
       console.log(this.answers);
-      let answers = this.answers;
-      http.post("/akinator/getFoodList", answers).then((res) => {
+      // 필터링
+      let filtered = (meta, answer) => {
+        return meta.filter((item) => {
+          return (
+            item.question_id == answer.question_id &&
+            item.answerValue == answer.answerValue
+          );
+        });
+      };
+      let list = [];
+      // 각 배열로 골라진 값을 배치한다
+      for (let i = 0; i < this.answers.length; i++) {
+        list.push(
+          filtered(this.akinatorMeta, this.answers[i]).map(
+            (item) => item.food_id
+          )
+        );
+      }
+      // 리스트마다 있는 중복을 추출한다(두번이상 선택된, 보여줄 음식들)
+
+      let filteredIdList;
+      for (let i = 0; i < list.length; i++) {
+        if (i == 0) {
+          filteredIdList = list[0];
+        } else {
+          filteredIdList = filteredIdList.filter((it) => list[i].includes(it));
+        }
+      }
+      // 값이 없을경우..
+      if (filteredIdList.length === 0) {
+        this.foodList = [];
+        this.foodDataLoaded = true;
+        return;
+      }
+
+      // 필터된 foodId리스트 요청. 거리순으로 나열
+
+      http.post("/akinator/getFoods", filteredIdList).then((res) => {
         if (res.status === 200) {
           this.foodList = res.data;
           this.foodDataLoaded = true;
@@ -144,13 +183,25 @@ export default {
         if (res.status === 200) {
           this.akinatorList = res.data;
           this.shuffle(this.akinatorList);
-          console.log(this.akinatorList);
-          this.akinatorLoaded = true;
-          this.setStage();
+          http.get("/akinator/getAkinatorMeta").then((res) => {
+            // 아키네이터 빅데이터요청수집
+            if (res.status === 200) {
+              this.akinatorMeta = res.data;
+              console.log(this.akinatorMeta);
+              this.akinatorLoaded = true;
+              this.foodDataLoaded = true;
+              this.setStage();
+            }
+          });
         }
       });
     },
     rollback(alternative) {
+      // 만약 아키네이터에 하나밖에 없을경우..
+      if (this.answers.length === 1) {
+        alert("적어도 한개의 아키네이터 정보는 필요합니다!");
+        return;
+      }
       // 선택된 답장에 맞는 Akinator 돌려주기 from executed
       // answerId 가 겹치는게 있는 arkinator 를 akinatorList에 넣는다.
       const retrieve = this.executedAkinators.find((akinator) => {
@@ -187,7 +238,7 @@ export default {
         return true;
       });
       this.answers = rolledAnswers;
-
+      this.requestFoodList();
       this.setStage();
     },
     setStage() {
@@ -208,6 +259,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters({
+      local: "GET_LOCAL",
+    }),
     alternatives() {
       // 현재 Stage 에서 선택지
       return this.stageAkinator.answers;
@@ -215,6 +269,24 @@ export default {
     question() {
       // 현재 Stage 에서 질문
       return this.stageAkinator.query;
+    },
+    filteredFoodList() {
+      // 검색창이 활성화되면..
+      if (this.foodFilter != "") {
+        let arr;
+        arr = this.foodList.filter((food) => {
+          if (
+            food.name.includes(this.foodFilter) ||
+            food.description.includes(this.foodFilter)
+          ) {
+            return true;
+          }
+          return false;
+        });
+        return arr;
+      } else {
+        return this.foodList;
+      }
     },
   },
   data() {
@@ -224,8 +296,10 @@ export default {
       akinatorList: [], // 진행되지 않은 아키네이터
       executedAkinators: [], // 진행된 아키네이터
       stageAkinator: [],
-      foodDataLoaded: true,
+      foodDataLoaded: false,
       akinatorLoaded: false,
+      akinatorMeta: [], // 아키네이터 빅데이터
+      foodFilter: "", // 검색창
     };
   },
   mounted() {

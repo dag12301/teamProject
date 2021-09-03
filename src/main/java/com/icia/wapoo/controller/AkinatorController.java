@@ -25,10 +25,16 @@ public class AkinatorController {
         return new ResponseEntity(list, HttpStatus.OK);
     }
 
-    @PostMapping("/getFoodList")
-    public ResponseEntity getFoodList(@RequestBody List<Map<String, Object>> answers) {
-        List<Map<String, Object>> foodList = akinatorService.getFoodList(answers);
-        return new ResponseEntity(foodList, HttpStatus.OK);
+    @GetMapping("/getAkinatorMeta")
+    public ResponseEntity getAkinatedFoodMetaInfo() {
+        List<Map<String, Integer>> MetaList = akinatorService.getAkinatorMetaList();
+        return new ResponseEntity(MetaList, HttpStatus.OK);
     }
 
+    @PostMapping("/getFoods")
+    public ResponseEntity getFoodList(@RequestBody List<Integer> foodIdList) {
+        List<Map<String, Object>> akinatorFoodList = akinatorService.getFoodList(foodIdList);
+        return new ResponseEntity(akinatorFoodList, HttpStatus.OK);
+
+    }
 }

@@ -18,8 +18,22 @@
             question_id = #{question_id},
             answerValue = #{answerValue}
     </insert>
-    <select id="SelectFoodIdListByAnswers" resultType="Map">
-        
+    <select id="selectAllAkinator" resultType="Map">
+        SELECT *
+        FROM akinator
     </select>
-
+    <select id="getAllFoodByFoodId" resultType="Map">
+        SELECT f.foodId
+             ,f.name
+             ,f.description
+             ,f.price
+             ,fi.name fileUrl
+        FROM food f, food_file fi
+        WHERE f.foodId = fi.food_id
+          AND f.status = 1
+          AND f.foodId IN
+        <foreach collection="foodIdList" item="foodId" open="(" close=")" separator=",">
+            #{foodId}
+        </foreach>
+    </select>
 </mapper>
