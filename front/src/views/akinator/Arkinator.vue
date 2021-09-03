@@ -14,8 +14,6 @@
         v-else-if="this.stageAkinator.length != 0"
       >
         {{ question }}
-        <hr />
-        <span>주소{{ local }}</span>
       </div>
       <div class="chatWrapper m-1 p-2" id="log">
         <!-- 답변들 -->
@@ -83,17 +81,20 @@
         <!-- 음식목록탭 -->
         <div
           v-else
-          class="foodListContainer m-1"
+          class="foodListContainer m-1 clickable"
           v-for="(food, index) of filteredFoodList"
           :key="index"
+          @click="selectFood(food)"
         >
-          {{ food }}
+          <div :class="[selectedFood === food ? 'choicedFoodList' : '']">
+            {{ food }}
+          </div>
         </div>
       </div>
       <div class="choicesWrapper">
         <!-- 버튼탭 -->
-        <div class="btn btn-outline-success" @click="requestFoodList">선택</div>
-        <div class="btn btn-outline-danger" @click="clear">나가기</div>
+        <div class="btn btn-outline-success" @click="toFoodDetail">선택</div>
+        <div class="btn btn-outline-danger" @click="toHome">나가기</div>
       </div>
       <div class="noMoreAkinator p-2">
         <div class="form-check">
@@ -265,8 +266,17 @@ export default {
     setLocation(latitude, longitude) {
       this.$store.commit("SET_LAT", latitude);
       this.$store.commit("SET_LON", longitude);
-      console.log("사용자 위치 추적: " + latitude + ", " + longitude);
       this.$store.commit("SET_OBSERVE", true);
+    },
+    toHome() {
+      // 나가기 클릭
+    },
+    toFoodDetail() {
+      // 선택
+    },
+    selectFood(food) {
+      // 음식 클릭 했을 때,
+      this.selectedFood = food;
     },
   },
   computed: {
@@ -313,6 +323,7 @@ export default {
       akinatorLoaded: false,
       akinatorMeta: [], // 아키네이터 빅데이터
       foodFilter: "", // 검색창
+      selectedFood: null,
     };
   },
   mounted() {
@@ -530,5 +541,13 @@ export default {
 .foodListWrapper::-webkit-scrollbar-track {
   background-color: rgb(221, 221, 221);
   border-radius: 10px;
+}
+.clickable:hover {
+  cursor: pointer;
+}
+/* 선택되었을 때 */
+.choicedFoodList {
+  outline: 1px solid royalblue;
+  transition: 0.2s;
 }
 </style>

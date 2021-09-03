@@ -28,6 +28,7 @@
                 ,f.description
                 ,f.price
                 ,fi.name fileUrl
+                ,s.storeId
                 , (
                 ROUND(6371 * ACOS( COS( RADIANS(#{LAT}) )
                 * COS( RADIANS( s.localy ) )
