@@ -2,27 +2,49 @@
   <div class="row wrapper m-4">
     <div class="col-md-8 left">
       <!-- 채팅화면탭 -->
-      <div class="question">
+      <!-- 질문말풍선 -->
+      <div v-if="!akinatorLoaded" style="position: absolute; left: 500px">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div
+        class="question"
+        :class="{ collapsedQuetionWidth: collapsed }"
+        v-else-if="this.stageAkinator.length != 0"
+      >
         {{ question }}
+        <span>리스트양: {{ akinatorList.length }}</span>
       </div>
       <div class="chatWrapper m-1 p-2" id="log">
         <!-- 답변들 -->
+
         <div
           class="answer p-1 m-1"
           v-for="(answer, index) of answers"
           :key="index"
+          @click="rollback(answer)"
         >
-          {{ answer }}
+          {{ answer.answerText }}
         </div>
       </div>
       <div class="alternativesWrapper m-1 p-1">
         <!-- 답변목록탭 -->
+        <div v-if="!akinatorLoaded">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <div v-if="stageAkinator.length == 0 && akinatorList.length == 0">
+          <span>더 이상 질문이 없습니다.</span>
+        </div>
         <div
           class="alternative p-1 m-1 btn btn-outline-primary"
           v-for="(alternative, index) of alternatives"
           :key="index"
+          @click="choiceAkinator(alternative)"
         >
-          {{ alternative }}
+          {{ alternative.answerText }}
         </div>
       </div>
     </div>
@@ -44,8 +66,20 @@
         </div>
       </div>
       <div class="foodListWrapper p-2">
+        <div v-if="!foodDataLoaded">
+          <div class="spinner-border mt-4" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <div
+          v-else-if="foodDataLoaded && foodList.length === 0"
+          class="foodListContainer m-1"
+        >
+          음식정보가 없습니다
+        </div>
         <!-- 음식목록탭 -->
         <div
+          v-else
           class="foodListContainer m-1"
           v-for="(food, index) of foodList"
           :key="index"
@@ -55,7 +89,7 @@
       </div>
       <div class="choicesWrapper">
         <!-- 버튼탭 -->
-        <div class="btn btn-outline-success" @click="test">선택</div>
+        <div class="btn btn-outline-success" @click="requestFoodList">선택</div>
         <div class="btn btn-outline-danger" @click="clear">나가기</div>
       </div>
       <div class="noMoreAkinator p-2">
@@ -75,26 +109,130 @@
 </template>
 
 <script>
+import { collapsed } from "@/components/sidebar/state";
+import http from "@/api/http";
+
 export default {
   methods: {
-    test() {
-      this.answers.push("table-layout");
-      this.alternatives.push("table-layout");
-      this.foodList.push("table-layout");
+    requestFoodList() {
+      if (this.answers.length === 0) {
+        alert("질문에 대한 답변을 선택해 주세요!");
+        return;
+      }
+      this.foodDataLoaded = false;
+      console.log(this.answers);
+      let answers = this.answers;
+      http.post("/akinator/getFoodList", answers).then((res) => {
+        if (res.status === 200) {
+          this.foodList = res.data;
+          this.foodDataLoaded = true;
+        }
+      });
     },
-    clear() {
-      this.answers = [];
-      this.alternatives = [];
-      this.foodList = [];
+    choiceAkinator(alternative) {
+      // 선택했을 때,
+      this.answers.push(alternative);
+      // 음식정보 요청한다.
+      this.requestFoodList();
+      // Stage 를 비우고 다시 Stage를 채운다
+      this.executedAkinators.push(this.stageAkinator);
+      this.setStage();
+    },
+    requestAkinators() {
+      // 아키네이터를 불러온다.
+      http.get("/akinator/getAkinators").then((res) => {
+        if (res.status === 200) {
+          this.akinatorList = res.data;
+          this.shuffle(this.akinatorList);
+          console.log(this.akinatorList);
+          this.akinatorLoaded = true;
+          this.setStage();
+        }
+      });
+    },
+    rollback(alternative) {
+      // 선택된 답장에 맞는 Akinator 돌려주기 from executed
+      // answerId 가 겹치는게 있는 arkinator 를 akinatorList에 넣는다.
+      const retrieve = this.executedAkinators.find((akinator) => {
+        if (
+          akinator.answers.find((answer) => {
+            if (answer.answerId === alternative.answerId) {
+              return true;
+            }
+          })
+        ) {
+          return true;
+        }
+      });
+      this.akinatorList.push(retrieve);
+      // answerId 가 겹치는게 없는 akinator 만 필터, executed 재정의.
+      const rolledExecuted = this.executedAkinators.filter((akinator) => {
+        if (
+          akinator.answers.find((answer) => {
+            if (answer.answerId === alternative.answerId) {
+              return true;
+            }
+          })
+        ) {
+          return false;
+        }
+        return true;
+      });
+      this.executedAkinators = rolledExecuted;
+      // answers 에서 클릭된 alternative 제거
+      const rolledAnswers = this.answers.filter((answer) => {
+        if (answer.answerId === alternative.answerId) {
+          return false;
+        }
+        return true;
+      });
+      this.answers = rolledAnswers;
+
+      this.setStage();
+    },
+    setStage() {
+      // 남아있는게 없을 때,
+      if (this.akinatorList.length == 0) {
+        this.stageAkinator = [];
+        return;
+      }
+      // 마지막을 꺼내서 Stage에 넣는다.
+      this.stageAkinator = this.akinatorList.pop();
+    },
+    shuffle(arr) {
+      // 배열을 섞는 메서드
+      for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    },
+  },
+  computed: {
+    alternatives() {
+      // 현재 Stage 에서 선택지
+      return this.stageAkinator.answers;
+    },
+    question() {
+      // 현재 Stage 에서 질문
+      return this.stageAkinator.query;
     },
   },
   data() {
     return {
-      alternatives: [],
-      foodList: [],
-      answers: [],
-      question: "무슨음식이좋아요?",
+      answers: [], // 지금까지 한 답변들
+      foodList: [], // 답변들로 나온 결과 음식들
+      akinatorList: [], // 진행되지 않은 아키네이터
+      executedAkinators: [], // 진행된 아키네이터
+      stageAkinator: [],
+      foodDataLoaded: true,
+      akinatorLoaded: false,
     };
+  },
+  mounted() {
+    this.requestAkinators();
+  },
+  setup() {
+    return { collapsed };
   },
 };
 </script>
@@ -154,7 +292,7 @@ export default {
   /* 정렬방식 */
   flex-flow: column-reverse nowrap;
   align-items: flex-end;
-  align-content: flex-end;
+  align-content: flex-start;
   overflow: hidden;
 }
 .question {
@@ -202,7 +340,9 @@ export default {
   border-radius: 0.4em;
   right: 5%;
 }
-
+.collapsedQuetionWidth {
+  left: 135px;
+}
 .answer:after {
   content: "";
   position: absolute;

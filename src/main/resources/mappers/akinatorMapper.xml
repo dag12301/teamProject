@@ -18,5 +18,8 @@
             question_id = #{question_id},
             answerValue = #{answerValue}
     </insert>
+    <select id="SelectFoodIdListByAnswers" resultType="Map">
+        
+    </select>
 
 </mapper>

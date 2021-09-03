@@ -42,4 +42,12 @@ public class AkinatorService {
         }
         return 1;
     }
+
+    public List<Map<String, Object>> getFoodList(List<Map<String, Object>> answers) {
+        System.out.println(answers.get(0).get("answerId"));
+        System.out.println(answers.get(0).get("question_id"));
+        List<Map<String, Object>> foodList = akinatorDao.SelectFoodIdListByAnswers(answers);
+        System.out.println(foodList.size());
+        return foodList;
+    }
 }
