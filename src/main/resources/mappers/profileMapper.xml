@@ -117,11 +117,18 @@ WHERE	memberId = #{memberId}
             ,r.reply
              ,r.writerid
             ,m.nickname
-        FROM review r, `member` m
+            ,s.name
+        FROM review r, `member` m, `store` s
         WHERE r.writerid = m.memberId
+        AND r.store_id = s.storeId
         AND r.writerid = #{memberId}
         AND r.status != 'N'
 </select>
 
+<update id="updateReviewStatus">
+	update review
+    SET status = #{status}
+    where reviewid = #{reviewId}
+</update>
 
 </mapper>
