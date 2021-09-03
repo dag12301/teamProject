@@ -20,5 +20,7 @@ public interface AkinatorDao {
 
     List<Map<String, Integer>> selectAllAkinator();
 
-    List<Map<String, Object>> getAllFoodByFoodId(@Param("foodIdList") List<Integer> foodIdList);
+    List<Map<String, Object>> getAllFoodByFoodId(@Param("foodIdList") List<Integer> foodIdList,
+                                                 @Param("LAT") Double LAT,
+                                                 @Param("LON") Double LON);
 }

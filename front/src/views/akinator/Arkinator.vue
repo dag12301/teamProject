@@ -14,6 +14,8 @@
         v-else-if="this.stageAkinator.length != 0"
       >
         {{ question }}
+        <hr />
+        <span>주소{{ local }}</span>
       </div>
       <div class="chatWrapper m-1 p-2" id="log">
         <!-- 답변들 -->
@@ -44,7 +46,6 @@
           @click="choiceAkinator(alternative)"
         >
           {{ alternative.answerText }}
-          <span>{{ local }}</span>
         </div>
       </div>
     </div>
@@ -160,8 +161,12 @@ export default {
       }
 
       // 필터된 foodId리스트 요청. 거리순으로 나열
-
-      http.post("/akinator/getFoods", filteredIdList).then((res) => {
+      const data = {
+        filteredIdList: filteredIdList,
+        LAT: this.LAT,
+        LON: this.LON,
+      };
+      http.post("/akinator/getFoods", data).then((res) => {
         if (res.status === 200) {
           this.foodList = res.data;
           this.foodDataLoaded = true;
@@ -257,10 +262,18 @@ export default {
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
     },
+    setLocation(latitude, longitude) {
+      this.$store.commit("SET_LAT", latitude);
+      this.$store.commit("SET_LON", longitude);
+      console.log("사용자 위치 추적: " + latitude + ", " + longitude);
+      this.$store.commit("SET_OBSERVE", true);
+    },
   },
   computed: {
     ...mapGetters({
       local: "GET_LOCAL",
+      LAT: "GET_LAT",
+      LON: "GET_LON",
     }),
     alternatives() {
       // 현재 Stage 에서 선택지
@@ -303,6 +316,16 @@ export default {
     };
   },
   mounted() {
+    if (!this.local) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setLocation(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          console.log("위치정보를 갱신할 수 없습니다" + error);
+        }
+      );
+    }
     this.requestAkinators();
   },
   setup() {

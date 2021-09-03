@@ -47,8 +47,8 @@ public class AkinatorService {
         return akinatorDao.selectAllAkinator();
     }
 
-    public List<Map<String, Object>> getFoodList(List<Integer> foodIdList) {
-        List<Map<String, Object>> foodList = akinatorDao.getAllFoodByFoodId(foodIdList);
+    public List<Map<String, Object>> getFoodList(List<Integer> foodIdList, Double LAT, Double LON) {
+        List<Map<String, Object>> foodList = akinatorDao.getAllFoodByFoodId(foodIdList, LAT, LON);
         return foodList;
     }
 }
