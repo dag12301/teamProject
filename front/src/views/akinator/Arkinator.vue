@@ -270,6 +270,7 @@ export default {
     },
     toHome() {
       // 나가기 클릭
+      this.$router.push({ path: "/" });
     },
     toFoodDetail() {
       // 선택
@@ -318,12 +319,12 @@ export default {
       foodList: [], // 답변들로 나온 결과 음식들
       akinatorList: [], // 진행되지 않은 아키네이터
       executedAkinators: [], // 진행된 아키네이터
-      stageAkinator: [],
+      stageAkinator: [], // 진행중인 아키네이터
       foodDataLoaded: false,
       akinatorLoaded: false,
       akinatorMeta: [], // 아키네이터 빅데이터
       foodFilter: "", // 검색창
-      selectedFood: null,
+      selectedFood: null, // 선택한 음식정보
     };
   },
   mounted() {
@@ -505,6 +506,7 @@ export default {
   /* 정렬방식 */
   flex-direction: column;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 .choicesWrapper {
   /* 버튼탭 */
