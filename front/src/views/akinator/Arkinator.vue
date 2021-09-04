@@ -73,7 +73,7 @@
         </div>
         <div
           v-else-if="foodDataLoaded && foodList.length === 0"
-          class="foodListContainer m-1"
+          class="foodListContainer emptyFood m-1"
         >
           <span v-if="filteredFoodList"> 검색 결과가 없습니다 </span>
           <span v-else> 음식정보가 없습니다 </span>
@@ -86,7 +86,11 @@
           :key="index"
           @click="selectFood(food)"
         >
-          <div :class="[selectedFood === food ? 'choicedFoodList' : '']">
+          <div
+            class="row"
+            :class="[selectedFood === food ? 'choicedFoodList' : '']"
+            :title="food.description"
+          >
             {{ food }}
           </div>
         </div>
@@ -193,7 +197,6 @@ export default {
             // 아키네이터 빅데이터요청수집
             if (res.status === 200) {
               this.akinatorMeta = res.data;
-              console.log(this.akinatorMeta);
               this.akinatorLoaded = true;
               this.foodDataLoaded = true;
               this.setStage();
@@ -274,6 +277,15 @@ export default {
     },
     toFoodDetail() {
       // 선택
+      // target = http://localhost:8081/shopDetail?shopInfo=?&foodIdsearch=?
+      console.log(this.selectedFood);
+      this.$router.push({
+        path: "/shopDetail",
+        query: {
+          shopInfo: this.selectedFood.storeId,
+          foodIdsearch: this.selectedFood.foodId,
+        },
+      });
     },
     selectFood(food) {
       // 음식 클릭 했을 때,
@@ -528,6 +540,17 @@ export default {
 .foodListContainer {
   background: tomato;
   display: table-column;
+  height: 28%;
+  border-radius: 8px;
+  border: 1px solid gray;
+}
+.emptyFood {
+  /* 음식목록이 비어있을 때 가운데정렬 */
+  height: 100%;
+  padding-top: 50%;
+}
+.emptyFood > span {
+  background: #5c79f8;
 }
 /* 스크롤바 */
 .foodListWrapper::-webkit-scrollbar {
@@ -549,7 +572,7 @@ export default {
 }
 /* 선택되었을 때 */
 .choicedFoodList {
-  outline: 1px solid royalblue;
+  outline: 2px solid royalblue;
   transition: 0.2s;
 }
 </style>
