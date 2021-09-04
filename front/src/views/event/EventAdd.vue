@@ -76,7 +76,7 @@
               type="text"
               class=""
               name="couponName"
-              v-model="couponName"
+              v-model="couponFood"
               id="couponName"
             />
           </td>
@@ -85,17 +85,7 @@
               type="text"
               class=""
               name="couponName"
-              v-model="couponName"
-              id="couponName"
-            />
-          </td>
-          <td class="coupon2">
-            <input
-              style="width: 100px;"
-              type="text"
-              class=""
-              name="couponName"
-              v-model="couponName"
+              v-model="couponNumber"
               id="couponName"
             />
           </td>
@@ -105,7 +95,17 @@
               type="text"
               class=""
               name="couponName"
-              v-model="couponName"
+              v-model="couponPrice"
+              id="couponName"
+            />
+          </td>
+          <td class="coupon2">
+            <input
+              style="width: 100px;"
+              type="text"
+              class=""
+              name="couponName"
+              v-model="couponDiscount"
               id="couponName"
             />
           </td>
@@ -115,7 +115,7 @@
               type="date"
               class=""
               name="couponName"
-              v-model="couponName"
+              v-model="couponPublishedDate"
               id="couponName"
             />
           </td>
@@ -137,7 +137,12 @@
             할인 종료일
           </td>
           <td>
-            <button>삭제</button>
+            <input
+              type="submit"
+              class="couponDelete"
+              value="삭제"
+              @click="couponDelete()"
+            />
           </td>
         </tr>
         <tr style="border-bottom: 1px solid rgb(199, 198, 198);">
